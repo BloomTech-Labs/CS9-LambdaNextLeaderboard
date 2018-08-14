@@ -6,7 +6,7 @@ const initialStater = {
     updateCheck: false,
 }
 
-const studentReducer = (state = initialStater, action) => {
+export const studentReducer = (state = initialStater, action) => {
     switch (action.type) {
         case CREATE_USER:
             return (Object.assign({}, state, {
@@ -25,5 +25,5 @@ const studentReducer = (state = initialStater, action) => {
     }
 }
 
-export default studentReducer;
+// export default studentReducer;
 

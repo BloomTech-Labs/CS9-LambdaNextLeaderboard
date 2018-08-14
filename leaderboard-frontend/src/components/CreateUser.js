@@ -47,9 +47,10 @@ class CreateUser extends React.Component {
         const newObject = {
             username: username.toLowerCase().toString(),
             password: password,
-            password: password // The server is setup to get 2 passwords for registry.
-            //It should only need one password, it's better to check in the client if they match.
+            password: this.state.passwordconfirm, 
         };
+        // The server is setup to get 2 passwords for registry.
+        //It should only need one password, it's better to check in the client if they match.
         this.setState({ username: '',usernameconfirm: '' , password: '', passwordconfirm: '' });
         this.setState({ sentConfirm: true });
         this.props.createUserAction(newObject);

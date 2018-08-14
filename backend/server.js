@@ -1,13 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
-
+const cors = require('cors')
 // import routes
 const users = require("./routes/api/user");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors)
 
 // Connect MongoDB
 const db = require("./config/keys").mongoURI;
