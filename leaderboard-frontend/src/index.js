@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import MenuBar from './components/MenuBar';
 import LandingPage from './components/LandingPage';
+import LeaderBoard from './components/LeaderBoard';
 
 
 const store = createStore(
@@ -36,7 +37,7 @@ function SplitPane(props) {
   
     return (
         <div className="RightContent" style={{ height: '100%' }}>
-            <LandingPage />
+            <LeaderBoard />
         </div>
     );
   }
