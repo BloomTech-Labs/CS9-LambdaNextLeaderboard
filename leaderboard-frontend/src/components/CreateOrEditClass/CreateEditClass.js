@@ -10,6 +10,7 @@ import './CreateEditClass.css';
 import MenuBar from "../MenuBar";
 // import LandingPage from "../LandingPage";
 import ClassCreateEdit from "./ClassCreateEdit";
+import StudentList from "./StudentList";
 
 
 function SplitPane(props) {
@@ -36,6 +37,11 @@ function RightContent() {
     return (
         <div className="RightContent" style={{ height: '100%' }}>
             < ClassCreateEdit />
+            <div className="ClassList" >
+                <StudentList/>
+
+            </div>
+
         </div>
     );
 }
@@ -59,22 +65,22 @@ const CreateEdit = (props) => {
     }
     return (
         <div style={{ height: '100%' }}>
-            {/*<div style={{ height: '3em' }} >*/}
-                {/*<div style={linkBox} >*/}
-                        {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/class">*/}
+            <div style={{ height: '3em' }} >
+                <div style={linkBox} >
+                        <Link style={{marginRight: '8%', textDecoration: 'none' }} to="/class">
 
-                            {/*Classes*/}
-                        {/*</Link>*/}
-                        {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/">*/}
-                            {/*Home*/}
-                        {/*</Link>*/}
-                        {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/signout">*/}
-                            {/*Sign Out*/}
-                        {/*</Link>*/}
-                {/*</div>*/}
-            {/*</div>*/}
-            <ClassCreateEdit/>
-            {/*<SplitPane left={<LeftContent />} right={<RightContent />} />*/}
+                            Classes
+                        </Link>
+                        <Link style={{marginRight: '8%', textDecoration: 'none' }} to="/">
+                            Home
+                        </Link>
+                        <Link style={{marginRight: '8%', textDecoration: 'none' }} to="/signout">
+                            Sign Out
+                        </Link>
+                </div>
+            </div>
+            {/*<ClassCreateEdit/>*/}
+            <SplitPane left={<LeftContent />} right={<RightContent />} />
         </div>
     )
 }

@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import reducers from "./reducers";
 import registerServiceWorker from "./registerServiceWorker";
 import thunk from "redux-thunk";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = createStore(
   reducers,

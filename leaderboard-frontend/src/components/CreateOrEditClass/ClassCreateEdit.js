@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './CreateEditClass.css'
-
+import StudentList  from './StudentList'
 class ClassCreateEdit extends Component {
     constructor(props) {
         super(props);
@@ -49,6 +49,7 @@ class ClassCreateEdit extends Component {
                         type="text"
                         name="class_name"
                         placeholder="Class Name"
+                        className="CName"
                         value={this.state.class_name}
                         onChange={this.handleInput}
                     />
@@ -61,6 +62,7 @@ class ClassCreateEdit extends Component {
                         type="text"
                         name="last_name"
                         placeholder="Last Name"
+                        className="LName"
                         value={this.state.last_name}
                         onChange={this.handleInput}
                     />
@@ -68,6 +70,7 @@ class ClassCreateEdit extends Component {
                         type="text"
                         name="first_name"
                         placeholder="First Name"
+                        className="FName"
                         value={this.state.first_name}
                         onChange={this.handleInput}
                     />
@@ -75,13 +78,17 @@ class ClassCreateEdit extends Component {
                         type="text"
                         name="email"
                         placeholder="email"
+                        className="Email"
                         value={this.state.email}
                         onChange={this.handleInput}
                     />
+                    <button className="BtnAdd" onClick={this.handleAdd} >Add</button>
+
                     <input
                         type="text"
                         name="github"
                         placeholder="Github"
+                        className="Github"
                         value={this.state.github}
                         onChange={this.handleInput}
                     />
@@ -89,11 +96,14 @@ class ClassCreateEdit extends Component {
                         type="text"
                         name="huntr"
                         placeholder="huntr"
+                        className="Huntr"
                         value={this.state.huntr}
                         onChange={this.handleInput}
                     />
-                    <button className="BtnAdd" onClick={this.handleAdd} >Add</button>
                 </div>
+                {/*<div style={{display : "block"}} >*/}
+
+                {/*</div>*/}
             </div>
         )
     }
