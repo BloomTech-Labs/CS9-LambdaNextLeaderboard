@@ -3,6 +3,8 @@
 // import { SplitPane } from "../../index";
 import React from 'react';
 import {  Link } from 'react-router-dom';
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+
 // import from './CreateEditClass.css'
 import './CreateEditClass.css';
 
@@ -36,8 +38,11 @@ function RightContent() {
 
     return (
         <div className="RightContent" style={{ height: '100%' }}>
-            < ClassCreateEdit />
-            <div className="ClassList" >
+            <div style={{ height: '50%' }}>
+                < ClassCreateEdit />
+
+            </div>
+            <div className="ClassList" style={{ height: '50%' }} >
                 <StudentList/>
 
             </div>
@@ -49,36 +54,43 @@ function RightContent() {
 //These styles can go into a CSS file, such as HomeTemplate.css
 //I did them this way because it's faster
 const CreateEdit = (props) => {
-    const linkBox = {
-        //I had to specify top, bottom, left, right
-        //It doesn't work if I say simply, borderColor: '2px solid black' <--- FAILS
-        // So, you'll have to play around with CSS, until something works.
-        //So, specificity, being more specific is a way around this issue.
-        borderTop: ' 2px solid black',
-        borderRight: ' 2px solid black',
-        borderBottom: ' 2px solid black',
-        borderLeft: ' 2px solid black',
-        width: '12%',
-        height: '100%',
-        marginLeft: '80%',
-        marginRight: '20%'
-    }
+    // const linkBox = {
+    //     //I had to specify top, bottom, left, right
+    //     //It doesn't work if I say simply, borderColor: '2px solid black' <--- FAILS
+    //     // So, you'll have to play around with CSS, until something works.
+    //     //So, specificity, being more specific is a way around this issue.
+    //     borderTop: ' 2px solid black',
+    //     borderRight: ' 2px solid black',
+    //     borderBottom: ' 2px solid black',
+    //     borderLeft: ' 2px solid black',
+    //     width: '12%',
+    //     height: '100%',
+    //     marginLeft: '80%',
+    //     marginRight: '20%'
+    // }
     return (
         <div style={{ height: '100%' }}>
-            <div style={{ height: '3em' }} >
-                <div style={linkBox} >
-                        <Link style={{marginRight: '8%', textDecoration: 'none' }} to="/class">
+            {/*<div >*/}
 
-                            Classes
-                        </Link>
-                        <Link style={{marginRight: '8%', textDecoration: 'none' }} to="/">
-                            Home
-                        </Link>
-                        <Link style={{marginRight: '8%', textDecoration: 'none' }} to="/signout">
-                            Sign Out
-                        </Link>
-                </div>
-            </div>
+                <Breadcrumb tag="nav">
+                    <BreadcrumbItem tag="a" href="/">Home</BreadcrumbItem>
+                    <BreadcrumbItem tag="a" href="/classlist">Classes</BreadcrumbItem>
+                    {/*<BreadcrumbItem tag="a" href="#">Data</BreadcrumbItem>*/}
+                    <BreadcrumbItem active tag="span">Create or Edit Class</BreadcrumbItem>
+                </Breadcrumb>
+                {/*<div style={linkBox} >*/}
+                        {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/class">*/}
+
+                            {/*Classes*/}
+                        {/*</Link>*/}
+                        {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/">*/}
+                            {/*Home*/}
+                        {/*</Link>*/}
+                        {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/signout">*/}
+                            {/*Sign Out*/}
+                        {/*</Link>*/}
+                {/*</div>*/}
+            {/*</div>*/}
             {/*<ClassCreateEdit/>*/}
             <SplitPane left={<LeftContent />} right={<RightContent />} />
         </div>

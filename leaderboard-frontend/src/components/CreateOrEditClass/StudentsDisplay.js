@@ -8,7 +8,8 @@ class StudentsDisplay extends Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
             dropdownOpen: false,
-            modal: false,
+            modal_remove: false,
+            modal_hired: false,
             // students: [
             //     {name :"ASmith"}, {name :"BSmith"}, {name :"CSmit"}, {name :"DSmith"}, {name :"ESmith"}, {name :"FSmith"}, {name :"GSmith"}, {name :"HSmith"}, {name :"ISmith"}, {name :"JSmit"}
             // ]
@@ -22,22 +23,42 @@ class StudentsDisplay extends Component {
     }
 
     toggleDelete = () => {
-
+        console.log("Fired delete")
         // console.log(this.props.name.name)
         this.setState({
-            modal: !this.state.modal
+            modal_remove: !this.state.modal_remove
+        });
+    }
+    toggleHired = () => {
+        console.log("fired hired")
+        // console.log(this.props.name.name)
+        this.setState({
+            modal_hired: !this.state.modal_hired
         });
     }
     delete = () => {
 
         console.log('delete ', this.props.name.name)
         this.setState({
-            modal: !this.state.modal
+            modal_remove: !this.state.modal_remove
+        });
+    }
+
+    hired = () => {
+
+        console.log('hired ', this.props.name.name)
+        this.setState({
+            modal_remove: !this.state.modal_hired
         });
     }
     cancel = () => {
         this.setState({
-            modal: !this.state.modal
+            modal_remove: !this.state.modal_remove
+        })
+    }
+    rejected = () => {
+        this.setState({
+            modal_hired: !this.state.modal_hired
         })
     }
 
@@ -54,17 +75,28 @@ class StudentsDisplay extends Component {
                         <DropdownItem color="danger" onClick={this.toggleDelete} >Remove Student</DropdownItem>
 
                         <DropdownItem divider />
-                        <DropdownItem>Student Hired</DropdownItem>
+                        <DropdownItem onClick={this.toggleHired} >Student Hired</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                <Modal isOpen={this.state.modal} className={this.props.className}>
+                <Modal isOpen={this.state.modal_remove} className={this.props.className}>
                     {/*<ModalHeader toggle={this.toggleDelete} charCode="Y">Modal title</ModalHeader>*/}
                     <ModalBody>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        Lorem ipsum REMOVED dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={this.delete}>Delete Student</Button>{' '}
                         <Button color="secondary" onClick={this.cancel}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.modal_hired} className={this.props.className}>
+                    {/*<ModalHeader toggle={this.toggleDelete} charCode="Y">Modal title</ModalHeader>*/}
+                    <ModalBody>
+                        Lorem ipsum HIRED dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={this.hired}>Hired Student</Button>{' '}
+                        <Button color="secondary" onClick={this.rejected}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </div>
