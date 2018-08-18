@@ -65,7 +65,6 @@ class App extends Component {
                 <Route path="/classlist" component={CLASSLIST} />
                 {/* TODO ADD MORE COMPONENTS*/}
                 <Route exact path="/login" component={LOGIN} />
-                <Route exact path="/create-edit" component={CreateEdit} />
                 <Route exact path="/register" component={CREATEUSER} />
                 <Route exact path="/classlist" component={CLASSLIST} />
 
