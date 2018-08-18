@@ -1,0 +1,45 @@
+.APP__BILLING {
+    width: 100%;
+}
+
+.APP__BILLING__TITLE {
+    margin-bottom: 50px;
+}
+
+.APP__BILLING__PAYMENTINFOBOX {
+    display: flex;
+    width: 210px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid black;
+    justify-content: space-evenly;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.APP__BILLING__PAYMENTINFOBOX p {
+    position: relative; top: -10px; left: 10px;
+    background-color: white;
+    width: 100px;
+    margin: 0px;
+}
+
+
+.APP__BILLING__CCNUM, .APP__BILLING__CCEXP, .APP__BILLING__CVV {
+    margin: 2px;
+    width: 200px;
+}
+
+.APP__BILLING__CCNUM1, .APP__BILLING__CCNUM2, .APP__BILLING__CCNUM3, .APP__BILLING__CCNUM4 {
+    width: 50px;
+}
+
+.APP__BILLING__CVV {
+    width: 48px;
+}
+
+.APP__BILLING__SUBTYPE {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
