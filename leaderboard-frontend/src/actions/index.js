@@ -34,6 +34,20 @@ export const createUserAction = obj => {
       });
   };
 };
+export const addClassAction = (obj) => {
+    return dispatch => {
+        axios
+            .post(`${CLASS_URL}addClass`, obj)
+            .then(res => {
+                dispatch({
+                    type: ADD_CLASS,
+                    payload: res.name,
+                    students: res.students
+                })
+            })
+    }
+};
+
 
 export const loginAction = (obj, history) => {
   //Need to KNow the token expiration

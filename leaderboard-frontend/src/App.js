@@ -1,6 +1,4 @@
 //________MODULES________
-import { connect } from "react-redux";
-import { CREATE_USER, LOGIN_ACTION, UPDATE_USER, ERRORS } from "./actions";
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 // TODO import axios from 'axios';
@@ -73,13 +71,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    classes: state.classes
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { CREATE_USER, LOGIN_ACTION, UPDATE_USER, ERRORS }
-)(App);
+export default App
