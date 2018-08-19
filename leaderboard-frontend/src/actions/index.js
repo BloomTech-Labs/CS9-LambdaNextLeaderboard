@@ -3,8 +3,10 @@ import axios from "axios";
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN_ACTION = "LOGIN_ACTION";
 export const UPDATE_USER = "UPDATE_USER";
+
 export const ADD_CLASS = "ADD_CLASS";
 export const ADD_STUDENT = "ADD_STUDENT";
+export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
 export const ERRORS = "ERRORS";
 
 //LOCAL SERVER SETUP
@@ -35,7 +37,17 @@ export const createUserAction = obj => {
   };
 };
 export const addClassAction = (obj) => {
+    //obj {
+    //     "name": "CS9"
+    // }
+    const token = localStorage.getItem('token');
     return dispatch => {
+        const options = {
+            method: 'POST',
+            headers: { 'content-type': 'application/json', 'Authorization': token },
+            data: obj,
+            url: `${CLASS_URL}addClass/addStudent`,
+        }
         axios
             .post(`${CLASS_URL}addClass`, obj)
             .then(res => {
@@ -45,9 +57,81 @@ export const addClassAction = (obj) => {
                     students: res.students
                 })
             })
+            .catch(err => {
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data
+                });
+            });
     }
 };
+export const addStudentAction = (classname, studentData) => {
+    //STUDENT DATA {
+    //     "lastname": "Bueno",
+    //     "firstname": "Abraham",
+    //     "email": "abrambueno1992@gmail.com",
+    //     "github": "abrambueno1992",
+    //     "huntr": "abrambueno1992@gmail.com"
+    // }
+    const token = localStorage.getItem('token');
 
+    return dispatch => {
+        const options = {
+            method: 'PUT',
+            headers: { 'content-type': 'application/json', 'Authorization': token },
+            data: studentData,
+            url: `${CLASS_URL}${classname}/addStudent`,
+        }
+        axios(options)
+            .then(res => {
+                dispatch({
+                    type: ADD_STUDENT,
+                    payload: res.students, //Student data object returned
+                    class_name: res.name
+                })
+            })
+            .catch(err => {
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data
+                });
+            });
+    }
+}
+export const getClassStudentsAction = (classname) => {
+    const token = localStorage.getItem('token');
+
+    return dispatch => {
+        const options = {
+            method: 'GET',
+            headers: { 'content-type': 'application/json', 'Authorization': token },
+            url: `${CLASS_URL}${classname}`,
+        }
+        axios(options)
+            .then(res => {
+                dispatch({
+                    type: GET_CLASS_STUDENTS,
+                    payload: res.students, //returns the array of student object data
+                    class_name: res.name
+                //PAYLOAD {
+                //     "hired": false,
+                //     "_id": "5b79b4a6223c9800043f5a1e",
+                //     "lastname": "Bueno",
+                //     "firstname": "Abraham",
+                //     "email": "abrambueno1992@gmail.com",
+                //     "github": "abrambueno1992",
+                //     "huntr": "abrambueno1992@gmail.com"
+                // }
+                })
+            })
+            .catch(err => {
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data
+                });
+            });
+    }
+}
 
 export const loginAction = (obj, history) => {
   //Need to KNow the token expiration
