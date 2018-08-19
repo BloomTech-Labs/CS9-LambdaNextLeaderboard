@@ -94,7 +94,7 @@ export const loginAction = (obj, history) => {
         });
         //Need to get the correct redirect
         history.push("/");
-        window.location.reload();
+        // window.location.reload();
       })
       .catch(err => {
         localStorage.removeItem("token");

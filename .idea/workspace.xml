@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="12b52769-6cd5-466c-bfaf-c917b45d0207" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/leaderboard-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/leaderboard-frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leaderboard-frontend/src/actions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/leaderboard-frontend/src/actions/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,7 +31,7 @@
         <counts>
           <entry key="css" value="11" />
           <entry key="jpg" value="1" />
-          <entry key="js" value="45" />
+          <entry key="js" value="48" />
           <entry key="json" value="2" />
           <entry key="md" value="1" />
         </counts>
@@ -40,7 +41,7 @@
           <entry key="CSS" value="11" />
           <entry key="Image" value="1" />
           <entry key="JSON" value="2" />
-          <entry key="JavaScript" value="45" />
+          <entry key="JavaScript" value="48" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
@@ -60,11 +61,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1275">
-              <caret line="61" selection-start-line="61" selection-end-line="61" />
+            <state relative-caret-position="836">
+              <caret line="38" column="48" selection-start-line="38" selection-start-column="48" selection-end-line="38" selection-end-column="48" />
               <folding>
                 <element signature="e#26#64#0" expanded="true" />
                 <element signature="e#335#378#0" expanded="true" />
@@ -74,14 +75,31 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backend/data/githubData.js">
-          <provider selected="true" editor-type-id="text-editor" />
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/actions/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1230">
+              <caret line="97" column="8" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="97" selection-end-column="8" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backend/authentication/passport.js">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/components/Login.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/components/LandingPage.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -115,15 +133,6 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/validation/users/registration.js">
           <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backend/server.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
-            </state>
-          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -171,8 +180,8 @@
         <option value="$PROJECT_DIR$/leaderboard-frontend/src/components/CreateOrEditClass/ClassCreateEdit.js" />
         <option value="$PROJECT_DIR$/leaderboard-frontend/src/components/CreateOrEditClass/CreateEditClass.css" />
         <option value="$PROJECT_DIR$/leaderboard-frontend/src/components/CreateOrEditClass/CreateEditClass.js" />
-        <option value="$PROJECT_DIR$/leaderboard-frontend/src/actions/index.js" />
         <option value="$PROJECT_DIR$/leaderboard-frontend/src/App.js" />
+        <option value="$PROJECT_DIR$/leaderboard-frontend/src/actions/index.js" />
       </list>
     </option>
   </component>
@@ -276,6 +285,20 @@
               <item name="leaderboard-frontend" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="CS9-LambdaNextLeaderboard" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CS9-LambdaNextLeaderboard" type="462c0819:PsiDirectoryNode" />
+              <item name="leaderboard-frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="actions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CS9-LambdaNextLeaderboard" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CS9-LambdaNextLeaderboard" type="462c0819:PsiDirectoryNode" />
+              <item name="leaderboard-frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -332,12 +355,12 @@
       <workItem from="1534560712827" duration="1266000" />
       <workItem from="1534629044381" duration="638000" />
       <workItem from="1534700244781" duration="3147000" />
-      <workItem from="1534705638288" duration="368000" />
+      <workItem from="1534705638288" duration="765000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54067000" />
+    <option name="totallyTimeSpent" value="54464000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1910" height="2133" extended-state="4" />
@@ -417,22 +440,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/components/LandingPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/components/Login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="75" column="26" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/components/CreateUser.css">
       <provider selected="true" editor-type-id="text-editor" />
@@ -525,13 +534,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/actions/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="41" column="34" selection-start-line="41" selection-start-column="34" selection-end-line="41" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/routes/api/user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1125">
@@ -575,6 +577,13 @@
     <entry file="file://$PROJECT_DIR$/backend/validation/users/login.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/components/LandingPage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -584,13 +593,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1275">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
+        <state relative-caret-position="836">
+          <caret line="38" column="48" selection-start-line="38" selection-start-column="48" selection-end-line="38" selection-end-column="48" />
           <folding>
             <element signature="e#26#64#0" expanded="true" />
             <element signature="e#335#378#0" expanded="true" />
             <element signature="e#692#711#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/components/Login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaderboard-frontend/src/actions/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1230">
+          <caret line="97" column="8" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="97" selection-end-column="8" />
         </state>
       </provider>
     </entry>
