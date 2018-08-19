@@ -59,8 +59,8 @@ class App extends Component {
             ) : null}
             <div className="APP__BODY" style={{height: '100%'}} >
               <Switch>
-                  {/* TODO ADD MORE COMPONENTS*/}
-                  <Route exact path="/" component={LANDINGPAGE} />
+                {/* TODO ADD MORE COMPONENTS*/}
+                <Route exact path="/" component={LANDINGPAGE} />
                 <Route path="/login" component={LOGIN} />
                 <Route path="/register" component={CREATEUSER} />
                 <Route path="/classlist" component={CLASSLIST} />
