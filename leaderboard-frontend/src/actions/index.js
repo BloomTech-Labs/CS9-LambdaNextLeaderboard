@@ -7,8 +7,13 @@ export const ADD_CLASS = "ADD_CLASS";
 export const ADD_STUDENT = "ADD_STUDENT";
 export const ERRORS = "ERRORS";
 
-const USER_URL = "http://localhost:4000/api/users/";
-const CLASS_URL = "http://localhost:4000/api/classes/";
+//LOCAL SERVER SETUP
+// const USER_URL = "http://localhost:4000/api/users/";
+// const CLASS_URL = "http://localhost:4000/api/classes/";
+
+//DEPLOYED SERVER SETUP
+const USER_URL = "https://labs-next-leaderboard.herokuapp.com/api/users/"
+const CLASS_URL = "https://labs-next-leaderboard.herokuapp.com/api/classes/"
 
 export const createUserAction = obj => {
   return dispatch => {
