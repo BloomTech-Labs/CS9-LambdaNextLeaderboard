@@ -10,16 +10,20 @@ import {
   Dropdown
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { loginAction, createUserAction } from "../../actions";
 
 import "./Nav.css";
 
-export default class Nav extends Component {
+class Nav extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       activeItem: "",
-      openModal: false
+      openModal: false,
+      SignInUsername: "",
+      SignInPassword: ""
     };
   }
 
@@ -33,6 +37,19 @@ export default class Nav extends Component {
 
   handleMenuItemClick = (e, { name }) => {
     this.setState({ activeItem: name });
+  };
+
+  handleInput = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  handleSubmitLogin = () => {
+    const obj = {
+      username: this.state.SignInUsername,
+      password: this.state.SignInPassword
+    };
+    this.props.loginAction(obj, this.props.history);
+    this.setState({ SignInPassword: "" });
   };
 
   render() {
@@ -85,6 +102,9 @@ export default class Nav extends Component {
                   <Form>
                     <Form.Field>
                       <Input
+                        name="SignInUsername"
+                        value={this.state.SignInUsername}
+                        onChange={this.handleInput}
                         icon="user"
                         iconPosition="left"
                         placeholder="Username"
@@ -93,13 +113,21 @@ export default class Nav extends Component {
                     </Form.Field>
                     <Form.Field>
                       <Input
+                        name="SignInPassword"
+                        value={this.state.SignInPassword}
+                        onChange={this.handleInput}
                         icon="lock"
                         iconPosition="left"
                         placeholder="Password"
                         type="password"
                       />
                     </Form.Field>
-                    <Button fluid color="green" content="Sign In" />
+                    <Button
+                      fluid
+                      color="green"
+                      content="Sign In"
+                      onClick={this.handleSubmitLogin}
+                    />
                     <div className="ForgotPassword">
                       <Link to="/">Forgot your password?</Link>
                     </div>
@@ -114,3 +142,14 @@ export default class Nav extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    error: state.error
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { loginAction }
+)(Nav);
