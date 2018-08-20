@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './CreateEditClass.css'
 import { Button } from 'reactstrap';
+import {connect} from 'react-redux'
+import {addStudentAction} from '../../actions'
 import StudentList  from './StudentList'
 class ClassCreateEdit extends Component {
     constructor(props) {
@@ -27,7 +29,7 @@ class ClassCreateEdit extends Component {
         e.preventDefault();
         console.log("Fired")
         //Needs an action to send the data
-        
+
     }
     handleAdd = e => {
         e.preventDefault();
@@ -40,6 +42,7 @@ class ClassCreateEdit extends Component {
         }
         // Send this studentObject when you click `Add`
         // for Create or Edit Class, Add Students part
+        this.props.addStudentAction("CS7", studentObject)
         console.log(studentObject)
     }
     render() {
@@ -111,7 +114,11 @@ class ClassCreateEdit extends Component {
         )
     }
 }
+const mapStateToProps = state => {
+    return {
+        error: state.error
+    }
+}
 
-
-// export default connect(mapStateToProps, {addClass})(ClassCreateEdit)
-export default ClassCreateEdit
+export default connect(mapStateToProps, {addStudentAction})(ClassCreateEdit)
+// export default ClassCreateEdit
