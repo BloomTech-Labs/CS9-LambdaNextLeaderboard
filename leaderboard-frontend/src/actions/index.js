@@ -10,11 +10,13 @@ export const ERRORS = "ERRORS";
 const USER_URL = "http://localhost:4000/api/users/";
 const CLASS_URL = "http://localhost:4000/api/classes/";
 
+const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
+
 export const createUserAction = obj => {
-  const DATA_TOKEN = jwt.sign(obj, process.env.REACT_APP_ACCESS_KEY);
   return dispatch => {
+    console.log(process.env.REACT_APP_TEST);
     axios
-      .post(`${USER_URL}register`, {token:DATA_TOKEN})
+      .post(`${USER_URL}register`, {token:dataEncrypt(obj)})
       .then(resp => {
         dispatch({
           type: CREATE_USER,
@@ -76,9 +78,8 @@ export const loginAction = (obj, history) => {
   //     }
   // }
   return dispatch => {
-    const DATA_TOKEN = jwt.sign(obj, process.env.REACT_APP_ACCESS_KEY);  
     axios
-      .post(`${USER_URL}login`, {token: DATA_TOKEN})
+      .post(`${USER_URL}login`, {token: dataEncrypt(obj)})
       .then(res => {
         localStorage.setItem("token", res.data.token);
         // localStorage.setItem('expiration', expire);
