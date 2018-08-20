@@ -10,7 +10,7 @@ import {
 
 const initialStater = {
     // students: null,
-    error: null,
+    error: {},
     // expiration: null,
     updateCheck: false,
     // class: null,
@@ -40,7 +40,7 @@ const studentReducer = (state = initialStater, action) => {
                     username: action.username
                 },
                 // expiration: action.expiration
-                error: {}
+                // error: action.payload
             });
         case ERRORS:
             return Object.assign({}, state, {
