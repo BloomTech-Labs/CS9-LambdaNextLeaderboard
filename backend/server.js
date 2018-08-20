@@ -3,21 +3,28 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
-const path = require('path')
+const path = require("path");
+const fileUpload = require("express-fileupload");
 
 // import routes
 const users = require("./routes/api/user");
 const classes = require("./routes/api/class");
 const githubData = require("./data/githubData");
 
+// CSV imports
+const template = require("./template.js");
+const upload = require("./upload.js");
+
+// Middleware
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
+app.use(fileUpload());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../leaderboard-frontend/build')));
+app.use(express.static(path.join(__dirname, "../leaderboard-frontend/build")));
 
 // Connect MongoDB
 const db = require("./config/keys").mongoURI;
@@ -41,6 +48,10 @@ app.use(
   classes
 );
 app.use("/api/data", githubData);
+
+// CSV routes
+app.get("/template");
+app.post("/create-edit", upload.post);
 
 const port = process.env.PORT || 4000;
 
