@@ -40,7 +40,7 @@ const studentReducer = (state = initialStater, action) => {
           username: action.username
         },
         // expiration: action.expiration
-        error: {}
+        // error: {}
       });
     case ERRORS:
       return Object.assign({}, state, {
