@@ -1,5 +1,4 @@
 import axios from "axios";
-
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN_ACTION = "LOGIN_ACTION";
 export const UPDATE_USER = "UPDATE_USER";
@@ -75,6 +74,7 @@ export const loginAction = (obj, history) => {
   //     }
   // }
   return dispatch => {
+    
     axios
       .post(`${USER_URL}login`, obj)
       .then(res => {

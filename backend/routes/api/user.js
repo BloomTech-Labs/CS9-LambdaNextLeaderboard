@@ -4,9 +4,10 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 const User = require("../../models/User");
-const keys = require("../../config/keys");
 const validateRegistration = require("../../validation/users/registration");
 const validateLogin = require("../../validation/users/login");
+
+const ACCESS_KEY = process.env.ACCESS_KEY;
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -76,7 +77,7 @@ router.post("/login", (req, res) => {
           const payload = { id: user._id, name: user.username };
           jwt.sign(
             payload,
-            keys.jwtSecret,
+            ACCESS_KEY,
             { expiresIn: "10h" },
             (err, token) => {
               res.json({

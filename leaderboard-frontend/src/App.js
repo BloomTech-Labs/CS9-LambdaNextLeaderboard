@@ -17,6 +17,7 @@ import BILLING from "./components/Billing";
 //________STYLING________
 import "./App.css";
 import CreateEdit from "./components/CreateOrEditClass/CreateEditClass";
+require('dotenv').config();
 
 class App extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class App extends Component {
   };
 
   render() {
+    console.log(process.env.REACT_APP_TEST);
     return (
       <Router>
 
