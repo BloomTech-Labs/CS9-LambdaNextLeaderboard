@@ -60,7 +60,7 @@ function loadDataAsProps({ store, ownProps }) {
     const { dispatch, getState } = store;
     // console.log('ownProps', ownProps.props.props.match.path)
     // const path = ownProps.props.props.match.path
-    const path = "CS9" // Use the actual path when it's created as needed
+    const path = "CS7" // Use the actual path when it's created as needed
     //Have to pass props to Splitpane, then to Right Component (StudentDisplay), causing
     // the need for ownProps.props.props....
     console.log(ownProps)
