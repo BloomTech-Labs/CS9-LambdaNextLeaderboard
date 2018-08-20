@@ -25,7 +25,8 @@
     "webpack-clear-console": "^1.0.3"
   },
   "devDependencies": {
-    "prettier": "1.14.2",
-    "babel-core": "^6.26.3"
+    "babel-core": "^6.26.3",
+    "babel-messages": "^6.23.0",
+    "prettier": "1.14.2"
   }
 }
