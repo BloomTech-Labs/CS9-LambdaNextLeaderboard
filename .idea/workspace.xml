@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="12b52769-6cd5-466c-bfaf-c917b45d0207" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leaderboard-frontend/src/components/CreateOrEditClass/ClassCreateEdit.js" beforeDir="false" afterPath="$PROJECT_DIR$/leaderboard-frontend/src/components/CreateOrEditClass/ClassCreateEdit.js" afterDir="false" />
-    </list>
+    <list default="true" id="12b52769-6cd5-466c-bfaf-c917b45d0207" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -603,10 +600,9 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1920" />
+  <component name="ProjectFrameBounds" extendedState="4">
     <option name="y" value="27" />
-    <option name="width" value="1880" />
+    <option name="width" value="1920" />
     <option name="height" value="2133" />
   </component>
   <component name="ProjectView">
@@ -705,18 +701,18 @@
       <workItem from="1534700244781" duration="3147000" />
       <workItem from="1534705638288" duration="21117000" />
       <workItem from="1534778331630" duration="4240000" />
-      <workItem from="1534783111535" duration="31000" />
+      <workItem from="1534783111535" duration="1133000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79087000" />
+    <option name="totallyTimeSpent" value="80189000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="3840" height="2133" extended-state="6" />
+    <frame x="0" y="27" width="1920" height="2133" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1417715" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28533757" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
