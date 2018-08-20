@@ -42,7 +42,7 @@ class ClassCreateEdit extends Component {
         }
         // Send this studentObject when you click `Add`
         // for Create or Edit Class, Add Students part
-        this.props.addStudentAction("CS9", studentObject)
+        this.props.addStudentAction("CS7", studentObject)
         console.log(studentObject)
     }
     render() {
