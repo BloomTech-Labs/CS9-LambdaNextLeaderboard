@@ -18,7 +18,8 @@ router.get("/test", (req, res) => res.json({ msg: "Users route working" }));
 // @desc    Registers new user
 // @access  Public
 router.post("/register", (req, res) => {
-  const { errors, isValid } = validateRegistration(req.body);
+  const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateRegistration(data);
 
   // Validation Check
   if (!isValid) {
@@ -53,15 +54,17 @@ router.post("/register", (req, res) => {
 // @desc    Login user and return JWT
 // @access  Public
 router.post("/login", (req, res) => {
-  const { errors, isValid } = validateLogin(req.body);
+
+  const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateLogin(data);
 
   // Validation Check
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
-  const username = req.body.username;
-  const password = req.body.password;
+  const username = data.username;
+  const password = data.password;
   User.findOne({ username })
     .select("+password")
     .then(user => {

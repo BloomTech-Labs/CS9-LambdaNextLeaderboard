@@ -31,7 +31,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(process.env.REACT_APP_TEST);
     return (
       <Router>
 

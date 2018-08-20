@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwt from 'jsonwebtoken';
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN_ACTION = "LOGIN_ACTION";
 export const UPDATE_USER = "UPDATE_USER";
@@ -10,9 +11,10 @@ const USER_URL = "http://localhost:4000/api/users/";
 const CLASS_URL = "http://localhost:4000/api/classes/";
 
 export const createUserAction = obj => {
+  const DATA_TOKEN = jwt.sign(obj, process.env.REACT_APP_ACCESS_KEY);
   return dispatch => {
     axios
-      .post(`${USER_URL}register`, obj)
+      .post(`${USER_URL}register`, {token:DATA_TOKEN})
       .then(resp => {
         dispatch({
           type: CREATE_USER,
@@ -74,12 +76,13 @@ export const loginAction = (obj, history) => {
   //     }
   // }
   return dispatch => {
-    
+    const DATA_TOKEN = jwt.sign(obj, process.env.REACT_APP_ACCESS_KEY);  
     axios
-      .post(`${USER_URL}login`, obj)
+      .post(`${USER_URL}login`, {token: DATA_TOKEN})
       .then(res => {
         localStorage.setItem("token", res.data.token);
         // localStorage.setItem('expiration', expire);
+        console.log(res);
         dispatch({
           type: LOGIN_ACTION,
           successfulLogin: res.data.success,

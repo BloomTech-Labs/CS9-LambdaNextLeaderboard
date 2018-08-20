@@ -5,8 +5,8 @@ const router = require("express").Router();
 
 // import oauth
 // need?
-const clientID = require("../config/keys").clientID;
-const clientSecret = require("../config/keys").clientSecret;
+const clientID = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
 // Fetch user commits
 async function fetchGithubData(githubHandle, ACCESS_TOKEN) {

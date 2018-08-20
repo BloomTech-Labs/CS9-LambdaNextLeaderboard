@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../leaderboard-frontend/build')));
 
 // Connect MongoDB
-const db = require("./config/keys").mongoURI;
+const db = process.env.MONGO_URI;
 mongoose
   .connect(
     db,
