@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Button, Modal, Menu, Grid, GridColumn } from "semantic-ui-react";
+import {
+  Button,
+  Modal,
+  Menu,
+  Grid,
+  GridColumn,
+  Form,
+  Input,
+  Dropdown
+} from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import "./Nav.css";
@@ -53,10 +62,9 @@ export default class Nav extends Component {
         <Modal
           open={this.state.openModal}
           onClose={this.handleCloseModal}
-          // centered={false}
-          // dimmer={"blurring"}
-          // size="small"
-          // className="Nav__modal"
+          centered={false}
+          dimmer={"blurring"}
+          size="small"
         >
           <Modal.Content>
             <Menu tabular>
@@ -72,8 +80,33 @@ export default class Nav extends Component {
               />
             </Menu>
             <Grid columns={2} divided>
-              <GridColumn>Hello</GridColumn>
-              <GridColumn>Hello</GridColumn>
+              <GridColumn>
+                {this.state.activeItem === "Sign In" ? (
+                  <Form>
+                    <Form.Field>
+                      <Input
+                        icon="user"
+                        iconPosition="left"
+                        placeholder="Username"
+                        type="text"
+                      />
+                    </Form.Field>
+                    <Form.Field>
+                      <Input
+                        icon="lock"
+                        iconPosition="left"
+                        placeholder="Password"
+                        type="password"
+                      />
+                    </Form.Field>
+                    <Button fluid color="green" content="Sign In" />
+                    <div className="ForgotPassword">
+                      <Link to="/">Forgot your password?</Link>
+                    </div>
+                  </Form>
+                ) : null}
+              </GridColumn>
+              <GridColumn>OAuth here...</GridColumn>
             </Grid>
           </Modal.Content>
         </Modal>
