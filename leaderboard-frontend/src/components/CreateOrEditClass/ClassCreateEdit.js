@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './CreateEditClass.css'
+import { Button } from 'reactstrap';
 import StudentList  from './StudentList'
 class ClassCreateEdit extends Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class ClassCreateEdit extends Component {
     }
     render() {
         return (
-            <div>
+            <div className="ClassCreateEdit" >
                 <div className="Settings" >
                     <input
                         type="text"
@@ -53,7 +54,8 @@ class ClassCreateEdit extends Component {
                         value={this.state.class_name}
                         onChange={this.handleInput}
                     />
-                    <button className="BtnImport" onClick={this.handleImport} >Import CSV</button>
+                    <Button color="secondary" className="BtnImport" onClick={this.handleImport}  size="lg">Import CSV</Button>{' '}
+                    {/*<button className="BtnImport" onClick={this.handleImport} >Import CSV</button>*/}
                 </div>
 
 
@@ -82,7 +84,8 @@ class ClassCreateEdit extends Component {
                         value={this.state.email}
                         onChange={this.handleInput}
                     />
-                    <button className="BtnAdd" onClick={this.handleAdd} >Add</button>
+                    {/*<button className="BtnAdd" onClick={this.handleAdd} >Add</button>*/}
+                    <Button outline color="primary" className="BtnAdd" onClick={this.handleAdd} >Add</Button>{' '}
 
                     <input
                         type="text"
@@ -101,7 +104,9 @@ class ClassCreateEdit extends Component {
                         onChange={this.handleInput}
                     />
                 </div>
-                <StudentList/>
+                {/*<div style={{display : "block"}} >*/}
+
+                {/*</div>*/}
             </div>
         )
     }
