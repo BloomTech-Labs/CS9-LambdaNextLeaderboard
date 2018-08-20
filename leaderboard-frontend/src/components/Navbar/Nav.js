@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, Menu } from "semantic-ui-react";
+import { Button, Modal, Menu, Grid, GridColumn } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import "./Nav.css";
@@ -53,10 +53,12 @@ export default class Nav extends Component {
         <Modal
           open={this.state.openModal}
           onClose={this.handleCloseModal}
-          centered={false}
-          dimmer={"blurring"}
+          // centered={false}
+          // dimmer={"blurring"}
+          // size="small"
+          // className="Nav__modal"
         >
-          <Modal.Header>
+          <Modal.Content>
             <Menu tabular>
               <Menu.Item
                 name="Sign In"
@@ -69,7 +71,11 @@ export default class Nav extends Component {
                 onClick={this.handleMenuItemClick}
               />
             </Menu>
-          </Modal.Header>
+            <Grid columns={2} divided>
+              <GridColumn>Hello</GridColumn>
+              <GridColumn>Hello</GridColumn>
+            </Grid>
+          </Modal.Content>
         </Modal>
       </nav>
     );

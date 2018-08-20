@@ -18,11 +18,10 @@ import CREATEUSER from "./components/CreateUser";
 import LOGIN from "./components/Login";
 import BREADCRUMBS from "./components/Breadcrumbs";
 import BILLING from "./components/Billing";
+import CreateEdit from "./components/CreateOrEditClass/CreateEditClass";
 
 //________STYLING________
 import "./App.css";
-import CreateEdit from "./components/CreateOrEditClass/CreateEditClass";
-import "semantic-ui-css/semantic.min.css";
 
 class App extends Component {
   constructor(props) {
