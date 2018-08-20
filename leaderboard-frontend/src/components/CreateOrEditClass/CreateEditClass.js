@@ -34,16 +34,18 @@ function LeftContent() {
 }
 
 //Right Component
-function RightContent() {
+function RightContent(props) {
 
     return (
         <div className="RightContent" style={{ height: '100%' }}>
             <div style={{ height: '50%' }}>
-                < ClassCreateEdit />
+                < ClassCreateEdit props={props} />
 
             </div>
             <div className="ClassList" style={{ height: '50%' }} >
-                <StudentList/>
+                {console.log("Props", props)}
+
+                <StudentList props={props}/>
 
             </div>
 
@@ -92,7 +94,7 @@ const CreateEdit = (props) => {
                 {/*</div>*/}
             {/*</div>*/}
             {/*<ClassCreateEdit/>*/}
-            <SplitPane left={<LeftContent />} right={<RightContent />} />
+            <SplitPane left={<LeftContent />} right={<RightContent props={props} />} />
         </div>
     )
 }

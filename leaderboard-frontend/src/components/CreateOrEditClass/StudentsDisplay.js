@@ -67,7 +67,7 @@ class StudentsDisplay extends Component {
             <div className="Toggle">
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                     <DropdownToggle caret>
-                        {this.props.name.name}
+                        {this.props.student.firstname + ' ' + this.props.student.lastname}
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem header>Update Student</DropdownItem>

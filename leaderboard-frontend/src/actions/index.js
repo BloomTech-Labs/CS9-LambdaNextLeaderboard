@@ -17,6 +17,20 @@ export const ERRORS = "ERRORS";
 const USER_URL = "https://labs-next-leaderboard.herokuapp.com/api/users/"
 const CLASS_URL = "https://labs-next-leaderboard.herokuapp.com/api/classes/"
 
+export function queryMyData(param, history) {
+    return (dispatch, getState) => {
+        console.log(param, history)
+        const data = getState().classlist_students //path.to.myData[param];
+        console.log("DATA DATA DATA", data)
+        const status = data ? 'complete' : 'loading';
+        console.log('status', status);
+        const promise = data ? Promise.resolve : dispatch(getClassStudentsAction(param.toString()));
+
+
+        return { data, status, promise };
+    }
+}
+
 export const createUserAction = obj => {
     return dispatch => {
         axios
@@ -137,8 +151,9 @@ export const getClassStudentsAction = (classname) => {
             .then(res => {
                 dispatch({
                     type: GET_CLASS_STUDENTS,
-                    payload: res.students, //returns the array of student object data
-                    class_name: res.name
+                    payload: res.data.students, //returns the array of student object data
+                    class_name: res.data.name,
+                    test: res
                     //PAYLOAD {
                     //     "hired": false,
                     //     "_id": "5b79b4a6223c9800043f5a1e",

@@ -18,7 +18,8 @@ const initialStater = {
     user_logged_in: null,
     created_class: null,
     added_student: null,
-    classlist_students: null
+    classlist_students: null,
+    // test: null
 };
 
 const studentReducer = (state = initialStater, action) => {
@@ -73,6 +74,7 @@ const studentReducer = (state = initialStater, action) => {
                     className: action.class_name,
                     students: action.payload
                 },
+                test: action.test,
                 updateCheck: false
             })
         default:
