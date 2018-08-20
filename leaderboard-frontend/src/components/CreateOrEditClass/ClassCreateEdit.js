@@ -57,7 +57,10 @@ class ClassCreateEdit extends Component {
                         value={this.state.class_name}
                         onChange={this.handleInput}
                     />
-                    <Button color="secondary" className="BtnImport" onClick={this.handleImport}  size="lg">Import CSV</Button>{' '}
+                    {/*<Button color="secondary" className="BtnImport" onClick={this.handleImport}  size="lg">Import CSV</Button>{' '}*/}
+                    <button onClick={this.handleImport} className="ui primary button BtnImport">
+                        Import CSV
+                    </button>
                     {/*<button className="BtnImport" onClick={this.handleImport} >Import CSV</button>*/}
                 </div>
 
@@ -88,7 +91,10 @@ class ClassCreateEdit extends Component {
                         onChange={this.handleInput}
                     />
                     {/*<button className="BtnAdd" onClick={this.handleAdd} >Add</button>*/}
-                    <Button outline color="primary" className="BtnAdd" onClick={this.handleAdd} >Add</Button>{' '}
+                    {/*<Button outline color="primary" className="BtnAdd" onClick={this.handleAdd} >Add</Button>{' '}*/}
+                    <button onClick={this.handleAdd} className="ui primary button BtnAdd">
+                        Add
+                    </button>
 
                     <input
                         type="text"

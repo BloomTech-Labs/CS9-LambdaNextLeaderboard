@@ -3,7 +3,7 @@
 // import { SplitPane } from "../../index";
 import React from 'react';
 import {  Link } from 'react-router-dom';
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Breadcrumb } from 'semantic-ui-react'
 
 // import from './CreateEditClass.css'
 import './CreateEditClass.css';
@@ -74,12 +74,19 @@ const CreateEdit = (props) => {
         <div style={{ height: '100%' }}>
             {/*<div >*/}
 
-                <Breadcrumb tag="nav">
-                    <BreadcrumbItem tag="a" href="/">Home</BreadcrumbItem>
-                    <BreadcrumbItem tag="a" href="/classlist">Classes</BreadcrumbItem>
-                    {/*<BreadcrumbItem tag="a" href="#">Data</BreadcrumbItem>*/}
-                    <BreadcrumbItem active tag="span">Create or Edit Class</BreadcrumbItem>
-                </Breadcrumb>
+                {/*<Breadcrumb tag="nav">*/}
+                    {/*<BreadcrumbItem tag="a" href="/">Home</BreadcrumbItem>*/}
+                    {/*<BreadcrumbItem tag="a" href="/classlist">Classes</BreadcrumbItem>*/}
+                    {/*/!*<BreadcrumbItem tag="a" href="#">Data</BreadcrumbItem>*!/*/}
+                    {/*<BreadcrumbItem active tag="span">Create or Edit Class</BreadcrumbItem>*/}
+                {/*</Breadcrumb>*/}
+            <div className="ui big breadcrumb" style={{height: '7%'}}>
+                <a className="section" href="/">Home</a>
+                <i className="right chevron icon divider"></i>
+                <a className="section" href="/classlist">Classes</a>
+                <i className="right chevron icon divider"></i>
+                <div className="active section">Create or Edit Class</div>
+            </div>
                 {/*<div style={linkBox} >*/}
                         {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/class">*/}
 
