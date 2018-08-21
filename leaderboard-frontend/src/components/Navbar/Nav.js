@@ -63,8 +63,10 @@ class Nav extends Component {
   };
 
   componentWillUpdate = nextProps => {
-    console.log("nextprops", nextProps);
-    if (nextProps.successfulLogin && this.state.openModal) {
+    if (
+      nextProps.successfulLogin &&
+      (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
+    ) {
       this.setState({ SignInUsername: "", SignedIn: true, openModal: false });
     }
   };
