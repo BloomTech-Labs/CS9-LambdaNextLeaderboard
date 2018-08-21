@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "node ./backend/server.js",
     "heroku-postbuild": "cd leaderboard-frontend && npm install && npm run build"
   },
   "repository": {
@@ -29,6 +29,8 @@
     "mongoose": "^5.2.7",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "semantic-ui-css": "^2.3.3",
+    "semantic-ui-react": "^0.82.2",
     "validator": "^10.5.0"
   },
   "bugs": {

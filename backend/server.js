@@ -4,7 +4,10 @@ const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
+<<<<<<< HEAD
 const fileUpload = require("express-fileupload");
+=======
+>>>>>>> master
 
 // import routes
 const users = require("./routes/api/user");
@@ -47,7 +50,7 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   classes
 );
-app.use("/api/data", githubData);
+// app.use("/api/data", githubData);
 
 // CSV routes
 app.get("/template");
