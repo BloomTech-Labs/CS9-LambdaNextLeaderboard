@@ -38,6 +38,5 @@
     "url": "https://github.com/Lambda-School-Labs/CS9-LambdaNextLeaderboard/issues"
   },
   "homepage": "https://github.com/Lambda-School-Labs/CS9-LambdaNextLeaderboard#readme",
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

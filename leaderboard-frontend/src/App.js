@@ -71,6 +71,7 @@ class App extends Component {
                 <Route path="/login" component={LOGIN} />
                 <Route path="/register" component={CREATEUSER} />
                 <Route path="/classlist" component={CLASSLIST} />
+                <Route path="/billing" component={BILLING} />
               </Switch>
             </div>
           </div>
