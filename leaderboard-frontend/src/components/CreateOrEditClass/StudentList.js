@@ -37,6 +37,7 @@ class StudentList extends Component {
         const classlist_students = this.props.myData
         return (
             <div className="main"  >
+                <h5 style={{ marginLeft: "1%"}} >StudentList</h5>
                 {classlist_students.students.map((student_data, i) => {
                    return <StudentsDisplay key={student_data + i} student={student_data} class={classlist_students.className} />
                 })}
@@ -60,7 +61,7 @@ function loadDataAsProps({ store, ownProps }) {
     const { dispatch, getState } = store;
     // console.log('ownProps', ownProps.props.props.match.path)
     // const path = ownProps.props.props.match.path
-    const path = "CS7" // Use the actual path when it's created as needed
+    const path = "CS9" // Use the actual path when it's created as needed
     //Have to pass props to Splitpane, then to Right Component (StudentDisplay), causing
     // the need for ownProps.props.props....
     console.log(ownProps)

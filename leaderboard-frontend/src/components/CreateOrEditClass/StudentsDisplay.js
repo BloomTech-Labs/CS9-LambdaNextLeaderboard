@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {Dropdown, Menu, Button, Modal} from 'semantic-ui-react'
+
+
 class StudentsDisplay extends Component {
     constructor(props) {
         super(props);
@@ -10,11 +11,29 @@ class StudentsDisplay extends Component {
             dropdownOpen: false,
             modal_remove: false,
             modal_hired: false,
+            openHired: false,
+            removeStudent: false
+
             // students: [
             //     {name :"ASmith"}, {name :"BSmith"}, {name :"CSmit"}, {name :"DSmith"}, {name :"ESmith"}, {name :"FSmith"}, {name :"GSmith"}, {name :"HSmith"}, {name :"ISmith"}, {name :"JSmit"}
             // ]
         };
     }
+    closeConfigShowHire = (closeOnEscape, closeOnDimmerClick) => () => {
+        this.setState({ closeOnEscape, closeOnDimmerClick, openHired: true })
+    }
+
+    close = () => this.setState({ openHired: false })
+
+    closeConfigShowRemove = (closeOnEscape, closeOnDimmerClick) => () => {
+        this.setState({ closeOnEscape, closeOnDimmerClick, removeStudent: true })
+    }
+
+    closeHired = () => {
+        console.log('Fired close hired')
+        this.setState({ openHired: false })
+    }
+    closeRemoved = () => this.setState({ removeStudent: false })
 
     toggle() {
         this.setState(prevState => ({
@@ -22,83 +41,104 @@ class StudentsDisplay extends Component {
         }));
     }
 
-    toggleDelete = () => {
-        console.log("Fired delete")
-        // console.log(this.props.name.name)
-        this.setState({
-            modal_remove: !this.state.modal_remove
-        });
-    }
-    toggleHired = () => {
-        console.log("fired hired")
-        // console.log(this.props.name.name)
-        this.setState({
-            modal_hired: !this.state.modal_hired
-        });
-    }
     delete = () => {
 
-        console.log('delete ', this.props.name.name)
-        this.setState({
-            modal_remove: !this.state.modal_remove
-        });
+        console.log('delete ', this.props.student.firstname)
+        this.closeRemoved()
+        // this.setState({
+        //     modal_remove: !this.state.modal_remove
+        // });
     }
 
     hired = () => {
 
-        console.log('hired ', this.props.name.name)
-        this.setState({
-            modal_remove: !this.state.modal_hired
-        });
-    }
-    cancel = () => {
-        this.setState({
-            modal_remove: !this.state.modal_remove
-        })
-    }
-    rejected = () => {
-        this.setState({
-            modal_hired: !this.state.modal_hired
-        })
+        console.log('hired ', this.props.student.firstname)
+        this.closeHired()
+        // this.setState({
+        //     modal_remove: !this.state.modal_hired
+        // });
     }
 
     render() {
+        const { open, closeOnEscape, closeOnDimmerClick } = this.state
         return (
             <div className="Toggle">
-                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                    <DropdownToggle caret>
-                        {this.props.student.firstname + ' ' + this.props.student.lastname}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem header>Update Student</DropdownItem>
-                        {/*<DropdownItem disabled>Action</DropdownItem>*/}
-                        <DropdownItem color="danger" onClick={this.toggleDelete} >Remove Student</DropdownItem>
 
-                        <DropdownItem divider />
-                        <DropdownItem onClick={this.toggleHired} >Student Hired</DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
-                <Modal isOpen={this.state.modal_remove} className={this.props.className}>
-                    {/*<ModalHeader toggle={this.toggleDelete} charCode="Y">Modal title</ModalHeader>*/}
-                    <ModalBody>
-                        Lorem ipsum REMOVED dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={this.delete}>Delete Student</Button>{' '}
-                        <Button color="secondary" onClick={this.cancel}>Cancel</Button>
-                    </ModalFooter>
+                <Menu style={{marginTop: "10%",background: "#eeee", padding: "2%"}} >
+                    <Dropdown text={this.props.student.firstname + ' ' + this.props.student.lastname}>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={this.closeConfigShowHire(true, false)} text="Student Hired" />
+                            <Dropdown.Item onClick={this.closeConfigShowRemove(true, false)} text="Remove Student" />
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Menu>
+                {/**/}
+                {/*<Button onClick={this.closeConfigShow(false, true)}>No Close on Escape</Button>*/}
+                {/*<Button onClick={this.closeConfigShow(true, false)}>No Close on Dimmer Click</Button>*/}
+                <Modal
+                    open={this.state.openHired}
+                    closeOnEscape={closeOnEscape}
+                    closeOnDimmerClick={closeOnDimmerClick}
+                    onClose={this.closeHired}
+                >
+                    <Modal.Header>Student update to HIRED and removed from list</Modal.Header>
+                    <Modal.Content>
+                        {/*<p>THIS STUDENT HAS BEEN HIRED?</p>*/}
+                        <h3>github: {this.props.student.github}</h3>
+                        <h3>huntr: {this.props.student.huntr}</h3>
+                        <h3>email: {this.props.student.email}</h3>
+                        <h3>hired: {this.props.student.hired.toString() }</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={this.closeHired} negative>
+                            No: CANCEL
+                        </Button>
+                        <Button
+                            onClick={this.hired}
+                            positive
+                            labelPosition='right'
+                            icon='checkmark'
+                            content='Yes: HIRED, REMOVE from LIST'
+                        />
+                    </Modal.Actions>
                 </Modal>
 
-                <Modal isOpen={this.state.modal_hired} className={this.props.className}>
-                    {/*<ModalHeader toggle={this.toggleDelete} charCode="Y">Modal title</ModalHeader>*/}
-                    <ModalBody>
-                        Lorem ipsum HIRED dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={this.hired}>Hired Student</Button>{' '}
-                        <Button color="secondary" onClick={this.rejected}>Cancel</Button>
-                    </ModalFooter>
+                <Modal
+                    open={this.state.removeStudent}
+                    closeOnEscape={closeOnEscape}
+                    closeOnDimmerClick={closeOnDimmerClick}
+                    onClose={this.closeRemoved}
+                >
+                    <Modal.Header>Remove student from list, the student WAS NOT HIRED.</Modal.Header>
+                    <Modal.Content>
+                        <h3>
+                            student name: {this.props.student.firstname} {this.props.student.lastname}
+                        </h3>
+                        <h3>github: {this.props.student.github}</h3>
+                        <h3>huntr: {this.props.student.huntr}</h3>
+                        <h3>email: {this.props.student.email}</h3>
+                        <h3>hired: {this.props.student.hired.toString() }</h3>
+
+
+
+
+                        {/*<p>THIS STUDENT WILL BE REMOVED  ?</p>*/}
+                        {console.log(this.props.student)}
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={this.closeRemoved} negative>
+                            No: CANCEL
+                        </Button>
+                        <Button
+                            onClick={this.delete}
+                            positive
+                            labelPosition='right'
+                            icon='checkmark'
+                            content='Yes: REMOVE STUDENT'
+                        />
+                    </Modal.Actions>
                 </Modal>
+
             </div>
         );
     }
@@ -106,9 +146,7 @@ class StudentsDisplay extends Component {
 
 
 const mapStateToProps = state => {
-    return {
-
-    }
+    return {}
 }
 
 export default StudentsDisplay
