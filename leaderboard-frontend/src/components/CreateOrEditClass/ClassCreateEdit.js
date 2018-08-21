@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import './CreateEditClass.css'
-import { Button } from 'reactstrap';
+// import { Button } from 'reactstrap';
 import {connect} from 'react-redux'
 import {addStudentAction} from '../../actions'
+import { Button, Input } from 'semantic-ui-react'
 import StudentList  from './StudentList'
 class ClassCreateEdit extends Component {
     constructor(props) {
@@ -48,74 +49,75 @@ class ClassCreateEdit extends Component {
     render() {
         return (
             <div className="ClassCreateEdit" >
+                <h5 style={{display:"inline", marginLeft: "1%"}} >Settings</h5>
                 <div className="Settings" >
-                    <input
-                        type="text"
-                        name="class_name"
-                        placeholder="Class Name"
-                        className="CName"
-                        value={this.state.class_name}
-                        onChange={this.handleInput}
+
+                    <Input focus
+                           type="text"
+                           name="class_name"
+                           placeholder="Class Name"
+                           className="CName"
+                           value={this.state.class_name}
+                           onChange={this.handleInput}
                     />
-                    {/*<Button color="secondary" className="BtnImport" onClick={this.handleImport}  size="lg">Import CSV</Button>{' '}*/}
-                    <button onClick={this.handleImport} className="ui primary button BtnImport">
-                        Import CSV
-                    </button>
+
+                    <Button className="ui clearing segment BtnImport" onClick={this.handleImport}  primary> Import CSV</Button>
                     {/*<button className="BtnImport" onClick={this.handleImport} >Import CSV</button>*/}
                 </div>
 
-
+                <h5 style={{display:"inline", marginLeft: "1%"}} >Add Students</h5>
                 <div className="Add_Students" >
-                    <input
-                        type="text"
-                        name="last_name"
-                        placeholder="Last Name"
-                        className="LName"
-                        value={this.state.last_name}
-                        onChange={this.handleInput}
+
+                    <Input focus
+                           type="text"
+                           name="last_name"
+                           placeholder="Last Name"
+                           className="LName"
+                           value={this.state.last_name}
+                           onChange={this.handleInput}
                     />
-                    <input
-                        type="text"
-                        name="first_name"
-                        placeholder="First Name"
-                        className="FName"
-                        value={this.state.first_name}
-                        onChange={this.handleInput}
+
+                    <Input focus
+                           type="text"
+                           name="first_name"
+                           placeholder="First Name"
+                           className="FName"
+                           value={this.state.first_name}
+                           onChange={this.handleInput}
                     />
-                    <input
-                        type="text"
-                        name="email"
-                        placeholder="email"
-                        className="Email"
-                        value={this.state.email}
-                        onChange={this.handleInput}
+
+                    <Input focus
+                           type="text"
+                           name="email"
+                           placeholder="email"
+                           className="Email"
+                           value={this.state.email}
+                           onChange={this.handleInput}
                     />
-                    {/*<button className="BtnAdd" onClick={this.handleAdd} >Add</button>*/}
-                    {/*<Button outline color="primary" className="BtnAdd" onClick={this.handleAdd} >Add</Button>{' '}*/}
+
                     <button onClick={this.handleAdd} className="ui primary button BtnAdd">
                         Add
                     </button>
 
-                    <input
-                        type="text"
-                        name="github"
-                        placeholder="Github"
-                        className="Github"
-                        value={this.state.github}
-                        onChange={this.handleInput}
+                    <Input focus
+                           type="text"
+                           name="github"
+                           placeholder="Github"
+                           className="Github"
+                           value={this.state.github}
+                           onChange={this.handleInput}
                     />
-                    <input
-                        type="text"
-                        name="huntr"
-                        placeholder="huntr"
-                        className="Huntr"
-                        value={this.state.huntr}
-                        onChange={this.handleInput}
+
+                    <Input focus
+                           type="text"
+                           name="huntr"
+                           placeholder="huntr"
+                           className="Huntr"
+                           value={this.state.huntr}
+                           onChange={this.handleInput}
                     />
                 </div>
-                {/*<div style={{display : "block"}} >*/}
 
-                {/*</div>*/}
             </div>
         )
     }

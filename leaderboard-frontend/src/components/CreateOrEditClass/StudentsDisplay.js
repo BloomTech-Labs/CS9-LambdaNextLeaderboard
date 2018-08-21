@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {Dropdown, Menu} from 'semantic-ui-react'
+import {Dropdown, Menu, Button, Modal} from 'semantic-ui-react'
 
 
 class StudentsDisplay extends Component {
@@ -11,11 +11,18 @@ class StudentsDisplay extends Component {
             dropdownOpen: false,
             modal_remove: false,
             modal_hired: false,
+            open: false
+
             // students: [
             //     {name :"ASmith"}, {name :"BSmith"}, {name :"CSmit"}, {name :"DSmith"}, {name :"ESmith"}, {name :"FSmith"}, {name :"GSmith"}, {name :"HSmith"}, {name :"ISmith"}, {name :"JSmit"}
             // ]
         };
     }
+    closeConfigShow = (closeOnEscape, closeOnDimmerClick) => () => {
+        this.setState({ closeOnEscape, closeOnDimmerClick, open: true })
+    }
+
+    close = () => this.setState({ open: false })
 
     toggle() {
         this.setState(prevState => ({
@@ -25,17 +32,19 @@ class StudentsDisplay extends Component {
 
     toggleDelete = () => {
         console.log("Fired delete")
+        // this.closeConfigShow(true, false)
         // console.log(this.props.name.name)
-        this.setState({
-            modal_remove: !this.state.modal_remove
-        });
+        // this.setState({
+        //     modal_remove: !this.state.modal_remove
+        // });
     }
     toggleHired = () => {
         console.log("fired hired")
         // console.log(this.props.name.name)
-        this.setState({
-            modal_hired: !this.state.modal_hired
-        });
+        this.closeConfigShow(true, false)
+        // this.setState({
+        //     modal_hired: !this.state.modal_hired
+        // });
     }
     delete = () => {
 
@@ -62,21 +71,17 @@ class StudentsDisplay extends Component {
             modal_hired: !this.state.modal_hired
         })
     }
-    testing = () => {
-        console.log("testing 1")
-    }
-    testing2 = () => {
-        console.log("Testin 2")
-    }
+   
 
     render() {
-        const options = [
-            {key: 1, text: 'Student Hired', value: 1},
-            {key: 2, text: 'Remove Student', value: 2},
-            // { key: 3, text: 'Choice 3', value: 3 },
-        ]
+        const { open, closeOnEscape, closeOnDimmerClick } = this.state
         return (
             <div className="Toggle">
+                {/*<div style={{paddingBottom: "2%"}}>*/}
+                    <h5 style={{ marginLeft: "1%"}} >StudentList</h5>
+
+                {/*</div>*/}
+
                 {/*<Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>*/}
                 {/*<DropdownToggle caret>*/}
                 {/*{this.props.student.firstname + ' ' + this.props.student.lastname}*/}
@@ -109,15 +114,40 @@ class StudentsDisplay extends Component {
 
                     {/*</Dropdown.Menu>*/}
                 {/*</Dropdown>*/}
-                <Menu >
-                    <Dropdown text="Shawn Stewart">
+                <Menu style={{marginTop: "10%",background: "#eeee", padding: "2%"}} >
+                    <Dropdown text={this.props.student.firstname + ' ' + this.props.student.lastname}>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={this.testing} text="Student Hired" />
-                            <Dropdown.Item onClick={this.testing2} text="Remove Student" />
+                            <Dropdown.Item onClick={this.closeConfigShow(true, false)} text="Student Hired" />
+                            <Dropdown.Item onClick={this.closeConfigShow(true, false)} text="Remove Student" />
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu>
                 {/**/}
+                {/*<Button onClick={this.closeConfigShow(false, true)}>No Close on Escape</Button>*/}
+                {/*<Button onClick={this.closeConfigShow(true, false)}>No Close on Dimmer Click</Button>*/}
+                <Modal
+                    open={open}
+                    closeOnEscape={closeOnEscape}
+                    closeOnDimmerClick={closeOnDimmerClick}
+                    onClose={this.close}
+                >
+                    <Modal.Header>Delete Your Account</Modal.Header>
+                    <Modal.Content>
+                        <p>Are you sure you want to delete your account</p>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={this.close} negative>
+                            No
+                        </Button>
+                        <Button
+                            onClick={this.close}
+                            positive
+                            labelPosition='right'
+                            icon='checkmark'
+                            content='Yes'
+                        />
+                    </Modal.Actions>
+                </Modal>
 
                 {/*<Modal isOpen={this.state.modal_remove} className={this.props.className}>*/}
                 {/*/!*<ModalHeader toggle={this.toggleDelete} charCode="Y">Modal title</ModalHeader>*!/*/}
