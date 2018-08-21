@@ -4,10 +4,7 @@ const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
-<<<<<<< HEAD
 const fileUpload = require("express-fileupload");
-=======
->>>>>>> master
 
 // import routes
 const users = require("./routes/api/user");

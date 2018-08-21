@@ -1,6 +1,6 @@
 const csv = require("fast-csv");
 const mongoose = require("mongoose");
-const csvClass = require("./classImportSchema");
+const Class = require("../models/Class");
 
 // Export upload.get to server
 exports.post = (req, res) => {
@@ -20,14 +20,14 @@ exports.post = (req, res) => {
       ignoreEmpty: true
     })
     // Listener | Called every row, assigns _id to student
-    .on("data", data => {
+    .on("data", function(data) {
       data["_id"] = new mongoose.Types.ObjectId();
 
       students.push(data);
     })
-    // Listener | End of parse, pass students arr to csvClass model
+    // Listener | End of parse, pass new students arr students arr in Class model
     .on("end", function() {
-      csvClass.create(students, function(err, documents) {
+      Class.create({ students: students }, function(err) {
         if (err) throw err;
       });
 
