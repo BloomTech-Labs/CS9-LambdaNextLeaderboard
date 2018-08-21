@@ -5,11 +5,15 @@ import {
   ADD_CLASS,
   ADD_STUDENT,
   GET_CLASS_STUDENTS,
+  LOGIN_ERRORS,
+  REGISTER_ERRORS,
   ERRORS
 } from "../actions/";
 
-const initialStater = {
+const initialState = {
   // students: null,
+  loginErrors: {},
+  registerErrors: {},
   error: {},
   // expiration: null,
   updateCheck: false,
@@ -22,7 +26,7 @@ const initialStater = {
   // test: null
 };
 
-const studentReducer = (state = initialStater, action) => {
+const studentReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_USER:
       return Object.assign({}, state, {
@@ -38,13 +42,21 @@ const studentReducer = (state = initialStater, action) => {
           ...state.user,
           token: action.payload,
           username: action.username
-        },
+        }
         // expiration: action.expiration
         // error: {}
       });
+    case LOGIN_ERRORS:
+      return Object.assign({}, state, {
+        loginErrors: action.payload
+      });
+    case REGISTER_ERRORS:
+      return Object.assign({}, state, {
+        registerErrors: action.payload
+      });
     case ERRORS:
       return Object.assign({}, state, {
-        error: action.payload
+        errors: action.payload
       });
     // case ADD_CLASS:
     //     return Object.assign({}, state, {

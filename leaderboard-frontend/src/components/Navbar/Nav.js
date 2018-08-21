@@ -7,7 +7,8 @@ import {
   GridColumn,
   Form,
   Input,
-  Dropdown
+  Label,
+  Popup
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -23,7 +24,8 @@ class Nav extends Component {
       activeItem: "",
       openModal: false,
       SignInUsername: "",
-      SignInPassword: ""
+      SignInPassword: "",
+      SignedIn: false
     };
   }
 
@@ -33,22 +35,27 @@ class Nav extends Component {
 
   handleCloseModal = () => {
     this.setState({ activeItem: "", openModal: false });
+    this.props.loginErrors.username = "";
+    this.props.loginErrors.password = "";
   };
 
   handleMenuItemClick = (e, { name }) => {
     this.setState({ activeItem: name });
   };
 
-  handleInput = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleInput = (e, { name, value }) => {
+    this.setState({ [name]: value });
   };
 
   handleSubmitLogin = () => {
-    const obj = {
+    this.props.loginAction({
       username: this.state.SignInUsername,
       password: this.state.SignInPassword
-    };
-    this.props.loginAction(obj, this.props.history);
+    });
+    console.log("checking");
+    if (localStorage.getItem("token")) {
+      this.setState({ SignInUsername: "", SignedIn: true, openModal: false });
+    }
     this.setState({ SignInPassword: "" });
   };
 
@@ -80,7 +87,7 @@ class Nav extends Component {
           open={this.state.openModal}
           onClose={this.handleCloseModal}
           centered={false}
-          dimmer={"blurring"}
+          // dimmer={"blurring"}
           size="small"
         >
           <Modal.Content>
@@ -100,7 +107,16 @@ class Nav extends Component {
               <GridColumn>
                 {this.state.activeItem === "Sign In" ? (
                   <Form>
-                    <Form.Field>
+                    <Form.Field
+                      error={Boolean(this.props.loginErrors.username)}
+                    >
+                      {this.props.loginErrors.username ? (
+                        <Label
+                          color="red"
+                          pointing="below"
+                          content={this.props.loginErrors.username}
+                        />
+                      ) : null}
                       <Input
                         name="SignInUsername"
                         value={this.state.SignInUsername}
@@ -111,7 +127,16 @@ class Nav extends Component {
                         type="text"
                       />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field
+                      error={Boolean(this.props.loginErrors.password)}
+                    >
+                      {this.props.loginErrors.password ? (
+                        <Label
+                          color="red"
+                          pointing="below"
+                          content={this.props.loginErrors.password}
+                        />
+                      ) : null}
                       <Input
                         name="SignInPassword"
                         value={this.state.SignInPassword}
@@ -128,9 +153,16 @@ class Nav extends Component {
                       content="Sign In"
                       onClick={this.handleSubmitLogin}
                     />
-                    <div className="ForgotPassword">
-                      <Link to="/">Forgot your password?</Link>
-                    </div>
+                    <Popup
+                      trigger={
+                        <div className="ForgotPassword">
+                          <Link to="/">Forgot your password?</Link>
+                        </div>
+                      }
+                      content="Not implemented yet. Sorry!"
+                      position="bottom center"
+                      size="mini"
+                    />
                   </Form>
                 ) : null}
               </GridColumn>
@@ -145,7 +177,8 @@ class Nav extends Component {
 
 const mapStateToProps = state => {
   return {
-    error: state.error
+    loginErrors: state.loginErrors,
+    registerErrors: state.registerErrors
   };
 };
 

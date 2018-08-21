@@ -7,6 +7,8 @@ export const UPDATE_USER = "UPDATE_USER";
 export const ADD_CLASS = "ADD_CLASS";
 export const ADD_STUDENT = "ADD_STUDENT";
 export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
+export const LOGIN_ERRORS = "LOGIN_ERRORS";
+export const REGISTER_ERRORS = "REGISTER_ERRORS";
 export const ERRORS = "ERRORS";
 
 //LOCAL SERVER SETUP
@@ -45,7 +47,7 @@ export const createUserAction = obj => {
       })
       .catch(err => {
         dispatch({
-          type: ERRORS,
+          type: REGISTER_ERRORS,
           payload: err.response.data
         });
       });
@@ -195,7 +197,7 @@ export const loginAction = (obj, history) => {
       })
       .catch(err => {
         localStorage.removeItem("token");
-        dispatch({ type: ERRORS, payload: err.response.data });
+        dispatch({ type: LOGIN_ERRORS, payload: err.response.data });
       });
   };
 };
