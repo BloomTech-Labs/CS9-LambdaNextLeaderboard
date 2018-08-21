@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "8.11.3",
+    "npm": "6.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./backend/server.js",
-    "heroku-postbuild": "cd leaderboard-frontend && npm install && npm run build"
+    "heroku-postbuild": "npm i"
   },
   "repository": {
     "type": "git",
@@ -33,5 +37,7 @@
   "bugs": {
     "url": "https://github.com/Lambda-School-Labs/CS9-LambdaNextLeaderboard/issues"
   },
-  "homepage": "https://github.com/Lambda-School-Labs/CS9-LambdaNextLeaderboard#readme"
+  "homepage": "https://github.com/Lambda-School-Labs/CS9-LambdaNextLeaderboard#readme",
+  "devDependencies": {
+  }
 }
