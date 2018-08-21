@@ -1,7 +1,8 @@
 import {
   LOGIN_ACTION,
+  LOGOUT_ACTION,
   CREATE_USER,
-  UPDATE_USER,
+  // UPDATE_USER,
   ADD_CLASS,
   ADD_STUDENT,
   GET_CLASS_STUDENTS,
@@ -22,7 +23,8 @@ const initialState = {
   user_logged_in: null,
   created_class: null,
   added_student: null,
-  classlist_students: null
+  classlist_students: null,
+  successfulLogin: false
   // test: null
 };
 
@@ -42,9 +44,14 @@ const studentReducer = (state = initialState, action) => {
           ...state.user,
           token: action.payload,
           username: action.username
-        }
+        },
+        successfulLogin: action.successfulLogin
         // expiration: action.expiration
         // error: {}
+      });
+    case LOGOUT_ACTION:
+      return Object.assign({}, state, {
+        successfulLogin: action.successfulLogin
       });
     case LOGIN_ERRORS:
       return Object.assign({}, state, {
