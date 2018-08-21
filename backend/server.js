@@ -13,8 +13,8 @@ const classes = require("./routes/api/class");
 const githubData = require("./data/githubData");
 
 // CSV imports
-const template = require("./template.js");
-const upload = require("./upload.js");
+//const template = require("./template.js");
+const upload = require("./utils/upload");
 
 // Middleware
 const app = express();
@@ -51,7 +51,7 @@ app.use(
 // app.use("/api/data", githubData);
 
 // CSV routes
-app.get("/template");
+//app.get("/template");
 app.post("/create-edit", upload.post);
 
 const port = process.env.PORT || 4000;

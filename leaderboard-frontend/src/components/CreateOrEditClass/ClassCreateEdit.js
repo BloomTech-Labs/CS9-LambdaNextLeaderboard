@@ -66,7 +66,7 @@ class ClassCreateEdit extends Component {
           >
             Import CSV
           </Button>{" "}
-          <form action="/" method="POST" encType="multipart/form-data">
+          <form action="http://localhost:4000/create-edit" method="POST" encType="multipart/form-data">
             <input type="file" name="file" accept="*.csv" />
             <input type="submit" value="Upload Students"/>
           </form>

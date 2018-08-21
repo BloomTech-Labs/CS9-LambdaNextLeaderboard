@@ -122,4 +122,37 @@ router.put("/:name/importcsv", (req, res) => {
   });
 });
 
+// @route   POST api/classes/:name/importcsv
+// @desc    Adds a csv of students to the class
+// @access  Private
+router.post("/:name/importcsv", (req, res) => {
+  const validData = [];
+  const invalidData = [];
+
+  req.body.csvData.forEach(data => {
+    const { errors, isValid } = validateAddStudent(data);
+    if (isValid) {
+      validData.push(data);
+    } else {
+      invalidData.push({ user: data, errors });
+    }
+  });
+
+  ClassModel.findOne({ name: req.params.name }).then(aClass => {
+    if (!aClass) {
+      res.status(404).json({ className: "That class does not exist" });
+    } else {
+      validData.forEach(data => {
+        aClass.students.push(data);
+      });
+      aClass
+        .save()
+        .then(updated => {
+          res.json({ updated, invalidData });
+        })
+        .catch(err => res.status(400).json({ catchErr: err }));
+    }
+  });
+});
+
 module.exports = router;

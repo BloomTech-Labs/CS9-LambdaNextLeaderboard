@@ -11,7 +11,10 @@ exports.post = (req, res) => {
   const classFile = req.files.file;
 
   // Populated as CSV parsed
-  const students = [];
+  const importStudents = [];
+  let className = '';
+
+  console.log('UPLOAD BUTTON WORKING')
 
   csv
     // Accept CSV as string, ignore headers + empty rows
@@ -21,13 +24,18 @@ exports.post = (req, res) => {
     })
     // Listener | Called every row, assigns _id to student
     .on("data", function(data) {
-      data["_id"] = new mongoose.Types.ObjectId();
+      // data["_id"] = new mongoose.Types.ObjectId(); do not need IDs
+      className = data.classname
+      delete data.classname
 
-      students.push(data);
+      console.log(data)
+      console.log(process.env.MONGO_URI)
+
+      importStudents.push(data);
     })
     // Listener | End of parse, pass new students arr students arr in Class model
     .on("end", function() {
-      Class.create({ students: students }, function(err) {
+      Class.create({ name: className, students: importStudents }, function(err) {
         if (err) throw err;
       });
 
