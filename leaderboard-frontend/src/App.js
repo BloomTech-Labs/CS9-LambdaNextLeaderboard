@@ -11,14 +11,13 @@ import {
 
 //________REACT COMPONENTS________
 import NAVBAR from "./components/Navbar/Nav";
-import MENUBAR from "./components/MenuBar";
-import CLASSLIST from "./components/ClassList";
+import CLASSLIST from "./components/Classlist/ClassList";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
+import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
 // import BILLING from "./components/Billing";
 
 //________STYLING________
 import "./App.css";
-import CreateEdit from "./components/CreateOrEditClass/CreateEditClass";
 require("dotenv").config();
 
 class App extends Component {
@@ -40,14 +39,15 @@ class App extends Component {
           <NAVBAR />
           <div className="APP__CONTENT">
             <div className="APP__BODY">
-              {/* TODO ADD MORE COMPONENTS*/}
-              <Route exact path="/" component={LANDINGPAGE} />
-              <Route exact path="/classlist" component={CLASSLIST} />
-              <Route
-                path="/classlist/:name/"
-                exact
-                component={withRouter(CreateEdit)}
-              />
+              <Switch>
+                <Route exact path="/" component={LANDINGPAGE} />
+                <Route exact path="/classlist" component={CLASSLIST} />
+                <Route
+                  path="/classlist/:name/"
+                  exact
+                  component={withRouter(CREATEEDIT)}
+                />
+              </Switch>
             </div>
           </div>
         </div>
