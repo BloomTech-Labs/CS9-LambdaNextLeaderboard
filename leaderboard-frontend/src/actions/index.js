@@ -7,8 +7,8 @@ export const ADD_CLASS = "ADD_CLASS";
 export const ADD_STUDENT = "ADD_STUDENT";
 export const ERRORS = "ERRORS";
 
-const USER_URL = "http://localhost:4000/api/users/";
-const CLASS_URL = "http://localhost:4000/api/classes/";
+const USER_URL = process.env.REACT_APP_USER_URL;
+const CLASS_URL = process.env.REACT_APP_CLASS_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
 
