@@ -11,6 +11,7 @@ export const LOGIN_ERRORS = "LOGIN_ERRORS";
 export const REGISTER_ERRORS = "REGISTER_ERRORS";
 export const ERRORS = "ERRORS";
 
+
 const USER_URL = process.env.REACT_APP_USER_URL;
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
 
@@ -76,54 +77,56 @@ export const addStudentAction = (classname, studentData) => {
   const token = localStorage.getItem("token");
   const user = studentData.firstname + " " + studentData.lastname;
   return dispatch => {
-    const options = {
-      method: "PUT",
-      headers: { "content-type": "application/json", Authorization: token },
-      data: studentData,
-      url: `${CLASS_URL}${classname}/addStudent`
-    };
-    axios(options)
-      .then(res => {
-        dispatch({
-          type: ADD_STUDENT,
-          payload: res.students, //Student data object returned
-          class_name: res.name,
-          user: user
-        });
-        //RESPONSE DATA {
-        //     "_id": "5b79b366223c9800043f5a1d",
-        //     "name": "CS9",
-        //     "students": [
-        //     {
-        //         "hired": false,
-        //         "_id": "5b79b4a6223c9800043f5a1e",
-        //         "lastname": "Bueno",
-        //         "firstname": "Abraham",
-        //         "email": "abrambueno1992@gmail.com",
-        //         "github": "abrambueno1992",
-        //         "huntr": "abrambueno1992@gmail.com"
-        //     },
-        //     {
-        //         "hired": false,
-        //         "_id": "5b79e913e4056e00046b549d",
-        //         "lastname": "Bueno",
-        //         "firstname": "Abraham",
-        //         "email": "abrambueno1992@gmail.com",
-        //         "github": "abrambueno1992",
-        //         "huntr": "abrambueno1992@gmail.com"
-        //     }
-        // ],
-        //     "__v": 2
-        // }
-      })
-      .catch(err => {
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data
-        });
-      });
-  };
-};
+      const options = {
+          method: 'PUT',
+          headers: {'content-type': 'application/json', 'Authorization': token},
+          data: studentData,
+          url: `${CLASS_URL}${classname}/addStudent`,
+      }
+      axios(options)
+          .then(res => {
+              dispatch({
+                  type: ADD_STUDENT,
+                  payload: res.students, //Student data object returned
+                  class_name: res.name,
+                  user: user
+              })
+              //RESPONSE DATA {
+              //     "_id": "5b79b366223c9800043f5a1d",
+              //     "name": "CS9",
+              //     "students": [
+              //     {
+              //         "hired": false,
+              //         "_id": "5b79b4a6223c9800043f5a1e",
+              //         "lastname": "Bueno",
+              //         "firstname": "Abraham",
+              //         "email": "abrambueno1992@gmail.com",
+              //         "github": "abrambueno1992",
+              //         "huntr": "abrambueno1992@gmail.com"
+              //     },
+              //     {
+              //         "hired": false,
+              //         "_id": "5b79e913e4056e00046b549d",
+              //         "lastname": "Bueno",
+              //         "firstname": "Abraham",
+              //         "email": "abrambueno1992@gmail.com",
+              //         "github": "abrambueno1992",
+              //         "huntr": "abrambueno1992@gmail.com"
+              //     }
+              // ],
+              //     "__v": 2
+              // }
+
+          })
+          .catch(err => {
+              dispatch({
+                  type: ERRORS,
+                  payload: err.response.data
+              });
+          });
+  }
+}
+
 export const createUserAction = obj => {
   return dispatch => {
     axios

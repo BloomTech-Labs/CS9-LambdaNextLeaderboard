@@ -32,6 +32,7 @@ class App extends Component {
   };
 
   render() {
+    console.log(process.env.REACT_APP_ACCESS_KEY)
     return (
       <Router>
         <div className="APP">
