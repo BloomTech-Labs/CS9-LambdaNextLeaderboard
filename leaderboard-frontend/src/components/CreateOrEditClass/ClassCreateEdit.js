@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './CreateEditClass.css'
 // import { Button } from 'reactstrap';
 import {connect} from 'react-redux'
-import {addStudentAction} from '../../actions'
+import {addStudentAction, getClassStudentsAction} from '../../actions'
 import { Button, Input } from 'semantic-ui-react'
 import StudentList  from './StudentList'
 class ClassCreateEdit extends Component {
@@ -43,7 +43,9 @@ class ClassCreateEdit extends Component {
         }
         // Send this studentObject when you click `Add`
         // for Create or Edit Class, Add Students part
-        this.props.addStudentAction("CS7", studentObject)
+        this.props.addStudentAction("CS9", studentObject)
+        // this.props.getClassStudentsAction("CS9")
+        this.setState({class_name: '', last_name: '', first_name: '', email: '', github: '', huntr: ''})
         console.log(studentObject)
     }
     render() {
@@ -128,5 +130,5 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {addStudentAction})(ClassCreateEdit)
+export default connect(mapStateToProps, {addStudentAction, getClassStudentsAction})(ClassCreateEdit)
 // export default ClassCreateEdit

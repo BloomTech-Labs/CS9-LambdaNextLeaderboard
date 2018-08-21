@@ -10,7 +10,7 @@ export const LOGIN_ERRORS = "LOGIN_ERRORS";
 export const REGISTER_ERRORS = "REGISTER_ERRORS";
 
 export const ERRORS = "ERRORS";
-export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
+// export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
 
 const USER_URL = process.env.REACT_APP_USER_URL;
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
@@ -115,6 +115,7 @@ export const addStudentAction = (classname, studentData) => {
               // ],
               //     "__v": 2
               // }
+
           })
           .catch(err => {
               dispatch({
@@ -188,7 +189,7 @@ export const loginAction = (obj, history) => {
 
   //     }
   // }
-  
+
   return dispatch => {
     axios
       .post(`${USER_URL}login`, {token: dataEncrypt(obj)})

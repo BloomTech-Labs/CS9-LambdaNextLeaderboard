@@ -38,12 +38,12 @@ function RightContent(props) {
 
     return (
         <div className="RightContent" style={{ height: '100%' }}>
-            <div style={{ height: '54%' }}>
+            <div style={{ height: '52%' }}>
                 < ClassCreateEdit props={props} />
 
             </div>
 
-            <div className="ClassList" style={{ height: '46%' }} >
+            <div className="ClassList" style={{ height: '48%' }} >
                 <StudentList props={props}/>
             </div>
 

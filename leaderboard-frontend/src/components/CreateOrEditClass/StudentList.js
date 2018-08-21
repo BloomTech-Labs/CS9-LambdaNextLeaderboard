@@ -37,6 +37,7 @@ class StudentList extends Component {
         const classlist_students = this.props.myData
         return (
             <div className="main"  >
+                <h5 style={{ marginLeft: "1%"}} >StudentList</h5>
                 {classlist_students.students.map((student_data, i) => {
                    return <StudentsDisplay key={student_data + i} student={student_data} class={classlist_students.className} />
                 })}
