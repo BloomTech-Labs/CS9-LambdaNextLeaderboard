@@ -6,15 +6,122 @@ export const UPDATE_USER = "UPDATE_USER";
 export const ADD_CLASS = "ADD_CLASS";
 export const ADD_STUDENT = "ADD_STUDENT";
 export const ERRORS = "ERRORS";
+export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
 
 const USER_URL = process.env.REACT_APP_USER_URL;
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
 
+export function queryMyData(param, history) {
+  return (dispatch, getState) => {
+      console.log(param, history)
+      const data = getState().classlist_students //path.to.myData[param];
+      console.log("DATA DATA DATA", data)
+      const status = data ? 'complete' : 'loading';
+      console.log('status', status);
+      const promise = data ? Promise.resolve : dispatch(getClassStudentsAction(param.toString()));
+
+
+      return { data, status, promise };
+  }
+}
+export const getClassStudentsAction = (classname) => {
+  const token = localStorage.getItem('token');
+
+  return dispatch => {
+      const options = {
+          method: 'GET',
+          headers: {'content-type': 'application/json', 'Authorization': token},
+          url: `${CLASS_URL}${classname}`,
+      }
+      axios(options)
+          .then(res => {
+              dispatch({
+                  type: GET_CLASS_STUDENTS,
+                  payload: res.data.students, //returns the array of student object data
+                  class_name: res.data.name,
+                  test: res
+                  //PAYLOAD {
+                  //     "hired": false,
+                  //     "_id": "5b79b4a6223c9800043f5a1e",
+                  //     "lastname": "Bueno",
+                  //     "firstname": "Abraham",
+                  //     "email": "abrambueno1992@gmail.com",
+                  //     "github": "abrambueno1992",
+                  //     "huntr": "abrambueno1992@gmail.com"
+                  // }
+              })
+          })
+          .catch(err => {
+              dispatch({
+                  type: ERRORS,
+                  payload: err.response.data
+              });
+          });
+  }
+}
+export const addStudentAction = (classname, studentData) => {
+  //STUDENT DATA {
+  //     "lastname": "Bueno",
+  //     "firstname": "Abraham",
+  //     "email": "abrambueno1992@gmail.com",
+  //     "github": "abrambueno1992",
+  //     "huntr": "abrambueno1992@gmail.com"
+  // }
+  const token = localStorage.getItem('token');
+  const user = studentData.firstname + " " + studentData.lastname
+  return dispatch => {
+      const options = {
+          method: 'PUT',
+          headers: {'content-type': 'application/json', 'Authorization': token},
+          data: studentData,
+          url: `${CLASS_URL}${classname}/addStudent`,
+      }
+      axios(options)
+          .then(res => {
+              dispatch({
+                  type: ADD_STUDENT,
+                  payload: res.students, //Student data object returned
+                  class_name: res.name,
+                  user: user
+              })
+              //RESPONSE DATA {
+              //     "_id": "5b79b366223c9800043f5a1d",
+              //     "name": "CS9",
+              //     "students": [
+              //     {
+              //         "hired": false,
+              //         "_id": "5b79b4a6223c9800043f5a1e",
+              //         "lastname": "Bueno",
+              //         "firstname": "Abraham",
+              //         "email": "abrambueno1992@gmail.com",
+              //         "github": "abrambueno1992",
+              //         "huntr": "abrambueno1992@gmail.com"
+              //     },
+              //     {
+              //         "hired": false,
+              //         "_id": "5b79e913e4056e00046b549d",
+              //         "lastname": "Bueno",
+              //         "firstname": "Abraham",
+              //         "email": "abrambueno1992@gmail.com",
+              //         "github": "abrambueno1992",
+              //         "huntr": "abrambueno1992@gmail.com"
+              //     }
+              // ],
+              //     "__v": 2
+              // }
+          })
+          .catch(err => {
+              dispatch({
+                  type: ERRORS,
+                  payload: err.response.data
+              });
+          });
+  }
+}
 export const createUserAction = obj => {
   return dispatch => {
-    console.log(process.env.REACT_APP_TEST);
     axios
       .post(`${USER_URL}register`, {token:dataEncrypt(obj)})
       .then(resp => {
@@ -77,6 +184,7 @@ export const loginAction = (obj, history) => {
 
   //     }
   // }
+  
   return dispatch => {
     axios
       .post(`${USER_URL}login`, {token: dataEncrypt(obj)})
