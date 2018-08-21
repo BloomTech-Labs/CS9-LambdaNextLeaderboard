@@ -31,6 +31,7 @@ exports.post = (req, res) => {
         if (err) throw err;
       });
 
-      res.send(students.length + " users have been successfully uploaded.");
+      //res.send(students.length + " users have been successfully uploaded.");
+      console.log('Upload success')
     });
 };
