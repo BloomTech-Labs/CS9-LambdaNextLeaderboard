@@ -12,7 +12,7 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { loginAction, createUserAction } from "../../actions";
+import { loginAction, createUserAction, logoutAction } from "../../actions";
 
 import "./Nav.css";
 
@@ -52,15 +52,26 @@ class Nav extends Component {
       username: this.state.SignInUsername,
       password: this.state.SignInPassword
     });
-    console.log("checking");
-    if (localStorage.getItem("token")) {
+
+    this.setState({ SignInPassword: "" });
+  };
+
+  handleLogout = () => {
+    this.props.logoutAction();
+    this.setState({ SignedIn: false });
+    localStorage.removeItem("token");
+  };
+
+  componentWillUpdate = nextProps => {
+    console.log("nextprops", nextProps);
+    if (nextProps.successfulLogin && this.state.openModal) {
       this.setState({ SignInUsername: "", SignedIn: true, openModal: false });
     }
-    this.setState({ SignInPassword: "" });
   };
 
   render() {
     const { activeItem } = this.state;
+    console.log(this.state);
 
     return (
       <nav className="Nav">
@@ -68,20 +79,31 @@ class Nav extends Component {
           <Link to="/" className="Nav__link">
             <h1>Leaderboard</h1>
           </Link>
-          <div>
-            <Button
-              size="small"
-              color="linkedin"
-              content="Sign In"
-              onClick={this.handleOpenModal}
-            />
-            <Button
-              size="small"
-              color="linkedin"
-              content="Register"
-              onClick={this.handleOpenModal}
-            />
-          </div>
+          {this.state.SignedIn === false ? (
+            <div>
+              <Button
+                size="small"
+                color="linkedin"
+                content="Sign In"
+                onClick={this.handleOpenModal}
+              />
+              <Button
+                size="small"
+                color="linkedin"
+                content="Register"
+                onClick={this.handleOpenModal}
+              />
+            </div>
+          ) : (
+            <div>
+              <Button
+                size="small"
+                color="red"
+                content="Log Out"
+                onClick={this.handleLogout}
+              />
+            </div>
+          )}
         </div>
         <Modal
           open={this.state.openModal}
@@ -178,11 +200,12 @@ class Nav extends Component {
 const mapStateToProps = state => {
   return {
     loginErrors: state.loginErrors,
-    registerErrors: state.registerErrors
+    registerErrors: state.registerErrors,
+    successfulLogin: state.successfulLogin
   };
 };
 
 export default connect(
   mapStateToProps,
-  { loginAction }
+  { loginAction, logoutAction }
 )(Nav);
