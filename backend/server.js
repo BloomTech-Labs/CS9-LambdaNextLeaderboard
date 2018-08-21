@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
-const path = require('path')
+const path = require("path");
 
 // import routes
 const users = require("./routes/api/user");
@@ -18,7 +18,7 @@ app.use(helmet());
 app.use(cors());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../leaderboard-frontend/build')));
+app.use(express.static(path.join(__dirname, "../leaderboard-frontend/build")));
 
 // Connect MongoDB
 const db = process.env.MONGO_URI;
@@ -41,7 +41,7 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   classes
 );
-app.use("/api/data", githubData);
+// app.use("/api/data", githubData);
 
 const port = process.env.PORT || 4000;
 
