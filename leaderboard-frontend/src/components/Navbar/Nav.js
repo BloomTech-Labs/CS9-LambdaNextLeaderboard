@@ -34,7 +34,15 @@ class Nav extends Component {
     };
   }
 
-  handleOpenModal = (e, { content }) => {
+    componentDidMount() {
+if (localStorage.getItem('token') !== null) {
+
+        // this.props.history.push('/classlist')
+        }
+    }
+
+
+    handleOpenModal = (e, { content }) => {
     this.setState({ activeItem: content, openModal: true });
   };
 
@@ -75,15 +83,18 @@ class Nav extends Component {
     this.props.logoutAction();
     this.setState({ SignedIn: false });
     localStorage.removeItem("token");
+      this.props.history.push('/')
   };
 
   componentWillUpdate = nextProps => {
-    if (
-      nextProps.successfulLogin &&
-      (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
-    ) {
+    if (nextProps.successfulLogin && (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))) {
+
       this.setState({ SignInUsername: "", SignedIn: true, openModal: false });
+        // if (localStorage.getItem('token') !== null) {
+            this.props.history.push('/classlist')
+        // }
     }
+
   };
 
   render() {
@@ -95,7 +106,7 @@ class Nav extends Component {
           <Link to="/" className="Nav__link">
             <h1>Leaderboard</h1>
           </Link>
-          {this.state.SignedIn === false ? (
+          { !localStorage.getItem('token') ? (
             <div>
               <Button
                 size="small"
