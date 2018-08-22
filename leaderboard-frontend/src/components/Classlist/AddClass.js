@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
-import {addClass} from "../../actions";
+import {addClass, getClassesStudentsAction} from "../../actions";
 
 './ClassList.css'
 
@@ -24,6 +24,7 @@ class AddClass extends Component {
         }
         console.log(this.state.class_name)
         this.props.addClass(obj)
+        this.props.fetchData()
         this.setState({addNew: false, class_name: ''})
     }
     addNew = () => {
@@ -70,4 +71,4 @@ const mapStateToProps = state => {
         error: state.error
     }
 }
-export default connect(mapStateToProps, {addClass})(AddClass)
+export default connect(mapStateToProps, {addClass, getClassesStudentsAction})(AddClass)

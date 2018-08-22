@@ -26,7 +26,6 @@ class CardClass extends Component {
                 notHired += 1;
             }
         }
-        console.log(countHired, notHired)
         return (
             <div className="APP__CLASSCARD">
                 <h5 className="APP__CNAME">{this.props.classname}</h5>
