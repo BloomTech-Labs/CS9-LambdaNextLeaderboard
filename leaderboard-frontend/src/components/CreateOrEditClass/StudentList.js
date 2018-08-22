@@ -11,7 +11,14 @@ class StudentList extends Component {
   constructor(props) {
     super(props);
   }
-  render() {
+
+    componentDidMount() {
+        if (localStorage.getItem("invalid")) {
+            this.props.props.props.history.push('/')
+        }
+    }
+
+    render() {
     if (this.props.isLoading()) {
       return <div>Loading...</div>;
     }

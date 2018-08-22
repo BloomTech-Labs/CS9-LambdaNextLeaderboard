@@ -67,7 +67,7 @@ const studentReducer = (state = initialState, action) => {
             });
         case ERRORS:
             return Object.assign({}, state, {
-                errors: action.payload
+                errors: action.payload,
             });
         // case ADD_CLASS:
         //     return Object.assign({}, state, {

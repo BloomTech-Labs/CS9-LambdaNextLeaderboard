@@ -10,19 +10,19 @@ import './ClassList.css'
 import CardClass from "./CardClass";
 import AddClass from "./AddClass";
 
-
-function MyContainer({isLoading, loadedWithErrors, myData}) {
-    if (isLoading()) {
-        return <div>Loading...</div>
-    }
-
-    if (loadedWithErrors()) {
-        return <div>Oh no! Something went wrong</div>
-    }
-    return (
-        < ClassList myData={myData}/>
-    )
-}
+//
+// function MyContainer({isLoading, loadedWithErrors, myData}) {
+//     if (isLoading()) {
+//         return <div>Loading...</div>
+//     }
+//
+//     if (loadedWithErrors()) {
+//         return <div>Oh no! Something went wrong</div>
+//     }
+//     return (
+//         < ClassList myData={myData}/>
+//     )
+// }
 
 //________CLASSLIST________
 class ClassList extends Component {
@@ -31,8 +31,22 @@ class ClassList extends Component {
 
     }
 
-    render() {
+    componentDidMount() {
+        if (localStorage.getItem("invalid")) {
+            this.props.props.props.history.push('/')
+        }
+    }
 
+
+    render() {
+        console.log(this.props)
+
+        console.log(localStorage.getItem("invalid"))
+        if (localStorage.getItem("invalid")) {
+            const obj = localStorage.getItem("invalid")
+            console.log(this.props)
+            return <div>Oh no! Something went wrong, INVALID CREDENTIALS, redirecting ${obj} </div>
+        }
         if (this.props.isLoading()) {
             return <div>Loading...</div>
         }
@@ -43,6 +57,7 @@ class ClassList extends Component {
         const myData = this.props.myData
         // console.log(this.props)
         // if (this.state.classes && this.state.loading === false) {
+
         if (this.props.myData) {
             console.log(this.props.myData)
             return (
