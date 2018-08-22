@@ -136,8 +136,9 @@ export const createUserAction = obj => {
         });
       })
       .catch(err => {
+        console.log(err);
         dispatch({
-          type: ERRORS,
+          type: REGISTER_ERRORS,
           payload: err.response.data
         });
       });
