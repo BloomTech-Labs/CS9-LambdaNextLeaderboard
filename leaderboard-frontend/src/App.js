@@ -37,10 +37,10 @@ class App extends Component {
       <Router>
         <div className="APP">
           {console.log("props", this)}
-          <NAVBAR />
+          <Route path="/" component={NAVBAR} />
           <div className="APP__CONTENT">
             <div className="APP__BODY">
-              <Switch>
+              {/*<Switch>*/}
                 <Route exact path="/" component={LANDINGPAGE} />
                 <Route exact path="/classlist" component={CLASSLIST} />
                 <Route
@@ -48,7 +48,7 @@ class App extends Component {
                   exact
                   component={withRouter(CREATEEDIT)}
                 />
-              </Switch>
+              {/*</Switch>*/}
             </div>
           </div>
         </div>
