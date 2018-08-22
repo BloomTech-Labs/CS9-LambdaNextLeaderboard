@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "./CreateEditClass.css";
-import { Button } from "reactstrap";
+// import { Button } from 'reactstrap';
 import { connect } from "react-redux";
-import { addStudentAction } from "../../actions";
+import { addStudentAction, getClassStudentsAction } from "../../actions";
+import { Button, Input } from "semantic-ui-react";
 import StudentList from "./StudentList";
-import axios from "axios";
 class ClassCreateEdit extends Component {
   constructor(props) {
     super(props);
@@ -42,14 +42,26 @@ class ClassCreateEdit extends Component {
     };
     // Send this studentObject when you click `Add`
     // for Create or Edit Class, Add Students part
-    this.props.addStudentAction("CS7", studentObject);
+    this.props.addStudentAction("CS9", studentObject);
+    // this.props.getClassStudentsAction("CS9")
+    this.setState({
+      class_name: "",
+      last_name: "",
+      first_name: "",
+      email: "",
+      github: "",
+      huntr: ""
+    });
     console.log(studentObject);
   };
+
   render() {
     return (
       <div className="ClassCreateEdit">
+        <h5 style={{ display: "inline", marginLeft: "1%" }}>Settings</h5>
         <div className="Settings">
-          <input
+          <Input
+            focus
             type="text"
             name="class_name"
             placeholder="Class Name"
@@ -57,24 +69,30 @@ class ClassCreateEdit extends Component {
             value={this.state.class_name}
             onChange={this.handleInput}
           />
+
           <Button
-            color="secondary"
-            className="BtnImport"
+            className="ui clearing segment BtnImport"
             onClick={this.handleImport}
-            size="lg"
-            type="submit"
+            primary
           >
+            {" "}
             Import CSV
-          </Button>{" "}
-          <form action="http://localhost:4000/create-edit" method="POST" encType="multipart/form-data">
+          </Button>
+          <form
+            action="http://localhost:4000/create-edit"
+            method="POST"
+            encType="multipart/form-data"
+          >
             <input type="file" name="file" accept="*.csv" />
-            <input type="submit" value="Upload Students"/>
+            <input type="submit" value="Upload Students" />
           </form>
           {/*<button className="BtnImport" onClick={this.handleImport} >Import CSV</button>*/}
         </div>
 
+        <h5 style={{ display: "inline", marginLeft: "1%" }}>Add Students</h5>
         <div className="Add_Students">
-          <input
+          <Input
+            focus
             type="text"
             name="last_name"
             placeholder="Last Name"
@@ -82,7 +100,9 @@ class ClassCreateEdit extends Component {
             value={this.state.last_name}
             onChange={this.handleInput}
           />
-          <input
+
+          <Input
+            focus
             type="text"
             name="first_name"
             placeholder="First Name"
@@ -90,7 +110,9 @@ class ClassCreateEdit extends Component {
             value={this.state.first_name}
             onChange={this.handleInput}
           />
-          <input
+
+          <Input
+            focus
             type="text"
             name="email"
             placeholder="email"
@@ -98,16 +120,13 @@ class ClassCreateEdit extends Component {
             value={this.state.email}
             onChange={this.handleInput}
           />
-          {/*<button className="BtnAdd" onClick={this.handleAdd} >Add</button>*/}
-          <Button
-            outline
-            color="primary"
-            className="BtnAdd"
-            onClick={this.handleAdd}
-          >
+
+          <button onClick={this.handleAdd} className="ui primary button BtnAdd">
             Add
-          </Button>{" "}
-          <input
+          </button>
+
+          <Input
+            focus
             type="text"
             name="github"
             placeholder="Github"
@@ -115,7 +134,9 @@ class ClassCreateEdit extends Component {
             value={this.state.github}
             onChange={this.handleInput}
           />
-          <input
+
+          <Input
+            focus
             type="text"
             name="huntr"
             placeholder="huntr"
@@ -124,9 +145,6 @@ class ClassCreateEdit extends Component {
             onChange={this.handleInput}
           />
         </div>
-        {/*<div style={{display : "block"}} >*/}
-
-        {/*</div>*/}
       </div>
     );
   }
@@ -139,6 +157,6 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addStudentAction }
+  { addStudentAction, getClassStudentsAction }
 )(ClassCreateEdit);
 // export default ClassCreateEdit

@@ -1,15 +1,20 @@
 import {
   LOGIN_ACTION,
+  LOGOUT_ACTION,
   CREATE_USER,
-  UPDATE_USER,
+  // UPDATE_USER,
   ADD_CLASS,
   ADD_STUDENT,
   GET_CLASS_STUDENTS,
+  LOGIN_ERRORS,
+  REGISTER_ERRORS,
   ERRORS
 } from "../actions/";
 
-const initialStater = {
+const initialState = {
   // students: null,
+  loginErrors: {},
+  registerErrors: {},
   error: {},
   // expiration: null,
   updateCheck: false,
@@ -18,11 +23,12 @@ const initialStater = {
   user_logged_in: null,
   created_class: null,
   added_student: null,
-  classlist_students: null
+  classlist_students: null,
+  successfulLogin: false
   // test: null
 };
 
-const studentReducer = (state = initialStater, action) => {
+const studentReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_USER:
       return Object.assign({}, state, {
@@ -39,12 +45,25 @@ const studentReducer = (state = initialStater, action) => {
           token: action.payload,
           username: action.username
         },
+        successfulLogin: action.successfulLogin
         // expiration: action.expiration
         // error: {}
       });
+    case LOGOUT_ACTION:
+      return Object.assign({}, state, {
+        successfulLogin: action.successfulLogin
+      });
+    case LOGIN_ERRORS:
+      return Object.assign({}, state, {
+        loginErrors: action.payload
+      });
+    case REGISTER_ERRORS:
+      return Object.assign({}, state, {
+        registerErrors: action.payload
+      });
     case ERRORS:
       return Object.assign({}, state, {
-        error: action.payload
+        errors: action.payload
       });
     // case ADD_CLASS:
     //     return Object.assign({}, state, {
