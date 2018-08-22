@@ -48,6 +48,13 @@
     height: 200px;
     box-shadow: 5px 5px 5px #888888;
 }
+.Add_Submit {
+    display: flex;
+    width: 100%;
+}
+.Add_Input {
+    width: 100%;
+}
 
 .APP__ADDCLASS__BUTTONWRAPPER {
     display: flex;

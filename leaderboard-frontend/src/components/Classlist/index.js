@@ -34,7 +34,7 @@ function LeftContent() {
 function RightContent(props) {
     return (
         <div className="RightContent" style={{ height: "100%" }}>
-            <ClassList/>
+            <ClassList props={props}/>
 
         </div>
     );
