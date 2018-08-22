@@ -11,7 +11,7 @@ import {
 
 //________REACT COMPONENTS________
 import NAVBAR from "./components/Navbar/Nav";
-import CLASSLIST from "./components/Classlist/ClassList";
+import CLASSLIST from "./components/Classlist/index";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
 // import BILLING from "./components/Billing";
