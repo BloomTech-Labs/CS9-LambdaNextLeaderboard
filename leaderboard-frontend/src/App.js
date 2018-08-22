@@ -14,7 +14,11 @@ import NAVBAR from "./components/Navbar/Nav";
 import CLASSLIST from "./components/Classlist/index";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
-// import BILLING from "./components/Billing";
+import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/OverallLeaderboard";
+import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/WeeklyLeaderboard";
+import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/ActivityFeed";
+import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/HotRightNow";
+import BILLING from "./components/Billing/Billing";
 
 //________STYLING________
 import "./App.css";
@@ -32,6 +36,7 @@ class App extends Component {
   };
 
   render() {
+
     return (
       <Router>
         <div className="APP">
@@ -39,13 +44,14 @@ class App extends Component {
           <div className="APP__CONTENT">
             <div className="APP__BODY">
               {/*<Switch>*/}
-                <Route exact path="/" component={LANDINGPAGE} />
-                <Route exact path="/classlist" component={CLASSLIST} />
-                <Route
-                  path="/classlist/:name/"
-                  exact
-                  component={withRouter(CREATEEDIT)}
-                />
+              <Route exact path="/" component={LANDINGPAGE} />
+              <Route exact path="/classlist" component={CLASSLIST} />
+              <Route
+                path="/classlist/:name/"
+                exact
+                component={withRouter(CREATEEDIT)}
+              />
+              <Route exact path="/billing" component={BILLING} />
               {/*</Switch>*/}
             </div>
           </div>
