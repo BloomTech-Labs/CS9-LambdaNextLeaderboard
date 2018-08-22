@@ -9,11 +9,11 @@ const ClassSchema = new Schema({
   },
   students: [
     {
-      lastname: {
+      firstname: {
         type: String,
         required: true
       },
-      firstname: {
+      lastname: {
         type: String,
         required: true
       },

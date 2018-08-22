@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 // import {connect} from "react-redux";
-import {connectAsync} from 'iguazu'
-import {getClassStudentsAction, queryMyData} from "../../actions";
+import { connectAsync } from "iguazu";
+import { getClassStudentsAction, queryMyData } from "../../actions";
 
-import  './StudentList.css'
+import "./StudentList.css";
 import StudentsDisplay from "./StudentsDisplay";
 
 //These are the builtin functions for iguazu
@@ -23,26 +23,33 @@ import StudentsDisplay from "./StudentsDisplay";
 // }
 
 class StudentList extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    if (this.props.isLoading()) {
+      return <div>Loading...</div>;
     }
-    render() {
-        if (this.props.isLoading()) {
-            return <div>Loading...</div>
-        }
 
-        if (this.props.loadedWithErrors()) {
-            return <div>Oh no! Something went wrong</div>
-        }
-        const classlist_students = this.props.myData
-        return (
-            <div className="main"  >
-                {classlist_students.students.map((student_data, i) => {
-                   return <StudentsDisplay key={student_data + i} student={student_data} class={classlist_students.className} />
-                })}
-            </div>
-        );
+    if (this.props.loadedWithErrors()) {
+      return <div>Oh no! Something went wrong</div>;
     }
+    const classlist_students = this.props.myData;
+    return (
+      <div className="main">
+        <h5 style={{ marginLeft: "1%" }}>StudentList</h5>
+        {classlist_students.students.map((student_data, i) => {
+          return (
+            <StudentsDisplay
+              key={student_data + i}
+              student={student_data}
+              class={classlist_students.className}
+            />
+          );
+        })}
+      </div>
+    );
+  }
 }
 
 //
@@ -57,17 +64,18 @@ class StudentList extends Component {
 // export default connect(mapStateToProps, {getClassStudentsAction})(StudentList)
 
 function loadDataAsProps({ store, ownProps }) {
-    const { dispatch, getState } = store;
-    // console.log('ownProps', ownProps.props.props.match.path)
-    // const path = ownProps.props.props.match.path
-    const path = "CS7" // Use the actual path when it's created as needed
-    //Have to pass props to Splitpane, then to Right Component (StudentDisplay), causing
-    // the need for ownProps.props.props....
-    console.log(ownProps)
-    return {
-        myData: () => dispatch(queryMyData(path))
-        // updateNote: (obj, history) => dispatch(updateNote(obj, history))
-    }
+  const { dispatch, getState } = store;
+  // console.log('ownProps', ownProps.props.props.match.path)
+  let path = ownProps.props.props.match.params.name
+    // path = path.toUpperCase()
+  // const path = "CS9"; // Use the actual path when it's created as needed
+  //Have to pass props to Splitpane, then to Right Component (StudentDisplay), causing
+  // the need for ownProps.props.props....
+  console.log('path', path);
+  return {
+    myData: () => dispatch(queryMyData(path))
+    // updateNote: (obj, history) => dispatch(updateNote(obj, history))
+  };
 }
 
-export default connectAsync({loadDataAsProps})(StudentList);
+export default connectAsync({ loadDataAsProps })(StudentList);
