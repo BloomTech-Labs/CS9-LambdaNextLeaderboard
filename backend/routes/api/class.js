@@ -88,6 +88,18 @@ router.put("/:name/addstudent", (req, res) => {
     }
   });
 });
+// router.put("/:name/updatestudent", (req, res) => {
+//   const {errors, isValid} = validateUpdateStudentInput(req.body);
+//     // Validation Check
+//     if (!isValid) {
+//         return res.status(400).json(errors);
+//     }
+//     const options = {
+//       new: true
+//     }
+//     let {ID } = req.body;
+//     let
+// })
 
 // @route   PUT api/classes/:name/importcsv
 // @desc    Adds a csv of students to the class
