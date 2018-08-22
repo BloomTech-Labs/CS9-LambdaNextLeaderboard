@@ -17,6 +17,7 @@ import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
 import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/OverallLeaderboard";
 import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/WeeklyLeaderboard";
 import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/ActivityFeed";
+import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/HotRightNow";
 import BILLING from "./components/Billing/Billing";
 
 //________STYLING________
