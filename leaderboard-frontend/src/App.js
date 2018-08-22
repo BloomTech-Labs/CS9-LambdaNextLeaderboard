@@ -42,13 +42,6 @@ class App extends Component {
             <div className="APP__BODY">
               {/*<Switch>*/}
                 <Route exact path="/" component={LANDINGPAGE} />
-<<<<<<< HEAD
-                <Route path="/login" component={LOGIN} />
-                <Route path="/register" component={CREATEUSER} />
-                <Route path="/classlist" component={CLASSLIST} />
-                <Route path="/billing" component={BILLING} />
-              </Switch>
-=======
                 <Route exact path="/classlist" component={CLASSLIST} />
                 <Route
                   path="/classlist/:name/"
@@ -56,7 +49,6 @@ class App extends Component {
                   component={withRouter(CREATEEDIT)}
                 />
               {/*</Switch>*/}
->>>>>>> c7c6ed8986969f8657f399e894af08fce7e3d1db
             </div>
           </div>
         </div>
