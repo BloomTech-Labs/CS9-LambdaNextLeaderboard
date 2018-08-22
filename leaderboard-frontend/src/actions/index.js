@@ -96,7 +96,9 @@ export const getClassesStudentsAction = () => {
             .then(res => {
                 dispatch({
                     type: GET_CLASSES_STUDENTS,
-                    payload: res.data //returns the array of student object data
+                    payload: res.data,
+                    fetchClasses: true
+                    //returns the array of student object data
                     // class_name: res.data.name,
                     // test: res
                     //PAYLOAD {
@@ -113,7 +115,8 @@ export const getClassesStudentsAction = () => {
             .catch(err => {
                 dispatch({
                     type: ERRORS,
-                    payload: err.response.data
+                    payload: err.response.data,
+                    fetchClasses: true
                 });
             });
     };

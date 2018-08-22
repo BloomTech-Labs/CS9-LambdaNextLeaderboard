@@ -3,7 +3,8 @@ import React, {Component} from 'react'
 import Fetch from './FetchData'
 import {Link} from 'react-router-dom';
 import {connectAsync} from "iguazu";
-import {queryAllMyData} from "../../actions";
+import {connect} from 'react-redux'
+import {queryAllMyData, getClassesStudentsAction} from "../../actions";
 //________STYLING________
 import './ClassList.css'
 import CardClass from "./CardClass";
@@ -19,13 +20,28 @@ import AddClass from "./AddClass";
 
 // classes: props.classes,
 
+
+function MyContainer({isLoading, loadedWithErrors, myData}) {
+    if (isLoading()) {
+        return <div>Loading...</div>
+    }
+
+    if (loadedWithErrors()) {
+        return <div>Oh no! Something went wrong</div>
+    }
+    return (
+        < ClassList myData={myData}/>
+    )
+}
+
 //________CLASSLIST________
 class ClassList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             // classes: props.classes,
-            random: false,
+            classes: [],
+            loading: true
 
             // classes: [
             //     {cName: "CS9", cPop: 52, cPart: 74.05, cHired: 22},
@@ -34,68 +50,83 @@ class ClassList extends Component {
             // ],
         };
     }
-    componentWillUpdate = nextProps => {
-        console.log(nextProps)
+
+    componentDidMount() {
+        this.props.getClassesStudentsAction('/')
     }
 
 
 
+    fetchData = () => {
+        this.setState({loading: true})
+        this.props.getClassesStudentsAction('/')
+        // console.log(this.props)
+        // connectAsync({loadDataAsProps})(MyContainer)
+        // console.log(status)
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log("nextState", nextState)
+        console.log("nextProps", nextProps)
+        if (this.props.allClasses !== nextProps.allClasses && nextProps.fetchClasses === true) {
+            this.setState({classes: nextProps.allClasses, loading: false})
+        }
+    }
+
+
     render() {
-        console.log(this.props)
-        if (this.props.isLoading()) {
+
+        if (this.props.allClasses === null) {
             return <div>Loading...</div>
         }
-
-        if (this.props.loadedWithErrors()) {
-            return <div>Oh no! Something went wrong</div>
+        if (this.state.loading) {
+            return <div>Loading...</div>
         }
-
-        if (this.props.myData) {
+        if (this.state.classes && this.state.loading === true) {
+            return <div>Loading...</div>
+        }
+        if (this.state.classes && this.state.loading === false) {
+            console.log(this.props.allClasses)
             return (
                 <div className="APP__CLASSLIST">
-                    {/*Map through classes and make a card for each one.*/}
-                    {this.props.myData.map((myData, index) => {
+                    {this.state.classes.map((myData, index) => {
                         return (
                             <div key={myData + index}>
-                                {/*<ClassCard classID={cID} />*/}
-                                <CardClass props={this.props.props.props} classname={myData.name} students={myData.students}/>
+                                <CardClass fetchData={this.fetchData} props={this.props.props.props} classname={myData.name}
+                                           students={myData.students}/>
                             </div>
                         );
                     })}
-                    {/* Button to add a new class */}
-                    <AddClass solo={"no"} />
-                    {/*<div className="APP__ADDCLASS__CARD">*/}
-                    {/*/!*<AddClass />*!/*/}
-                    {/*<p>Add a new class</p>*/}
-                    {/*<button className="APP__ADDCLASS_ADDBUTTON">+</button>*/}
-                    {/*</div>*/}
+                    <AddClass fetchData={this.fetchData} solo={"no"}/>
+
                 </div>
             );
         } else {  // Highlight "Add a new class", if there are no classes
-            return <AddClass solo={"yes"}/>
+            return <AddClass fetchData={this.fetchData} solo={"yes"}/>
         }
     }
 };
 
-
+const mapStateToProps = state => {
+    return {
+        error: state.error,
+        allClasses: state.allClasses,
+        fetchClasses: state.fetchClasses
+    }
+}
 
 //________EXPORT________
 // export default ClassList;
 export function loadDataAsProps({store, ownProps}) {
-    const {dispatch, getState} = store;
-    // console.log('ownProps', ownProps.props.props.match.path)
-    // const path = ownProps.props.props.match.path
+    const {dispatch, getState, subscribe} = store;
     const path = "/"; // Use the actual path when it's created as needed
-    //Have to pass props to Splitpane, then to Right Component (StudentDisplay), causing
-    // the need for ownProps.props.props....
     console.log(ownProps);
     return {
         myData: () => dispatch(queryAllMyData(path)),
-        classData: () => dispatch(queryAllMyData(getState().path))
-        // classData: () => dispatch(getState().queryAllMyData(path))
-        // logOut: () => dispatch
-        // updateNote: (obj, history) => dispatch(updateNote(obj, history))
+        // classDataFunc: () => subscribe(getClassStudentsAction(path))
     };
 }
 
-export default connectAsync({loadDataAsProps})(ClassList);
+
+// export default connectAsync({loadDataAsProps})(MyContainer);
+export default connect(mapStateToProps , {getClassesStudentsAction })(ClassList)

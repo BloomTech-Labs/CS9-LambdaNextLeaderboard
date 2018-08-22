@@ -28,15 +28,13 @@ class App extends Component {
 
   handleLogOut = () => {
     localStorage.removeItem("token");
-    window.location.reload();
+    // window.location.reload();
   };
 
   render() {
-    console.log(process.env.REACT_APP_ACCESS_KEY)
     return (
       <Router>
         <div className="APP">
-          {console.log("props", this)}
           <Route path="/" component={NAVBAR} />
           <div className="APP__CONTENT">
             <div className="APP__BODY">
