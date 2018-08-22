@@ -31,7 +31,8 @@ class Nav extends Component {
 
     componentDidMount() {
 if (localStorage.getItem('token') !== null) {
-        this.props.history.push('/classlist')
+
+        // this.props.history.push('/classlist')
         }
     }
 

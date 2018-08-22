@@ -2,17 +2,15 @@
 //If these aren't imported, than it'll break, as you're usin React, and SplitPane
 // import { SplitPane } from "../../index";
 import React from "react";
-import { Link } from "react-router-dom";
 import { Breadcrumb } from "semantic-ui-react";
 
-// import from './CreateEditClass.css'
-import "./CreateEditClass.css";
+import "./index.css";
 
-//Components to be combined together for the specific framework, such as Leaderboard
 import MenuBar from "../MenuBar/MenuBar";
-// import LandingPage from "../LandingPage";
-import ClassCreateEdit from "./ClassCreateEdit";
-import StudentList from "./StudentList";
+
+import ClassList from "./ClassList";
+
+import NavBar from '../Navbar/Nav'
 
 function SplitPane(props) {
     return (
@@ -36,22 +34,18 @@ function LeftContent() {
 function RightContent(props) {
     return (
         <div className="RightContent" style={{ height: "100%" }}>
-            <div style={{ height: "52%" }}>
-                <ClassCreateEdit props={props} />
-            </div>
+            <ClassList props={props}/>
 
-            <div className="ClassList" style={{ height: "48%" }}>
-                <StudentList props={props} />
-            </div>
         </div>
     );
 }
 
 //These styles can go into a CSS file, such as HomeTemplate.css
 //I did them this way because it's faster
-const CreateEdit = props => {
+const ClassList2 = props => {
     return (
         <div style={{ height: "100%" }}>
+            {/*<NavBar props={props} />*/}
             <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
                 <Breadcrumb.Section href="/" link>
                     Home
@@ -84,4 +78,4 @@ const CreateEdit = props => {
         </div>
     );
 };
-export default CreateEdit;
+export default ClassList2;
