@@ -28,7 +28,7 @@ const initialState = {
     allClasses: null,
     successfulLogin: false,
     fetchSuccess: false,
-    fetchClasses: false
+    fetchClasses: null
     // test: null
 };
 
@@ -81,8 +81,9 @@ const studentReducer = (state = initialState, action) => {
                 created_class: {
                     classname: action.payload,
                     students: action.students,
-                    fetchClasses: false
-                }
+                },
+                allClasses: null
+
             });
         case ADD_STUDENT:
             return Object.assign({}, state, {
@@ -90,8 +91,11 @@ const studentReducer = (state = initialState, action) => {
                     user: action.user,
                     className: action.class_name,
                     students: action.payload,
-                    fetchClasses: false
-                }
+                },
+                allClasses: null,
+                classlist_students: null
+
+
             });
         case GET_CLASS_STUDENTS:
             return Object.assign({}, state, {

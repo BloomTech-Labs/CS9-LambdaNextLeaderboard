@@ -289,13 +289,18 @@ export const addClass = obj => {
     axios(optionTwo)
       .then(resp => {
         localStorage.setItem("user", resp.data.name);
-        dispatch({
+
+          dispatch({
           type: ADD_CLASS,
           user: resp.data.name,
-          class_name: resp.student
-        });
+          class_name: resp.student,
+
+        })
+          // getClassesStudentsAction()
+
       })
       .catch(err => dispatch({ type: ERRORS, payload: err }));
+
   };
 };
 export const addStudent = obj => {

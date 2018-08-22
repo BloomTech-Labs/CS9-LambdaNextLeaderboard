@@ -63,20 +63,7 @@ const CreateEdit = props => {
         <Breadcrumb.Divider icon="right chevron" />
         <Breadcrumb.Section active>Create or Edit Class</Breadcrumb.Section>
       </Breadcrumb>
-      {/*<div style={linkBox} >*/}
-      {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/class">*/}
 
-      {/*Classes*/}
-      {/*</Link>*/}
-      {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/">*/}
-      {/*Home*/}
-      {/*</Link>*/}
-      {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/signout">*/}
-      {/*Sign Out*/}
-      {/*</Link>*/}
-      {/*</div>*/}
-      {/*</div>*/}
-      {/*<ClassCreateEdit/>*/}
       <SplitPane
         left={<LeftContent />}
         right={<RightContent props={props} />}
