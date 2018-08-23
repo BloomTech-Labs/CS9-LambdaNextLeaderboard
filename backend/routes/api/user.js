@@ -26,19 +26,22 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ username: data.username }).then(user => {
+  const username = data.username;
+  const password = data.password;
+
+  User.findOne({ username }).then(user => {
     if (user) {
       errors.username = "Username already exists";
       return res.status(400).json(errors);
     } else {
       const newUser = new User({
-        username: data.username,
-        password: data.password
+        username: username,
+        password: password
       });
 
       bcrypt.genSalt(11, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
+          if (err) return res.status(400).json(err);
           newUser.password = hash;
           newUser
             .save()
