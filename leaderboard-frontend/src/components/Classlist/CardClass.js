@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from "react-router-dom";
+import {connect} from 'react-redux'
+import {redirectDataClass} from '../../actions'
 import './ClassList.css'
 class CardClass extends Component {
     constructor(props) {
@@ -8,6 +10,7 @@ class CardClass extends Component {
     redirectEdit = () => {
         console.log(this.props.props.history)
         this.props.props.history.push(`/classlist/${this.props.classname}`)
+        this.props.redirectDataClass()
 
     }
     redirectLeaderboard = () => {
@@ -38,5 +41,7 @@ class CardClass extends Component {
         );
     }
 }
-
-export default CardClass
+const mapStateToProps = state => {
+    errors: state.errors
+}
+export default connect(mapStateToProps, {redirectDataClass})(CardClass)

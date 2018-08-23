@@ -24,7 +24,6 @@ class AddClass extends Component {
         }
         console.log(this.state.class_name)
         this.props.addClass(obj)
-        this.props.fetchData()
         this.setState({addNew: false, class_name: ''})
     }
     addNew = () => {

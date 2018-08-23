@@ -9,7 +9,8 @@ import {
     GET_CLASSES_STUDENTS,
     LOGIN_ERRORS,
     REGISTER_ERRORS,
-    ERRORS
+    ERRORS,
+    REDIRECT_DATA_CLASS
 } from "../actions/";
 
 const initialState = {
@@ -110,6 +111,11 @@ const studentReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 allClasses: action.payload,
                 fetchClasses: action.fetchClasses
+            })
+        case REDIRECT_DATA_CLASS:
+            return Object.assign({}, state, {
+                classlist_students: action.classlist_students,
+                allClasses: action.allClasses
             })
         default:
             return state;
