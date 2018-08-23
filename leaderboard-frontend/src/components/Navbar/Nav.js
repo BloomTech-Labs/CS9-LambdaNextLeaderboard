@@ -75,7 +75,7 @@ class Nav extends Component {
       password: this.state.SignInPassword
     });
 
-    this.setState({ SignInPassword: "" });
+    this.setState({ SignInPassword: "", SignInUsername: "" });
   };
 
   handleLogout = () => {

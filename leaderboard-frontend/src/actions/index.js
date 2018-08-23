@@ -297,7 +297,7 @@ export const addClass = obj => {
 
         axios(optionTwo)
             .then(resp => {
-                localStorage.setItem("user", resp.data.name);
+                // localStorage.setItem("user", resp.data.name);
 
                 dispatch({
                     type: ADD_CLASS,
