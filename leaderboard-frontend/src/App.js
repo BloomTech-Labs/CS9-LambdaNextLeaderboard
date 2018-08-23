@@ -7,6 +7,7 @@ import {
   Link,
   withRouter
 } from "react-router-dom";
+import { Container } from "semantic-ui-react";
 // TODO import axios from 'axios';
 
 //________REACT COMPONENTS________
@@ -36,24 +37,21 @@ class App extends Component {
   };
 
   render() {
-
     return (
       <Router>
         <div className="APP">
           <Route path="/" component={NAVBAR} />
-          <div className="APP__CONTENT">
-            <div className="APP__BODY">
-              {/*<Switch>*/}
-              <Route exact path="/" component={LANDINGPAGE} />
-              <Route exact path="/classlist" component={CLASSLIST} />
-              <Route
-                path="/classlist/:name/"
-                exact
-                component={withRouter(CREATEEDIT)}
-              />
-              <Route exact path="/billing" component={BILLING} />
-              {/*</Switch>*/}
-            </div>
+          <div className="APP__BODY">
+            {/*<Switch>*/}
+            <Route exact path="/" component={LANDINGPAGE} />
+            <Route exact path="/classlist" component={CLASSLIST} />
+            <Route
+              path="/classlist/:name/"
+              exact
+              component={withRouter(CREATEEDIT)}
+            />
+            <Route exact path="/billing" component={BILLING} />
+            {/*</Switch>*/}
           </div>
         </div>
       </Router>
