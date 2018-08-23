@@ -30,33 +30,33 @@ app.use(fileUpload());
 
 
 
-// ****START STRIPE****
+// // ****START STRIPE****
 
-const CORS_WHITELIST = require('./billing/frontend');
+// const CORS_WHITELIST = require('./billing/frontend');
 
-const corsOptions = {
-  origin: (origin, callback) =>
-    (CORS_WHITELIST.indexOf(origin) !== -1)
-      ? callback(null,true)
-      : callback(new Error('Not allowed by CORS'))
-};
+// const corsOptions = {
+//   origin: (origin, callback) =>
+//     (CORS_WHITELIST.indexOf(origin) !== -1)
+//       ? callback(null,true)
+//       : callback(new Error('Not allowed by CORS'))
+// };
 
-const configureServer = app => {
-  app.use(cors(corsOptions));
-  app.use(bodyParser.json());
-};
+// const configureServer = app => {
+//   app.use(cors(corsOptions));
+//   app.use(bodyParser.json());
+// };
 
-const paymentApi = require('./billing/payment');
+// const paymentApi = require('./billing/payment');
 
-const configureRoutes = app => {
-  paymentApi(app);
-};
+// const configureRoutes = app => {
+//   paymentApi(app);
+// };
 
 
-configureServer(app);
-configureRoutes(app);
+// configureServer(app);
+// configureRoutes(app);
 
-// ****END STRIPE****
+// // ****END STRIPE****
 
 
 

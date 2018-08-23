@@ -53,12 +53,12 @@ const CreateEdit = props => {
   return (
     <div style={{ height: "100%" }}>
       <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
-        <Breadcrumb.Section href="/" link>
-          Home
+        <Breadcrumb.Section>
+          <Link to="/">Home</Link>
         </Breadcrumb.Section>
         <Breadcrumb.Divider icon="right chevron" />
-        <Breadcrumb.Section href="/classlist" link>
-          Classes
+        <Breadcrumb.Section>
+          <Link to="/classlist">Classes</Link>
         </Breadcrumb.Section>
         <Breadcrumb.Divider icon="right chevron" />
         <Breadcrumb.Section active>Create or Edit Class</Breadcrumb.Section>
