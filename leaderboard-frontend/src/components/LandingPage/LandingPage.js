@@ -15,9 +15,9 @@ const LandingPage = () => {
     <div className="Landing">
       <div className="Landing__head">
         <Container>
-          <Grid columns={2}>
+          <Grid columns={2} stackable>
             <Grid.Column verticalAlign="middle">
-              <Header as="h1" size="huge">
+              <Header as="h1" size="huge" color="olive">
                 Keep track of work and progress with NextSteps
               </Header>
               <Header as="h2">

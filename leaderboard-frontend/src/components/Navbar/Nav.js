@@ -156,7 +156,7 @@ class Nav extends Component {
             </Menu>
             <Grid divided>
               <GridRow stretched>
-                <GridColumn width={8}>
+                <GridColumn width={9}>
                   {this.state.activeItem === "Sign In" ? (
                     <Form size="large">
                       <Form.Field
@@ -221,7 +221,16 @@ class Nav extends Component {
                     </Form>
                   ) : (
                     <Form size="large">
-                      <Form.Field>
+                      <Form.Field
+                        error={Boolean(this.props.registerErrors.username)}
+                      >
+                        {this.props.registerErrors.username ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.registerErrors.username}
+                          />
+                        ) : null}
                         <Input
                           name="RegisterUsername"
                           value={this.state.RegisterUsername}
@@ -232,7 +241,16 @@ class Nav extends Component {
                           type="text"
                         />
                       </Form.Field>
-                      <Form.Field>
+                      <Form.Field
+                        error={Boolean(this.props.registerErrors.email)}
+                      >
+                        {this.props.registerErrors.email ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.registerErrors.email}
+                          />
+                        ) : null}
                         <Input
                           name="RegisterEmail"
                           value={this.state.RegisterEmail}
@@ -244,7 +262,16 @@ class Nav extends Component {
                           disabled
                         />
                       </Form.Field>
-                      <Form.Field>
+                      <Form.Field
+                        error={Boolean(this.props.registerErrors.password)}
+                      >
+                        {this.props.registerErrors.password ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.registerErrors.password}
+                          />
+                        ) : null}
                         <Input
                           name="RegisterPassword"
                           value={this.state.RegisterPassword}
@@ -255,7 +282,16 @@ class Nav extends Component {
                           type="password"
                         />
                       </Form.Field>
-                      <Form.Field>
+                      <Form.Field
+                        error={Boolean(this.props.registerErrors.password2)}
+                      >
+                        {this.props.registerErrors.password2 ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.registerErrors.password2}
+                          />
+                        ) : null}
                         <Input
                           name="RegisterPassword2"
                           value={this.state.RegisterPassword2}
