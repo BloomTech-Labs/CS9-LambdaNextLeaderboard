@@ -51,12 +51,12 @@ class Nav extends Component {
 
   handleMenuItemClick = (e, { name }) => {
     this.setState({ activeItem: name });
-    this.props.registerErrors.username = "";
-    this.props.registerErrors.email = "";
-    this.props.registerErrors.password = "";
-    this.props.registerErrors.password2 = "";
-    this.props.loginErrors.username = "";
-    this.props.loginErrors.password = "";
+    // this.props.registerErrors.username = "";
+    // this.props.registerErrors.email = "";
+    // this.props.registerErrors.password = "";
+    // this.props.registerErrors.password2 = "";
+    // this.props.loginErrors.username = "";
+    // this.props.loginErrors.password = "";
   };
 
   handleInput = (e, { name, value }) => {
@@ -115,7 +115,7 @@ class Nav extends Component {
       <nav className="Nav">
         <Container>
           <div className="Nav__container">
-            <Link to="/" className="Nav__link">
+            <Link to="/classlist" className="Nav__link">
               <h1>Leaderboard</h1>
             </Link>
             {!localStorage.getItem("token") ? (

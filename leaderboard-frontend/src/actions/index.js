@@ -284,7 +284,6 @@ export const logoutAction = () => {
 };
 
 export const addClass = obj => {
-<<<<<<< HEAD
     const token = localStorage.getItem("token");
     return dispatch => {
         const optionTwo = {
@@ -305,27 +304,7 @@ export const addClass = obj => {
 
                 })
                 // getClassesStudentsAction()
-=======
-  const token = localStorage.getItem("token");
-  return dispatch => {
-    const optionTwo = {
-      method: "POST",
-      headers: { "content-type": "application/json", Authorization: token },
-      data: obj,
-      url: `${CLASS_URL}addclass`
-    };
->>>>>>> 15e5dbc60dd3020f787c4e66e16c3ceabcd5be29
 
-    axios(optionTwo)
-      .then(resp => {
-        localStorage.setItem("user", resp.data.name);
-
-        dispatch({
-          type: ADD_CLASS,
-          user: resp.data.name,
-          class_name: resp.student
-        });
-        // getClassesStudentsAction()
       })
       .catch(err => dispatch({ type: ERRORS, payload: err }));
   };
