@@ -1,3 +1,4 @@
+require("dotenv").config();
 const axios = require("axios");
 const _ = require("lodash");
 const router = require("express").Router();
@@ -9,7 +10,7 @@ const clientSecret = require("../config/keys").clientSecret;
 
 // Fetch user commits
 async function fetchGithubData(githubHandle, ACCESS_TOKEN) {
-  let authStr = `Bearer 70847787df84134e962d8bf6d468e2f7729956d6`; // Add token
+  let authStr = "Bearer " + process.env.GITHUB_AUTH_TOKEN; // Add token
 
   return await axios
     .get(`https://api.github.com/users/cgoez/events/public`, {

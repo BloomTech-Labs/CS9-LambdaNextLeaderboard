@@ -1,0 +1,26 @@
+.Nav {
+  background-color: rgba(1, 1, 1, 0.7);
+  padding: 15px 0;
+}
+
+.Nav__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1100px;
+  margin: 0 auto;
+}
+
+.Nav__link {
+  color: white;
+  text-decoration: none;
+}
+
+.Nav__link:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.ForgotPassword {
+  text-align: center;
+}

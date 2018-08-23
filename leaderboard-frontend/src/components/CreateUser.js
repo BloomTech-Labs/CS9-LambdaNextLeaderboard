@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { createUserAction } from "../actions";
@@ -76,9 +77,9 @@ class CreateUser extends React.Component {
         </button>
 
         {/* SIGN IN */}
-        <a href="/login" className="rgstr__login">
+        <Link to="/login" className="rgstr__login">
           Already have an account? Sign in
-        </a>
+        </Link>
       </div>
     );
   }

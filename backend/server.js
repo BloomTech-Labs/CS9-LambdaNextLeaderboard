@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
+const path = require('path')
 
 // import routes
 const users = require("./routes/api/user");
@@ -14,6 +15,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../leaderboard-frontend/build')));
 
 // Connect MongoDB
 const db = require("./config/keys").mongoURI;

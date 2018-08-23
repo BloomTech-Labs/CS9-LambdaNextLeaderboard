@@ -1,7 +1,6 @@
 .APP {
   display: flex;
   flex-direction: column;
-  padding: 1em;
   height: 100%;
 }
 
@@ -12,12 +11,14 @@
 }
 
 .APP__CONTENT {
+  height: 100%;
+  padding-bottom: 100px;
   display: flex;
   justify-content: space-between;
 }
 
 .APP__MENU {
-  width: 15%;
+  width: 100px;
   background-color: lightgray;
   border: 2px solid gray;
 }

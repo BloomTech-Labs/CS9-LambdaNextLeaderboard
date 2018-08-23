@@ -19,6 +19,12 @@ class ActivityFeed extends Component {
                     Joe Chan got a job! <br/>
                     Jone Doe applied a job! Number 6 this week and 17 total! <br/>
                     John Smith scheduled a phone interview! <br/>
+                    Jone Doe applied a job! Number 6 this week and 17 total! <br/>
+                    John Smith scheduled a phone interview! <br/>
+                    Maria Martinez contributed to guthub! <br/>
+                    Joe Chan got a job! <br/>
+                    Jone Doe applied a job! Number 6 this week and 17 total! <br/>
+                    John Smith scheduled a phone interview! <br/>
                 </div>
 
                 <div className="top-hired">54/96</div>
