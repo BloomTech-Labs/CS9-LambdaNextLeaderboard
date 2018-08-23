@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import {Link} from "react-router-dom";
+import {connect} from 'react-redux'
+import {redirectDataClass} from '../../actions'
 import './ClassList.css'
+import { Button, Segment } from 'semantic-ui-react'
 class CardClass extends Component {
     constructor(props) {
         super(props)
@@ -8,6 +11,7 @@ class CardClass extends Component {
     redirectEdit = () => {
         console.log(this.props.props.history)
         this.props.props.history.push(`/classlist/${this.props.classname}`)
+        this.props.redirectDataClass()
 
     }
     redirectLeaderboard = () => {
@@ -28,15 +32,23 @@ class CardClass extends Component {
         }
         return (
             <div className="APP__CLASSCARD">
-                <h5 className="APP__CNAME">{this.props.classname}</h5>
-                <p className="APP__CPOP">Students: {this.props.students.length}</p>
-                <p className="APP__CPART">Participation (Total): {}%</p>
-                <p className="APP__CHIRED">Hired: {countHired}, Not Hired: {notHired}</p>
-                <button onClick={this.redirectEdit} >Edit</button>
-                <button onClick={this.redirectLeaderboard}>Leaderboard</button>
+                <h5 >{this.props.classname}</h5>
+                <p >Students: {this.props.students.length}</p>
+                <p >Participation (Total): {}%</p>
+                <p >Hired: {countHired}, Not Hired: {notHired}</p>
+                <Button className="BtnEdit" onClick={this.redirectEdit}  inverted color='blue'>
+                    Edit
+                </Button>
+                {/*<button className="BtnEdit" onClick={this.redirectEdit} >Edit</button>*/}
+                <Button className="BtnLeaderboard" onClick={this.redirectLeaderboard} inverted color='yellow'>
+                    Leaderboard
+                </Button>
+                {/*<button className="BtnLeaderboard" onClick={this.redirectLeaderboard}>Leaderboard</button>*/}
             </div>
         );
     }
 }
-
-export default CardClass
+const mapStateToProps = state => {
+    errors: state.errors
+}
+export default connect(mapStateToProps, {redirectDataClass})(CardClass)

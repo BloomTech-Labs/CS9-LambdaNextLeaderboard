@@ -12,7 +12,7 @@ export const GET_CLASSES_STUDENTS = "GET_CLASSES_STUDENTS";
 export const LOGIN_ERRORS = "LOGIN_ERRORS";
 export const REGISTER_ERRORS = "REGISTER_ERRORS";
 export const ERRORS = "ERRORS";
-
+export const REDIRECT_DATA_CLASS = "REDIRECT_DATA_CLASS"
 
 const USER_URL = process.env.REACT_APP_USER_URL;
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
@@ -47,6 +47,15 @@ export function queryAllMyData(param, history) {
 
         return {data, status, promise};
     };
+}
+export const redirectDataClass = () => {
+    return dispatch => {
+        dispatch({
+            type: REDIRECT_DATA_CLASS,
+            classlist_students: null,
+            allClasses: null
+        })
+    }
 }
 
 export const getClassStudentsAction = classname => {

@@ -50,8 +50,6 @@ class ClassList extends Component {
             return <div>Oh no! Something went wrong</div>
         }
         const myData = this.props.myData
-        // console.log(this.props)
-        // if (this.state.classes && this.state.loading === false) {
 
         if (this.props.myData) {
             console.log(this.props.myData)
@@ -75,13 +73,7 @@ class ClassList extends Component {
     }
 };
 
-// const mapStateToProps = state => {
-//     return {
-//         error: state.error,
-//         allClasses: state.allClasses,
-//         fetchClasses: state.fetchClasses
-//     }
-// }
+
 
 //________EXPORT________
 // export default ClassList;
