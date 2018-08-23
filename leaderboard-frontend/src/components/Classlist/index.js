@@ -10,56 +10,55 @@ import MenuBar from "../MenuBar/MenuBar";
 
 import ClassList from "./ClassList";
 
-import NavBar from '../Navbar/Nav'
+import NavBar from "../Navbar/Nav";
 
 function SplitPane(props) {
-    return (
-        <div className="SplitPane">
-            <div className="SplitPane-left">{props.left}</div>
-            <div className="SplitPane-right">{props.right}</div>
-        </div>
-    );
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">{props.left}</div>
+      <div className="SplitPane-right">{props.right}</div>
+    </div>
+  );
 }
 
 //Left Component
 function LeftContent() {
-    return (
-        <div className="LeftContent" style={{ height: "100%" }}>
-            <MenuBar />
-        </div>
-    );
+  return (
+    <div className="LeftContent" style={{ height: "100%" }}>
+      <MenuBar />
+    </div>
+  );
 }
 
 //Right Component
 function RightContent(props) {
-    return (
-        <div className="RightContent" style={{ height: "100%" }}>
-            <ClassList props={props}/>
-
-        </div>
-    );
+  return (
+    <div className="RightContent" style={{ height: "100%" }}>
+      <ClassList props={props} />
+    </div>
+  );
 }
 
 //These styles can go into a CSS file, such as HomeTemplate.css
 //I did them this way because it's faster
 const ClassList2 = props => {
-    return (
-        <div style={{ height: "100%" }}>
-            {/*<NavBar props={props} />*/}
-            <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
-                <Breadcrumb.Section href="/" link>
-                    Home
-                </Breadcrumb.Section>
-                <Breadcrumb.Divider icon="right chevron" />
+  return (
+    <div style={{ height: "100%" }}>
+      {/*<NavBar props={props} />*/}
+      <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
+        <Breadcrumb.Section>
+          <Link to="/">Home</Link>
+        </Breadcrumb.Section>
+        <Breadcrumb.Divider icon="right chevron" />
 
-                <Breadcrumb.Section active>Classes</Breadcrumb.Section>
-            </Breadcrumb>
-            
-            <SplitPane
-                left={<LeftContent />}
-                right={<RightContent props={props} />}
-            />
-        </div>
-    );
+        <Breadcrumb.Section active>Classes</Breadcrumb.Section>
+      </Breadcrumb>
+
+      <SplitPane
+        left={<LeftContent />}
+        right={<RightContent props={props} />}
+      />
+    </div>
+  );
 };
 export default ClassList2;

@@ -19,7 +19,7 @@ import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
 // import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/WeeklyLeaderboard";
 // import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/ActivityFeed";
 // import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/HotRightNow";
-import BILLING from "./components/Billing/Billing";
+//import BILLING from "./components/Billing/Billing";
 
 //________STYLING________
 import "./App.css";
@@ -49,7 +49,7 @@ class App extends Component {
               exact
               component={withRouter(CREATEEDIT)}
             />
-            <Route exact path="/billing" component={BILLING} />
+            {/* <Route exact path="/billing" component={BILLING} /> */}
             {/*</Switch>*/}
           </div>
         </div>
