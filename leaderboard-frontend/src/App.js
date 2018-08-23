@@ -23,7 +23,6 @@ import BILLING from "./components/Billing/Billing";
 
 //________STYLING________
 import "./App.css";
-require("dotenv").config();
 
 class App extends Component {
   constructor(props) {
