@@ -14,6 +14,7 @@ export const REGISTER_ERRORS = "REGISTER_ERRORS";
 export const ERRORS = "ERRORS";
 export const REDIRECT_DATA_CLASS = "REDIRECT_DATA_CLASS";
 
+
 const USER_URL = process.env.REACT_APP_USER_URL;
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
 
