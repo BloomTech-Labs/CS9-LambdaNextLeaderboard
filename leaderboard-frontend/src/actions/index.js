@@ -191,23 +191,24 @@ export const addStudentAction = (classname, studentData) => {
 }
 
 export const createUserAction = obj => {
-    return dispatch => {
-        axios
-            .post(`${USER_URL}register`, {token: dataEncrypt(obj)})
-            .then(resp => {
-                dispatch({
-                    type: CREATE_USER,
-                    username: resp.data.username,
-                    user_id: resp.data._id
-                });
-            })
-            .catch(err => {
-                dispatch({
-                    type: ERRORS,
-                    payload: err.response.data
-                });
-            });
-    };
+  return dispatch => {
+    axios
+      .post(`${USER_URL}register`, { token: dataEncrypt(obj) })
+      .then(resp => {
+        dispatch({
+          type: CREATE_USER,
+          username: resp.data.username,
+          user_id: resp.data._id
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({
+          type: REGISTER_ERRORS,
+          payload: err.response.data
+        });
+      });
+  };
 };
 
 export const loginAction = (obj, history) => {

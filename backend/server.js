@@ -6,11 +6,14 @@ const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
 const fileUpload = require("express-fileupload");
+const bodyParser = require('body-parser');
 
 // import routes
 const users = require("./routes/api/user");
 const classes = require("./routes/api/class");
+const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
+
 
 // CSV imports
 //const template = require("./template.js");
@@ -23,6 +26,40 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(fileUpload());
+
+
+
+
+// ****START STRIPE****
+
+const CORS_WHITELIST = require('./billing/frontend');
+
+const corsOptions = {
+  origin: (origin, callback) =>
+    (CORS_WHITELIST.indexOf(origin) !== -1)
+      ? callback(null,true)
+      : callback(new Error('Not allowed by CORS'))
+};
+
+const configureServer = app => {
+  app.use(cors(corsOptions));
+  app.use(bodyParser.json());
+};
+
+const paymentApi = require('./billing/payment');
+
+const configureRoutes = app => {
+  paymentApi(app);
+};
+
+
+configureServer(app);
+configureRoutes(app);
+
+// ****END STRIPE****
+
+
+
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "../leaderboard-frontend/build")));
@@ -49,6 +86,7 @@ app.use(
   classes
 );
 // app.use("/api/data", githubData);
+app.use("/api/billing", billing);
 
 // CSV routes
 //app.get("/template");
