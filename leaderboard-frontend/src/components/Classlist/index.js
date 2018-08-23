@@ -51,26 +51,10 @@ const ClassList2 = props => {
                     Home
                 </Breadcrumb.Section>
                 <Breadcrumb.Divider icon="right chevron" />
-                <Breadcrumb.Section href="/classlist" link>
-                    Classes
-                </Breadcrumb.Section>
-                <Breadcrumb.Divider icon="right chevron" />
-                <Breadcrumb.Section active>Create or Edit Class</Breadcrumb.Section>
-            </Breadcrumb>
-            {/*<div style={linkBox} >*/}
-            {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/class">*/}
 
-            {/*Classes*/}
-            {/*</Link>*/}
-            {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/">*/}
-            {/*Home*/}
-            {/*</Link>*/}
-            {/*<Link style={{marginRight: '8%', textDecoration: 'none' }} to="/signout">*/}
-            {/*Sign Out*/}
-            {/*</Link>*/}
-            {/*</div>*/}
-            {/*</div>*/}
-            {/*<ClassCreateEdit/>*/}
+                <Breadcrumb.Section active>Classes</Breadcrumb.Section>
+            </Breadcrumb>
+            
             <SplitPane
                 left={<LeftContent />}
                 right={<RightContent props={props} />}
