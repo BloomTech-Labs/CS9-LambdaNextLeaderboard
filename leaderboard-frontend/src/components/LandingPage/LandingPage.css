@@ -1,11 +1,6 @@
-.APP__LP__WRAPPER {
-  padding: 0 2em;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.APP__LP__IMG {
-  width: 80%;
+.Landing__head {
+  background-color: rgba(1, 1, 1, 0.7);
+  padding: 50px 0;
+  border-top: 3px solid rgba(1, 1, 1);
+  font-size: 1.5em;
 }

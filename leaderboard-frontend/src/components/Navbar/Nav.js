@@ -9,7 +9,8 @@ import {
   Input,
   Label,
   Popup,
-  GridRow
+  GridRow,
+  Container
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -34,15 +35,13 @@ class Nav extends Component {
     };
   }
 
-    componentDidMount() {
-if (localStorage.getItem('token') !== null) {
-
-        // this.props.history.push('/classlist')
-        }
+  componentDidMount() {
+    if (localStorage.getItem("token") !== null) {
+      // this.props.history.push('/classlist')
     }
+  }
 
-
-    handleOpenModal = (e, { content }) => {
+  handleOpenModal = (e, { content }) => {
     this.setState({ activeItem: content, openModal: true });
   };
 
@@ -83,18 +82,19 @@ if (localStorage.getItem('token') !== null) {
     this.props.logoutAction();
     this.setState({ SignedIn: false });
     localStorage.removeItem("token");
-      this.props.history.push('/')
+    this.props.history.push("/");
   };
 
   componentWillUpdate = nextProps => {
-    if (nextProps.successfulLogin && (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))) {
-
+    if (
+      nextProps.successfulLogin &&
+      (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
+    ) {
       this.setState({ SignInUsername: "", SignedIn: true, openModal: false });
-        // if (localStorage.getItem('token') !== null) {
-            this.props.history.push('/classlist')
-        // }
+      // if (localStorage.getItem('token') !== null) {
+      this.props.history.push("/classlist");
+      // }
     }
-
   };
 
   render() {
@@ -102,36 +102,38 @@ if (localStorage.getItem('token') !== null) {
     console.log(this.props);
     return (
       <nav className="Nav">
-        <div className="Nav__container">
-          <Link to="/" className="Nav__link">
-            <h1>Leaderboard</h1>
-          </Link>
-          { !localStorage.getItem('token') ? (
-            <div>
-              <Button
-                size="small"
-                color="linkedin"
-                content="Sign In"
-                onClick={this.handleOpenModal}
-              />
-              <Button
-                size="small"
-                color="linkedin"
-                content="Register"
-                onClick={this.handleOpenModal}
-              />
-            </div>
-          ) : (
-            <div>
-              <Button
-                size="small"
-                color="red"
-                content="Log Out"
-                onClick={this.handleLogout}
-              />
-            </div>
-          )}
-        </div>
+        <Container>
+          <div className="Nav__container">
+            <Link to="/" className="Nav__link">
+              <h1>Leaderboard</h1>
+            </Link>
+            {!localStorage.getItem("token") ? (
+              <div>
+                <Button
+                  size="small"
+                  color="linkedin"
+                  content="Sign In"
+                  onClick={this.handleOpenModal}
+                />
+                <Button
+                  size="small"
+                  color="linkedin"
+                  content="Register"
+                  onClick={this.handleOpenModal}
+                />
+              </div>
+            ) : (
+              <div>
+                <Button
+                  size="small"
+                  color="red"
+                  content="Log Out"
+                  onClick={this.handleLogout}
+                />
+              </div>
+            )}
+          </div>
+        </Container>
         <Modal
           open={this.state.openModal}
           onClose={this.handleCloseModal}
