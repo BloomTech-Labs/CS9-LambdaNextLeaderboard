@@ -26,14 +26,14 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ username: req.body.username }).then(user => {
+  User.findOne({ username: data.username }).then(user => {
     if (user) {
       errors.username = "Username already exists";
       return res.status(400).json(errors);
     } else {
       const newUser = new User({
-        username: req.body.username,
-        password: req.body.password
+        username: data.username,
+        password: data.password
       });
 
       bcrypt.genSalt(11, (err, salt) => {
@@ -54,7 +54,6 @@ router.post("/register", (req, res) => {
 // @desc    Login user and return JWT
 // @access  Public
 router.post("/login", (req, res) => {
-
   const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
   const { errors, isValid } = validateLogin(data);
 
@@ -78,18 +77,13 @@ router.post("/login", (req, res) => {
         if (isMatch) {
           // Successful login creating token
           const payload = { id: user._id, name: user.username };
-          jwt.sign(
-            payload,
-            ACCESS_KEY,
-            { expiresIn: "10h" },
-            (err, token) => {
-              res.json({
-                success: true,
-                token: "Bearer " + token,
-                username: user.username
-              });
-            }
-          );
+          jwt.sign(payload, ACCESS_KEY, { expiresIn: "10h" }, (err, token) => {
+            res.json({
+              success: true,
+              token: "Bearer " + token,
+              username: user.username
+            });
+          });
         } else {
           errors.password = "Invalid Credentials";
           return res.status(400).json(errors);
