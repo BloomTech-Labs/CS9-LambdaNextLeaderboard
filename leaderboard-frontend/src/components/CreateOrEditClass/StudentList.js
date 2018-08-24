@@ -14,12 +14,14 @@ class StudentList extends Component {
 
     componentDidMount() {
         if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("token");
             this.props.props.props.history.push('/')
         }
     }
 
     componentWillUpdate(nextProps, nextState) {
         if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("token");
             this.props.props.props.history.push('/')
         }
     }
