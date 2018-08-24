@@ -76,7 +76,7 @@ class Nav extends Component {
 
   handleSubmitLogin = () => {
     this.props.loginAction({
-      email: this.state.SignInEmail,
+      username: this.state.SignInEmail,
       password: this.state.SignInPassword
     });
 
