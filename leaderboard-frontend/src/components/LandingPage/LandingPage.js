@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import {
     Container,
     Grid,
@@ -16,6 +16,9 @@ class LandingPage extends Component {
     }
 
     componentDidMount() {
+        if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("token");
+        }
         if (localStorage.getItem("token")) {
             this.props.history.push('/classlist')
         }
