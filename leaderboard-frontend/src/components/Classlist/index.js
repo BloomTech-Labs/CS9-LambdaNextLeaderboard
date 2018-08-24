@@ -11,8 +11,6 @@ import MenuBar from "../MenuBar/MenuBar";
 
 import ClassList from "./ClassList";
 
-import NavBar from "../Navbar/Nav";
-
 function SplitPane(props) {
   return (
     <div className="SplitPane">

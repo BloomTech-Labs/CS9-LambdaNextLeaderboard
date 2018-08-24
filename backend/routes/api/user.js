@@ -27,15 +27,21 @@ router.post("/register", (req, res) => {
   }
 
   const username = data.username;
+  const email = data.email;
   const password = data.password;
 
   User.findOne({ username }).then(user => {
     if (user) {
       errors.username = "Username already exists";
-      return res.status(400).json(errors);
-    } else {
+    }
+    User.findOne({ email }).then(found => {
+      if (found) {
+        errors.email = "Email already exists";
+      }
+      if (errors) res.status(400).json(errors);
       const newUser = new User({
         username: username,
+        email: email,
         password: password
       });
 
@@ -49,7 +55,7 @@ router.post("/register", (req, res) => {
             .catch(err => console.log(err));
         });
       });
-    }
+    });
   });
 });
 
@@ -65,14 +71,14 @@ router.post("/login", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const username = data.username;
+  const email = data.email;
   const password = data.password;
-  User.findOne({ username })
+  User.findOne({ email })
     .select("+password")
     .then(user => {
       if (!user) {
-        errors.username = "Username not found";
-        return res.status(404).json(errors);
+        errors.invalid = "Invalid Credentials";
+        return res.status(400).json(errors);
       }
 
       // Check Password
@@ -88,7 +94,7 @@ router.post("/login", (req, res) => {
             });
           });
         } else {
-          errors.password = "Invalid Credentials";
+          errors.invalid = "Invalid Credentials";
           return res.status(400).json(errors);
         }
       });
