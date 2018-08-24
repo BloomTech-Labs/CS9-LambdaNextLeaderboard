@@ -35,7 +35,8 @@ const studentReducer = (state = initialState, action) => {
     case CREATE_USER:
       return Object.assign({}, state, {
         username: action.payload,
-        successfulRegister: action.successfulRegister
+        successfulRegister: action.successfulRegister,
+        registerErrors: {}
       });
     case LOGIN_ACTION:
       return Object.assign({}, state, {
@@ -44,7 +45,8 @@ const studentReducer = (state = initialState, action) => {
           token: action.payload,
           username: action.username
         },
-        successfulLogin: action.successfulLogin
+        successfulLogin: action.successfulLogin,
+        loginErrors: {}
         // expiration: action.expiration
         // error: {}
       });

@@ -23,13 +23,13 @@ class Nav extends Component {
     super(props);
 
     this.state = {
-      activeItem: "",
       openModal: false,
+      activeItem: "",
       RegisterUsername: "",
       RegisterEmail: "",
       RegisterPassword: "",
       RegisterPassword2: "",
-      SignInUsername: "",
+      SignInEmail: "",
       SignInPassword: "",
       SignedIn: false
     };
@@ -41,12 +41,12 @@ class Nav extends Component {
 
   handleCloseModal = () => {
     this.setState({ activeItem: "", openModal: false });
-    this.props.registerErrors.username = "";
-    this.props.registerErrors.email = "";
-    this.props.registerErrors.password = "";
-    this.props.registerErrors.password2 = "";
-    this.props.loginErrors.username = "";
-    this.props.loginErrors.password = "";
+    // this.props.registerErrors.username = "";
+    // this.props.registerErrors.email = "";
+    // this.props.registerErrors.password = "";
+    // this.props.registerErrors.password2 = "";
+    // this.props.loginErrors.username = "";
+    // this.props.loginErrors.password = "";
   };
 
   handleMenuItemClick = (e, { name }) => {
@@ -66,6 +66,7 @@ class Nav extends Component {
   handleSubmitRegister = () => {
     this.props.createUserAction({
       username: this.state.RegisterUsername,
+      email: this.state.RegisterEmail,
       password: this.state.RegisterPassword,
       password2: this.state.RegisterPassword2
     });
@@ -75,7 +76,7 @@ class Nav extends Component {
 
   handleSubmitLogin = () => {
     this.props.loginAction({
-      username: this.state.SignInUsername,
+      email: this.state.SignInEmail,
       password: this.state.SignInPassword
     });
 
@@ -95,17 +96,21 @@ class Nav extends Component {
       nextProps.successfulLogin &&
       (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
     ) {
-      this.setState({ SignInUsername: "", SignedIn: true, openModal: false });
+      this.setState({ SignInEmail: "", SignedIn: true, openModal: false });
       this.props.history.push("/classlist");
     }
 
-    if (
-      nextProps.successfulRegister &&
-      this.state.openModal &&
-      this.state.activeItem === "Register"
-    ) {
-      this.setState({ activeItem: "Sign In", RegisterUsername: "" });
-    }
+    // if (
+    //   nextProps.successfulRegister &&
+    //   this.state.openModal &&
+    //   this.state.activeItem === "Register"
+    // ) {
+    //   this.setState({
+    //     activeItem: "Sign In",
+    //     RegisterUsername: "",
+    //     RegisterEmail: ""
+    //   });
+    // }
   };
 
   render() {
@@ -171,27 +176,39 @@ class Nav extends Component {
                   {this.state.activeItem === "Sign In" ? (
                     <Form size="large">
                       <Form.Field
-                        error={Boolean(this.props.loginErrors.username)}
+                        error={Boolean(
+                          this.props.loginErrors.email ||
+                            this.props.loginErrors.invalid
+                        )}
                       >
-                        {this.props.loginErrors.username ? (
+                        {this.props.loginErrors.email ? (
                           <Label
                             color="red"
                             pointing="below"
-                            content={this.props.loginErrors.username}
+                            content={this.props.loginErrors.email}
+                          />
+                        ) : this.props.loginErrors.invalid ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.loginErrors.invalid}
                           />
                         ) : null}
                         <Input
-                          name="SignInUsername"
-                          value={this.state.SignInUsername}
+                          name="SignInEmail"
+                          value={this.state.SignInEmail}
                           onChange={this.handleInput}
-                          icon="user"
+                          icon="mail"
                           iconPosition="left"
-                          placeholder="Your Username"
+                          placeholder="Your email address"
                           type="text"
                         />
                       </Form.Field>
                       <Form.Field
-                        error={Boolean(this.props.loginErrors.password)}
+                        error={Boolean(
+                          this.props.loginErrors.password ||
+                            this.props.loginErrors.invalid
+                        )}
                       >
                         {this.props.loginErrors.password ? (
                           <Label
@@ -206,7 +223,7 @@ class Nav extends Component {
                           onChange={this.handleInput}
                           icon="lock"
                           iconPosition="left"
-                          placeholder="Your Password"
+                          placeholder="Your password"
                           type="password"
                         />
                       </Form.Field>
@@ -270,7 +287,6 @@ class Nav extends Component {
                           iconPosition="left"
                           placeholder="Your email address"
                           type="text"
-                          disabled
                         />
                       </Form.Field>
                       <Form.Field
