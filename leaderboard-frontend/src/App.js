@@ -7,6 +7,7 @@ import {
   Link,
   withRouter
 } from "react-router-dom";
+import "./App.css";
 import { Container } from "semantic-ui-react";
 // TODO import axios from 'axios';
 
@@ -19,7 +20,7 @@ import LEADERBOARD from "./components/Leaderboard/Leaderboard";
 //import BILLING from "./components/Billing/Billing";
 
 //________STYLING________
-import "./App.css";
+
 
 class App extends Component {
   constructor(props) {

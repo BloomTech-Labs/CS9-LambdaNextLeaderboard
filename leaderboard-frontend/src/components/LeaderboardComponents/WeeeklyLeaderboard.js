@@ -27,8 +27,7 @@ class WeeklyLeaderboard extends Component {
             //     { name: "Joe Chan", gitScore: 8, huntrScore: 9, Total: 43 },
             //     { name: "Mike Moo", gitScore: 7, huntrScore: 10, Total: 41 },
             // ]
-            
-         }
+         };
     }
     render() { 
         return ( 
