@@ -21,10 +21,16 @@ class ClassList extends Component {
         if (localStorage.getItem("invalid")) {
             this.props.props.props.history.push('/')
         }
+        if (localStorage.getItem("token") === null) {
+            this.props.props.props.history.push('/')
+        }
     }
 
     componentWillUpdate(nextProps, nextState) {
         if (localStorage.getItem("invalid")) {
+            this.props.props.props.history.push('/')
+        }
+        if (localStorage.getItem("token") === null) {
             this.props.props.props.history.push('/')
         }
     }

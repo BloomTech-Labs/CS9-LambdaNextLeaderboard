@@ -284,25 +284,27 @@ export const logoutAction = () => {
 };
 
 export const addClass = obj => {
-  const token = localStorage.getItem("token");
-  return dispatch => {
-    const optionTwo = {
-      method: "POST",
-      headers: { "content-type": "application/json", Authorization: token },
-      data: obj,
-      url: `${CLASS_URL}addclass`
-    };
+    const token = localStorage.getItem("token");
+    return dispatch => {
+        const optionTwo = {
+            method: "POST",
+            headers: {"content-type": "application/json", Authorization: token},
+            data: obj,
+            url: `${CLASS_URL}addclass`
+        };
 
-    axios(optionTwo)
-      .then(resp => {
-        localStorage.setItem("user", resp.data.name);
+        axios(optionTwo)
+            .then(resp => {
+                // localStorage.setItem("user", resp.data.name);
 
-        dispatch({
-          type: ADD_CLASS,
-          user: resp.data.name,
-          class_name: resp.student
-        });
-        // getClassesStudentsAction()
+                dispatch({
+                    type: ADD_CLASS,
+                    user: resp.data.name,
+                    class_name: resp.student,
+
+                })
+                // getClassesStudentsAction()
+
       })
       .catch(err => dispatch({ type: ERRORS, payload: err }));
   };
