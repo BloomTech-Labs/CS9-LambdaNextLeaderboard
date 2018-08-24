@@ -4,7 +4,7 @@ import Fetch from './FetchData'
 import {Link} from 'react-router-dom';
 import {connectAsync} from "iguazu";
 import {connect} from 'react-redux'
-import {queryAllMyData, getClassesStudentsAction} from "../../actions";
+import {queryAllMyData,queryStudents, getClassesStudentsAction} from "../../actions";
 //________STYLING________
 import './ClassList.css'
 import CardClass from "./CardClass";
@@ -56,6 +56,7 @@ class ClassList extends Component {
             return <div>Oh no! Something went wrong</div>
         }
         const myData = this.props.myData
+        const students = this.props.students
 
         if (this.props.myData) {
             console.log(this.props.myData)
@@ -65,7 +66,7 @@ class ClassList extends Component {
                         return (
                             <div key={myData + index}>
                                 <CardClass fetchData={this.fetchData} props={this.props.props.props} classname={myData.name}
-                                           students={myData.students}/>
+                                           students={students}/>
                             </div>
                         );
                     })}
@@ -89,6 +90,7 @@ export function loadDataAsProps({store, ownProps}) {
     console.log(ownProps);
     return {
         myData: () => dispatch(queryAllMyData(path)),
+        students: () => dispatch(queryStudents(path))
     };
 }
 
