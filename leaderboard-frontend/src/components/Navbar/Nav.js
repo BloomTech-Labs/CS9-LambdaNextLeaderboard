@@ -80,7 +80,7 @@ class Nav extends Component {
       password: this.state.SignInPassword
     });
 
-    this.setState({ SignInPassword: "" });
+    this.setState({ SignInPassword: "", SignInUsername: "" });
   };
 
   handleLogout = () => {
@@ -120,7 +120,7 @@ class Nav extends Component {
       <nav className="Nav">
         <Container>
           <div className="Nav__container">
-            <Link to="/" className="Nav__link">
+            <Link to="/classlist" className="Nav__link">
               <h1>Leaderboard</h1>
             </Link>
             {!localStorage.getItem("token") ? (

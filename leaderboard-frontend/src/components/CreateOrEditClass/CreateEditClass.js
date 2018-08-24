@@ -49,26 +49,47 @@ function RightContent(props) {
 
 //These styles can go into a CSS file, such as HomeTemplate.css
 //I did them this way because it's faster
-const CreateEdit = props => {
-  return (
-    <div style={{ height: "100%" }}>
-      <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
-        <Breadcrumb.Section>
-          <Link to="/">Home</Link>
-        </Breadcrumb.Section>
-        <Breadcrumb.Divider icon="right chevron" />
-        <Breadcrumb.Section>
-          <Link to="/classlist">Classes</Link>
-        </Breadcrumb.Section>
-        <Breadcrumb.Divider icon="right chevron" />
-        <Breadcrumb.Section active>Create or Edit Class</Breadcrumb.Section>
-      </Breadcrumb>
+class CreateEdit extends React.Component {
+    constructor(props) {
+        super(props)
 
-      <SplitPane
-        left={<LeftContent />}
-        right={<RightContent props={props} />}
-      />
-    </div>
-  );
-};
+    }
+
+    componentDidMount() {
+        if (localStorage.getItem("token") === null) {
+            this.props.history.push('/')
+        }
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (localStorage.getItem("token") === null) {
+            this.props.history.push('/')
+        }
+    }
+
+    render() {
+        return (
+            <div style={{ height: "100%" }}>
+                <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
+                    <Breadcrumb.Section>
+                        <Link to="/">Home</Link>
+                    </Breadcrumb.Section>
+                    <Breadcrumb.Divider icon="right chevron" />
+                    <Breadcrumb.Section>
+                        <Link to="/classlist">Classes</Link>
+                    </Breadcrumb.Section>
+                    <Breadcrumb.Divider icon="right chevron" />
+                    <Breadcrumb.Section active>Create or Edit Class</Breadcrumb.Section>
+                </Breadcrumb>
+
+                <SplitPane
+                    left={<LeftContent />}
+                    right={<RightContent props={this.props} />}
+                />
+            </div>
+        );
+    }
+
+}
+
 export default CreateEdit;
