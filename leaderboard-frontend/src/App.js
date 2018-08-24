@@ -15,10 +15,7 @@ import NAVBAR from "./components/Navbar/Nav";
 import CLASSLIST from "./components/Classlist/index";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
-// import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/OverallLeaderboard";
-// import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/WeeklyLeaderboard";
-// import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/ActivityFeed";
-// import LEADERBOARDCOMPONENTS from "./components/LeaderboardComponents/HotRightNow";
+import LEADERBOARD from "./components/Leaderboard/Leaderboard";
 //import BILLING from "./components/Billing/Billing";
 
 //________STYLING________
@@ -49,6 +46,7 @@ class App extends Component {
               exact
               component={withRouter(CREATEEDIT)}
             />
+            <Route exact path="/leaderboard" component={LEADERBOARD} />
             {/* <Route exact path="/billing" component={BILLING} /> */}
             {/*</Switch>*/}
           </div>

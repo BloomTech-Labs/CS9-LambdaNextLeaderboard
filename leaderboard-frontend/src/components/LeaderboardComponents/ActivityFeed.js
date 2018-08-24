@@ -1,30 +1,67 @@
-import React, { Component } from 'react';
-import './ActivityFeed.css'
+import React, { Component } from "react";
+import { Container, Header, Icon, Segment, Table } from "semantic-ui-react";
 
 class ActivityFeed extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  }
-    }
-    render() { 
-        return ( 
-            <div className="top-row">
-                 <div className="top-cohort">CS24</div>
-
-                <div className="top-activityFeed">
-                    <h5>Activity Feed</h5> <br/>
-                    Jone Doe applied a job! Number 6 this week and 17 total! <br/>
-                    John Smith scheduled a phone interview! <br/>
-                    Maria Martinez contributed to guthub! <br/>
-                    Joe Chan got a job! <br/>
-                    Jone Doe applied a job! Number 6 this week and 17 total! <br/>
-                    John Smith scheduled a phone interview! <br/>
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  render() {
+    return (
+      <div>
+        <Container>
+          <div class="ui column divided grid">
+            <div class="row">
+              <div class="three wide column">
+                <Header as="h2" icon>
+                  <Icon name="ui users circular image" color="purple" />
+                  CS 9
+                </Header>
+              </div>
+              <div class="nine wide column">
+                <p />
+                <b>ACTIVITY FEED</b>
+                <Segment color="purple">
+                  <p>Jane Bernard has applied to three gigs.</p>
+                  <p>Tim Kelly has two second round interviews.</p>
+                  <p>Steve Bonano made 17 new connections.</p>
+                </Segment>
+              </div>
+              <div class="four wide column">
+                <div class="ui horizontal statistics">
+                  <div class="statistic color purple">
+                    <div class="value">34/48</div>
+                    <div class="label">Have Landed Gigs!</div>
+                  </div>
+                  <div>
+                    <div class="ui horizontal divider">
+                      <i class="orange fire icon" /> HOT RIGHT NOW!
+                    </div>
+                    <i class="github icon" />
+                    Mary Jones &nbsp;| &nbsp;
+                    <b>h</b> James Jameson
+                  </div>
+                  <p />
                 </div>
-
-                <div className="top-hired">54/96</div>
-                            </div>
-         );
-    }
+              </div>
+              <div class="row">
+                <div class="column">
+                  <p />
+                </div>
+                <div class="column">
+                  <p />
+                </div>
+                <div class="column">
+                  <p />
+                </div>
+              </div>
+            </div>
+            <div />
+          </div>
+        </Container>
+      </div>
+    );
+  }
 }
- 
+
 export default ActivityFeed;
