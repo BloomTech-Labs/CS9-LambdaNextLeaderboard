@@ -121,8 +121,8 @@ class WeeklyLeaderboard extends Component {
                       <Header.Content>Eric Andrade</Header.Content>
                     </Header>
                   </Table.Cell>
-                  <Table.Cell>44</Table.Cell>
-                  <Table.Cell>34</Table.Cell>
+                  <Table.Cell>46</Table.Cell>
+                  <Table.Cell>32</Table.Cell>
                   <Table.Cell>78</Table.Cell>
                 </Table.Row>
               </Table.Body>
