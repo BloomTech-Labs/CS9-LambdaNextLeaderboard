@@ -19,6 +19,7 @@ class ClassList extends Component {
 
     componentDidMount() {
         if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("token");
             this.props.props.props.history.push('/')
         }
         if (localStorage.getItem("token") === null) {
@@ -64,7 +65,8 @@ class ClassList extends Component {
                     {this.props.myData.map((myData, index) => {
                         return (
                             <div key={myData + index}>
-                                <CardClass fetchData={this.fetchData} props={this.props.props.props} classname={myData.name}
+                                <CardClass fetchData={this.fetchData} props={this.props.props.props}
+                                           classname={myData.name}
                                            students={myData.students}/>
                             </div>
                         );
@@ -78,7 +80,6 @@ class ClassList extends Component {
         }
     }
 };
-
 
 
 //________EXPORT________
