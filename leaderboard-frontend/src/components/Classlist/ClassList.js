@@ -66,14 +66,9 @@ class ClassList extends Component {
                     {this.props.myData.map((myData, index) => {
                         return (
                             <div key={myData + index}>
-<<<<<<< HEAD
                                 <CardClass fetchData={this.fetchData} props={this.props.props.props} classname={myData.name}
                                            students={students}/>
-=======
-                                <CardClass fetchData={this.fetchData} props={this.props.props.props}
-                                           classname={myData.name}
-                                           students={myData.students}/>
->>>>>>> 704af7f92fad3b8ed074779487291611aeea03ff
+
                             </div>
                         );
                     })}

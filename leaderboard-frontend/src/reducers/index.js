@@ -33,7 +33,6 @@ const initialState = {
 };
 
 const studentReducer = (state = initialState, action) => {
-<<<<<<< HEAD
     switch (action.type) {
         case CREATE_USER:
             return Object.assign({}, state, {
@@ -119,90 +118,6 @@ const studentReducer = (state = initialState, action) => {
         default:
             return state;
     }
-=======
-  switch (action.type) {
-    case CREATE_USER:
-      return Object.assign({}, state, {
-        username: action.payload,
-        successfulRegister: action.successfulRegister,
-        registerErrors: {}
-      });
-    case LOGIN_ACTION:
-      return Object.assign({}, state, {
-        user_logged_in: {
-          ...state.user,
-          token: action.payload,
-          username: action.username
-        },
-        successfulLogin: action.successfulLogin,
-        loginErrors: {}
-        // expiration: action.expiration
-        // error: {}
-      });
-    case LOGOUT_ACTION:
-      return Object.assign({}, state, {
-        successfulLogin: action.successfulLogin
-      });
-    case LOGIN_ERRORS:
-      return Object.assign({}, state, {
-        loginErrors: action.payload
-      });
-    case REGISTER_ERRORS:
-      return Object.assign({}, state, {
-        registerErrors: action.payload
-      });
-    case ERRORS:
-      return Object.assign({}, state, {
-        errors: action.payload
-      });
-    // case ADD_CLASS:
-    //     return Object.assign({}, state, {
-    //         students: {...state.user, username: action.user},
-    //         class: action.class_name
-    //     });
-    //When we fetch data, we need to set updateCheck to False
-    //It should be set on the first get request, after the login.
-    case ADD_CLASS:
-      return Object.assign({}, state, {
-        created_class: {
-          classname: action.payload,
-          students: action.students
-        },
-        allClasses: null
-      });
-    case ADD_STUDENT:
-      return Object.assign({}, state, {
-        added_student: {
-          user: action.user,
-          className: action.class_name,
-          students: action.payload
-        },
-        allClasses: null,
-        classlist_students: null
-      });
-    case GET_CLASS_STUDENTS:
-      return Object.assign({}, state, {
-        classlist_students: {
-          className: action.class_name,
-          students: action.payload
-        },
-        test: action.test,
-        updateCheck: false
-      });
-    case GET_CLASSES_STUDENTS:
-      return Object.assign({}, state, {
-        allClasses: action.payload,
-        fetchClasses: action.fetchClasses
-      });
-    case REDIRECT_DATA_CLASS:
-      return Object.assign({}, state, {
-        classlist_students: action.classlist_students,
-        allClasses: action.allClasses
-      });
-    default:
-      return state;
-  }
->>>>>>> 704af7f92fad3b8ed074779487291611aeea03ff
 };
 
 export default studentReducer;
