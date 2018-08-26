@@ -15,25 +15,26 @@ class CardClass extends Component {
 
     }
     redirectLeaderboard = () => {
-
+        this.props.props.history.push('/leaderboard')
+        console.log(this.props.student)
     }
 
     render() {
         let countHired = 0;
         let notHired = 0;
-        for (let i = 0; this.props.students.length > i; i++) {
-            // console.log(this.props.students[i].hired.toString())
-            if (this.props.students[i].hired.toString() === 'true') {
+        for (let i = 0; this.props.student.length > i; i++) {
+            console.log(this.props.student[i].hired.toString())
+            if (this.props.student[i].hired.toString() === 'true') {
                 countHired += 1;
             }
-            if (this.props.students[i].hired.toString() === 'false') {
+            if (this.props.student[i].hired.toString() === 'false') {
                 notHired += 1;
             }
         }
         return (
             <div className="APP__CLASSCARD">
                 <h5 >{this.props.classname}</h5>
-                <p >Students: {this.props.students.length}</p>
+                <p >Students: {this.props.student.length}</p>
                 <p >Participation (Total): {}%</p>
                 <p >Hired: {countHired}, Not Hired: {notHired}</p>
                 <Button className="BtnEdit" onClick={this.redirectEdit}  inverted color='blue'>

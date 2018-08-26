@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
 const Admin = require("../../models/Admin");
+const CoAdmin = require('../../models/CoAdmin')
 const validateRegistration = require("../../validation/users/registration");
 const validateLogin = require("../../validation/users/login");
 
@@ -19,15 +20,17 @@ router.get("/test", (req, res) => res.json({msg: "Users route working"}));
 // @access  Public
 router.post("/register", (req, res) => {
     const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
-    const {errors, isValid} = validateRegistration(data);
+    // const {errors, isValid} = validateRegistration(data);
 
     // Validation Check
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
+    // if (!isValid) {
+    //     return res.status(400).json(errors);
+    // }
 
     const username = data.username;
     const password = data.password;
+    const email = data.email;
+    const organization = data.organization;
 
     Admin.findOne({username}).then(user => {
         if (user) {
@@ -36,7 +39,9 @@ router.post("/register", (req, res) => {
         } else {
             const newUser = new Admin({
                 username: username,
-                password: password
+                password: password,
+                email: email,
+                organization: organization
             });
 
             bcrypt.genSalt(11, (err, salt) => {
@@ -67,33 +72,68 @@ router.post("/login", (req, res) => {
 
     const username = data.username;
     const password = data.password;
-    Admin.findOne({username})
-        .select("+password")
-        .then(user => {
-            if (!user) {
-                errors.username = "Username not found";
-                return res.status(404).json(errors);
-            }
-
-            // Check Password
-            bcrypt.compare(password, user.password).then(isMatch => {
-                if (isMatch) {
-                    // Successful login creating token
-                    const payload = {id: user._id, name: user.username};
-                    jwt.sign(payload, ACCESS_KEY, {expiresIn: "10h"}, (err, token) => {
-                        res.json({
-                            success: true,
-                            token: "Bearer " + token,
-                            username: user.username,
-                            id: user._id
-                        });
-                    });
-                } else {
-                    errors.password = "Invalid Credentials";
-                    return res.status(400).json(errors);
+    const coadmin = data.coadmin;
+    if (coadmin) {
+        CoAdmin.findOne({username})
+            .select("+password")
+            .then(user => {
+                if (!user) {
+                    errors.username = "Username not found";
+                    return res.status(404).json(errors);
                 }
+
+                // Check Password
+                bcrypt.compare(password, user.password).then(isMatch => {
+                    if (isMatch) {
+                        // Successful login creating token
+                        const payload = {id: user._id, name: user.username};
+                        jwt.sign(payload, ACCESS_KEY, {expiresIn: "10h"}, (err, token) => {
+                            res.json({
+                                success: true,
+                                token: "Bearer " + token,
+                                username: user.username,
+                                id: user._id,
+                                organization: user,
+                            });
+                        });
+                    } else {
+                        errors.password = "Invalid Credentials";
+                        return res.status(400).json(errors);
+                    }
+                });
             });
-        });
+
+    } else {
+        Admin.findOne({username})
+            .select("+password")
+            .then(user => {
+                if (!user) {
+                    errors.username = "Username not found";
+                    return res.status(404).json(errors);
+                }
+
+                // Check Password
+                bcrypt.compare(password, user.password).then(isMatch => {
+                    if (isMatch) {
+                        // Successful login creating token
+                        const payload = {id: user._id, name: user.username};
+                        jwt.sign(payload, ACCESS_KEY, {expiresIn: "10h"}, (err, token) => {
+                            res.json({
+                                success: true,
+                                token: "Bearer " + token,
+                                username: user.username,
+                                id: user._id,
+                                organization: user,
+                            });
+                        });
+                    } else {
+                        errors.password = "Invalid Credentials";
+                        return res.status(400).json(errors);
+                    }
+                });
+            });
+    }
+
 });
 
 // @route    GET api/users/current

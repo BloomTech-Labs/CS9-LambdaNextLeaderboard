@@ -14,12 +14,14 @@ class StudentList extends Component {
 
     componentDidMount() {
         if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("token");
             this.props.props.props.history.push('/')
         }
     }
 
     componentWillUpdate(nextProps, nextState) {
         if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("token");
             this.props.props.props.history.push('/')
         }
     }
@@ -33,22 +35,44 @@ class StudentList extends Component {
         if (this.props.loadedWithErrors()) {
             return <div>Oh no! Something went wrong</div>;
         }
-        const classlist_students = this.props.students;
-        console.log(classlist_students[0])
-        return (
-            <div className="main">
-                <h5 style={{marginLeft: "1%"}}>StudentList</h5>
-                {/*{classlist_students.map((student_data, i) => {*/}
-                    {/*return (*/}
-                        {/*<StudentsDisplay*/}
-                            {/*key={student_data + i}*/}
-                            {/*student={student_data}*/}
-                            {/*class={this.props.myData.className}*/}
-                        {/*/>*/}
-                    {/*);*/}
-                {/*})}*/}
-            </div>
-        );
+        console.log(this.props.props.props.match.params.name)
+        let count = 0;
+        const students = []
+        this.props.students.map((each, i) => {
+            // return each
+            if (each.classname === this.props.props.props.match.params.name) {
+                count++
+                console.log('each', each, i, count)
+                students.push(each)
+                // return each
+            }
+        })
+        console.log("student length", students)
+        if (students[0]) {
+            return (
+                <div className="main">
+                    <h5 style={{marginLeft: "1%"}}>StudentList</h5>
+
+                    {students.map((student_data, i) => {
+                        return (
+                            <StudentsDisplay
+                                key={student_data + i}
+                                student={student_data}
+                                class={this.props.myData.className}
+                            />
+                        );
+                    })}
+                </div>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <h1>No Students</h1>
+                </div>
+            )
+        }
+
     }
 }
 

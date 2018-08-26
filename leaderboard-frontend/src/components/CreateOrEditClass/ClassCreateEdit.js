@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import "./CreateEditClass.css";
 // import { Button } from 'reactstrap';
 import {connect} from "react-redux";
-import {addStudentAction, getClassStudentsAction} from "../../actions";
+import {addStudentAction, getClassesStudentsAction} from "../../actions";
 import {Button, Input} from "semantic-ui-react";
 import StudentList from "./StudentList";
 
@@ -18,6 +18,19 @@ class ClassCreateEdit extends Component {
             huntr: ""
         };
     }
+
+    componentDidMount() {
+        if (!this.props.allClasses) {
+            this.props.getClassesStudentsAction()
+        }
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (!this.props.allClasses) {
+            this.props.getClassesStudentsAction()
+        }
+    }
+
 
     handleInput = e => {
         // console.log([e.target.name] : e.target.value)
@@ -35,19 +48,29 @@ class ClassCreateEdit extends Component {
     };
     handleAdd = e => {
         e.preventDefault();
+        let id
+        const path = this.props.props.props.match.params.name;
+        this.props.allClasses.forEach(each => {
+            if (each.name === path) {
+                id = each._id
+            }
+        })
         const studentObject = {
             lastname: this.state.last_name,
             firstname: this.state.first_name,
             email: this.state.email,
             github: this.state.github,
             huntr: this.state.huntr,
-            _class: localStorage.getItem("adminID")
+            _admin: localStorage.getItem("adminID"),
+            _class: id,
+            classname: path
         };
         // Send this studentObject when you click `Add`
         // for Create or Edit Class, Add Students part
-        const path = this.props.props.props.match.params.name;
-        console.log(this.props.props.props.match.params.name)
+        // console.log('fired', studentObject)
+        // console.log('path', path)
         this.props.addStudentAction(path, studentObject);
+        this.props.getClassesStudentsAction()
         // this.props.getClassStudentsAction("CS9")
         this.setState({
             class_name: "",
@@ -157,12 +180,13 @@ class ClassCreateEdit extends Component {
 
 const mapStateToProps = state => {
     return {
-        error: state.error
+        error: state.error,
+        allClasses: state.allClasses
     };
 };
 
 export default connect(
     mapStateToProps,
-    {addStudentAction, getClassStudentsAction}
+    {addStudentAction, getClassesStudentsAction}
 )(ClassCreateEdit);
 // export default ClassCreateEdit

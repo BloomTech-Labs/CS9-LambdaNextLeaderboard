@@ -12,8 +12,8 @@ const bodyParser = require('body-parser');
 const users = require("./routes/api2/user");
 const classes = require("./routes/api2/class");
 // const student = require("./routes/api2/student");
-// const billing = require("./routes/api/payment");
-// const githubData = require("./data/githubData");
+const billing = require("./routes/api/payment");
+const githubData = require("./data/githubData");
 
 
 // CSV imports
@@ -33,29 +33,29 @@ app.use(fileUpload());
 
 // // ****START STRIPE****
 
-// const CORS_WHITELIST = require('./billing/frontend');
+const CORS_WHITELIST = require('./billing/frontend');
+const WHITELIST = [CORS_WHITELIST, 'http://localhost:3000/']
+const corsOptions = {
+  origin: (origin, callback) =>
+    (CORS_WHITELIST.indexOf(origin) !== -1)
+      ? callback(null,true)
+      : callback(new Error('Not allowed by CORS'))
+};
 
-// const corsOptions = {
-//   origin: (origin, callback) =>
-//     (CORS_WHITELIST.indexOf(origin) !== -1)
-//       ? callback(null,true)
-//       : callback(new Error('Not allowed by CORS'))
-// };
+const configureServer = app => {
+  app.use(cors(corsOptions));
+  app.use(bodyParser.json());
+};
 
-// const configureServer = app => {
-//   app.use(cors(corsOptions));
-//   app.use(bodyParser.json());
-// };
+const paymentApi = require('./billing/payment');
 
-// const paymentApi = require('./billing/payment');
-
-// const configureRoutes = app => {
-//   paymentApi(app);
-// };
+const configureRoutes = app => {
+  paymentApi(app);
+};
 
 
-// configureServer(app);
-// configureRoutes(app);
+configureServer(app);
+configureRoutes(app);
 
 // // ****END STRIPE****
 
@@ -80,18 +80,19 @@ app.use(passport.initialize());
 require("./authentication/passport")(passport);
 
 // Connect routes
-app.use("/api/users", users);
+app.use("/api/users", cors(corsOptions), users);
 app.use(
     "/api/classes",
+    cors(corsOptions),
     passport.authenticate("jwt", { session: false }),
     classes
 );
-// app.use("/api/data", githubData);
-// app.use("/api/billing", billing);
+app.use("/api/data", cors(corsOptions), githubData);
+app.use("/api/billing",cors(corsOptions), billing);
 
 // CSV routes
-//app.get("/template");
-app.post("/create-edit", upload.post);
+app.get("/template", cors(corsOptions),);
+app.post("/create-edit", cors(corsOptions), upload.post);
 
 const port = process.env.PORT || 4000;
 

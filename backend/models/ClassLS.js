@@ -5,7 +5,6 @@ const ClassLS = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     _admin:
         {
@@ -14,9 +13,14 @@ const ClassLS = new Schema({
             required: true
         },
     _coadmin: [{
-            type: Schema.Types.ObjectId,
-            ref: 'CoAdmin'
-        }],
+        type: Schema.Types.ObjectId,
+        ref: 'CoAdmin'
+    }],
+    createdOn: {
+        type: Date,
+        default: Date.now(),
+        required: true
+    }
 });
 
-module.exports = Class = mongoose.model("classls", ClassLS);
+module.exports = mongoose.model("classls", ClassLS);

@@ -1,5 +1,6 @@
 //________MODULES________
 import React, { Component } from "react";
+import {Link} from 'react-router-dom'
 
 //________STYLING________
 import "./MenuBar.css";
@@ -13,7 +14,10 @@ class MenuBar extends Component {
     return (
       <div className="Menu-Bar">
         <div className="Menu-Item">Class</div>
-        <div className="Menu-Item">Billing</div>
+          <Link to="/billing">
+              <div className="Menu-Item">Billing</div>
+
+          </Link>
         <div className="Menu-Item">Settings</div>
       </div>
     );

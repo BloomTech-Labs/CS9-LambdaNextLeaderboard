@@ -37,4 +37,4 @@ const ClassSchema = new Schema({
   ]
 });
 
-module.exports = Class = mongoose.model("classes", ClassSchema);
+module.exports = mongoose.model("ClassSchema", ClassSchema);

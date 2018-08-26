@@ -11,7 +11,16 @@ const CoAdmin = new Schema({
         required: true,
         select: false
     },
-    _admin: {type: Schema.Types.ObjectId, ref: 'Admin'},
+    createdOn: {
+        type: Date,
+        default: Date.now(),
+        required: true
+    },
+    _admin: {
+        type: Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true
+    },
 });
 
-module.exports = User = mongoose.model("coAdmin", CoAdmin);
+module.exports = mongoose.model("coAdmin", CoAdmin);

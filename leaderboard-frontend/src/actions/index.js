@@ -14,6 +14,7 @@ export const REGISTER_ERRORS = "REGISTER_ERRORS";
 export const ERRORS = "ERRORS";
 export const REDIRECT_DATA_CLASS = "REDIRECT_DATA_CLASS";
 export const GET_STUDENTS = "GET_STUDENTS"
+export const GET_GITHUB_DATA = "GET_GITHUB_DATA"
 
 
 const USER_URL = process.env.REACT_APP_USER_URL;
@@ -38,11 +39,11 @@ export function queryMyData(param, history) {
 
 export function queryAllMyData(param, history) {
     return (dispatch, getState) => {
-        console.log(param, history);
-        const data = getState().allClasses; //path.to.myData[param];
-        console.log("DATA DATA DATA", data);
+        // console.log(param, history);
+        const data = getState().allClasses;
+        // console.log("DATA DATA DATA", data);
         const status = data ? "complete" : "loading";
-        console.log("status", status);
+        // console.log("status", status);
         const promise = data
             ? Promise.resolve
             : dispatch(getClassesStudentsAction());
@@ -50,20 +51,62 @@ export function queryAllMyData(param, history) {
         return {data, status, promise};
     };
 }
-export function queryStudents(ran) {
+
+export function queryStudents(classname) {
     return (dispatch, getState) => {
-        const data = getState().allStudents; //path.to.myData[param];
+        const data = getState().allStudents;
         console.log("DATA DATA DATA", data);
         const status = data ? "complete" : "loading";
-        console.log("status", status);
         const promise = data
             ? Promise.resolve
-            : dispatch(getStudentsAction());
-
+            : dispatch(getStudentsAction(classname));
         return {data, status, promise};
     };
 }
 
+export function queryGithub() {
+    return (dispatch, getState) => {
+        const data = getState().githubData;
+        console.log("DATA DATA DATA", data);
+        const status = data ? "complete" : "loading";
+        const promise = data
+            ? Promise.resolve
+            : dispatch(getGithubDataAction());
+        return {data, status, promise};
+    };
+
+}
+export const getGithubDataAction = () => {
+    const token = localStorage.getItem("token");
+    const id = {
+        id: localStorage.getItem("adminID")
+    }
+    return dispatch => {
+        const options = {
+            method: "POST",
+            headers: {"content-type": "application/json", Authorization: token},
+            url: `${CLASS_URL}data`,
+            data: id
+        };
+        axios(options)
+            .then(res => {
+                localStorage.removeItem("invalid");
+                dispatch({
+                    type: GET_GITHUB_DATA,
+                    payload: res.data,
+                });
+            })
+            .catch(err => {
+                localStorage.setItem("invalid", err.response.data);
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data,
+                    // allClasses: err.response.data,
+                    // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
+                });
+            });
+    };
+}
 export const redirectDataClass = () => {
     return dispatch => {
         dispatch({
@@ -115,12 +158,15 @@ export const getClassStudentsAction = classname => {
 };
 export const getClassesStudentsAction = () => {
     const token = localStorage.getItem("token");
-
+    const id = {
+        id: localStorage.getItem("adminID")
+    }
     return dispatch => {
         const options = {
-            method: "GET",
+            method: "POST",
             headers: {"content-type": "application/json", Authorization: token},
-            url: `${CLASS_URL}`
+            url: `${CLASS_URL}`,
+            data: id
         };
         axios(options)
             .then(res => {
@@ -143,14 +189,18 @@ export const getClassesStudentsAction = () => {
             });
     };
 };
-const getStudentsAction = () => {
+const getStudentsAction = (classID) => {
+    console.log('class ID CLASS ID', classID)
     const token = localStorage.getItem("token");
-    const id = localStorage.getItem("adminID");
+    const id = {
+        id: localStorage.getItem("adminID")
+    }
     return dispatch => {
         const options = {
-            method: "GET",
+            method: "POST",
             headers: {"content-type": "application/json", Authorization: token},
-            url: `${CLASS_URL}/all`
+            url: `${CLASS_URL}/all`,
+            data: id
         };
         axios(options)
             .then(res => {
@@ -189,13 +239,14 @@ export const addStudentAction = (classname, studentData) => {
             data: studentData,
             url: `${CLASS_URL}${classname}/addStudent`
         };
+        // console.log("NewStudent", classname, stu)
         axios(options)
             .then(res => {
                 dispatch({
                     type: ADD_STUDENT,
                     payload: res.students, //Student data object returned
                     class_name: res.name,
-                    user: user
+                    user: user,
                 });
                 //RESPONSE DATA {
                 //     "_id": "5b79b366223c9800043f5a1d",
@@ -311,7 +362,8 @@ export const loginAction = (obj, history) => {
                     successfulLogin: true,
                     payload: res.data.token,
                     username: res.data.username,
-                    id: res.data.id
+                    id: res.data.id,
+                    organization: res.data.organization
                     // expiration: expire// (Math.floor(Date.now() / 1000) + (60*60))
                 });
             })

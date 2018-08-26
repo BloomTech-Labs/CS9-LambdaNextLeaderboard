@@ -11,7 +11,8 @@ import {
     REGISTER_ERRORS,
     ERRORS,
     REDIRECT_DATA_CLASS,
-    GET_STUDENTS
+    GET_STUDENTS,
+    GET_GITHUB_DATA
 } from "../actions/";
 
 const initialState = {
@@ -29,7 +30,8 @@ const initialState = {
     allClasses: null,
     allStudents: null,
     fetchSuccess: false,
-    fetchClasses: null
+    fetchClasses: null,
+    githubData: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -45,15 +47,23 @@ const studentReducer = (state = initialState, action) => {
                     ...state.user,
                     token: action.payload,
                     username: action.username,
-                    id: action.id
+                    id: action.id,
+                    organization: action.organization
                 },
+                organization: action.organization,
                 successfulLogin: action.successfulLogin
                 // expiration: action.expiration
                 // error: {}
             });
         case LOGOUT_ACTION:
             return Object.assign({}, state, {
-                successfulLogin: action.successfulLogin
+                successfulLogin: action.successfulLogin,
+                allStudents: null,
+                allClasses: null,
+                classlist_students: null,
+                fetchSuccess: false,
+                user_logged_in: null,
+                error: null
             });
         case LOGIN_ERRORS:
             return Object.assign({}, state, {
@@ -90,7 +100,8 @@ const studentReducer = (state = initialState, action) => {
                     students: action.payload
                 },
                 allClasses: null,
-                classlist_students: null
+                classlist_students: null,
+                allStudents: null
             });
         case GET_CLASS_STUDENTS:
             return Object.assign({}, state, {
@@ -113,7 +124,12 @@ const studentReducer = (state = initialState, action) => {
             });
         case GET_STUDENTS:
             return Object.assign({}, state, {
-                allStudents: action.payload
+                allStudents: action.payload,
+                githubData: action.githubData
+            });
+        case GET_GITHUB_DATA:
+            return Object.assign({}, state, {
+                githubData: action.payload
             })
         default:
             return state;

@@ -8,9 +8,22 @@ const Admin = new Schema({
     },
     password: {
         type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    organization: {
+        type: String,
         required: true,
-        select: false
+        unique: true
+    },
+    createdOn: {
+        type: Date,
+        default: Date.now(),
+        required: true
     }
 });
 
-module.exports = User = mongoose.model("admin", Admin);
+module.exports = mongoose.model("admin", Admin);
