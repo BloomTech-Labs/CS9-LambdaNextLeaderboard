@@ -37,19 +37,20 @@ class Nav extends Component {
         };
     }
 
+
     handleOpenModal = (e, {content}) => {
         this.setState({activeItem: content, openModal: true});
     };
 
-    handleCloseModal = () => {
-        this.setState({activeItem: "", openModal: false});
-        this.props.registerErrors.username = "";
-        this.props.registerErrors.email = "";
-        this.props.registerErrors.password = "";
-        this.props.registerErrors.password2 = "";
-        this.props.loginErrors.username = "";
-        this.props.loginErrors.password = "";
-    };
+  handleCloseModal = () => {
+    this.setState({ activeItem: "", openModal: false });
+    // this.props.registerErrors.username = "";
+    // this.props.registerErrors.email = "";
+    // this.props.registerErrors.password = "";
+    // this.props.registerErrors.password2 = "";
+    // this.props.loginErrors.username = "";
+    // this.props.loginErrors.password = "";
+  };
 
     handleMenuItemClick = (e, {name}) => {
         this.setState({activeItem: name});
@@ -74,6 +75,7 @@ class Nav extends Component {
             password2: this.state.RegisterPassword2
         });
 
+
         this.setState({RegisterPassword: "", RegisterPassword2: ""});
     };
 
@@ -82,6 +84,7 @@ class Nav extends Component {
             username: this.state.SignInUsername,
             password: this.state.SignInPassword
         });
+
 
         this.setState({SignInPassword: "", SignInUsername: ""});
     };
@@ -93,24 +96,29 @@ class Nav extends Component {
         this.props.history.push("/");
     };
 
-    componentWillUpdate = nextProps => {
-        console.log("will update", nextProps);
-        if (
-            nextProps.successfulLogin &&
-            (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
-        ) {
-            this.setState({SignInUsername: "", SignedIn: true, openModal: false});
-            this.props.history.push("/classlist");
-        }
 
-        if (
-            nextProps.successfulRegister &&
-            this.state.openModal &&
-            this.state.activeItem === "Register"
-        ) {
-            this.setState({activeItem: "Sign In", RegisterUsername: ""});
-        }
-    };
+  componentWillUpdate = nextProps => {
+    console.log("will update", nextProps);
+    if (
+      nextProps.successfulLogin &&
+      (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
+    ) {
+      this.setState({ SignInEmail: "", SignedIn: true, openModal: false });
+      this.props.history.push("/classlist");
+    }
+
+    // if (
+    //   nextProps.successfulRegister &&
+    //   this.state.openModal &&
+    //   this.state.activeItem === "Register"
+    // ) {
+    //   this.setState({
+    //     activeItem: "Sign In",
+    //     RegisterUsername: "",
+    //     RegisterEmail: ""
+    //   });
+    // }
+  };
 
     render() {
         const {activeItem} = this.state;
@@ -336,6 +344,8 @@ class Nav extends Component {
             </nav>
         );
     }
+
+
 }
 
 const mapStateToProps = state => {

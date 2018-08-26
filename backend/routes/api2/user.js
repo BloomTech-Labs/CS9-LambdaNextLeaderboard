@@ -63,12 +63,12 @@ router.post("/register", (req, res) => {
 // @access  Public
 router.post("/login", (req, res) => {
     const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
-    const {errors, isValid} = validateLogin(data);
+    // const {errors, isValid} = validateLogin(data);
 
     // Validation Check
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
+    // if (!isValid) {
+    //     return res.status(400).json(errors);
+    // }
 
     const username = data.username;
     const password = data.password;

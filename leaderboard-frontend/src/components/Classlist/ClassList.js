@@ -94,6 +94,7 @@ class ClassList extends Component {
                                     student={students_in_class}
                                     classID={this.props.classdata[index]._id}
                                 />
+
                             </div>
                         );
                     })}
@@ -117,7 +118,7 @@ export function loadDataAsProps({store, ownProps}) {
     return {
         classdata: () => dispatch(queryAllMyData(path)),
         students: () => dispatch(queryStudents()),
-        github: () => dispatch(queryGithub())
+        // github: () => dispatch(queryGithub())
     };
 }
 
