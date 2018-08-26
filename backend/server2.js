@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(fileUpload());
-
+app.use(require('sanitize').middleware);
 
 
 
