@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 // import routes
 const users = require("./routes/api/user");
 const classes = require("./routes/api/class");
-// const student = require("./routes/api2/student");
+
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
 
@@ -45,12 +45,14 @@ const corsOptions = {
 const configureServer = app => {
     app.use(cors(corsOptions));
     app.use(bodyParser.json());
+
 };
 
 const paymentApi = require('./billing/payment');
 
 const configureRoutes = app => {
     paymentApi(app);
+
 };
 
 

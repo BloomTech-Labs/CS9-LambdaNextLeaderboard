@@ -15,6 +15,7 @@ class LandingPage extends Component {
         super(props)
         this.state = {
 
+
         }
     }
 

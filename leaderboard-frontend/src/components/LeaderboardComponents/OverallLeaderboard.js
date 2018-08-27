@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import { Container, Header, Image, Table } from "semantic-ui-react";
 
-const colors = [
-  "red",
-  "orange",
-  "yellow",
-  "olive",
-  "green",
-  "teal",
-  "blue",
-  "violet",
-  "purple",
-  "pink",
-  "brown",
-  "grey",
-  "black"
-];
+// const colors = [
+//   "red",
+//   "orange",
+//   "yellow",
+//   "olive",
+//   "green",
+//   "teal",
+//   "blue",
+//   "violet",
+//   "purple",
+//   "pink",
+//   "brown",
+//   "grey",
+//   "black"
+// ];
 
 class OverallLeaderboard extends Component {
   constructor(props) {

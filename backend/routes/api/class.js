@@ -71,6 +71,7 @@ setInterval(async () => {
 }, 5000);
 
 
+
 // @route   GET api/classes/test
 // @desc    Tests classes route
 // @access  Private

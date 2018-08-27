@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {connectAsync} from "iguazu";
 import {queryMyData, queryStudents} from "../../actions";
 
+
 import "./StudentList.css";
 import StudentsDisplay from "./StudentsDisplay";
 
@@ -11,6 +12,7 @@ class StudentList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+
 
         }
     }
@@ -48,7 +50,9 @@ class StudentList extends Component {
                 console.log('each', each, i, count)
                 students.push(each)
                 // return each
+                return false;
             }
+            return false;
         })
         console.log("student length", students)
         if (students[0]) {
@@ -82,6 +86,7 @@ class StudentList extends Component {
 
 function loadDataAsProps({store, ownProps}) {
     const {dispatch} = store;
+
     // console.log('ownProps', ownProps.props.props.match.path)
     let path = ownProps.props.props.match.params.name
 

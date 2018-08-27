@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+
 import {connect} from 'react-redux'
 import {redirectDataClass} from '../../actions'
 import './ClassList.css'
@@ -7,6 +8,7 @@ class CardClass extends Component {
     constructor(props) {
         super(props);
         this.state = {
+
 
         }
     }
@@ -51,7 +53,8 @@ class CardClass extends Component {
         );
     }
 }
-const mapStateToProps = state => {
-    errors: state.errors
-}
-export default connect(mapStateToProps, {redirectDataClass})(CardClass)
+// const mapStateToProps = state => {
+//     errors: state.errors
+// }
+export default connect({redirectDataClass})(CardClass)
+// export default connect(mapStateToProps, {redirectDataClass})(CardClass)

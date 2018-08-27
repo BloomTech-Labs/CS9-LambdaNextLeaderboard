@@ -1,6 +1,7 @@
 //________MODULES________
 import React, {Component} from 'react'
 import {connectAsync} from "iguazu";
+
 import {queryAllMyData, queryStudents, queryGithub} from "../../actions";
 //________STYLING________
 import './ClassList.css'
@@ -14,6 +15,7 @@ class ClassList extends Component {
         this.state = {
 
         }
+
 
     }
 
@@ -109,6 +111,7 @@ class ClassList extends Component {
 // export default ClassList;
 export function loadDataAsProps({store, ownProps}) {
     const {dispatch } = store;
+
     const path = "/"; // Use the actual path when it's created as needed
     console.log(ownProps);
     return {

@@ -52,7 +52,9 @@ function RightContent(props) {
 class CreateEdit extends React.Component {
     constructor(props) {
         super(props)
-
+        this.state={
+            
+        }
     }
 
     componentDidMount() {
