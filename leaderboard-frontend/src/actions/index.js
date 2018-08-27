@@ -436,3 +436,32 @@ export const addStudent = obj => {
             .catch(err => dispatch({type: ERRORS, payload: err}));
     };
 };
+
+export const postCsvClass = (csvFile, classname) => {
+    // let formData = new FormData();
+  
+    // formData.append('file', csv)
+    // console.log(formData);
+  
+    const token = localStorage.getItem("token");
+  
+    return dispatch => {
+      const options = {
+        method: "POST",
+        headers: { "content-type": "application/json", Authorization: token },
+        data: csvFile,
+        url: `${CLASS_URL}${classname}/importcsvTEST`
+      };
+  
+      axios(options)
+        .then(resp => {
+          localStorage.setItem("user", resp.data.name);
+          dispatch({
+            type: ADD_CLASS,
+            user: resp.data.name,
+            class_name: resp.student
+          });
+        })
+        .catch(err => dispatch({ type: ERRORS, payload: err }));
+    };
+  };
