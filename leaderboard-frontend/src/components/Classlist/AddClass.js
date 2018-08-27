@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+// import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import {Button, Icon, Input} from 'semantic-ui-react'
 
 import {addClass, getClassesStudentsAction} from "../../actions";
 
-'./ClassList.css'
+import './ClassList.css'
 
 class AddClass extends Component {
     constructor(props) {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
+// import {connect} from "react-redux";
 import {Dropdown, Menu, Button, Modal} from 'semantic-ui-react'
 
 
@@ -60,7 +60,8 @@ class StudentsDisplay extends Component {
     }
 
     render() {
-        const { open, closeOnEscape, closeOnDimmerClick } = this.state
+        // const { open, closeOnEscape, closeOnDimmerClick } = this.state
+        const { closeOnEscape, closeOnDimmerClick } = this.state
         return (
             <div className="Toggle">
                 {/*<h5>Class: {this.props.class}</h5>*/}
@@ -146,8 +147,8 @@ class StudentsDisplay extends Component {
 }
 
 
-const mapStateToProps = state => {
-    return {}
-}
+// const mapStateToProps = state => {
+//     return {}
+// }
 
 export default StudentsDisplay
