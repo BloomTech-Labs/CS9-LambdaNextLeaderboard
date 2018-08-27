@@ -94,6 +94,7 @@ export const getGithubDataAction = () => {
                 dispatch({
                     type: GET_GITHUB_DATA,
                     payload: res.data,
+                    githubStats: res.data
                 });
             })
             .catch(err => {

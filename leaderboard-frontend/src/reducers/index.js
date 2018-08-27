@@ -128,9 +128,12 @@ const studentReducer = (state = initialState, action) => {
                 githubData: action.githubData
             });
         case GET_GITHUB_DATA:
+
             return Object.assign({}, state, {
-                githubData: action.payload
+                githubData: action.payload,
+                gitStats: action.payload.stats
             })
+
         default:
             return state;
     }

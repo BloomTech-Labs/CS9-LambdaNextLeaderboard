@@ -23,13 +23,36 @@ async function fetchGithubData() {
             }
         })
         .then(res => {
+            let pushCount;
+            let forkCount;
+            let pullRequestCount;
+            let createCount;
             const data = res.data;
 
             // return _.chain(data)
             const distinctSize  = _.map(data, _.property('payload.distinct_size'));
             const size = _.map(data, _.property('payload.size'));
-            const created_at = _.map(data, _.property('created_at'));
-            return ({'size': size, 'distinct size': distinctSize, 'created': created_at});
+            let created_at = _.map(data, _.property('created_at'));
+            // created_at = Date.now() - created_at;
+
+            let stats = _.map(data, _.property('type'));
+            // type.forEach((typed, i) => {
+            //     if (typed === 'PushEvent') {
+            //         pushCount++
+            //     } else if (typed === 'ForkEvent') {
+            //         forkCount++
+            //     } else if (typed === 'PullRequestEvent') {
+            //         pullRequestCount++
+            //     } else if (typed === 'CreateEvent') {
+            //         createCount++
+            //     } else {
+            //
+            //     }
+            //     // return
+            //     console.log(typed)
+            // })
+
+            return ({ 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats});
             // return storage
         })
         .catch(err => console.log(err));
@@ -40,19 +63,14 @@ async function fetchGithubData() {
 //     storage = await fetchGithubData();
 //     return storage
 // }
-const fetch =() => {
-    let set = setInterval(async () => {
+ setInterval(async () => {
         console.log("Fetching github data");
         storage = await fetchGithubData();
         console.log("Finished");
         console.log(storage)
-        stop()
-    }, 10);
-}
+    }, 5000);
 
-const stop = () => {
-    clearImmediate(set)
-}
+
 // @route   GET api/classes/test
 // @desc    Tests classes route
 // @access  Private

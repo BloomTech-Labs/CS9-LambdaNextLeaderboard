@@ -44,10 +44,6 @@ class ClassList extends Component {
             localStorage.removeItem("invalid");
             this.props.props.props.history.push('/')
         }
-        console.log(this.props)
-
-
-        console.log(localStorage.getItem("invalid"))
 
         if (this.props.isLoading()) {
             if (localStorage.getItem("invalid")) {
@@ -118,7 +114,7 @@ export function loadDataAsProps({store, ownProps}) {
     return {
         classdata: () => dispatch(queryAllMyData(path)),
         students: () => dispatch(queryStudents()),
-        // github: () => dispatch(queryGithub())
+        github: () => dispatch(queryGithub())
     };
 }
 
