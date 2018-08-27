@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 // import {connect} from "react-redux";
 import {connectAsync} from "iguazu";
-import {getClassStudentsAction, queryMyData, queryStudents} from "../../actions";
+import {queryMyData, queryStudents} from "../../actions";
 
 import "./StudentList.css";
 import StudentsDisplay from "./StudentsDisplay";
@@ -10,6 +10,9 @@ import StudentsDisplay from "./StudentsDisplay";
 class StudentList extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+
+        }
     }
 
     componentDidMount() {
@@ -78,7 +81,7 @@ class StudentList extends Component {
 
 
 function loadDataAsProps({store, ownProps}) {
-    const {dispatch, getState} = store;
+    const {dispatch} = store;
     // console.log('ownProps', ownProps.props.props.match.path)
     let path = ownProps.props.props.match.params.name
 

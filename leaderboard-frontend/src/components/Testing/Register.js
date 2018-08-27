@@ -1,5 +1,5 @@
 import React from 'react';
-import { createUserAction, getNotesAction } from '../../actions';
+import { createUserAction } from '../../actions';
 import { connect } from 'react-redux';
 const mainStyle = {
     textAlign: 'center',

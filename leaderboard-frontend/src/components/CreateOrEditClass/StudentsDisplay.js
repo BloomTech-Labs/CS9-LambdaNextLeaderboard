@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
 import {Dropdown, Menu, Button, Modal} from 'semantic-ui-react'
 
 
@@ -146,8 +145,5 @@ class StudentsDisplay extends Component {
 }
 
 
-const mapStateToProps = state => {
-    return {}
-}
 
 export default StudentsDisplay
