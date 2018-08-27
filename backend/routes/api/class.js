@@ -63,12 +63,13 @@ async function fetchGithubData() {
 //     storage = await fetchGithubData();
 //     return storage
 // }
- setInterval(async () => {
-        console.log("Fetching github data");
-        storage = await fetchGithubData();
-        console.log("Finished");
-        console.log(storage)
-    }, 5000);
+setInterval(async () => {
+    console.log("Fetching github data");
+    storage = await fetchGithubData();
+    console.log("Finished");
+    console.log(storage)
+}, 5000);
+
 
 
 // @route   GET api/classes/test
