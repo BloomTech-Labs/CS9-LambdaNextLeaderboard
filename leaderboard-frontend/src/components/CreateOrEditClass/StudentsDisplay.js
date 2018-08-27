@@ -63,6 +63,7 @@ class StudentsDisplay extends Component {
         const { open, closeOnEscape, closeOnDimmerClick } = this.state
         return (
             <div className="Toggle">
+                {/*<h5>Class: {this.props.class}</h5>*/}
 
                 <Menu style={{marginTop: "10%",background: "#eeee", padding: "2%"}} >
                     <Dropdown text={this.props.student.firstname + ' ' + this.props.student.lastname}>

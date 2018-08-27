@@ -26,6 +26,7 @@ class AddClass extends Component {
             name: this.state.class_name.toUpperCase()
         }
         console.log(this.state.class_name)
+        console.log("Fired new class", obj)
         this.props.addClass(obj)
         this.setState({addNew: false, class_name: ''})
     }
@@ -59,12 +60,32 @@ class AddClass extends Component {
                 {/*<button onClick={this.handleSubmit} className="Add_Submit">Submit</button>*/}
             </div>)
         }
-        else
-            return (
+        else if (this.state.addNew === true && this.props.solo === "yes") {
+            return (<div className="APP__ADDCLASS__SOLO">
+
+                <h1>Enter new class name</h1>
+
+                <Input
+                    focus
+                    type="text"
+                    placeholder="Enter classname"
+                    name="class_name"
+                    className="Add_Input"
+                    value={this.state.class_name}
+                    onChange={this.handleInput}
+                />
+                <Button secondary onClick={this.handleSubmit} className="Add_Submit">Submit</Button>
+
+            </div>)
+        }
+           else return (
                 <div>
 
                     <div className="APP__ADDCLASS__SOLO">
-                        <Icon onClick={this.addNew} className="APP__ADDCLASS_ADDBUTTON" name="plus circle huge"/>
+                        {/*<button onClick={this.addNew} className="APP__ADDCLASS_ADDBUTTON" name="plus circle huge">*/}
+                            <Icon onClick={this.addNew} className="APP__ADDCLASS_ADDBUTTON" name="plus circle huge"/>
+                        {/*</button>*/}
+
 
                         {/*<button className="APP__ADDCLASS_ADDBUTTON">+</button>*/}
                     </div>

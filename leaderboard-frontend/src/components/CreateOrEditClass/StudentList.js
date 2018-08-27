@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 // import {connect} from "react-redux";
-import { connectAsync } from "iguazu";
-import { getClassStudentsAction, queryMyData } from "../../actions";
+import {connectAsync} from "iguazu";
+import {getClassStudentsAction, queryMyData, queryStudents} from "../../actions";
 
 import "./StudentList.css";
 import StudentsDisplay from "./StudentsDisplay";
 
 
 class StudentList extends Component {
-  constructor(props) {
-    super(props);
-  }
+    constructor(props) {
+        super(props);
+    }
 
     componentDidMount() {
         if (localStorage.getItem("invalid")) {
@@ -28,41 +28,65 @@ class StudentList extends Component {
 
 
     render() {
-    if (this.props.isLoading()) {
-      return <div>Loading...</div>;
-    }
+        if (this.props.isLoading()) {
+            return <div>Loading...</div>;
+        }
 
-    if (this.props.loadedWithErrors()) {
-      return <div>Oh no! Something went wrong</div>;
+        if (this.props.loadedWithErrors()) {
+            return <div>Oh no! Something went wrong</div>;
+        }
+        console.log(this.props.props.props.match.params.name)
+        let count = 0;
+        const students = []
+        this.props.students.map((each, i) => {
+            // return each
+            if (each.classname === this.props.props.props.match.params.name) {
+                count++
+                console.log('each', each, i, count)
+                students.push(each)
+                // return each
+            }
+        })
+        console.log("student length", students)
+        if (students[0]) {
+            return (
+                <div className="main">
+                    <h5 style={{marginLeft: "1%"}}>StudentList</h5>
+
+                    {students.map((student_data, i) => {
+                        return (
+                            <StudentsDisplay
+                                key={student_data + i}
+                                student={student_data}
+                                class={this.props.myData.className}
+                            />
+                        );
+                    })}
+                </div>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <h1>No Students</h1>
+                </div>
+            )
+        }
+
     }
-    const classlist_students = this.props.myData;
-    return (
-      <div className="main">
-        <h5 style={{ marginLeft: "1%" }}>StudentList</h5>
-        {classlist_students.students.map((student_data, i) => {
-          return (
-            <StudentsDisplay
-              key={student_data + i}
-              student={student_data}
-              class={classlist_students.className}
-            />
-          );
-        })}
-      </div>
-    );
-  }
 }
 
 
-function loadDataAsProps({ store, ownProps }) {
-  const { dispatch, getState } = store;
-  // console.log('ownProps', ownProps.props.props.match.path)
-  let path = ownProps.props.props.match.params.name
+function loadDataAsProps({store, ownProps}) {
+    const {dispatch, getState} = store;
+    // console.log('ownProps', ownProps.props.props.match.path)
+    let path = ownProps.props.props.match.params.name
 
-  console.log('path', path);
-  return {
-    myData: () => dispatch(queryMyData(path))
-  };
+    console.log('path', path);
+    return {
+        students: () => dispatch(queryStudents(path)),
+        myData: () => dispatch(queryMyData(path))
+    };
 }
 
-export default connectAsync({ loadDataAsProps })(StudentList);
+export default connectAsync({loadDataAsProps})(StudentList);
