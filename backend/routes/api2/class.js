@@ -244,7 +244,7 @@ router.put("/:name/importcsv", (req, res) => {
         }
     });
 
-    ClassModel.findOne({name: req.params.name}).then(aClass => {
+    StudentModel.find({_class: req.params._class}).then(aClass => {
         if (!aClass) {
             res.status(404).json({className: "That class does not exist"});
         } else {
@@ -277,7 +277,7 @@ router.post("/:name/importcsv", (req, res) => {
         }
     });
 
-    ClassModel.findOne({name: req.params.name}).then(aClass => {
+    ClassModel.find({}).then(aClass => {
         if (!aClass) {
             res.status(404).json({className: "That class does not exist"});
         } else {
