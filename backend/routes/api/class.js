@@ -1,92 +1,219 @@
 const router = require("express").Router();
 
-const ClassModel = require("../../models/Class");
+const ClassModel = require("../../models/ClassLS");
+const StudentModel = require("../../models/Student")
 const validateAddClass = require("../../validation/classes/addclass");
 const validateAddStudent = require("../../validation/classes/addstudent");
+// const githubData = require("../../data/githubData");
+require("dotenv").config();
+const axios = require("axios");
+const _ = require("lodash");
+const clientID = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+let storage;
+
+async function fetchGithubData() {
+    let authStr = "Bearer " + process.env.GITHUB_AUTH_TOKEN; // Add token
+
+    return await axios
+        .get(`https://api.github.com/users/abrambueno1992/events/public`, {
+            // Add user github handle
+            headers: {
+                Authorization: authStr
+            }
+        })
+        .then(res => {
+            let pushCount;
+            let forkCount;
+            let pullRequestCount;
+            let createCount;
+            const data = res.data;
+
+            // return _.chain(data)
+            const distinctSize  = _.map(data, _.property('payload.distinct_size'));
+            const size = _.map(data, _.property('payload.size'));
+            let created_at = _.map(data, _.property('created_at'));
+            // created_at = Date.now() - created_at;
+
+            let stats = _.map(data, _.property('type'));
+            // type.forEach((typed, i) => {
+            //     if (typed === 'PushEvent') {
+            //         pushCount++
+            //     } else if (typed === 'ForkEvent') {
+            //         forkCount++
+            //     } else if (typed === 'PullRequestEvent') {
+            //         pullRequestCount++
+            //     } else if (typed === 'CreateEvent') {
+            //         createCount++
+            //     } else {
+            //
+            //     }
+            //     // return
+            //     console.log(typed)
+            // })
+
+            return ({ 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats});
+            // return storage
+        })
+        .catch(err => console.log(err));
+}
+// Int storage var
+
+// const fetch = async () => {
+//     storage = await fetchGithubData();
+//     return storage
+// }
+setInterval(async () => {
+    console.log("Fetching github data");
+    storage = await fetchGithubData();
+    console.log("Finished");
+    console.log(storage)
+}, 5000);
+
 
 // @route   GET api/classes/test
 // @desc    Tests classes route
 // @access  Private
-router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
-// @route   GET api/classes
+
+router.get("/test", (req, res) => res.json({msg: "Classes route working"}));
+
+// @route   POST api/classes
 // @desc    Gets all classes
 // @access  Private
-router.get("/", (req, res) => {
-  ClassModel.find()
-    .then(classes => res.json(classes))
-    .catch(err => res.status(400).json({ catchErr: err }));
+router.post("/", (req, res) => {
+    ClassModel.find({_admin: req.body.id})
+        .then(classes => res.json(classes))
+        .catch(err => res.status(400).json({catchErr: err}));
 });
+
+
+router.post("/all", (req, res) => {
+    StudentModel.find({_admin: req.body.id})
+    // .populate('_class')
+        .then(students => res.json(students))
+        // .then( () => res.send(githubData))
+        .catch(err => res.status(400).json({noUsers: err}));
+})
+
+router.post("/data", (req, res) => {
+    StudentModel.find({_admin: req.body.id})
+    // .populate('_class')
+        .then(students => res.json(storage))
+        // .then( () => res.send(githubData))
+        .catch(err => res.status(400).json({noUsers: err}));
+})
 
 // @route   GET api/classes/:name
 // @desc    Gets a class by id
 // @access  Private
 router.get("/:name", (req, res) => {
-  ClassModel.findOne({ name: req.params.name })
-    .then(aClass => {
-      if (!aClass) {
-        res.status(404).json({ className: "That class does not exist" });
-      } else {
-        res.json(aClass);
-      }
-    })
-    .catch(err => {
-      res.status(400).json({ catchErr: err });
-    });
+    ClassModel.findOne({name: req.params.name})
+        .then(aClass => {
+            if (!aClass) {
+                res.status(404).json({className: "That class does not exist"});
+            } else {
+                res.json(aClass);
+            }
+        })
+        .catch(err => {
+            res.status(400).json({catchErr: err});
+        });
 });
 
 // @route   POST api/classes/addclass
 // @desc    Creates new class
 // @access  Private
 router.post("/addclass", (req, res) => {
-  const { errors, isValid } = validateAddClass(req.body);
+    // const { errors, isValid } = validateAddClass(req.body);
 
-  // Validation Check
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+    // Validation Check
+    // if (!isValid) {
+    //   return res.status(400).json(errors);
+    // }
 
-  ClassModel.findOne({ name: req.body.name }).then(aClass => {
-    if (aClass) {
-      errors.name = "Class name already exists";
-      return res.status(400).json(errors);
-    } else {
-      const newClass = new ClassModel({
-        name: req.body.name
-      });
+    ClassModel.find({_admin: req.body._admin})
+        .where('name')
+        // .equals(req.body.name)
+        .then(aClass => {
+            aClass.forEach(each => {
+                if (each.name === req.body.name) {
+                    errors.name = "Class name already exists";
+                    return res.status(400).json(errors);
+                }
+            })
 
-      newClass
-        .save()
-        .then(created => res.json(created))
-        .catch(err => res.status(400).json({ catchErr: err }));
-    }
-  });
+            const {name, _admin, _coadmin} = req.body;
+            const newClass = new ClassModel({name, _admin, _coadmin});
+
+            newClass
+                .save()
+                .then(created => res.json(created))
+                .catch(err => res.status(400).json({catchErr: err}));
+            // }
+        });
 });
 
-// @route   PUT api/classes/:name/addstudent
+// @route   POST api/classes/:name/addstudent
 // @desc    Adds a student to the class
 // @access  Private
-router.put("/:name/addstudent", (req, res) => {
-  const { errors, isValid } = validateAddStudent(req.body);
+router.post("/:name/addstudent", (req, res) => {
+    // const { errors, isValid } = validateAddStudent(req.body);
+    const {_class, firstname, lastname, email, github, huntr, classname, _admin} = req.body;
+    // const students = {_class, firstname, lastname, email, github, huntr}
 
-  // Validation Check
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+    // Validation Check
+    // if (!isValid) {
+    //   return res.status(400).json(errors);
+    // }
 
-  ClassModel.findOne({ name: req.params.name }).then(aClass => {
-    if (!aClass) {
-      res.status(404).json({ className: "That class does not exist" });
-    } else {
-      aClass.students.push(req.body);
-      aClass
-        .save()
-        .then(updated => {
-          res.json(updated);
+    StudentModel.find({_admin: req.body._admin}) //.then(aClass => {
+        .then(aStudent => {
+            const check = aStudent.forEach(each => {
+                let errors = null
+                if (each.github === req.body.github) {
+                    let errors = "Student already exists, due to github"
+                        .catch(() => {
+                            return res.status(400).json(errors);
+                        })
+                }
+                if (each.email === req.body.email) {
+                    let errors = "Student already exists, due to email"
+                        .catch(() => {
+                            return res.status(400).json(errors);
+                        })
+                }
+                if (each.huntr === req.body.huntr) {
+                    let errors = "Student already exists, due to huntr"
+                        .catch(() => {
+                            return res.status(400).json(errors);
+                        })
+                }
+                return errors
+            })
+            // if (check === null) {
+            const newStudent = new StudentModel({
+                _class,
+                _admin,
+                firstname,
+                lastname,
+                email,
+                github,
+                huntr,
+                classname
+            })
+            newStudent
+
+                .save()
+                .then(newStu => {
+                    res.status(201).send(newStu)
+                })
+                .catch(err => res.status(400).json({catchErr: err}));
+            // }
+
+            // }
         })
-        .catch(err => res.status(400).json({ catchErr: err }));
-    }
-  });
+
 });
 // router.put("/:name/updatestudent", (req, res) => {
 //   const {errors, isValid} = validateUpdateStudentInput(req.body);
@@ -105,66 +232,66 @@ router.put("/:name/addstudent", (req, res) => {
 // @desc    Adds a csv of students to the class
 // @access  Private
 router.put("/:name/importcsv", (req, res) => {
-  const validData = [];
-  const invalidData = [];
+    const validData = [];
+    const invalidData = [];
 
-  req.body.csvData.forEach(data => {
-    const { errors, isValid } = validateAddStudent(data);
-    if (isValid) {
-      validData.push(data);
-    } else {
-      invalidData.push({ user: data, errors });
-    }
-  });
+    req.body.csvData.forEach(data => {
+        const {errors, isValid} = validateAddStudent(data);
+        if (isValid) {
+            validData.push(data);
+        } else {
+            invalidData.push({user: data, errors});
+        }
+    });
 
-  ClassModel.findOne({ name: req.params.name }).then(aClass => {
-    if (!aClass) {
-      res.status(404).json({ className: "That class does not exist" });
-    } else {
-      validData.forEach(data => {
-        aClass.students.push(data);
-      });
-      aClass
-        .save()
-        .then(updated => {
-          res.json({ updated, invalidData });
-        })
-        .catch(err => res.status(400).json({ catchErr: err }));
-    }
-  });
+    StudentModel.find({_class: req.params._class}).then(aClass => {
+        if (!aClass) {
+            res.status(404).json({className: "That class does not exist"});
+        } else {
+            validData.forEach(data => {
+                aClass.students.push(data);
+            });
+            aClass
+                .save()
+                .then(updated => {
+                    res.json({updated, invalidData});
+                })
+                .catch(err => res.status(400).json({catchErr: err}));
+        }
+    });
 });
 
 // @route   POST api/classes/:name/importcsv
 // @desc    Adds a csv of students to the class
 // @access  Private
 router.post("/:name/importcsv", (req, res) => {
-  const validData = [];
-  const invalidData = [];
+    const validData = [];
+    const invalidData = [];
 
-  req.body.csvData.forEach(data => {
-    const { errors, isValid } = validateAddStudent(data);
-    if (isValid) {
-      validData.push(data);
-    } else {
-      invalidData.push({ user: data, errors });
-    }
-  });
+    req.body.csvData.forEach(data => {
+        const {errors, isValid} = validateAddStudent(data);
+        if (isValid) {
+            validData.push(data);
+        } else {
+            invalidData.push({user: data, errors});
+        }
+    });
 
-  ClassModel.findOne({ name: req.params.name }).then(aClass => {
-    if (!aClass) {
-      res.status(404).json({ className: "That class does not exist" });
-    } else {
-      validData.forEach(data => {
-        aClass.students.push(data);
-      });
-      aClass
-        .save()
-        .then(updated => {
-          res.json({ updated, invalidData });
-        })
-        .catch(err => res.status(400).json({ catchErr: err }));
-    }
-  });
+    ClassModel.find({}).then(aClass => {
+        if (!aClass) {
+            res.status(404).json({className: "That class does not exist"});
+        } else {
+            validData.forEach(data => {
+                aClass.students.push(data);
+            });
+            aClass
+                .save()
+                .then(updated => {
+                    res.json({updated, invalidData});
+                })
+                .catch(err => res.status(400).json({catchErr: err}));
+        }
+    });
 });
 
 module.exports = router;
