@@ -3,12 +3,12 @@ import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  Link,
+  // Switch,
+  // Link,
   withRouter
 } from "react-router-dom";
 import "./App.css";
-import { Container } from "semantic-ui-react";
+// import { Container } from "semantic-ui-react";
 // TODO import axios from 'axios';
 
 //________REACT COMPONENTS________
@@ -16,8 +16,11 @@ import NAVBAR from "./components/Navbar/Nav";
 import CLASSLIST from "./components/Classlist/index";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
-import LEADERBOARD from "./components/Leaderboard/Leaderboard";
-//import BILLING from "./components/Billing/Billing";
+import Register from './components/Testing/Register'
+
+import LeaderBoard from "./components/Leaderboard/LeaderBoard"
+import BILLING from "./components/Billing/Billing";
+
 
 //________STYLING________
 
@@ -47,8 +50,10 @@ class App extends Component {
               exact
               component={withRouter(CREATEEDIT)}
             />
-            <Route exact path="/leaderboard" component={LEADERBOARD} />
-            {/* <Route exact path="/billing" component={BILLING} /> */}
+            <Route exact path="/registertest" component={Register}/>
+             <Route exact path="/billing" component={BILLING} />
+            <Route exact path="/leaderboard" component={LeaderBoard} />
+
             {/*</Switch>*/}
           </div>
         </div>

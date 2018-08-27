@@ -1,10 +1,10 @@
 //________MODULES________
 import React, {Component} from 'react'
-import Fetch from './FetchData'
-import {Link} from 'react-router-dom';
+// import Fetch from './FetchData'
+// import {Link} from 'react-router-dom';
 import {connectAsync} from "iguazu";
-import {connect} from 'react-redux'
-import {queryAllMyData, getClassesStudentsAction} from "../../actions";
+// import {connect} from 'react-redux'
+import {queryAllMyData, queryStudents, queryGithub} from "../../actions";
 //________STYLING________
 import './ClassList.css'
 import CardClass from "./CardClass";
@@ -14,12 +14,15 @@ import AddClass from "./AddClass";
 class ClassList extends Component {
     constructor(props) {
         super(props);
-
+        this.state={
+            
+        }
     }
 
     componentDidMount() {
         if (localStorage.getItem("invalid")) {
             localStorage.removeItem("token");
+            localStorage.removeItem("invalid");
             this.props.props.props.history.push('/')
         }
         if (localStorage.getItem("token") === null) {
@@ -28,6 +31,7 @@ class ClassList extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
+
         if (localStorage.getItem("invalid")) {
             this.props.props.props.history.push('/')
         }
@@ -39,15 +43,14 @@ class ClassList extends Component {
 
     render() {
         if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("invalid");
             this.props.props.props.history.push('/')
         }
-        console.log(this.props)
-
-
-        console.log(localStorage.getItem("invalid"))
 
         if (this.props.isLoading()) {
             if (localStorage.getItem("invalid")) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("invalid");
                 this.props.props.props.history.push('/')
             }
             return <div>Loading...</div>
@@ -56,27 +59,49 @@ class ClassList extends Component {
         if (this.props.loadedWithErrors()) {
             return <div>Oh no! Something went wrong</div>
         }
-        const myData = this.props.myData
+        // const class = this.props.class
+        // const students = this.props.students
 
-        if (this.props.myData) {
-            console.log(this.props.myData)
+        if (this.props.classdata.length > 0) {
+            // console.log('myData', this.props.class[0].name);
+            console.log('students', this.props.students)
+            this.props.students.forEach(each => {
+
+            })
             return (
                 <div className="APP__CLASSLIST">
-                    {this.props.myData.map((myData, index) => {
+                    {/*{this.props.class.length > 0} {*/}
+                    {/**/}
+                    {/*}*/}
+
+
+                    {this.props.classdata.map((each, index) => {
+                        // console.log(this.props.students[index].classname)
+                        const students_in_class = []
+                        this.props.students.forEach(each => {
+                            if (each.classname === this.props.classdata[index].name) {
+                                students_in_class.push(each)
+                            }
+                        })
+                        console.log('array of students', students_in_class)
                         return (
-                            <div key={myData + index}>
-                                <CardClass fetchData={this.fetchData} props={this.props.props.props}
-                                           classname={myData.name}
-                                           students={myData.students}/>
+                            <div key={each + index}>
+                                <CardClass
+                                    props={this.props.props.props}
+                                    classname={this.props.classdata[index].name}
+                                    student={students_in_class}
+                                    classID={this.props.classdata[index]._id}
+                                />
+
                             </div>
                         );
                     })}
-                    <AddClass fetchData={this.fetchData} solo={"no"}/>
+                    <AddClass solo={"no"}/>
 
                 </div>
             );
         } else {  // Highlight "Add a new class", if there are no classes
-            return <AddClass fetchData={this.fetchData} solo={"yes"}/>
+            return <AddClass solo={"yes"}/>
         }
     }
 };
@@ -85,11 +110,14 @@ class ClassList extends Component {
 //________EXPORT________
 // export default ClassList;
 export function loadDataAsProps({store, ownProps}) {
-    const {dispatch, getState, subscribe} = store;
+    const {dispatch} = store;
+    // const {dispatch, getState, subscribe} = store;
     const path = "/"; // Use the actual path when it's created as needed
     console.log(ownProps);
     return {
-        myData: () => dispatch(queryAllMyData(path)),
+        classdata: () => dispatch(queryAllMyData(path)),
+        students: () => dispatch(queryStudents()),
+        github: () => dispatch(queryGithub())
     };
 }
 

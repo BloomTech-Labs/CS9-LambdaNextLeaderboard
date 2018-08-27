@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import {
     Container,
     Grid,
@@ -13,16 +13,28 @@ import "./LandingPage.css";
 class LandingPage extends Component {
     constructor(props) {
         super(props)
+        this.state={
+            
+        }
     }
 
     componentDidMount() {
         if (localStorage.getItem("invalid")) {
             localStorage.removeItem("token");
+            localStorage.removeItem("invalid")
         }
         if (localStorage.getItem("token")) {
             this.props.history.push('/classlist')
         }
     }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("invalid")
+        }
+    }
+
 
     render() {
         return (
