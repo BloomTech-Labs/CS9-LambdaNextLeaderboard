@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
-// import {Link} from "react-router-dom";
+
 import {connect} from 'react-redux'
 import {redirectDataClass} from '../../actions'
 import './ClassList.css'
 import { Button } from 'semantic-ui-react'
-// import { Button, Segment } from 'semantic-ui-react'
 class CardClass extends Component {
     constructor(props) {
-        super(props)
-        this.state={
+        super(props);
+        this.state = {
+
 
         }
     }

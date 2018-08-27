@@ -1,9 +1,7 @@
 //________MODULES________
 import React, {Component} from 'react'
-// import Fetch from './FetchData'
-// import {Link} from 'react-router-dom';
 import {connectAsync} from "iguazu";
-// import {connect} from 'react-redux'
+
 import {queryAllMyData, queryStudents, queryGithub} from "../../actions";
 //________STYLING________
 import './ClassList.css'
@@ -14,9 +12,11 @@ import AddClass from "./AddClass";
 class ClassList extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            
+        this.state = {
+
         }
+
+
     }
 
     componentDidMount() {
@@ -110,8 +110,8 @@ class ClassList extends Component {
 //________EXPORT________
 // export default ClassList;
 export function loadDataAsProps({store, ownProps}) {
-    const {dispatch} = store;
-    // const {dispatch, getState, subscribe} = store;
+    const {dispatch } = store;
+
     const path = "/"; // Use the actual path when it's created as needed
     console.log(ownProps);
     return {

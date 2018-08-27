@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 // import routes
 const users = require("./routes/api/user");
 const classes = require("./routes/api/class");
-// const student = require("./routes/api/student");
+
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
 
@@ -36,21 +36,23 @@ app.use(require('sanitize').middleware);
 const CORS_WHITELIST = require('./billing/frontend');
 // const WHITELIST = [CORS_WHITELIST, 'http://localhost:3000/']
 const corsOptions = {
-  origin: (origin, callback) =>
-    (CORS_WHITELIST.indexOf(origin) !== -1)
-      ? callback(null,true)
-      : callback(new Error('Not allowed by CORS'))
+    origin: (origin, callback) =>
+        (CORS_WHITELIST.indexOf(origin) !== -1)
+            ? callback(null,true)
+            : callback(new Error('Not allowed by CORS'))
 };
 
 const configureServer = app => {
-  app.use(cors(corsOptions));
-  app.use(bodyParser.json());
+    app.use(cors(corsOptions));
+    app.use(bodyParser.json());
+
 };
 
 const paymentApi = require('./billing/payment');
 
 const configureRoutes = app => {
-  paymentApi(app);
+    paymentApi(app);
+
 };
 
 
