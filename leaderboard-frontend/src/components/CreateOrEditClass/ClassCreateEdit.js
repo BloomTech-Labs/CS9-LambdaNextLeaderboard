@@ -4,7 +4,7 @@ import "./CreateEditClass.css";
 import {connect} from "react-redux";
 import {addStudentAction, getClassesStudentsAction} from "../../actions";
 import {Button, Input} from "semantic-ui-react";
-import StudentList from "./StudentList";
+// import StudentList from "./StudentList";
 
 class ClassCreateEdit extends Component {
     constructor(props) {

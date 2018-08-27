@@ -1,12 +1,16 @@
 import React, {Component} from 'react'
-import {Link} from "react-router-dom";
+// import {Link} from "react-router-dom";
 import {connect} from 'react-redux'
 import {redirectDataClass} from '../../actions'
 import './ClassList.css'
-import { Button, Segment } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
+// import { Button, Segment } from 'semantic-ui-react'
 class CardClass extends Component {
     constructor(props) {
         super(props)
+        this.state={
+
+        }
     }
     redirectEdit = () => {
         console.log(this.props.props.history)
@@ -49,7 +53,8 @@ class CardClass extends Component {
         );
     }
 }
-const mapStateToProps = state => {
-    errors: state.errors
-}
-export default connect(mapStateToProps, {redirectDataClass})(CardClass)
+// const mapStateToProps = state => {
+//     errors: state.errors
+// }
+export default connect({redirectDataClass})(CardClass)
+// export default connect(mapStateToProps, {redirectDataClass})(CardClass)
