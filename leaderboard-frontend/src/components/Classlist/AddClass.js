@@ -19,6 +19,7 @@ class AddClass extends Component {
     this.setState({ [e.target.name]: e.target.value });
     console.log(this.state.class_name);
   };
+
   handleSubmit = () => {
     const obj = {
       name: this.state.class_name.toUpperCase()
