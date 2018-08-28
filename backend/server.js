@@ -10,8 +10,8 @@ const bodyParser = require("body-parser");
 
 // import routes
 const admins = require("./routes/api/admin");
+const organizations = require("./routes/api/organization");
 const classes = require("./routes/api/class");
-
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
 
@@ -74,6 +74,12 @@ require("./authentication/passport")(passport);
 
 // Connect routes
 app.use("/api/admins", cors(corsOptions), admins);
+app.use(
+  "/api/organizations",
+  cors(corsOptions),
+  passport.authenticate("jwt", { session: false }),
+  organizations
+);
 app.use(
   "/api/classes",
   cors(corsOptions),

@@ -1,8 +1,10 @@
 const router = require("express").Router();
+const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const Admin = require("../../models/Admin");
+const Organization = require("../../models/Organization");
 const validateRegistration = require("../../validation/admins/registration");
 const validateLogin = require("../../validation/admins/login");
 
@@ -11,7 +13,9 @@ const ACCESS_KEY = process.env.ACCESS_KEY;
 // @route   GET api/admins/test
 // @desc    Tests admins route
 // @access  Public
-router.get("/test", (req, res) => res.json({ msg: "Admins route working" }));
+router.get("/test", (req, res) => {
+  Admin.find().then(all => res.json(all));
+});
 
 // @route   POST api/admins/register
 // @desc    Registers new admin
@@ -26,27 +30,33 @@ router.post("/register", (req, res) => {
   }
 
   const username = data.username;
-  const password = data.password;
   const email = data.email;
+  const password = data.password;
 
   Admin.findOne({ username }).then(admin => {
     if (admin) {
-      errors.username = "Username already exists";
-      return res.status(400).json(errors);
-    } else {
-      const newAdmin = new Admin({ username, password, email });
-
-      bcrypt.genSalt(11, (err, salt) => {
-        bcrypt.hash(newAdmin.password, salt, (err, hash) => {
-          if (err) return res.status(400).json(err);
-          newAdmin.password = hash;
-          newAdmin
-            .save()
-            .then(created => res.json(created))
-            .catch(err => console.log(err));
-        });
-      });
+      errors.username = "That username already exists";
     }
+  });
+
+  Admin.findOne({ Email }).then(admin => {
+    if (admin) {
+      errors.Email = "An account with that email already exists";
+    }
+
+    if (errors) return res.status(400).json(errors);
+    const newAdmin = new Admin({ username, password, email });
+
+    bcrypt.genSalt(11, (err, salt) => {
+      bcrypt.hash(newAdmin.password, salt, (err, hash) => {
+        if (err) return res.status(400).json(err);
+        newAdmin.password = hash;
+        newAdmin
+          .save()
+          .then(created => res.json(created))
+          .catch(err => console.log(err));
+      });
+    });
   });
 });
 
@@ -62,14 +72,14 @@ router.post("/login", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const username = data.username;
+  const email = data.email;
   const password = data.password;
 
-  Admin.findOne({ username })
+  Admin.findOne({ email })
     .select("+password")
     .then(admin => {
       if (!admin) {
-        errors.username = "Invalid Credentials";
+        errors.email = "Invalid Credentials";
         return res.status(400).json(errors);
       }
 
@@ -87,11 +97,61 @@ router.post("/login", (req, res) => {
             });
           });
         } else {
-          errors.username = "Invalid Credentials";
+          errors.email = "Invalid Credentials";
           return res.status(400).json(errors);
         }
       });
     });
 });
+
+// @route   GET api/admins/:id/organizations
+// @desc    Gets all of the admin's organizations
+// @access  Private
+router.get(
+  "/:id/organizations",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+
+    const id = req.params.id;
+
+    Admin.findById(id)
+      .populate("organizations")
+      .then(admin => {
+        if (!admin) {
+          return res.status(404).json({ user: "That user does not exist." });
+        } else {
+          res.json(admin.organizations);
+        }
+      });
+  }
+);
+
+// @route   PUT api/admins/:id/organizations/create
+// @desc    Creates a new organization
+// @access  Private
+router.put(
+  "/:id/organizations/create",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+
+    // ===== organization validation required here =====
+
+    const id = req.params.id;
+    const name = data.name;
+
+    Admin.findById(id).then(admin => {
+      if (!admin) {
+        return res.status(404).json({ user: "That user does not exist." });
+      }
+
+      const newOrg = new Organization({ name, admins: [admin._id] });
+      newOrg.save().then(created => {
+        admin.organizations.push(created._id);
+      });
+    });
+  }
+);
 
 module.exports = router;
