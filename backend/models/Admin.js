@@ -15,12 +15,6 @@ const AdminSchema = new Schema({
     type: String,
     required: true
   },
-  organizations: [
-    {
-      type: ObjectId,
-      ref: "organizations"
-    }
-  ],
   createdOn: {
     type: Date,
     default: Date.now()
