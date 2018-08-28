@@ -16,6 +16,7 @@ export const REDIRECT_DATA_CLASS = "REDIRECT_DATA_CLASS";
 export const GET_STUDENTS = "GET_STUDENTS"
 export const GET_GITHUB_DATA = "GET_GITHUB_DATA"
 export const EDIT_STUDENT = "EDIT_STUDENT"
+export const REMOVE_STUDENT = "REMOVE_STUDENT"
 
 
 const USER_URL = process.env.REACT_APP_USER_URL;
@@ -322,6 +323,35 @@ export const editStudentAction = student => {
     })
 
     }
+}
+export const removeStudentAction = (classname, studentID) => {
+
+    // const objID = {
+    //     name: obj.name,
+    //     _admin: localStorage.getItem("adminID")
+    // }
+    const token = localStorage.getItem("token");
+    return dispatch => {
+        const optionTwo = {
+            method: "DELETE",
+            headers: {"content-type": "application/json", Authorization: token},
+            data: studentID,
+            url: `${CLASS_URL}${classname}/deletestudent`
+        };
+
+        axios(optionTwo)
+            .then(res => {
+                // localStorage.setItem("user", resp.data.name);
+
+                dispatch({
+                    type: REMOVE_STUDENT,
+                    payload: res.data
+                })
+                // getClassesStudentsAction()
+
+            })
+            .catch(err => dispatch({type: ERRORS, payload: err}));
+    };
 }
 export const createUserAction = obj => {
     return dispatch => {

@@ -23,46 +23,50 @@ async function fetchGithubData() {
             }
         })
         .then(res => {
-            let pushCount;
-            let forkCount;
-            let pullRequestCount;
-            let createCount;
+            let pushCount = 0;
+            let forkCount = 0;
+            let pullRequestCount = 0;
+            let createCount = 0;
+            let commitsByUser = 0;
+            let totalCommits = 0;
             const data = res.data;
 
             // return _.chain(data)
             const distinctSize  = _.map(data, _.property('payload.distinct_size'));
             const size = _.map(data, _.property('payload.size'));
             let created_at = _.map(data, _.property('created_at'));
-            // created_at = Date.now() - created_at;
 
             let stats = _.map(data, _.property('type'));
-            // type.forEach((typed, i) => {
-            //     if (typed === 'PushEvent') {
-            //         pushCount++
-            //     } else if (typed === 'ForkEvent') {
-            //         forkCount++
-            //     } else if (typed === 'PullRequestEvent') {
-            //         pullRequestCount++
-            //     } else if (typed === 'CreateEvent') {
-            //         createCount++
-            //     } else {
-            //
-            //     }
-            //     // return
-            //     console.log(typed)
-            // })
+            stats.forEach((typed, i) => {
+                if (typed === 'PushEvent') {
+                    pushCount++
+                } else if (typed === 'ForkEvent') {
+                    forkCount++
+                } else if (typed === 'PullRequestEvent') {
+                    pullRequestCount++
+                } else if (typed === 'CreateEvent') {
+                    createCount++
+                } else {
 
-            return ({ 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats});
-            // return storage
+                }
+            })
+            size.forEach((each, i) => {
+
+                if (each) {
+                    totalCommits += each
+                }
+            })
+            distinctSize.forEach((each, i )=> {
+                if (each) {
+                    commitsByUser += each
+                }
+            })
+
+            return ({'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats});
         })
         .catch(err => console.log(err));
 }
-// Int storage var
 
-// const fetch = async () => {
-//     storage = await fetchGithubData();
-//     return storage
-// }
 setInterval(async () => {
     console.log("Fetching github data");
     storage = await fetchGithubData();
@@ -241,6 +245,17 @@ router.put("/:name/updatestudent", (req, res) => {
     //
     // let {ID } = req.body;
     // let
+})
+router.delete("/:name/deletestudent", (req, res) => {
+    const {_id} = req.body;
+
+        StudentModel.findByIdAndRemove(_id)
+            .then(note => {
+                res.status(201).send(note)
+            })
+            .catch(err => {
+                res.status(500).json(err);
+            })
 })
 
 // @route   PUT api/classes/:name/importcsv
