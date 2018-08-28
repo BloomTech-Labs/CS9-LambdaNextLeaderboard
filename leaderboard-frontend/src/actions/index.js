@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 export const CREATE_USER = "CREATE_USER";
 export const LOGIN_ACTION = "LOGIN_ACTION";
 export const LOGOUT_ACTION = "LOGOUT_ACTION";
-export const UPDATE_USER = "UPDATE_USER";
+export const UPDATE_STUDENT = "UPDATE_STUDENT";
 export const ADD_CLASS = "ADD_CLASS";
 export const ADD_STUDENT = "ADD_STUDENT";
 export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
@@ -15,6 +15,7 @@ export const ERRORS = "ERRORS";
 export const REDIRECT_DATA_CLASS = "REDIRECT_DATA_CLASS";
 export const GET_STUDENTS = "GET_STUDENTS"
 export const GET_GITHUB_DATA = "GET_GITHUB_DATA"
+export const EDIT_STUDENT = "EDIT_STUDENT"
 
 
 const USER_URL = process.env.REACT_APP_USER_URL;
@@ -283,7 +284,45 @@ export const addStudentAction = (classname, studentData) => {
             });
     };
 };
+export const updateStudentAction = (classname, studentData) => {
+    const token = localStorage.getItem("token");
+    const user = studentData.firstname + " " + studentData.lastname;
+    return dispatch => {
+        const options = {
+            method: "PUT",
+            headers: {"content-type": "application/json", Authorization: token},
+            data: studentData,
+            url: `${CLASS_URL}${classname}/updatestudent`
+        };
+        axios(options)
+            .then(res => {
+                dispatch({
+                    type: UPDATE_STUDENT,
+                    payload: res.students, //Student data object returned
+                    // class_name: res.name,
+                    user: user,
+                });
 
+            })
+            .catch(err => {
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data
+                });
+            });
+    }
+}
+
+
+export const editStudentAction = student => {
+    return dispatch => {
+            dispatch({
+                type: EDIT_STUDENT,
+                payload: student
+    })
+
+    }
+}
 export const createUserAction = obj => {
     return dispatch => {
         axios
@@ -306,50 +345,6 @@ export const createUserAction = obj => {
 };
 
 export const loginAction = (obj, history) => {
-    //Need to KNow the token expiration
-    // let today = new Date();
-    // let time = today.getDate();
-    // let hours = today.getHours();
-    // let minutes = today.getMinutes();
-    // let expire
-    // if (hours < 12) {
-    //     if (hours === 11) {
-    //         hours = 12;
-    //         if (minutes >= 10) {
-    //             expire = hours + ':' + minutes + 'pm';
-    //         } else {
-    //             expire = hours + ':0' + minutes + 'pm';
-    //         }
-    //     } else {
-    //         hours += 1;
-    //         if (minutes >= 10) {
-    //             expire = hours + ':' + minutes + 'am';
-    //         } else {
-    //             expire = hours + ':0' + minutes + 'am';
-    //         }
-    //     }
-    //     //
-
-    // } else {
-    //     if (hours === 23) {
-    //         hours = 12;
-    //         if (minutes >= 10) {
-    //             expire = hours + ':' + minutes + 'am';
-    //         } else {
-    //             expire = hours + ':0' + minutes + 'am';
-    //         }
-
-    //     } else {
-    //         hours = hours - 12 + 1;
-    //         if (minutes >= 10) {
-    //             expire = hours + ':' + minutes + 'pm';
-    //         } else {
-    //             expire = hours + ':0' + minutes + 'pm';
-    //         }
-
-    //     }
-    // }
-
     return dispatch => {
         axios
             .post(`${USER_URL}login`, {token: dataEncrypt(obj)})
