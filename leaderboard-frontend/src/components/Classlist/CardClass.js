@@ -53,8 +53,8 @@ class CardClass extends Component {
         );
     }
 }
-// const mapStateToProps = state => {
-//     errors: state.errors
-// }
-export default connect({redirectDataClass})(CardClass)
-// export default connect(mapStateToProps, {redirectDataClass})(CardClass)
+const mapStateToProps = state => {
+    errors: state.errors
+}
+// export default connect({redirectDataClass})(CardClass)
+export default connect(mapStateToProps, {redirectDataClass})(CardClass)
