@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const Organization = require("../../models/Organization");
 const Class = require("../../models/Class");
+const validateClass = require("../../validation/classes/classValidation");
 
 const ACCESS_KEY = process.env.ACCESS_KEY;
 
@@ -30,8 +31,12 @@ router.get("/:id", (req, res) => {
 // @access  Private
 router.post("/:id/classes/create", (req, res) => {
   const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateClass(data);
 
-  // ===== class validation requried here =====
+  //   Validation Check
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   const id = req.params.id;
   const name = data.name;

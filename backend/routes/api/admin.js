@@ -7,6 +7,7 @@ const Admin = require("../../models/Admin");
 const Organization = require("../../models/Organization");
 const validateRegistration = require("../../validation/admins/registration");
 const validateLogin = require("../../validation/admins/login");
+const validateOrganization = require("../../validation/organizations/organizationValidation");
 
 const ACCESS_KEY = process.env.ACCESS_KEY;
 
@@ -133,8 +134,12 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+    const { errors, isValid } = validateOrganization(data);
 
-    // ===== organization validation required here =====
+    //   Validation Check
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
 
     const id = req.params.id;
     const name = data.name;

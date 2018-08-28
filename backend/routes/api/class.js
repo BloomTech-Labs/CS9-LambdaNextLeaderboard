@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const Class = require("../../models/Class");
 const Student = require("../../models/Student");
+const validateStudent = require("../../validation/students/studentValidation");
 
 router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
@@ -28,8 +29,12 @@ router.get("/:id/students", (req, res) => {
 // @access  Private
 router.post("/:id/students/create", (req, res) => {
   const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateStudent(data);
 
-  // ===== student validation requried here =====
+  //   Validation Check
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   const id = req.params.id;
   const { firstname, lastname, email, github, huntr } = data;
