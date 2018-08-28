@@ -242,6 +242,17 @@ router.put("/:name/updatestudent", (req, res) => {
     // let {ID } = req.body;
     // let
 })
+router.delete("/:name/deletestudent", (req, res) => {
+    const {_id} = req.body;
+
+        StudentModel.findByIdAndRemove(_id)
+            .then(note => {
+                res.status(201).send(note)
+            })
+            .catch(err => {
+                res.status(500).json(err);
+            })
+})
 
 // @route   PUT api/classes/:name/importcsv
 // @desc    Adds a csv of students to the class

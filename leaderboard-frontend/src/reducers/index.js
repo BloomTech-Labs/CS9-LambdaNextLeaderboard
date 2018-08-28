@@ -13,7 +13,8 @@ import {
     REDIRECT_DATA_CLASS,
     GET_STUDENTS,
     GET_GITHUB_DATA,
-    EDIT_STUDENT
+    EDIT_STUDENT,
+    REMOVE_STUDENT
 } from "../actions/";
 
 const initialState = {
@@ -34,7 +35,8 @@ const initialState = {
     fetchClasses: null,
     githubData: null,
     updatedStudent: null,
-    editStudent: null
+    editStudent: null,
+    removedStudent: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -146,6 +148,12 @@ const studentReducer = (state = initialState, action) => {
         case EDIT_STUDENT:
             return Object.assign({}, state, {
                 editStudent: action.payload
+            })
+        case REMOVE_STUDENT:
+            return Object.assign({}, state, {
+                removedStudent: action.payload,
+                allStudents: null,
+                allClasses: null
             })
 
         default:

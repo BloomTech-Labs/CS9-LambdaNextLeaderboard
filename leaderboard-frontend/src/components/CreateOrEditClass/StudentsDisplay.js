@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {Dropdown, Menu, Button, Modal} from 'semantic-ui-react'
 import {connect} from 'react-redux';
-import {editStudentAction} from '../../actions'
+import {editStudentAction, removeStudentAction} from '../../actions'
 
 class StudentsDisplay extends Component {
     constructor(props) {
@@ -31,7 +31,6 @@ class StudentsDisplay extends Component {
     }
 
     closeHired = () => {
-        console.log('Fired close hired')
         this.setState({ openHired: false })
     }
     closeRemoved = () => this.setState({ removeStudent: false })
@@ -45,6 +44,11 @@ class StudentsDisplay extends Component {
     delete = () => {
 
         console.log('delete ', this.props.student.firstname)
+        console.log(this.props.student._id, this.props)
+        const idObject = {
+            _id: this.props.student._id
+        }
+        this.props.removeStudentAction(this.props.student.classname, idObject)
         this.closeRemoved()
         // this.setState({
         //     modal_remove: !this.state.modal_remove
@@ -60,7 +64,6 @@ class StudentsDisplay extends Component {
         // });
     }
     handleEdit = () => {
-        console.log(this.props.student)
         this.props.editStudentAction(this.props.student)
     }
 
@@ -131,7 +134,6 @@ class StudentsDisplay extends Component {
 
 
                         {/*<p>THIS STUDENT WILL BE REMOVED  ?</p>*/}
-                        {console.log(this.props.student)}
                     </Modal.Content>
                     <Modal.Actions>
                         <Button onClick={this.closeRemoved} negative>
@@ -158,5 +160,5 @@ export const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {editStudentAction})(StudentsDisplay)
+export default connect(mapStateToProps, {editStudentAction, removeStudentAction})(StudentsDisplay)
 
