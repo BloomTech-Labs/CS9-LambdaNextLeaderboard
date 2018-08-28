@@ -296,6 +296,8 @@ class ClassCreateEdit extends Component {
               onChange={this.handleInput}
             />
 
+            {/* CSV IMPORT BOOKMARK */}
+            
             <Segment basic>
               <form
                 action="http://localhost:4000/create-edit"
