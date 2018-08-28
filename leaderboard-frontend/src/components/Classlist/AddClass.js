@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+
 import {connect} from 'react-redux';
 import {Button, Icon, Input} from 'semantic-ui-react'
 
 import {addClass, getClassesStudentsAction} from "../../actions";
+
 
 
 class AddClass extends Component {

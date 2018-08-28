@@ -3,12 +3,12 @@ import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  Link,
+  // Switch,
+  // Link,
   withRouter
 } from "react-router-dom";
 import "./App.css";
-import { Container } from "semantic-ui-react";
+// import { Container } from "semantic-ui-react";
 // TODO import axios from 'axios';
 
 //________REACT COMPONENTS________

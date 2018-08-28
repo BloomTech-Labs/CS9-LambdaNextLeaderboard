@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Container, Header, Icon, Segment } from "semantic-ui-react";
 
+
 class ActivityFeed extends Component {
   constructor(props) {
     super(props);
