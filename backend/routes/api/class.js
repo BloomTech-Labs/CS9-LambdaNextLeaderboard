@@ -215,18 +215,32 @@ router.post("/:name/addstudent", (req, res) => {
         })
 
 });
-// router.put("/:name/updatestudent", (req, res) => {
-//   const {errors, isValid} = validateUpdateStudentInput(req.body);
-//     // Validation Check
-//     if (!isValid) {
-//         return res.status(400).json(errors);
-//     }
-//     const options = {
-//       new: true
-//     }
-//     let {ID } = req.body;
-//     let
-// })
+router.put("/:name/updatestudent", (req, res) => {
+  // const {errors, isValid} = validateUpdateStudentInput(req.body);
+  //   // Validation Check
+  //   if (!isValid) {
+  //       return res.status(400).json(errors);
+  //   }
+    const {_id} = req.body;
+    // const id = req.body.id
+    const options = {
+        new: true
+    }
+    // if (req.decoded) {
+        StudentModel.findByIdAndUpdate(_id, req.body, options)
+            .then(students => {
+                res.send(students)
+            })
+            .catch(err => {
+                res.status(500).json(err);
+            })
+    // } else {
+    //     return res.status(422).json({error: 'Unable to update student'})
+    // }
+    //
+    // let {ID } = req.body;
+    // let
+})
 
 // @route   PUT api/classes/:name/importcsv
 // @desc    Adds a csv of students to the class
