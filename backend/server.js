@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -6,15 +6,14 @@ const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
 const fileUpload = require("express-fileupload");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
 // import routes
-const users = require("./routes/api/user");
+const admins = require("./routes/api/admin");
+const organizations = require("./routes/api/organization");
 const classes = require("./routes/api/class");
-
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
-
 
 // CSV imports
 //const template = require("./template.js");
@@ -27,42 +26,34 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(fileUpload());
-app.use(require('sanitize').middleware);
-
-
+app.use(require("sanitize").middleware);
 
 // // ****START STRIPE****
 
-const CORS_WHITELIST = require('./billing/frontend');
+const CORS_WHITELIST = require("./billing/frontend");
 // const WHITELIST = [CORS_WHITELIST, 'http://localhost:3000/']
 const corsOptions = {
-    origin: (origin, callback) =>
-        (CORS_WHITELIST.indexOf(origin) !== -1)
-            ? callback(null,true)
-            : callback(new Error('Not allowed by CORS'))
+  origin: (origin, callback) =>
+    CORS_WHITELIST.indexOf(origin) !== -1
+      ? callback(null, true)
+      : callback(new Error("Not allowed by CORS"))
 };
 
 const configureServer = app => {
-    app.use(cors(corsOptions));
-    app.use(bodyParser.json());
-
+  app.use(cors(corsOptions));
+  app.use(bodyParser.json());
 };
 
-const paymentApi = require('./billing/payment');
+const paymentApi = require("./billing/payment");
 
 const configureRoutes = app => {
-    paymentApi(app);
-
+  paymentApi(app);
 };
-
 
 configureServer(app);
 configureRoutes(app);
 
 // // ****END STRIPE****
-
-
-
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "../leaderboard-frontend/build")));
@@ -70,30 +61,36 @@ app.use(express.static(path.join(__dirname, "../leaderboard-frontend/build")));
 // Connect MongoDB
 const db = process.env.MONGO_URI;
 mongoose
-    .connect(
-        db,
-        { useNewUrlParser: true }
-    )
-    .then(() => console.log("=== Connected to MongoDB ===\n"))
-    .catch(err => console.log(err));
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
+  .then(() => console.log("=== Connected to MongoDB ===\n"))
+  .catch(err => console.log(err));
 
 // Set up passport middleware
 app.use(passport.initialize());
 require("./authentication/passport")(passport);
 
 // Connect routes
-app.use("/api/users", cors(corsOptions), users);
+app.use("/api/admins", cors(corsOptions), admins);
 app.use(
-    "/api/classes",
-    cors(corsOptions),
-    passport.authenticate("jwt", { session: false }),
-    classes
+  "/api/organizations",
+  cors(corsOptions),
+  passport.authenticate("jwt", { session: false }),
+  organizations
+);
+app.use(
+  "/api/classes",
+  cors(corsOptions),
+  passport.authenticate("jwt", { session: false }),
+  classes
 );
 app.use("/api/data", cors(corsOptions), githubData);
-app.use("/api/billing",cors(corsOptions), billing);
+app.use("/api/billing", cors(corsOptions), billing);
 
 // CSV routes
-app.get("/template", cors(corsOptions),);
+app.get("/template", cors(corsOptions));
 app.post("/create-edit", cors(corsOptions), upload.post);
 
 const port = process.env.PORT || 4000;
