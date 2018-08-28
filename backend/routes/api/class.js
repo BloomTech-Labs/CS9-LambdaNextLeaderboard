@@ -6,13 +6,51 @@ const Student = require("../../models/Student");
 
 router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
-// @route   POST api/classes
-// @desc    Gets all classes
+// @route   GET api/classes/:id/students
+// @desc    Gets class' students
 // @access  Private
-router.post("/", (req, res) => {
-  ClassModel.find({ _admin: req.body.id })
-    .then(classes => res.json(classes))
-    .catch(err => res.status(400).json({ catchErr: err }));
+router.get("/:id/students", (req, res) => {
+  const id = req.params.id;
+
+  Class.findById(id)
+    .populate("students")
+    .then(aClass => {
+      if (!aClass) {
+        return res.status(404).json({ class: "That class does not exist." });
+      }
+
+      res.json(aClass.students);
+    });
+});
+
+// @route   POST api/classes/:id/students
+// @desc    Creates a new student
+// @access  Private
+router.post("/:id/students/create", (req, res) => {
+  const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+
+  // ===== student validation requried here =====
+
+  const id = req.params.id;
+  const { firstname, lastname, email, github, huntr } = data;
+
+  Class.findById(id).then(aClass => {
+    if (!aClass) {
+      return res.status(404).json({ class: "That class does not exist." });
+    }
+
+    const newStudent = new Student({
+      firstname,
+      lastname,
+      email,
+      github,
+      huntr
+    });
+    newStudent.save().then(created => {
+      aClass.students.push(created._id);
+      res.json(created);
+    });
+  });
 });
 
 module.exports = router;

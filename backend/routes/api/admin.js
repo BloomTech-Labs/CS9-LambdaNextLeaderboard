@@ -147,6 +147,7 @@ router.post(
       const newOrg = new Organization({ name, admins: [admin._id] });
       newOrg.save().then(created => {
         admin.organizations.push(created._id);
+        res.json(created);
       });
     });
   }

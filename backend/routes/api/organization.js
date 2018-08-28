@@ -44,7 +44,10 @@ router.post("/:id/classes/create", (req, res) => {
     }
 
     const newClass = new Class({ name });
-    newClass.save().then(created => res.json(created));
+    newClass.save().then(created => {
+      org.classes.push(created._id);
+      res.json(created);
+    });
   });
 });
 
