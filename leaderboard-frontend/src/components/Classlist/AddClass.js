@@ -41,7 +41,8 @@ class AddClass extends Component {
           <Icon
             onClick={this.addNew}
             className="APP__ADDCLASS_ADDBUTTON"
-            name="plus circle huge"
+            name="plus circle"
+            size="huge"
           />
         </div>
       );
@@ -93,7 +94,7 @@ class AddClass extends Component {
               onClick={this.addNew}
               className="APP__ADDCLASS_ADDBUTTON"
               name="plus circle"
-              
+              size="huge"
             />
             {/*</button>*/}
 
