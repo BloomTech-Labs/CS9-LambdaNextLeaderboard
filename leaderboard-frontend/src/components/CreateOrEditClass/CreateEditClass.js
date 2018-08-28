@@ -4,7 +4,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumb } from "semantic-ui-react";
-
+import {connect} from 'react-redux'
 // import from './CreateEditClass.css'
 import "./CreateEditClass.css";
 
@@ -33,6 +33,7 @@ function LeftContent() {
 }
 
 //Right Component
+
 function RightContent(props) {
   return (
     <div className="RightContent" style={{ height: "100%" }}>
@@ -93,5 +94,9 @@ class CreateEdit extends React.Component {
     }
 
 }
+const mapStateToProps = state => {
+    return {
 
-export default CreateEdit;
+    }
+}
+export default connect(mapStateToProps, {})(CreateEdit);
