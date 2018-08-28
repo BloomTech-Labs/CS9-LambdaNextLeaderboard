@@ -111,8 +111,6 @@ router.get(
   "/:id/organizations",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
-
     const id = req.params.id;
 
     Admin.findById(id)
@@ -127,10 +125,10 @@ router.get(
   }
 );
 
-// @route   PUT api/admins/:id/organizations/create
+// @route   POST api/admins/:id/organizations/create
 // @desc    Creates a new organization
 // @access  Private
-router.put(
+router.post(
   "/:id/organizations/create",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {

@@ -13,7 +13,11 @@ const ClassSchema = new Schema({
       type: ObjectId,
       ref: "students"
     }
-  ]
+  ],
+  createdOn: {
+    type: Date,
+    default: Date.now()
+  }
 });
 
 module.exports = Class = mongoose.model("classes", ClassSchema);
