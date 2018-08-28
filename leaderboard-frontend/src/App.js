@@ -33,7 +33,6 @@ class App extends Component {
 
   handleLogOut = () => {
     localStorage.removeItem("token");
-    // window.location.reload();
   };
 
   render() {
@@ -42,7 +41,6 @@ class App extends Component {
         <div className="APP">
           <Route path="/" component={NAVBAR} />
           <div className="APP__BODY">
-            {/*<Switch>*/}
             <Route exact path="/" component={LANDINGPAGE} />
             <Route exact path="/classlist" component={CLASSLIST} />
             <Route
@@ -54,7 +52,6 @@ class App extends Component {
              <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
 
-            {/*</Switch>*/}
           </div>
         </div>
       </Router>
