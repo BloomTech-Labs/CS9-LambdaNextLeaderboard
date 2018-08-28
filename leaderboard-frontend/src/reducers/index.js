@@ -2,7 +2,7 @@ import {
     LOGIN_ACTION,
     LOGOUT_ACTION,
     CREATE_USER,
-    // UPDATE_USER,
+    UPDATE_STUDENT,
     ADD_CLASS,
     ADD_STUDENT,
     GET_CLASS_STUDENTS,
@@ -12,7 +12,9 @@ import {
     ERRORS,
     REDIRECT_DATA_CLASS,
     GET_STUDENTS,
-    GET_GITHUB_DATA
+    GET_GITHUB_DATA,
+    EDIT_STUDENT,
+    REMOVE_STUDENT
 } from "../actions/";
 
 const initialState = {
@@ -31,7 +33,10 @@ const initialState = {
     allStudents: null,
     fetchSuccess: false,
     fetchClasses: null,
-    githubData: null
+    githubData: null,
+    updatedStudent: null,
+    editStudent: null,
+    removedStudent: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -132,6 +137,23 @@ const studentReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 githubData: action.payload,
                 gitStats: action.payload.stats
+            })
+        case UPDATE_STUDENT:
+            return Object.assign({}, state, {
+                updatedStudent: action.payload,
+                allStudents: null,
+                githubData: null,
+                editStudent: null
+            })
+        case EDIT_STUDENT:
+            return Object.assign({}, state, {
+                editStudent: action.payload
+            })
+        case REMOVE_STUDENT:
+            return Object.assign({}, state, {
+                removedStudent: action.payload,
+                allStudents: null,
+                allClasses: null
             })
 
         default:
