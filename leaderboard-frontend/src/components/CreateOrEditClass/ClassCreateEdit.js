@@ -57,18 +57,25 @@ class ClassCreateEdit extends Component {
     e.preventDefault();
     console.log("Fired");
     // Needs an action to send the data
+    let classID;
     let classname = this.props.props.props.match.params.name;
 
-    this.props.postCsvClass(this.state.csvFile, classname);
+    this.props.allClasses.forEach(each => {
+      if (each.name === classname) {
+        classID = each._id;
+      }
+    });
+
+    this.props.postCsvClass(this.state.csvFile, classID);
   };
 
   handleAdd = e => {
     e.preventDefault();
-    let id;
+    let classID;
     const path = this.props.props.props.match.params.name;
     this.props.allClasses.forEach(each => {
       if (each.name === path) {
-        id = each._id;
+        classID = each._id;
       }
     });
     const studentObject = {
@@ -78,7 +85,7 @@ class ClassCreateEdit extends Component {
       github: this.state.github,
       huntr: this.state.huntr,
       _admin: localStorage.getItem("adminID"),
-      _class: id,
+      _class: classID,
       classname: path
     };
     // Send this studentObject when you click `Add`
