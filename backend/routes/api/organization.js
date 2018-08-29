@@ -10,7 +10,7 @@ const ACCESS_KEY = process.env.ACCESS_KEY;
 // @route   GET api/organizations/:id/classes
 // @desc    Gets organization's classes
 // @access  Private
-router.get("/:id", (req, res) => {
+router.get("/:id/classes", (req, res) => {
   const id = req.params.id;
 
   Organization.findById(id)

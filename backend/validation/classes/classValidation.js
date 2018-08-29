@@ -4,7 +4,7 @@ const checkEmpty = require("../checkEmpty");
 module.exports = function validateClassInput(data) {
   let errors = {};
 
-  data.name = !checkEmpty(data.email) ? data.email : "";
+  data.name = !checkEmpty(data.name) ? data.name : "";
 
   // name
   if (Validator.isEmpty(data.name)) {

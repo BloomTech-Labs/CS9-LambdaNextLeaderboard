@@ -1,18 +1,19 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
 
-export const GET_ADMIN_ORGANIZATIONS = "GET_ADMIN_ORGANIZATIONS";
-export const ADD_ADMIN_ORGANIZATIONS = "ADD_ADMIN_ORGANIZATIONS";
-export const ADD_ADMIN_ORGANIZATIONS_ERRORS = "ADD_ADMIN_ORGANIZATIONS_ERRORS";
+export const GET_ORGANIZATION_CLASSES = "GET_ORGANIZATION_CLASSES";
+export const ADD_ORGANIZATION_CLASSES = "ADD_ORGANIZATION_CLASSES";
+export const ADD_ORGANIZATION_CLASSES_ERRORS =
+  "ADD_ORGANIZATION_CLASSES_ERRORS";
 
-const ADMIN_URL = process.env.REACT_APP_ADMIN_URL;
+const ORGANIZATION_URL = process.env.REACT_APP_ORGANIZATION_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
 
-export const getAdminOrganizations = () => {
+export const getOrganizationClasses = obj => {
   return dispatch => {
     axios
-      .get(`${ADMIN_URL}${localStorage.getItem("adminID")}/organizations`, {
+      .get(`${ORGANIZATION_URL}${obj.id}/classes`, {
         headers: {
           "content-type": "application/json",
           Authorization: localStorage.getItem("token")
@@ -20,38 +21,37 @@ export const getAdminOrganizations = () => {
       })
       .then(res => {
         dispatch({
-          type: GET_ADMIN_ORGANIZATIONS,
+          type: GET_ORGANIZATION_CLASSES,
           payload: res.data
         });
       })
       .catch(err => {
         dispatch({
           type: "ERRORS",
-          payload: err.response
+          payload: err.response.data
         });
       });
   };
 };
 
-export const addAdminOrganization = obj => {
+export const addOrganizationClass = obj => {
   const token = localStorage.getItem("token");
   return dispatch => {
     const options = {
       method: "POST",
       headers: { "content-type": "application/json", Authorization: token },
       data: { token: dataEncrypt(obj) },
-      url: `${ADMIN_URL}${localStorage.getItem("adminID")}/organizations/create`
+      url: `${ORGANIZATION_URL}${obj.id}/classes/create`
     };
     axios(options)
       .then(res => {
         dispatch({
-          type: ADD_ADMIN_ORGANIZATIONS
+          type: ADD_ORGANIZATION_CLASSES
         });
       })
       .catch(err => {
-        console.log(err.response.data);
         dispatch({
-          type: ADD_ADMIN_ORGANIZATIONS_ERRORS,
+          type: ADD_ORGANIZATION_CLASSES_ERRORS,
           payload: err.response.data
         });
       });

@@ -17,7 +17,14 @@ import {
   REMOVE_STUDENT
 } from "../actions/";
 
-import { GET_ADMIN_ORGANIZATIONS } from "../actions/adminActions";
+import {
+  GET_ADMIN_ORGANIZATIONS,
+  ADD_ADMIN_ORGANIZATIONS_ERRORS
+} from "../actions/adminActions";
+import {
+  GET_ORGANIZATION_CLASSES,
+  ADD_ORGANIZATION_CLASSES_ERRORS
+} from "../actions/organizationActions";
 
 const initialState = {
   loginErrors: {},
@@ -39,7 +46,10 @@ const initialState = {
   updatedStudent: null,
   editStudent: null,
   removedStudent: null,
-  adminOrganizations: []
+  adminOrganizations: [],
+  newOrganizationErrors: {},
+  organizationClasses: [],
+  newClassErrors: {}
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -161,6 +171,18 @@ const studentReducer = (state = initialState, action) => {
     case GET_ADMIN_ORGANIZATIONS:
       return Object.assign({}, state, {
         adminOrganizations: action.payload
+      });
+    case ADD_ADMIN_ORGANIZATIONS_ERRORS:
+      return Object.assign({}, state, {
+        newOrganizationErrors: action.payload
+      });
+    case GET_ORGANIZATION_CLASSES:
+      return Object.assign({}, state, {
+        organizationClasses: action.payload
+      });
+    case ADD_ORGANIZATION_CLASSES_ERRORS:
+      return Object.assign({}, state, {
+        newClassErrors: action.payload
       });
 
     default:
