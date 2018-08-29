@@ -10,78 +10,97 @@ const axios = require("axios");
 const _ = require("lodash");
 const clientID = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
-let storage;
 let huntrData;
 let storageData;
-// let gitDataFetch = [];
 let huntrDataFech;
 
 async function fetchGithubData(studentData) {
     // gitDataFetch = []
 
-     return (studentData.forEach(async (each, i) => {
+    return (studentData.forEach(async (each, i) => {
 
         let gitHubHandle = each.github;
         let authStr = "Bearer " + process.env.GITHUB_AUTH_TOKEN; // Add token
-         console.log("Inside testing", i)
-             return await axios
-                 .get(`https://api.github.com/users/${gitHubHandle}/events/public`, {
-                     headers: {
-                         Authorization: authStr
-                     }
-                 })
-                 .then(res => {
-                     let pushCount = 0;
-                     let forkCount = 0;
-                     let pullRequestCount = 0;
-                     let createCount = 0;
-                     let commitsByUser = 0;
-                     let totalCommits = 0;
-                     const data = res.data;
-                     const distinctSize  = _.map(data, _.property('payload.distinct_size'));
-                     const size = _.map(data, _.property('payload.size'));
-                     let created_at = _.map(data, _.property('created_at'));
-                     let stats = _.map(data, _.property('type'));
-                     stats.forEach((typed, i) => {
-                         if (typed === 'PushEvent') {
-                             pushCount++
-                         } else if (typed === 'ForkEvent') {
-                             forkCount++
-                         } else if (typed === 'PullRequestEvent') {
-                             pullRequestCount++
-                         } else if (typed === 'CreateEvent') {
-                             createCount++
-                         } else {
+        console.log("Inside testing", i)
+        return await axios
+            .get(`https://api.github.com/users/${gitHubHandle}/events/public`, {
+                headers: {
+                    Authorization: authStr
+                }
+            })
+            .then(res => {
+                let pushCount = 0;
+                let forkCount = 0;
+                let pullRequestCount = 0;
+                let createCount = 0;
+                let commitsByUser = 0;
+                let totalCommits = 0;
+                const data = res.data;
+                const distinctSize = _.map(data, _.property('payload.distinct_size'));
+                const size = _.map(data, _.property('payload.size'));
+                let created_at = _.map(data, _.property('created_at'));
+                let stats = _.map(data, _.property('type'));
+                stats.forEach((typed, i) => {
+                    if (typed === 'PushEvent') {
+                        pushCount++
+                    } else if (typed === 'ForkEvent') {
+                        forkCount++
+                    } else if (typed === 'PullRequestEvent') {
+                        pullRequestCount++
+                    } else if (typed === 'CreateEvent') {
+                        createCount++
+                    } else {
 
-                         }
-                     })
-                     size.forEach((each, i) => {
-                         if (each) {
-                             totalCommits += each
-                         }
-                     })
-                     distinctSize.forEach((each, i )=> {
-                         if (each) {
-                             commitsByUser += each
-                         }
-                     })
-                     // if (i === studentData.length - 1) {
-                         // gitDataFetch = [];
-                         gitDataFetch[i] ={'Full Name': each.firstname + ' ' + each.lastname, 'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats}
-                         return ({'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats});
-                     // }
-                 })
-                 .catch(err => {
-                     // if (i === studentData.length - 1) {
-                     //     gitDataFetch = [];
-                         gitDataFetch[i] = {'Full Name': each.firstname + ' ' + each.lastname,'error': 'Github handle not found'}
-                         return gitDataFetch
-                     // }
-                 });
+                    }
+                })
+                size.forEach((each, i) => {
+                    if (each) {
+                        totalCommits += each
+                    }
+                })
+                distinctSize.forEach((each, i) => {
+                    if (each) {
+                        commitsByUser += each
+                    }
+                })
+                gitDataFetch[i] = {
+                    'Full Name': each.firstname + ' ' + each.lastname,
+                    'totalCommits': totalCommits,
+                    'commitsByUser': commitsByUser,
+                    'pushCount': pushCount,
+                    'forkCount': forkCount,
+                    'pullRequestCount': pullRequestCount,
+                    'createCount': createCount,
+                    'size': size,
+                    'distinct size': distinctSize,
+                    'created': created_at,
+                    'stats': stats
+                }
+                return ({
+                    'totalCommits': totalCommits,
+                    'commitsByUser': commitsByUser,
+                    'pushCount': pushCount,
+                    'forkCount': forkCount,
+                    'pullRequestCount': pullRequestCount,
+                    'createCount': createCount,
+                    'size': size,
+                    'distinct size': distinctSize,
+                    'created': created_at,
+                    'stats': stats
+                });
+            })
+            .catch(err => {
+                gitDataFetch[i] = {
+                    'Full Name': each.firstname + ' ' + each.lastname,
+                    'error': 'Github handle not found'
+                }
+                return gitDataFetch
+            });
 
     }))
 
 }
+
 async function fetchHuntrData() {
     let token = process.env.huntr_token // Add token
 
@@ -95,16 +114,16 @@ async function fetchHuntrData() {
         .then(res => {
             const dataDetails = [];
             const wholeData = [];
-            res.data.data.forEach((each, i)=> {
+            res.data.data.forEach((each, i) => {
                 dataDetails.push(each.member);
                 wholeData.push(each)
             })
-            const givenNameArr = [...(new Set(dataDetails.map(({ givenName }) =>  givenName)))];
-            const idArr = [...(new Set(dataDetails.map(({ id }) =>  id)))];
-            const familyName = [...(new Set(dataDetails.map(({ familyName }) =>  familyName)))];
-            const email = [...(new Set(dataDetails.map(({ email }) =>  email)))];
-            const createdAt = [...(new Set(dataDetails.map(({ createdAt }) =>  createdAt)))];
-            const isActive = [...(new Set(dataDetails.map(({ isActive }) =>  isActive)))];
+            const givenNameArr = [...(new Set(dataDetails.map(({givenName}) => givenName)))];
+            const idArr = [...(new Set(dataDetails.map(({id}) => id)))];
+            const familyName = [...(new Set(dataDetails.map(({familyName}) => familyName)))];
+            const email = [...(new Set(dataDetails.map(({email}) => email)))];
+            const createdAt = [...(new Set(dataDetails.map(({createdAt}) => createdAt)))];
+            const isActive = [...(new Set(dataDetails.map(({isActive}) => isActive)))];
             const studentsObject = [];
             idArr.forEach((each, i) => {
                 studentsObject.push({
@@ -168,11 +187,10 @@ router.post("/data", (req, res) => {
                 storageData = await fetchGithubData(students)
                 huntrData = await fetchHuntrData()
                 res.status(201).json({'gitData': gitDataFetch, 'huntr': huntrData})
-        }
+            }
         )
         .catch(err => res.status(400).json({error: err}))
 
-        // .catch(err => res.status(400).json({noUsers: err}));
 })
 
 // @route   GET api/classes/:name
@@ -287,35 +305,35 @@ router.post("/:name/addstudent", (req, res) => {
 
 });
 router.put("/:name/updatestudent", (req, res) => {
-  // const {errors, isValid} = validateUpdateStudentInput(req.body);
-  //   // Validation Check
-  //   if (!isValid) {
-  //       return res.status(400).json(errors);
-  //   }
+    // const {errors, isValid} = validateUpdateStudentInput(req.body);
+    //   // Validation Check
+    //   if (!isValid) {
+    //       return res.status(400).json(errors);
+    //   }
     const {_id} = req.body;
     // const id = req.body.id
     const options = {
         new: true
     }
-        StudentModel.findByIdAndUpdate(_id, req.body, options)
-            .then(students => {
-                res.send(students)
-            })
-            .catch(err => {
-                res.status(500).json(err);
-            })
+    StudentModel.findByIdAndUpdate(_id, req.body, options)
+        .then(students => {
+            res.send(students)
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        })
 
 })
 router.delete("/:name/deletestudent", (req, res) => {
     const {_id} = req.body;
 
-        StudentModel.findByIdAndRemove(_id)
-            .then(note => {
-                res.status(201).send(note)
-            })
-            .catch(err => {
-                res.status(500).json(err);
-            })
+    StudentModel.findByIdAndRemove(_id)
+        .then(note => {
+            res.status(201).send(note)
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        })
 })
 
 // @route   PUT api/classes/:name/importcsv
