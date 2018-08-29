@@ -88,7 +88,7 @@ export const getGithubDataAction = () => {
             method: "POST",
             headers: {"content-type": "application/json", Authorization: token},
             url: `${CLASS_URL}data`,
-            data: id
+                data: id
         };
         axios(options)
             .then(res => {

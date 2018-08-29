@@ -5,6 +5,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumb } from "semantic-ui-react";
 import {connect} from 'react-redux'
+import {getGithubDataAction} from "../../actions";
 // import from './CreateEditClass.css'
 import "./CreateEditClass.css";
 
@@ -54,7 +55,7 @@ class CreateEdit extends React.Component {
     constructor(props) {
         super(props)
         this.state={
-            
+
         }
     }
 
@@ -62,6 +63,7 @@ class CreateEdit extends React.Component {
         if (localStorage.getItem("token") === null) {
             this.props.history.push('/')
         }
+        this.props.getGithubDataAction();
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -99,4 +101,4 @@ const mapStateToProps = state => {
 
     }
 }
-export default connect(mapStateToProps, {})(CreateEdit);
+export default connect(mapStateToProps, {getGithubDataAction})(CreateEdit);
