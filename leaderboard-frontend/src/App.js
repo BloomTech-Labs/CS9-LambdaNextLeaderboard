@@ -19,7 +19,7 @@ import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
 import Register from "./components/Testing/Register";
 import LeaderBoard from "./components/Leaderboard/LeaderBoard";
 import BILLING from "./components/Billing/Billing";
-
+import Dashboard from "./components/Dashboard/Dashboard";
 import testing from "./components/NewBackendTesting/NewBackendTesting";
 
 //________STYLING________
@@ -41,7 +41,7 @@ class App extends Component {
           <Route path="/" component={NAVBAR} />
           <div className="APP__BODY">
             <Route exact path="/" component={LANDINGPAGE} />
-            <Route exact path="/classlist" component={CLASSLIST} />
+            {/* <Route exact path="/classlist" component={CLASSLIST} /> */}
             <Route
               path="/classlist/:name/"
               exact
@@ -51,6 +51,7 @@ class App extends Component {
             <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
             <Route exact path="/newbackend" component={testing} />
+            <Route exact path="/dashboard" component={Dashboard} />
           </div>
         </div>
       </Router>
