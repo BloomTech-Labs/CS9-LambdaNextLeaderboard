@@ -5,7 +5,8 @@ const ObjectId = Schema.Types.ObjectId;
 const AdminSchema = new Schema({
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
@@ -13,7 +14,8 @@ const AdminSchema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   organizations: [
     {

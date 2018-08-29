@@ -34,28 +34,28 @@ router.post("/register", (req, res) => {
   const email = data.email;
   const password = data.password;
 
-  Admin.findOne({ username }).then(admin => {
-    if (admin) {
+  Admin.findOne({ username }).then(foundusername => {
+    if (foundusername) {
       errors.username = "That username already exists";
     }
-  });
 
-  Admin.findOne({ Email }).then(admin => {
-    if (admin) {
-      errors.Email = "An account with that email already exists";
-    }
+    Admin.findOne({ email }).then(admin => {
+      if (admin) {
+        errors.email = "An account with that email already exists";
+      }
 
-    if (errors) return res.status(400).json(errors);
-    const newAdmin = new Admin({ username, password, email });
+      if (errors.username || errors.email) return res.status(400).json(errors);
+      const newAdmin = new Admin({ username, password, email });
 
-    bcrypt.genSalt(11, (err, salt) => {
-      bcrypt.hash(newAdmin.password, salt, (err, hash) => {
-        if (err) return res.status(400).json(err);
-        newAdmin.password = hash;
-        newAdmin
-          .save()
-          .then(created => res.json(created))
-          .catch(err => console.log(err));
+      bcrypt.genSalt(11, (err, salt) => {
+        bcrypt.hash(newAdmin.password, salt, (err, hash) => {
+          if (err) return res.status(400).json(err);
+          newAdmin.password = hash;
+          newAdmin
+            .save()
+            .then(created => res.json(created))
+            .catch(err => console.log(err));
+        });
       });
     });
   });
@@ -80,7 +80,7 @@ router.post("/login", (req, res) => {
     .select("+password")
     .then(admin => {
       if (!admin) {
-        errors.email = "Invalid Credentials";
+        errors.invalidLogin = "Invalid Credentials";
         return res.status(400).json(errors);
       }
 
@@ -98,7 +98,7 @@ router.post("/login", (req, res) => {
             });
           });
         } else {
-          errors.email = "Invalid Credentials";
+          errors.invalidLogin = "Invalid Credentials";
           return res.status(400).json(errors);
         }
       });

@@ -31,7 +31,7 @@ app.use(require("sanitize").middleware);
 // // ****START STRIPE****
 
 const CORS_WHITELIST = require("./billing/frontend");
-// const WHITELIST = [CORS_WHITELIST, 'http://localhost:3000/']
+// const WHITELIST = [CORS_WHITELIST, "http://localhost:3000/"];
 const corsOptions = {
   origin: (origin, callback) =>
     CORS_WHITELIST.indexOf(origin) !== -1
