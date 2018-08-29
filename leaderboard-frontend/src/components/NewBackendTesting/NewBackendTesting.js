@@ -36,13 +36,12 @@ class NewBackendTesting extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div>
         <button onClick={this.handleGetOrg}>Get Organizations</button>
         <h1>Current organizations: </h1>
-        {this.props.organizations.map(org => {
-          return <div>{org.name}</div>;
+        {this.props.organizations.map((org, index) => {
+          return <div key={`organization${index}`}>{org.name}</div>;
         })}
         <h1>Add a new organization:</h1>
         <div>
