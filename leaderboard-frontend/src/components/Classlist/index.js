@@ -69,25 +69,5 @@ class ClassList2 extends React.Component{
     }
 
 }
-// const ClassList2 = props => {
-//
-//   return (
-//     <div style={{ height: "100%" }}>
-//       {/*<NavBar props={props} />*/}
-//       <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
-//         <Breadcrumb.Section>
-//           <Link to="/">Home</Link>
-//         </Breadcrumb.Section>
-//         <Breadcrumb.Divider icon="right chevron" />
-//
-//         <Breadcrumb.Section active>Classes</Breadcrumb.Section>
-//       </Breadcrumb>
-//
-//       <SplitPane
-//         left={<LeftContent />}
-//         right={<RightContent props={props} />}
-//       />
-//     </div>
-//   );
-// };
+
 export default connect(mapStateToProps, {getGithubDataAction})(ClassList2);

@@ -21,6 +21,8 @@ class WeeklyData extends Component {
             return <div>Oh no! Something went wrong</div>
         }
         console.log("We have data", this.props.data)
+        let count = []
+
         return (
             <div>
                 <Container>
@@ -36,11 +38,15 @@ class WeeklyData extends Component {
                                 <Table.HeaderCell>Total</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
-
-                            {this.props.data.gitData.map(each => {
+                            {this.props.data.gitData.map((each, x) => {
+                                this.props.data.huntr.forEach(hunt => {
+                                    if (each.FullName === hunt.givenNameArr + ' ' + hunt.familyName) {
+                                        count[x] = hunt.count;
+                                    }
+                                })
                                return (
                                    <div>
-                                       <WeeklyDisplay github={each} huntr={this.props.data.huntr} />
+                                       <WeeklyDisplay github={each} count={count[x]} huntr={this.props.data.huntr} />
                                    </div>
                                    )
                             })}
