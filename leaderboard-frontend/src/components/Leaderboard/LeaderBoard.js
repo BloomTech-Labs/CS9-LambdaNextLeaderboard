@@ -6,6 +6,7 @@ import ActivityFeed from '../LeaderboardComponents/ActivityFeed';
 import WeeklyLeaderboard from '../LeaderboardComponents/WeeeklyLeaderboard';
 import WeeklyData from '../LeaderboardComponents/WeeklyData'
 import OverallLeaderboard from '../LeaderboardComponents/OverallLeaderboard';
+import OverallData from "../LeaderboardComponents/OverallData";
 
 class LeaderBoard extends Component {
     constructor(props) {
@@ -34,7 +35,8 @@ class LeaderBoard extends Component {
               </div>
               <div class="ui horizontal divider"></div>
               <div>
-                <OverallLeaderboard />
+                {/*<OverallLeaderboard />*/}
+                <OverallData/>
               </div>
 
             </div>

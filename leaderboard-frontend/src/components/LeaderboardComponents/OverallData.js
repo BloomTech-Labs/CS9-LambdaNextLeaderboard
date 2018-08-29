@@ -3,9 +3,10 @@ import {connectAsync} from 'iguazu';
 import {queryAllMyData, queryGithub, queryStudents} from "../../actions";
 import {Container, Table} from "semantic-ui-react";
 import WeeklyDisplay from "./WeeklyDisplay";
+import OverallDisplay from "./OverallDisplay";
 
 
-class WeeklyData extends Component {
+class OverallData extends Component {
 
     render() {
         if (this.props.isLoading()) {
@@ -24,10 +25,12 @@ class WeeklyData extends Component {
         return (
             <div>
                 <Container>
-                    <Table color={"teal"} celled inverted selectable>
+                    <Table color={"grey"} celled inverted selectable>
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell colSpan="4">Weekly Leaderboard</Table.HeaderCell>
+                                <Table.HeaderCell colSpan="4">
+                                    Overall Leaderboard
+                                </Table.HeaderCell>
                             </Table.Row>
                             <Table.Row>
                                 <Table.HeaderCell>Name</Table.HeaderCell>
@@ -37,13 +40,14 @@ class WeeklyData extends Component {
                             </Table.Row>
                         </Table.Header>
 
-                            {this.props.data.gitData.map(each => {
-                               return (
-                                   <div>
-                                       <WeeklyDisplay github={each} huntr={this.props.data.huntr} />
-                                   </div>
-                                   )
-                            })}
+                        {this.props.data.gitData.map(each => {
+                            return (
+                                <div>
+                                    <OverallDisplay github={each} huntr={this.props.data.huntr}/>
+                                    {/*<WeeklyDisplay github={each} huntr={this.props.data.huntr} />*/}
+                                </div>
+                            )
+                        })}
                     </Table>
                 </Container>
             </div>
@@ -64,4 +68,4 @@ export function loadDataAsProps({store, ownProps}) {
 }
 
 
-export default connectAsync({loadDataAsProps})(WeeklyData);
+export default connectAsync({loadDataAsProps})(OverallData);

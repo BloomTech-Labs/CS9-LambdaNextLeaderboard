@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 // import {Header, Image} from "semantic-ui-react";
 import {Container, Header, Image, Table} from "semantic-ui-react";
 
-class WeeklyDisplay extends Component {
+class OverallDisplay extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,12 +23,12 @@ class WeeklyDisplay extends Component {
                                     rounded
                                     size="mini"
                                 />
-                                <Header.Content>{this.props.github.FullName}</Header.Content>
+                                <Header.Content>{this.props.github.FullName} </Header.Content>
                             </Header>
                         </Table.Cell>
-                        <Table.Cell>{this.props.github.commitsByUser}</Table.Cell>
+                        <Table.Cell>{this.props.github.commitsByUser + this.props.github.pushCount}</Table.Cell>
                         <Table.Cell>{this.state.huntrDefault}</Table.Cell>
-                        <Table.Cell>{this.state.huntrDefault + this.props.github.commitsByUser}</Table.Cell>
+                        <Table.Cell>{this.state.huntrDefault + this.props.github.commitsByUser + this.props.github.commitsByUser + this.props.github.pushCount}</Table.Cell>
                     </Table.Row>
                 </Table.Body>
             </div>
@@ -36,4 +36,4 @@ class WeeklyDisplay extends Component {
     }
 }
 
-export default WeeklyDisplay
+export default OverallDisplay
