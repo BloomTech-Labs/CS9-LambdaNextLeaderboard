@@ -2,16 +2,22 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-const ClassSchema = new Schema({
+const OrganizationSchema = new Schema({
   name: {
     type: String,
     required: true,
     unique: true
   },
-  students: [
+  admins: [
     {
       type: ObjectId,
-      ref: "students"
+      ref: "admins"
+    }
+  ],
+  classes: [
+    {
+      type: ObjectId,
+      ref: "classes"
     }
   ],
   createdOn: {
@@ -20,4 +26,7 @@ const ClassSchema = new Schema({
   }
 });
 
-module.exports = Class = mongoose.model("classes", ClassSchema);
+module.exports = Organization = mongoose.model(
+  "organizations",
+  OrganizationSchema
+);

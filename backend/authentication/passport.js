@@ -1,7 +1,7 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const mongoose = require("mongoose");
-const Admin = mongoose.model("admin");
+const Admin = require("../models/Admin");
 const ACCESS_KEY = process.env.ACCESS_KEY;
 
 const opts = {};
