@@ -24,7 +24,7 @@ exports.post = (req, res) => {
     })
     // Listener | Called every row, assigns _id to student
     .on("data", function(data) {
-      // data["_id"] = new mongoose.Types.ObjectId(); do not need IDs
+      data["_id"] = new mongoose.Types.ObjectId();
       className = data.classname
       delete data.classname
 

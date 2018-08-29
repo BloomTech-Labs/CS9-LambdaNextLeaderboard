@@ -57,7 +57,8 @@ class ClassCreateEdit extends Component {
     e.preventDefault();
     console.log("Fired");
     // Needs an action to send the data
-    let classname = this.state.class_name;
+    let classname = this.props.props.props.match.params.name;
+
     this.props.postCsvClass(this.state.csvFile, classname);
   };
 
@@ -297,7 +298,7 @@ class ClassCreateEdit extends Component {
             />
 
             {/* CSV IMPORT BOOKMARK */}
-            
+
             <Segment basic>
               <form
                 action="http://localhost:4000/create-edit"
