@@ -17,18 +17,13 @@ let storageData;
 let huntrDataFech;
 
 async function fetchGithubData(studentData) {
-    gitDataFetch = []
+    // gitDataFetch = []
 
      return (studentData.forEach(async (each, i) => {
-         if (i === 0) {
-             gitDataFetch = []
-         }
+         
         let gitHubHandle = each.github;
         let authStr = "Bearer " + process.env.GITHUB_AUTH_TOKEN; // Add token
          console.log("Inside testing", i)
-         let xyCount = 0;
-         if (gitHubHandle && studentData.length >= i && xyCount <= studentData.length) {
-             xyCount++
              return await axios
                  .get(`https://api.github.com/users/${gitHubHandle}/events/public`, {
                      headers: {
@@ -70,16 +65,19 @@ async function fetchGithubData(studentData) {
                              commitsByUser += each
                          }
                      })
-
-                     gitDataFetch.push({'Full Name': each.firstname + ' ' + each.lastname, 'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats})
-                     return ({'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats});
+                     if (i === studentData.length - 1) {
+                         gitDataFetch = [];
+                         gitDataFetch.push({'Full Name': each.firstname + ' ' + each.lastname, 'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats})
+                         return ({'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats});
+                     }
                  })
                  .catch(err => {
-                     gitDataFetch.push({'Full Name': each.firstname + ' ' + each.lastname,'error': 'Github handle not found'})
-                     return gitDataFetch
-                     console.log(err)
+                     if (i === studentData.length - 1) {
+                         gitDataFetch = [];
+                         gitDataFetch.push({'Full Name': each.firstname + ' ' + each.lastname,'error': 'Github handle not found'})
+                         return gitDataFetch
+                     }
                  });
-         }
 
     }))
 
@@ -174,7 +172,7 @@ router.post("/data", (req, res) => {
         )
         .catch(err => res.status(400).json({error: err}))
 
-        .catch(err => res.status(400).json({noUsers: err}));
+        // .catch(err => res.status(400).json({noUsers: err}));
 })
 
 // @route   GET api/classes/:name
