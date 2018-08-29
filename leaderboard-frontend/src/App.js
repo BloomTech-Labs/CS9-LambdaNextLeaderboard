@@ -16,14 +16,13 @@ import NAVBAR from "./components/Navbar/Nav";
 import CLASSLIST from "./components/Classlist/index";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
-import Register from './components/Testing/Register'
-
-import LeaderBoard from "./components/Leaderboard/LeaderBoard"
+import Register from "./components/Testing/Register";
+import LeaderBoard from "./components/Leaderboard/LeaderBoard";
 import BILLING from "./components/Billing/Billing";
 
+import testing from "./components/NewBackendTesting/NewBackendTesting";
 
 //________STYLING________
-
 
 class App extends Component {
   constructor(props) {
@@ -48,10 +47,10 @@ class App extends Component {
               exact
               component={withRouter(CREATEEDIT)}
             />
-            <Route exact path="/registertest" component={Register}/>
-             <Route exact path="/billing" component={BILLING} />
+            <Route exact path="/registertest" component={Register} />
+            <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
-
+            <Route exact path="/newbackend" component={testing} />
           </div>
         </div>
       </Router>

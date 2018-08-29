@@ -53,6 +53,7 @@ router.post("/:id/students/create", (req, res) => {
     });
     newStudent.save().then(created => {
       aClass.students.push(created._id);
+      aClass.save();
       res.json(created);
     });
   });

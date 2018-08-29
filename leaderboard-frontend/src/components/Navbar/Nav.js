@@ -96,7 +96,7 @@ class Nav extends Component {
       (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
     ) {
       this.setState({ SignInEmail: "", SignedIn: true, openModal: false });
-      this.props.history.push("/classlist");
+      // this.props.history.push("/classlist");
     }
 
     // if (

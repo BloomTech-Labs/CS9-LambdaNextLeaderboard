@@ -149,9 +149,12 @@ router.post(
         return res.status(404).json({ user: "That user does not exist." });
       }
 
+      Organization.findOne({ name });
+
       const newOrg = new Organization({ name, admins: [admin._id] });
       newOrg.save().then(created => {
         admin.organizations.push(created._id);
+        admin.save();
         res.json(created);
       });
     });
