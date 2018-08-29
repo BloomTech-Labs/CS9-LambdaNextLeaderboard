@@ -10,6 +10,7 @@ const axios = require("axios");
 const _ = require("lodash");
 const clientID = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
+const csv = require("fast-csv");
 let storage;
 
 async function fetchGithubData() {
@@ -80,7 +81,7 @@ setInterval(async () => {
   console.log("Fetching github data");
   storage = await fetchGithubData();
   console.log("Finished");
-  console.log(storage);
+  //console.log(storage);
 }, 5000);
 
 // @route   GET api/classes/test
@@ -272,66 +273,51 @@ router.delete("/:name/deletestudent", (req, res) => {
 // @desc    Adds a csv of students to the class
 // @access  Private
 router.put("/:name/importcsv", (req, res) => {
-  const validData = [];
-  const invalidData = [];
+  //console.log("req.files.file", req.files.file[0]);
+  console.log("req.files", req.files)
 
-  req.body.csvData.forEach(data => {
-    const { errors, isValid } = validateAddStudent(data);
-    if (isValid) {
-      validData.push(data);
-    } else {
-      invalidData.push({ user: data, errors });
-    }
-  });
+  
 
-  StudentModel.find({ _class: req.params._class }).then(aClass => {
-    if (!aClass) {
-      res.status(404).json({ className: "That class does not exist" });
-    } else {
-      validData.forEach(data => {
-        aClass.students.push(data);
-      });
-      aClass
-        .save()
-        .then(updated => {
-          res.json({ updated, invalidData });
-        })
-        .catch(err => res.status(400).json({ catchErr: err }));
-    }
-  });
-});
+  console.log("TESTING CSV ROUTE");
 
-// @route   POST api/classes/:name/importcsv
-// @desc    Adds a csv of students to the class
-// @access  Private
-router.post("/:name/importcsv", (req, res) => {
-  const validData = [];
-  const invalidData = [];
+  if (!req.files) return res.status(400).send("No files were uploaded.");
 
-  req.body.csvData.forEach(data => {
-    const { errors, isValid } = validateAddStudent(data);
-    if (isValid) {
-      validData.push(data);
-    } else {
-      invalidData.push({ user: data, errors });
-    }
-  });
+  // Reference to uploaded file
+  const classFile = req.files.file;
 
-  ClassModel.find({}).then(aClass => {
-    if (!aClass) {
-      res.status(404).json({ className: "That class does not exist" });
-    } else {
-      validData.forEach(data => {
-        aClass.students.push(data);
-      });
-      aClass
-        .save()
-        .then(updated => {
-          res.json({ updated, invalidData });
-        })
-        .catch(err => res.status(400).json({ catchErr: err }));
-    }
-  });
+  // Populated as CSV parsed
+  const importStudents = [];
+  let className = "";
+
+  console.log("UPLOAD BUTTON WORKING");
+
+  // csv
+  //   // Accept CSV as string, ignore headers + empty rows
+  //   .fromString(classFile.data.toString(), {
+  //     headers: true,
+  //     ignoreEmpty: true
+  //   })
+  //   // Listener | Called every row, assigns _id to student
+  //   .on("data", function(data) {
+  //     //data["_id"] = new mongoose.Types.ObjectId();
+  //     //className = data.classname
+  //     //delete data.classname
+
+  //     console.log(data);
+
+  //     importStudents.push(data);
+  //   })
+  //   // Listener | End of parse, pass new students arr students arr in Class model
+  //   .on("end", function() {
+  //     ClassLS.findByIdAndUpdate(
+  //       classID
+  //     )({ students: importStudents }, function(err) {
+  //       if (err) throw err;
+  //     });
+
+  //     //res.send(students.length + " users have been successfully uploaded.");
+  //     console.log("Upload success");
+  //   });
 });
 
 module.exports = router;

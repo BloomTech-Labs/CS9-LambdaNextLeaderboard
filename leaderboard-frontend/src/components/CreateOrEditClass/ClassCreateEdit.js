@@ -7,7 +7,7 @@ import {
   updateStudentAction,
   getClassesStudentsAction,
   editStudentAction,
-  postCsvClass
+  postCsvStudents
 } from "../../actions";
 import { Button, Input, Segment } from "semantic-ui-react";
 // import StudentList from "./StudentList";
@@ -55,10 +55,13 @@ class ClassCreateEdit extends Component {
 
   handleImportSubmit = e => {
     e.preventDefault();
-    console.log("Fired");
+    console.log("Import submit");
     // Needs an action to send the data
     let classID;
     let classname = this.props.props.props.match.params.name;
+    let csvData = new FormData();
+
+    csvData.append("file", this.state.csvFile);
 
     this.props.allClasses.forEach(each => {
       if (each.name === classname) {
@@ -66,7 +69,7 @@ class ClassCreateEdit extends Component {
       }
     });
 
-    this.props.postCsvClass(this.state.csvFile, classID);
+    this.props.postCsvStudents(csvData, classname);
   };
 
   handleAdd = e => {
@@ -211,15 +214,6 @@ class ClassCreateEdit extends Component {
               {" "}
               Import CSV
             </Button>
-            <form
-              action="http://localhost:4000/create-edit"
-              method="POST"
-              encType="multipart/form-data"
-            >
-              <input type="file" name="file" accept="*.csv" />
-              <input type="submit" value="Upload Students" />
-            </form>
-            {/*<button className="BtnImport" onClick={this.handleImport} >Import CSV</button>*/}
           </div>
 
           <h5 style={{ display: "inline", marginLeft: "1%" }}>Add Students</h5>
@@ -418,7 +412,7 @@ export default connect(
     getClassesStudentsAction,
     updateStudentAction,
     editStudentAction,
-    postCsvClass
+    postCsvStudents
   }
 )(ClassCreateEdit);
 // export default ClassCreateEdit

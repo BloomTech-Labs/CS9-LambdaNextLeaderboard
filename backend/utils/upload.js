@@ -1,6 +1,6 @@
 const csv = require("fast-csv");
 const mongoose = require("mongoose");
-const Class = require("../models/Class");
+const ClassLS = require("../models/ClassLS");
 
 // Export upload.get to server
 exports.post = (req, res) => {
@@ -34,7 +34,9 @@ exports.post = (req, res) => {
     })
     // Listener | End of parse, pass new students arr students arr in Class model
     .on("end", function() {
-      Class.create({ name: className, students: importStudents }, function(err) {
+      ClassLS.findByIdAndUpdate(classID
+
+      ) ({students: importStudents }, function(err) {
         if (err) throw err;
       });
 
