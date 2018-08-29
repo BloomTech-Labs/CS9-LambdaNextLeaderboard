@@ -12,16 +12,20 @@ const clientID = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 let storage;
 let huntrData;
-let gitDataFetch;
+let storageData;
+// let gitDataFetch = [];
 let huntrDataFech;
 
 async function fetchGithubData(studentData) {
     gitDataFetch = []
 
      return (studentData.forEach(async (each, i) => {
+         if (i === 0) {
+             gitDataFetch = []
+         }
         let gitHubHandle = each.github;
         let authStr = "Bearer " + process.env.GITHUB_AUTH_TOKEN; // Add token
-         console.log("Inside testing")
+         console.log("Inside testing", i)
          let xyCount = 0;
          if (gitHubHandle && studentData.length >= i && xyCount <= studentData.length) {
              xyCount++
@@ -162,8 +166,9 @@ router.post("/data", (req, res) => {
     StudentModel.find({_admin: req.body.id})
     // .populate('_class')
         .then(async students => {
-                let storageData = await fetchGithubData(students);
-                huntrData = await fetchHuntrData();
+                gitDataFetch = []
+                storageData = await fetchGithubData(students)
+                huntrData = await fetchHuntrData()
                 res.status(201).json({'gitData': gitDataFetch, 'huntr': huntrData})
         }
         )
