@@ -64,7 +64,7 @@ async function fetchGithubData(studentData) {
                     }
                 })
                 gitDataFetch[i] = {
-                    'Full Name': each.firstname + ' ' + each.lastname,
+                    'FullName': each.firstname + ' ' + each.lastname,
                     'totalCommits': totalCommits,
                     'commitsByUser': commitsByUser,
                     'pushCount': pushCount,
@@ -91,11 +91,11 @@ async function fetchGithubData(studentData) {
             })
             .catch(err => {
                 gitDataFetch[i] = {
-                    'Full Name': each.firstname + ' ' + each.lastname,
+                    'FullName': each.firstname + ' ' + each.lastname,
                     'error': 'Github handle not found'
                 }
                 return ({
-                    'Full Name': each.firstname + ' ' + each.lastname,
+                    'FullName': each.firstname + ' ' + each.lastname,
                     'error': 'Github handle not found'
                 })
             });

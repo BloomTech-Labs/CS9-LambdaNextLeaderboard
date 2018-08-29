@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connectAsync} from 'iguazu';
 import {queryAllMyData, queryGithub, queryStudents} from "../../actions";
 import {Container, Table} from "semantic-ui-react";
+import WeeklyDisplay from "./WeeklyDisplay";
 
 
 class WeeklyData extends Component {
@@ -19,6 +20,7 @@ class WeeklyData extends Component {
         if (this.props.loadedWithErrors()) {
             return <div>Oh no! Something went wrong</div>
         }
+        console.log("We have data", this.props.data)
         return (
             <div>
                 <Container>
@@ -36,7 +38,13 @@ class WeeklyData extends Component {
                         </Table.Header>
 
                         <Table.Body>
-
+                            {this.props.data.gitData.map(each => {
+                               return (
+                                   <div>
+                                       <WeeklyDisplay github={each} huntr={this.props.data.huntr} />
+                                   </div>
+                                   )
+                            })}
                         </Table.Body>
                     </Table>
                 </Container>
@@ -44,17 +52,18 @@ class WeeklyData extends Component {
         );
     }
 }
+
 export function loadDataAsProps({store, ownProps}) {
-    const {dispatch } = store;
+    const {dispatch} = store;
 
     const path = "/"; // Use the actual path when it's created as needed
     console.log(ownProps);
     return {
-        classdata: () => dispatch(queryAllMyData(path)),
-        students: () => dispatch(queryStudents()),
-        github: () => dispatch(queryGithub())
+        // classdata: () => dispatch(queryAllMyData(path)),
+        // students: () => dispatch(queryStudents()),
+        data: () => dispatch(queryGithub())
     };
 }
 
 
-export default connectAsync({loadDataAsProps})(ClassList);
+export default connectAsync({loadDataAsProps})(WeeklyData);
