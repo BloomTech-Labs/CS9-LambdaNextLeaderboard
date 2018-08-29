@@ -94,7 +94,10 @@ async function fetchGithubData(studentData) {
                     'Full Name': each.firstname + ' ' + each.lastname,
                     'error': 'Github handle not found'
                 }
-                return gitDataFetch
+                return ({
+                    'Full Name': each.firstname + ' ' + each.lastname,
+                    'error': 'Github handle not found'
+                })
             });
 
     }))

@@ -4,12 +4,14 @@
 import React from "react";
 import { Breadcrumb } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-
+import {getGithubDataAction} from '../../actions'
+import {connect} from 'react-redux'
 import "./index.css";
 
 import MenuBar from "../MenuBar/MenuBar";
 
 import ClassList from "./ClassList";
+import {mapStateToProps} from "../CreateOrEditClass/StudentsDisplay";
 
 function SplitPane(props) {
   return (
@@ -40,24 +42,52 @@ function RightContent(props) {
 
 //These styles can go into a CSS file, such as HomeTemplate.css
 //I did them this way because it's faster
-const ClassList2 = props => {
-  return (
-    <div style={{ height: "100%" }}>
-      {/*<NavBar props={props} />*/}
-      <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
-        <Breadcrumb.Section>
-          <Link to="/">Home</Link>
-        </Breadcrumb.Section>
-        <Breadcrumb.Divider icon="right chevron" />
+class ClassList2 extends React.Component{
+    componentDidMount() {
+        this.props.getGithubDataAction();
+    }
 
-        <Breadcrumb.Section active>Classes</Breadcrumb.Section>
-      </Breadcrumb>
+    render() {
+        return (
+            <div style={{ height: "100%" }}>
+                {/*<NavBar props={props} />*/}
+                <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
+                    <Breadcrumb.Section>
+                        <Link to="/">Home</Link>
+                    </Breadcrumb.Section>
+                    <Breadcrumb.Divider icon="right chevron" />
 
-      <SplitPane
-        left={<LeftContent />}
-        right={<RightContent props={props} />}
-      />
-    </div>
-  );
-};
-export default ClassList2;
+                    <Breadcrumb.Section active>Classes</Breadcrumb.Section>
+                </Breadcrumb>
+
+                <SplitPane
+                    left={<LeftContent />}
+                    right={<RightContent props={this.props} />}
+                />
+            </div>
+        );
+    }
+
+}
+// const ClassList2 = props => {
+//
+//   return (
+//     <div style={{ height: "100%" }}>
+//       {/*<NavBar props={props} />*/}
+//       <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
+//         <Breadcrumb.Section>
+//           <Link to="/">Home</Link>
+//         </Breadcrumb.Section>
+//         <Breadcrumb.Divider icon="right chevron" />
+//
+//         <Breadcrumb.Section active>Classes</Breadcrumb.Section>
+//       </Breadcrumb>
+//
+//       <SplitPane
+//         left={<LeftContent />}
+//         right={<RightContent props={props} />}
+//       />
+//     </div>
+//   );
+// };
+export default connect(mapStateToProps, {getGithubDataAction})(ClassList2);
