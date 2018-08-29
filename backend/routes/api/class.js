@@ -20,7 +20,7 @@ async function fetchGithubData(studentData) {
     // gitDataFetch = []
 
      return (studentData.forEach(async (each, i) => {
-         
+
         let gitHubHandle = each.github;
         let authStr = "Bearer " + process.env.GITHUB_AUTH_TOKEN; // Add token
          console.log("Inside testing", i)
@@ -65,18 +65,18 @@ async function fetchGithubData(studentData) {
                              commitsByUser += each
                          }
                      })
-                     if (i === studentData.length - 1) {
-                         gitDataFetch = [];
-                         gitDataFetch.push({'Full Name': each.firstname + ' ' + each.lastname, 'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats})
+                     // if (i === studentData.length - 1) {
+                         // gitDataFetch = [];
+                         gitDataFetch[i] ={'Full Name': each.firstname + ' ' + each.lastname, 'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats}
                          return ({'totalCommits': totalCommits, 'commitsByUser': commitsByUser, 'pushCount': pushCount, 'forkCount': forkCount, 'pullRequestCount': pullRequestCount, 'createCount': createCount, 'size': size, 'distinct size': distinctSize, 'created': created_at, 'stats': stats});
-                     }
+                     // }
                  })
                  .catch(err => {
-                     if (i === studentData.length - 1) {
-                         gitDataFetch = [];
-                         gitDataFetch.push({'Full Name': each.firstname + ' ' + each.lastname,'error': 'Github handle not found'})
+                     // if (i === studentData.length - 1) {
+                     //     gitDataFetch = [];
+                         gitDataFetch[i] = {'Full Name': each.firstname + ' ' + each.lastname,'error': 'Github handle not found'}
                          return gitDataFetch
-                     }
+                     // }
                  });
 
     }))
