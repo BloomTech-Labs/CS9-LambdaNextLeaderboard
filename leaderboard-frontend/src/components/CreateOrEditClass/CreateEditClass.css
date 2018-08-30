@@ -84,7 +84,7 @@ html, body, #root {
     height: 35%;
     background: beige;
     margin-bottom: 1%;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 .CName {
     /*padding-top: 1%;*/

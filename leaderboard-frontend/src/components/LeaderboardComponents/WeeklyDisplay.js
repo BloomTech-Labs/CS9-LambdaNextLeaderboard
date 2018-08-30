@@ -11,7 +11,7 @@ class WeeklyDisplay extends Component {
     }
 
     render() {
-        console.log(this.props.github.FullName)
+        console.log(this.props.count, typeof this.props.count)
         return (
             <div>
                 <Table.Body>
@@ -27,8 +27,12 @@ class WeeklyDisplay extends Component {
                             </Header>
                         </Table.Cell>
                         <Table.Cell>{this.props.github.commitsByUser}</Table.Cell>
-                        <Table.Cell>{this.state.huntrDefault}</Table.Cell>
-                        <Table.Cell>{this.state.huntrDefault + this.props.github.commitsByUser}</Table.Cell>
+                        <Table.Cell>{this.props.count === 'none' ?
+                            this.state.huntrDefault:
+                            this.props.count}
+                            </Table.Cell>
+                        <Table.Cell>{this.props.count === 'none' ? (this.state.huntrDefault + this.props.github.commitsByUser) :
+                            (this.props.count + this.props.github.commitsByUser)}</Table.Cell>
                     </Table.Row>
                 </Table.Body>
             </div>
