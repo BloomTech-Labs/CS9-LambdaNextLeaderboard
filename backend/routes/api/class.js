@@ -290,6 +290,14 @@ router.post("/:name/importcsv", (req, res) => {
   let adminID = req.user._id
   
   //test
+  getRefIDS = csvclassname => {
+    ClassModel.find({name: csvClassName})}, function(err, users) {
+      if (err) {
+        callback(err, null)
+      } else {
+        callback(null, users[0])
+      }
+    }
 
 
   // Populated as CSV parsed
