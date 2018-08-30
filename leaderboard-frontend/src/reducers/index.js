@@ -5,7 +5,7 @@ import {
   UPDATE_STUDENT,
   ADD_CLASS,
   ADD_STUDENT,
-  GET_CLASS_STUDENTS,
+  // GET_CLASS_STUDENTS,
   GET_CLASSES_STUDENTS,
   LOGIN_ERRORS,
   REGISTER_ERRORS,
@@ -27,6 +27,11 @@ import {
   ADD_ORGANIZATION_CLASSES_ERRORS,
   ADD_ORGANIZATION_CLASSES
 } from "../actions/organizationActions";
+import {
+  GET_CLASS_STUDENTS,
+  ADD_CLASS_STUDENTS_ERRORS,
+  ADD_CLASS_STUDENTS
+} from "../actions/classActions";
 
 const initialState = {
   loginErrors: {},
@@ -48,12 +53,18 @@ const initialState = {
   updatedStudent: null,
   editStudent: null,
   removedStudent: null,
+
   adminOrganizations: [],
   newOrganizationErrors: {},
   createdOrganization: {},
+
   organizationClasses: [],
   newClassErrors: {},
-  createdClass: {}
+  createdClass: {},
+
+  classStudents: [],
+  newStudentErrors: {},
+  createdStudent: {}
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -125,15 +136,15 @@ const studentReducer = (state = initialState, action) => {
         classlist_students: null,
         allStudents: null
       });
-    case GET_CLASS_STUDENTS:
-      return Object.assign({}, state, {
-        classlist_students: {
-          className: action.class_name,
-          students: action.payload
-        },
-        test: action.test,
-        updateCheck: false
-      });
+    // case GET_CLASS_STUDENTS:
+    //   return Object.assign({}, state, {
+    //     classlist_students: {
+    //       className: action.class_name,
+    //       students: action.payload
+    //     },
+    //     test: action.test,
+    //     updateCheck: false
+    //   });
     case GET_CLASSES_STUDENTS:
       return Object.assign({}, state, {
         allClasses: action.payload,
@@ -196,6 +207,19 @@ const studentReducer = (state = initialState, action) => {
     case ADD_ORGANIZATION_CLASSES:
       return Object.assign({}, state, {
         createdClass: action.payload
+      });
+
+    case GET_CLASS_STUDENTS:
+      return Object.assign({}, state, {
+        classStudents: action.payload
+      });
+    case ADD_CLASS_STUDENTS_ERRORS:
+      return Object.assign({}, state, {
+        newStudentErrors: action.payload
+      });
+    case ADD_CLASS_STUDENTS:
+      return Object.assign({}, state, {
+        createdStudent: action.payload
       });
 
     default:

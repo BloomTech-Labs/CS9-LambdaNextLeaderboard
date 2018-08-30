@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 // components
 import AddOrganization from "./AddOrganization";
 import AddClass from "./AddClass";
+import ClassView from "./ClassView";
 
 // actions
 import {
@@ -24,7 +25,8 @@ class Dashboard extends Component {
     this.state = {
       activeOrg: "",
       activeClass: "",
-      activeOrgName: ""
+      activeOrgName: "",
+      activeClassName: ""
     };
   }
 
@@ -39,12 +41,18 @@ class Dashboard extends Component {
   };
 
   handleOrgMenuClick = (e, { name, content }) => {
-    this.setState({ activeOrg: name, activeOrgName: content, activeClass: "" });
+    this.setState({
+      activeOrg: name,
+      activeOrgName: content,
+      activeClass: "",
+      activeClassName: ""
+    });
     this.props.newOrgErrors.name = "";
   };
 
-  handleClassMenuClick = (e, { name }) => {
-    this.setState({ activeClass: name });
+  handleClassMenuClick = (e, { name, content }) => {
+    this.setState({ activeClass: name, activeClassName: content });
+    this.props.newClassErrors.name = "";
   };
 
   componentWillUpdate = (nextProps, nextState) => {
@@ -178,11 +186,15 @@ class Dashboard extends Component {
               />
             ) : null}
             {activeClass !== "" && activeClass !== "addClass" ? (
-              <Segment>
-                {
-                  "Show class card here. Needs to show class details, student cards, have ability to go to class leaderboard, and edit class details (Placeholder)"
-                }
-              </Segment>
+              // <Segment>
+              //   {
+              //     "Show class card here. Needs to show class details, student cards, have ability to go to class leaderboard, and edit class details (Placeholder)"
+              //   }
+              //   </Segment>
+              <ClassView
+                classId={this.state.activeClass}
+                className={this.state.activeClassName}
+              />
             ) : null}
           </Grid.Column>
         </Grid>
