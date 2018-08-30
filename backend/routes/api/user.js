@@ -135,6 +135,45 @@ router.post("/login", (req, res) => {
     }
 
 });
+// @route    PUT api/users/update
+// @desc     Return current user
+// @access   Private
+router.put("/updateuser", (req, res) => {
+    // const {errors, isValid} = validateUpdateStudentInput(req.body);
+    //   // Validation Check
+    //   if (!isValid) {
+    //       return res.status(400).json(errors);
+    //   }
+    const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+
+    const username = data.username;
+    const password = data.password;
+    const coadmin = data.coadmin;
+    const {_id} = req.body;
+    // const id = req.body.id
+    const options = {
+        new: true
+    }
+    if (coadmin) {
+        CoAdmin.findByIdAndUpdate(_id, req.body, options)
+            .then(admin => {
+                res.send(admin)
+            })
+            .catch(err => {
+                res.status(500).json(err);
+            })
+    } else {
+        Admin.findByIdAndUpdate(_id, req.body, options)
+            .then(user => {
+                res.send(admin)
+            })
+            .catch(err => {
+                res.status(500).json(admin);
+            })
+    }
+
+
+})
 
 // @route    GET api/users/current
 // @desc     Return current user
