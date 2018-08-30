@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Segment, Header, Icon, Form } from "semantic-ui-react";
+import { Segment, Header, Icon, Form, Label } from "semantic-ui-react";
 
 export default class AddOrganization extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ export default class AddOrganization extends Component {
 
   handleInput = (e, { value }) => {
     this.setState({ newOrgName: value });
+    this.props.addOrgErrors.name = "";
   };
 
   handleSubmit = () => {
@@ -29,15 +30,24 @@ export default class AddOrganization extends Component {
 
         <Segment>
           <Form>
-            <Form.Input
-              placeholder="New organization name"
-              onChange={this.handleInput}
-            />
-            <Form.Button
-              content="Create my organization"
-              color="green"
-              onClick={this.handleSubmit}
-            />
+            <Form.Field error={Boolean(this.props.addOrgErrors.name)}>
+              {this.props.addOrgErrors.name ? (
+                <Label
+                  color="red"
+                  pointing="below"
+                  content={this.props.addOrgErrors.name}
+                />
+              ) : null}
+              <Form.Input
+                placeholder="New organization name"
+                onChange={this.handleInput}
+              />
+              <Form.Button
+                content="Create my organization"
+                color="green"
+                onClick={this.handleSubmit}
+              />
+            </Form.Field>
           </Form>
         </Segment>
       </Segment>

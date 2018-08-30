@@ -115,7 +115,7 @@ router.get(
     const id = req.params.id;
 
     Admin.findById(id)
-      .populate("organizations")
+      .populate("organizations", null, null, { sort: { name: 1 } })
       .then(admin => {
         if (!admin) {
           return res.status(404).json({ user: "That user does not exist." });

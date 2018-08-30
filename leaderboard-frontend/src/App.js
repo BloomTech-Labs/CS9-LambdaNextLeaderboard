@@ -13,7 +13,7 @@ import "./App.css";
 
 //________REACT COMPONENTS________
 import NAVBAR from "./components/Navbar/Nav";
-import CLASSLIST from "./components/Classlist/index";
+// import CLASSLIST from "./components/Classlist/index";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
 import Register from "./components/Testing/Register";

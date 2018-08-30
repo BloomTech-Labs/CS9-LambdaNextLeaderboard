@@ -45,7 +45,8 @@ export const addAdminOrganization = obj => {
     axios(options)
       .then(res => {
         dispatch({
-          type: ADD_ADMIN_ORGANIZATIONS
+          type: ADD_ADMIN_ORGANIZATIONS,
+          payload: res.data
         });
       })
       .catch(err => {

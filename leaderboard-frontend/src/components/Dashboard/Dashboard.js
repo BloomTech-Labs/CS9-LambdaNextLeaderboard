@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Grid, Menu, Icon } from "semantic-ui-react";
+import { Container, Grid, Menu } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 // components
@@ -18,10 +18,10 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      active: "",
+      activeOrg: "",
+      activeClass: "",
       selectedOrgId: "",
-      selectedOrgName: "",
-      organizations: null
+      selectedOrgName: ""
     };
   }
 
@@ -31,25 +31,39 @@ class Dashboard extends Component {
     });
   };
 
-  handleMenuClick = (e, { name }) => {
-    this.setState({ active: name });
+  getClasses = () => {
+    this.props.getOrganizationClasses({ id: this.state.activeOrg });
   };
 
-  shouldComponentUpdate = (nextProps, nextState) => {
-    console.log(
-      "hello, scu",
-      nextProps.orgClasses === this.props.orgClasses,
-      nextProps.orgClasses,
-      this.props.orgClasses
-    );
-    if (this.props.organizations !== nextProps.organizations) return true;
-    if (this.props.orgClasses !== nextProps.orgClasses) return true;
-    return false;
+  handleOrgMenuClick = (e, { name }) => {
+    this.setState({ activeOrg: name });
+  };
+
+  handleClassMenuClick = (e, { name }) => {
+    this.setState({ activeClass: name });
   };
 
   componentWillUpdate = (nextProps, nextState) => {
-    if (nextState.active && nextState.active !== "addOrg") {
-      this.props.getOrganizationClasses({ id: nextState.active });
+    console.log("I am going to set the state for real", this.state);
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    console.log("It changed", prevProps, this.props, prevState, this.state);
+    // New Organization created -> Updating Organizations
+    if (
+      this.props.createdOrganization &&
+      this.props.createdOrganization !== prevProps.createdOrganization
+    ) {
+      this.getOrganizations();
+    }
+
+    // Selected Organization was changed -> Updating Classes
+    if (
+      this.state.activeOrg &&
+      this.state.activeOrg !== "addOrg" &&
+      this.state.activeOrg !== prevState.activeOrg
+    ) {
+      this.getClasses();
     }
   };
 
@@ -58,19 +72,14 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { active } = this.state;
+    const { activeOrg, activeClass } = this.state;
     return (
       <Container>
         <Grid>
           <Grid.Column width={5}>
             <Menu size="massive" fluid vertical inverted color="blue">
               <Menu.Item>
-                <Menu.Header>
-                  Organizations
-                  {!this.props.organizations.length ? (
-                    <Icon loading name="spinner" />
-                  ) : null}
-                </Menu.Header>
+                <Menu.Header>Organizations</Menu.Header>
                 <Menu.Menu>
                   {this.props.organizations.map((org, index) => {
                     return (
@@ -78,28 +87,28 @@ class Dashboard extends Component {
                         content={org.name}
                         key={index}
                         name={org._id}
-                        active={active === org._id}
-                        onClick={this.handleMenuClick}
+                        active={activeOrg === org._id}
+                        onClick={this.handleOrgMenuClick}
                       />
                     );
                   })}
+                  {!this.props.organizations.length ? (
+                    <Menu.Item
+                      content={"You haven't created an organization yet!"}
+                    />
+                  ) : null}
                   <Menu.Item
                     content="Add a new organization"
                     icon="add"
                     name="addOrg"
-                    active={active === "addOrg"}
-                    onClick={this.handleMenuClick}
+                    active={activeOrg === "addOrg"}
+                    onClick={this.handleOrgMenuClick}
                   />
                 </Menu.Menu>
               </Menu.Item>
-              {this.state.active && this.state.active !== "addOrg" ? (
+              {this.state.activeOrg && this.state.activeOrg !== "addOrg" ? (
                 <Menu.Item>
-                  <Menu.Header>
-                    Classes
-                    {!this.props.orgClasses.length ? (
-                      <Icon loading name="spinner" />
-                    ) : null}
-                  </Menu.Header>
+                  <Menu.Header>Classes</Menu.Header>
                   <Menu.Menu>
                     {this.props.orgClasses.map((aClass, index) => {
                       return (
@@ -107,9 +116,16 @@ class Dashboard extends Component {
                           content={aClass.name}
                           key={index}
                           name={aClass._id}
+                          active={activeClass === aClass._id}
+                          onClick={this.handleClassMenuClick}
                         />
                       );
                     })}
+                    {!this.props.orgClasses.length ? (
+                      <Menu.Item
+                        content={"That organization currently has no classes!"}
+                      />
+                    ) : null}
                     <Menu.Item content="Add a new class" icon="add" />
                   </Menu.Menu>
                 </Menu.Item>
@@ -117,11 +133,14 @@ class Dashboard extends Component {
             </Menu>
           </Grid.Column>
           <Grid.Column width={11}>
-            {active === "" ? (
-              <Segment>{"<-- select/create an org"}</Segment>
+            {activeOrg === "" ? (
+              <Segment>{"<-- select/create an organization"}</Segment>
             ) : null}
-            {active === "addOrg" ? (
-              <AddOrganization addOrg={this.props.addAdminOrganization} />
+            {activeOrg === "addOrg" ? (
+              <AddOrganization
+                addOrg={this.props.addAdminOrganization}
+                addOrgErrors={this.props.newOrgErrors}
+              />
             ) : null}
           </Grid.Column>
         </Grid>
@@ -133,6 +152,8 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
   return {
     organizations: state.adminOrganizations,
+    newOrgErrors: state.newOrganizationErrors,
+    createdOrganization: state.createdOrganization,
     orgClasses: state.organizationClasses
   };
 };
