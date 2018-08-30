@@ -23,12 +23,17 @@ class ClassList extends Component {
         if (localStorage.getItem("invalid")) {
             localStorage.removeItem("token");
             localStorage.removeItem("invalid");
+            localStorage.removeItem("email")
+            localStorage.removeItem("adminID")
+            localStorage.removeItem("organization")
             this.props.props.props.history.push('/')
         }
         if (localStorage.getItem("token") === null) {
             this.props.props.props.history.push('/')
             localStorage.removeItem("invalid");
             localStorage.removeItem("adminID")
+            localStorage.removeItem("organization")
+            localStorage.removeItem("email")
         }
     }
 
@@ -38,11 +43,15 @@ class ClassList extends Component {
             localStorage.removeItem("token");
             localStorage.removeItem("invalid");
             localStorage.removeItem("adminID")
+            localStorage.removeItem("organization")
+            localStorage.removeItem("email")
             this.props.props.props.history.push('/')
         }
         if (localStorage.getItem("token") === null) {
             localStorage.removeItem("invalid");
             localStorage.removeItem("adminID")
+            localStorage.removeItem("organization")
+            localStorage.removeItem("email")
             this.props.props.props.history.push('/')
         }
     }
@@ -58,6 +67,8 @@ class ClassList extends Component {
             if (localStorage.getItem("invalid")) {
                 localStorage.removeItem("token");
                 localStorage.removeItem("invalid");
+                localStorage.removeItem("organization")
+                localStorage.removeItem("email")
                 this.props.props.props.history.push('/')
             }
             return <div>Loading...</div>

@@ -145,31 +145,80 @@ router.put("/updateuser", (req, res) => {
     //       return res.status(400).json(errors);
     //   }
     const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
-
+    console.log('testing update', data)
     const username = data.username;
-    const password = data.password;
+    const oldPassword = data.oldPassword;
+    const newPassword = data.newPassword;
+    const email = data.email;
+    const organization = data.organization;
     const coadmin = data.coadmin;
     const {_id} = req.body;
     // const id = req.body.id
     const options = {
         new: true
     }
+    const updateUser = {
+        "username": username,
+        "password": newPassword,
+        "email": email,
+        "organization": organization
+    }
     if (coadmin) {
-        CoAdmin.findByIdAndUpdate(_id, req.body, options)
-            .then(admin => {
-                res.send(admin)
-            })
-            .catch(err => {
-                res.status(500).json(err);
-            })
-    } else {
-        Admin.findByIdAndUpdate(_id, req.body, options)
+        CoAdmin.findOne({username})
+            .select("+password")
             .then(user => {
-                res.send(admin)
-            })
-            .catch(err => {
-                res.status(500).json(admin);
-            })
+                if (!user) {
+                    errors.username = "Username not found";
+                    return res.status(404).json(errors);
+                }
+
+                // Check Password
+                bcrypt.compare(oldPassword, user.password).then(isMatch => {
+                    if (isMatch) {
+                        // Successful login creating token
+                        CoAdmin.findByIdAndUpdate(_id, updateUser, options)
+                            .then(admin => {
+                                res.send(admin)
+                            })
+                            .catch(err => {
+                                res.status(500).json(err);
+                            })
+
+                    } else {
+                        errors.password = "Invalid Credentials";
+                        return res.status(400).json(errors);
+                    }
+                });
+            });
+
+    } else {
+        Admin.findOne({username})
+            .select("+password")
+            .then(user => {
+                if (!user) {
+                    errors.username = "Username not found";
+                    return res.status(404).json(errors);
+                }
+
+                // Check Password
+                bcrypt.compare(oldPassword, user.password).then(isMatch => {
+                    if (isMatch) {
+                        // Successful login creating token
+                        Admin.findByIdAndUpdate(_id, updateUser, options)
+                            .then(user => {
+                                res.send(admin)
+                            })
+                            .catch(err => {
+                                res.status(500).json(admin);
+                            })
+
+                    } else {
+                        errors.password = "Invalid Credentials";
+                        return res.status(400).json(errors);
+                    }
+                });
+            });
+
     }
 
 

@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {updateUserAction} from '../../actions'
 import "./Setings.css"
 
 class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
+            email: localStorage.getItem("email"),
+            organization: localStorage.getItem("organization"),
+            username: '',
             oldPassword: '',
             newPassword: '',
             confirmPassword: '',
@@ -17,7 +21,18 @@ class Settings extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
     handleSave = () => {
+        const organization = localStorage.getItem("organization")
+        const updateAdmin = {
+            "username": this.state.username,
+            "oldPassword": this.state.oldPassword,
+            "newPassword": this.state.newPassword,
+            "email": this.state.email,
+            "organization": this.state.organization,
+            "_id": localStorage.getItem("adminID")
+        }
         console.log('Saved', this.state)
+        console.log("org", updateAdmin)
+        this.props.updateUserAction(updateAdmin)
     }
     checkCredentials = () => {
 
@@ -35,13 +50,13 @@ class Settings extends Component {
                 <div>
                     <div>
                         <div>
-                            <h3 className="headerField">Username/Email:</h3>
+                            <h3 className="headerField">Username:</h3>
                             <input
                                 type="text"
-                                name="email"
+                                name="username"
                                 className="inputVal"
-                                placeholder="user@gmail.com"
-                                value={this.state.email}
+                                placeholder="Username"
+                                value={this.state.username}
                                 onChange={this.handleInput}
                                 align="right"
                             />
@@ -51,7 +66,7 @@ class Settings extends Component {
                         <div>
                             <h3 className="headerField">Old Password:</h3>
                             <input
-                                type="text"
+                                type="password"
                                 name="oldPassword"
                                 className="inputVal"
                                 placeholder="******"
@@ -65,7 +80,7 @@ class Settings extends Component {
                         <div>
                             <h3 className="headerField">New Password:</h3>
                             <input
-                                type="text"
+                                type="password"
                                 name="newPassword"
                                 className="inputVal"
                                 placeholder="*******"
@@ -79,11 +94,39 @@ class Settings extends Component {
                         <div>
                             <h3 className="headerField">Confirm Password:</h3>
                             <input
-                                type="text"
+                                type="password"
                                 name="confirmPassword"
                                 className="inputVal"
                                 placeholder="*******"
                                 value={this.state.confirmPassword}
+                                onChange={this.handleInput}
+                                align="right"
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <h3 className="headerField">Email:</h3>
+                            <input
+                                type="text"
+                                name="email"
+                                className="inputVal"
+                                placeholder="user@gmail.com"
+                                value={this.state.email}
+                                onChange={this.handleInput}
+                                align="right"
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <h3 className="headerField">Organization:</h3>
+                            <input
+                                type="text"
+                                name="organization"
+                                className="inputVal"
+                                placeholder="*******"
+                                value={this.state.organization}
                                 onChange={this.handleInput}
                                 align="right"
                             />
@@ -96,5 +139,9 @@ class Settings extends Component {
         );
     }
 }
-
-export default Settings
+const maptStateToProps = state => {
+    return {
+        updateAdmin: state.updateAdmin
+    }
+}
+export default connect(maptStateToProps, {updateUserAction})(Settings)
