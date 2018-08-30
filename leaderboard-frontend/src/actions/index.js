@@ -17,6 +17,7 @@ export const GET_STUDENTS = "GET_STUDENTS"
 export const GET_GITHUB_DATA = "GET_GITHUB_DATA"
 export const EDIT_STUDENT = "EDIT_STUDENT"
 export const REMOVE_STUDENT = "REMOVE_STUDENT"
+export const UPDATE_ADMIN = "UPDATE_ADMIN"
 
 
 const USER_URL = process.env.REACT_APP_USER_URL;
@@ -119,7 +120,36 @@ export const redirectDataClass = () => {
         });
     };
 };
+export const updateUserAction = (userObject) => {
+    const token = localStorage.getItem("token");
+    // const user = studentData.firstname + " " + studentData.lastname;
+    return dispatch => {
+        // const options = {
+        //     method: "PUT",
+        //     headers: {"content-type": "application/json", Authorization: token},
+        //     data: userObject,
+        //     url: `${USER_URL}updateuser`
+        // };
+        axios
+            .put(`${USER_URL}updateuser`, {token: dataEncrypt(userObject)})
+        // (options)
+            .then(res => {
+                dispatch({
+                    type: UPDATE_ADMIN,
+                    payload: res.admin, //Student data object returned
+                    // class_name: res.name,
+                    // user: user,
+                });
 
+            })
+            .catch(err => {
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data
+                });
+            });
+    }
+}
 export const getClassStudentsAction = classname => {
     const token = localStorage.getItem("token");
 
@@ -381,8 +411,9 @@ export const loginAction = (obj, history) => {
             .then(res => {
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("adminID", res.data.id);
+                localStorage.setItem("organization", res.data.organization.organization)
+                localStorage.setItem("email", res.data.organization.email)
                 // localStorage.setItem('expiration', expire);
-                console.log(res);
                 dispatch({
                     type: LOGIN_ACTION,
                     successfulLogin: true,
@@ -401,11 +432,17 @@ export const loginAction = (obj, history) => {
     };
 };
 
-export const logoutAction = () => {
+export const logoutAction = (history) => {
     localStorage.removeItem("token");
     localStorage.removeItem("adminID");
+    localStorage.removeItem("invalid")
+    localStorage.removeItem("organization")
+    localStorage.removeItem("email")
+    history.push("/")
+    localStorage.removeItem("email")
+    // localStorage.removeItem("invalid");
     return dispatch => {
-        dispatch({type: LOGOUT_ACTION, successfulLogin: false});
+        dispatch({type: LOGOUT_ACTION});
     };
 };
 

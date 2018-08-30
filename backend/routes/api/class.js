@@ -183,7 +183,7 @@ router.post("/all", (req, res) => {
 })
 
 router.post("/data", (req, res) => {
-    StudentModel.find({_admin: req.body.id})
+            StudentModel.find({_admin: req.body.id})
     // .populate('_class')
         .then(async students => {
                 gitDataFetch = []
