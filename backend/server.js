@@ -51,7 +51,7 @@ const configureRoutes = app => {
 };
 
 configureServer(app);
-configureRoutes(app);
+// configureRoutes(app);
 
 // // ****END STRIPE****
 
