@@ -291,12 +291,8 @@ router.post("/:name/importcsv", (req, res) => {
   
   //test
   getRefIDS = csvclassname => {
-    ClassModel.find({name: csvClassName})}, function(err, users) {
-      if (err) {
-        callback(err, null)
-      } else {
-        callback(null, users[0])
-      }
+    ClassModel.find({name: csvClassName}).exec();
+
     }
 
 
