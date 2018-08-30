@@ -280,12 +280,16 @@ router.post("/:name/importcsv", (req, res) => {
   console.log("TESTING CSV ROUTE");
 
   if (!req.files) return res.status(400).send("No files were uploaded.");
-  //console.log("req.files.file", req.files.file);
-  //console.log("req.params.name", req.params.name);
+  // console.log("req.files.file", req.files.file);
+  // console.log("req.params.name", req.params.name);
+  // console.log('req', req)
 
   // Reference
   const csvClassFile = req.files.file;
   const csvClassName = req.params.name;
+  let adminID = req.user._id
+  
+  //test
 
 
   // Populated as CSV parsed
@@ -297,27 +301,29 @@ router.post("/:name/importcsv", (req, res) => {
   //2nd attempt
   //let stream = fs.createReadStream(csvClassFile.toString());
 
-  csv
-    .fromString(csvClassFile.data.toString(), {
-      headers: ["firstname", "lastname", "email", "github", "huntr"]
-    })
-    .on("data", function(data) {
-      let newStudent = new StudentModel();
+  // csv
+  //   .fromString(csvClassFile.data.toString(), {
+  //     headers: ["firstname", "lastname", "email", "github", "huntr"]
+  //   })
+  //   .on("data", function(data) {
+  //     let newStudent = new StudentModel();
 
-      newStudent.firstname = data["firstname"];
-      newStudent.lastname = data["lastname"];
-      newStudent.email = data["email"];
-      newStudent.github = data["github"];
-      newStudent.huntr = data["huntr"];
-      newStudent.classname = csvClassName
+  //     newStudent.firstname = data["firstname"];
+  //     newStudent.lastname = data["lastname"];
+  //     newStudent.email = data["email"];
+  //     newStudent.github = data["github"];
+  //     newStudent.huntr = data["huntr"];
+  //     newStudent.classname = csvClassName
+  //     newStudent._admin = _admin
+  //     newStudent._class = _class
 
-      newStudent.save(function(err, data) {
-        if (err) console.log(err);
-        else {
-          console.log("Saved ", data);
-        }
-      });
-    });
+  //     newStudent.save(function(err, data) {
+  //       if (err) console.log(err);
+  //       else {
+  //         console.log("Saved ", data);
+  //       }
+  //     });
+  //   });
 
 
 

@@ -56,7 +56,7 @@ class ClassCreateEdit extends Component {
   handleImportSubmit = e => {
     e.preventDefault();
     console.log("Import submit");
-    // Needs an action to send the data
+    
     let classID;
     let classname = this.props.props.props.match.params.name;
     let csvData = new FormData();
@@ -69,7 +69,13 @@ class ClassCreateEdit extends Component {
       }
     });
 
-    this.props.postCsvStudents(csvData, classname);
+    const studentIDsObject = {
+      _admin: localStorage.getItem("adminID"),
+      _class: classID
+    };
+    
+    // Pass CSV, classname, student _class, student _admin info
+    this.props.postCsvStudents(csvData, classname, studentIDsObject);
   };
 
   handleAdd = e => {
@@ -301,29 +307,27 @@ class ClassCreateEdit extends Component {
             {/* CSV IMPORT BOOKMARK */}
 
             <Segment basic>
-              
-                <Input
-                  focus
-                  type="file"
-                  ref={input => {
-                    this.filesInput = input;
-                  }}
-                  name="file"
-                  icon="file alternate outline"
-                  iconPosition="left"
-                  placeholder="UploadCSV"
-                  onChange={this.handleImportChange}
-                />
-                <Button
-                  className="ui clearing segment BtnImport"
-                  onClick={this.handleImportSubmit}
-                  primary
-                  size="large"
-                  fluid
-                >
-                  Upload CSV
-                </Button>
-              
+              <Input
+                focus
+                type="file"
+                ref={input => {
+                  this.filesInput = input;
+                }}
+                name="file"
+                icon="file alternate outline"
+                iconPosition="left"
+                placeholder="UploadCSV"
+                onChange={this.handleImportChange}
+              />
+              <Button
+                className="ui clearing segment BtnImport"
+                onClick={this.handleImportSubmit}
+                primary
+                size="large"
+                fluid
+              >
+                Upload CSV
+              </Button>
             </Segment>
           </div>
 
