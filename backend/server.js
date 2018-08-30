@@ -86,12 +86,12 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   classes
 );
-app.use("/api/data", cors(corsOptions), githubData);
-app.use("/api/billing", cors(corsOptions), billing);
+// app.use("/api/data", cors(corsOptions), githubData);
+// app.use("/api/billing", cors(corsOptions), billing);
 
 // CSV routes
-app.get("/template", cors(corsOptions));
-app.post("/create-edit", cors(corsOptions), upload.post);
+// app.get("/template", cors(corsOptions));
+// app.post("/create-edit", cors(corsOptions), upload.post);
 
 const port = process.env.PORT || 4000;
 
