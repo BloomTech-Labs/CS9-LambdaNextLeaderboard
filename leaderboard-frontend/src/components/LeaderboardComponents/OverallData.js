@@ -22,7 +22,31 @@ class OverallData extends Component {
             return <div>Oh no! Something went wrong</div>
         }
         console.log("We have data", this.props.data)
-        let count = [];
+        let count = []
+        const studentsObject = [];
+        this.props.students.forEach((each, i) => {
+            if (each.classname === this.props.props.match.params.classname) {
+                studentsObject.push({
+                    each
+                })
+            }
+
+        })
+        const gitObject = [];
+        this.props.data.gitData.forEach((git, x) => {
+            studentsObject.forEach(student => {
+                if (git.FullName === student.each.firstname + ' ' + student.each.lastname) {
+                    gitObject.push(git)
+                }
+            })
+        })
+        if (gitObject.length === 0) {
+            return (
+                <div>
+                    <h1>No Students</h1>
+                </div>
+            )
+        }
         return (
             <div>
                 <Container>
@@ -41,7 +65,7 @@ class OverallData extends Component {
                             </Table.Row>
                         </Table.Header>
 
-                        {this.props.data.gitData.map((each, x) => {
+                        {gitObject.map((each, x) => {
                             this.props.data.huntr.forEach(hunt => {
                                 if (each.FullName === hunt.givenNameArr + ' ' + hunt.familyName) {
                                     count[x] = hunt.count;
@@ -68,7 +92,7 @@ export function loadDataAsProps({store, ownProps}) {
     console.log(ownProps);
     return {
         // classdata: () => dispatch(queryAllMyData(path)),
-        // students: () => dispatch(queryStudents()),
+        students: () => dispatch(queryStudents()),
         data: () => dispatch(queryGithub())
     };
 }

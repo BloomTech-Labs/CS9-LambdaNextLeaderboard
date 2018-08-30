@@ -19,7 +19,7 @@ class CardClass extends Component {
 
     }
     redirectLeaderboard = () => {
-        this.props.props.history.push('/leaderboard')
+        this.props.props.history.push(`/${this.props.classname}/leaderboard`)
         console.log(this.props.student)
     }
 

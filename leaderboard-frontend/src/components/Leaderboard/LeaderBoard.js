@@ -31,12 +31,12 @@ class LeaderBoard extends Component {
               </div>
               <div>
                 {/*<WeeklyLeaderboard />*/}
-                <WeeklyData/>
+                <WeeklyData props={this.props} />
               </div>
               <div class="ui horizontal divider"></div>
               <div>
                 {/*<OverallLeaderboard />*/}
-                <OverallData/>
+                <OverallData props={this.props}/>
               </div>
 
             </div>

@@ -50,7 +50,7 @@ class App extends Component {
             />
             <Route exact path="/registertest" component={Register}/>
              <Route exact path="/billing" component={BILLING} />
-            <Route exact path="/leaderboard" component={LeaderBoard} />
+            <Route exact path="/:classname/leaderboard" component={LeaderBoard} />
 
           </div>
         </div>
