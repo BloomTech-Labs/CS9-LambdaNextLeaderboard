@@ -11,6 +11,7 @@ const _ = require("lodash");
 const clientID = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const csv = require("fast-csv");
+const fs = require("fs");
 let storage;
 
 async function fetchGithubData() {
@@ -272,29 +273,58 @@ router.delete("/:name/deletestudent", (req, res) => {
 // @route   PUT api/classes/:name/importcsv
 // @desc    Adds a csv of students to the class
 // @access  Private
-router.put("/:name/importcsv", (req, res) => {
+router.post("/:name/importcsv", (req, res) => {
   //console.log("req.files.file", req.files.file[0]);
-  console.log("req.files", req.files)
-
-  
+  //console.log("req.files", req.files);
 
   console.log("TESTING CSV ROUTE");
 
   if (!req.files) return res.status(400).send("No files were uploaded.");
+  //console.log("req.files.file", req.files.file);
+  //console.log("req.params.name", req.params.name);
 
-  // Reference to uploaded file
-  const classFile = req.files.file;
+  // Reference
+  const csvClassFile = req.files.file;
+  const csvClassName = req.params.name;
+
 
   // Populated as CSV parsed
   const importStudents = [];
-  let className = "";
+  //let className = "";
 
   console.log("UPLOAD BUTTON WORKING");
 
+  //2nd attempt
+  //let stream = fs.createReadStream(csvClassFile.toString());
+
+  csv
+    .fromString(csvClassFile.data.toString(), {
+      headers: ["firstname", "lastname", "email", "github", "huntr"]
+    })
+    .on("data", function(data) {
+      let newStudent = new StudentModel();
+
+      newStudent.firstname = data["firstname"];
+      newStudent.lastname = data["lastname"];
+      newStudent.email = data["email"];
+      newStudent.github = data["github"];
+      newStudent.huntr = data["huntr"];
+      newStudent.classname = csvClassName
+
+      newStudent.save(function(err, data) {
+        if (err) console.log(err);
+        else {
+          console.log("Saved ", data);
+        }
+      });
+    });
+
+
+
   // csv
   //   // Accept CSV as string, ignore headers + empty rows
-  //   .fromString(classFile.data.toString(), {
-  //     headers: true,
+  //   .fromString(csvClassFile.data.toString(), {
+  //     headers: [firstname, lastname, email, github, huntr],
   //     ignoreEmpty: true
   //   })
   //   // Listener | Called every row, assigns _id to student
@@ -309,15 +339,12 @@ router.put("/:name/importcsv", (req, res) => {
   //   })
   //   // Listener | End of parse, pass new students arr students arr in Class model
   //   .on("end", function() {
-  //     ClassLS.findByIdAndUpdate(
-  //       classID
-  //     )({ students: importStudents }, function(err) {
-  //       if (err) throw err;
-  //     });
-
-  //     //res.send(students.length + " users have been successfully uploaded.");
-  //     console.log("Upload success");
+  //     if (error) {
+  //       return res.status(500).json({ error });
+  //     }
   //   });
-});
 
+  // //res.send(students.length + " users have been successfully uploaded.");
+  // console.log("Upload success");
+});
 module.exports = router;

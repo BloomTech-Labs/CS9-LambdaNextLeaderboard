@@ -457,7 +457,7 @@ export const postCsvStudents = (csvFile, classname) => {
 
   return dispatch => {
     const options = {
-      method: "PUT",
+      method: "POST",
       headers: { "content-type": "text/csv", Authorization: token },
       data: csvFile,
       url: `${CLASS_URL}${classname}/importcsv`

@@ -301,12 +301,7 @@ class ClassCreateEdit extends Component {
             {/* CSV IMPORT BOOKMARK */}
 
             <Segment basic>
-              <form
-                action="http://localhost:4000/create-edit"
-                accept="*.csv"
-                method="POST"
-                encType="multipart/form-data"
-              >
+              
                 <Input
                   focus
                   type="file"
@@ -328,7 +323,7 @@ class ClassCreateEdit extends Component {
                 >
                   Upload CSV
                 </Button>
-              </form>
+              
             </Segment>
           </div>
 
