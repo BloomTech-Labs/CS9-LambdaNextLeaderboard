@@ -14,7 +14,7 @@ router.get("/:id/classes", (req, res) => {
   const id = req.params.id;
 
   Organization.findById(id)
-    .populate("classes")
+    .populate("classes", null, null, { sort: { name: 1 } })
     .then(org => {
       if (!org) {
         return res
@@ -48,11 +48,20 @@ router.post("/:id/classes/create", (req, res) => {
         .json({ organization: "That organization does not exist." });
     }
 
+    // Class names shouldn't be unique so that different organizations can use the same class name.
+
+    // Class.findOne({ name }).then(aClass => {
+    //   if (aClass) {
+    //     errors.name = "A class with that name already exists";
+    //     return res.status(400).json(errors);
+    //   }
+    // });
+
     const newClass = new Class({ name });
     newClass.save().then(created => {
       org.classes.push(created._id);
       org.save();
-      res.json(created);
+      res.status(201).json(created);
     });
   });
 });

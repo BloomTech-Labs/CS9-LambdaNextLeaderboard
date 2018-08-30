@@ -144,18 +144,23 @@ router.post(
     const id = req.params.id;
     const name = data.name;
 
-    Admin.findById(id).then(admin => {
-      if (!admin) {
-        return res.status(404).json({ user: "That user does not exist." });
+    Organization.findOne({ name }).then(org => {
+      if (org) {
+        errors.name = "An organization with that name already exists";
+        return res.status(400).json(errors);
       }
 
-      Organization.findOne({ name });
+      Admin.findById(id).then(admin => {
+        if (!admin) {
+          return res.status(404).json({ user: "That user does not exist." });
+        }
 
-      const newOrg = new Organization({ name, admins: [admin._id] });
-      newOrg.save().then(created => {
-        admin.organizations.push(created._id);
-        admin.save();
-        res.json(created);
+        const newOrg = new Organization({ name, admins: [admin._id] });
+        newOrg.save().then(created => {
+          admin.organizations.push(created._id);
+          admin.save();
+          res.status(201).json(created);
+        });
       });
     });
   }

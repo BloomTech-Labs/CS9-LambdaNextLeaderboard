@@ -46,7 +46,8 @@ export const addOrganizationClass = obj => {
     axios(options)
       .then(res => {
         dispatch({
-          type: ADD_ORGANIZATION_CLASSES
+          type: ADD_ORGANIZATION_CLASSES,
+          payload: res.data
         });
       })
       .catch(err => {

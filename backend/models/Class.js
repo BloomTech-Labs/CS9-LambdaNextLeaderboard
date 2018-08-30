@@ -5,8 +5,7 @@ const ObjectId = Schema.Types.ObjectId;
 const ClassSchema = new Schema({
   name: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   students: [
     {

@@ -24,7 +24,8 @@ import {
 } from "../actions/adminActions";
 import {
   GET_ORGANIZATION_CLASSES,
-  ADD_ORGANIZATION_CLASSES_ERRORS
+  ADD_ORGANIZATION_CLASSES_ERRORS,
+  ADD_ORGANIZATION_CLASSES
 } from "../actions/organizationActions";
 
 const initialState = {
@@ -51,7 +52,8 @@ const initialState = {
   newOrganizationErrors: {},
   createdOrganization: {},
   organizationClasses: [],
-  newClassErrors: {}
+  newClassErrors: {},
+  createdClass: {}
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -182,6 +184,7 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         createdOrganization: action.payload
       });
+
     case GET_ORGANIZATION_CLASSES:
       return Object.assign({}, state, {
         organizationClasses: action.payload
@@ -189,6 +192,10 @@ const studentReducer = (state = initialState, action) => {
     case ADD_ORGANIZATION_CLASSES_ERRORS:
       return Object.assign({}, state, {
         newClassErrors: action.payload
+      });
+    case ADD_ORGANIZATION_CLASSES:
+      return Object.assign({}, state, {
+        createdClass: action.payload
       });
 
     default:

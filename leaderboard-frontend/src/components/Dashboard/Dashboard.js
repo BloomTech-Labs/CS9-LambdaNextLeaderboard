@@ -4,13 +4,17 @@ import { connect } from "react-redux";
 
 // components
 import AddOrganization from "./AddOrganization";
+import AddClass from "./AddClass";
 
 // actions
 import {
   getAdminOrganizations,
   addAdminOrganization
 } from "../../actions/adminActions";
-import { getOrganizationClasses } from "../../actions/organizationActions";
+import {
+  getOrganizationClasses,
+  addOrganizationClass
+} from "../../actions/organizationActions";
 import { Segment } from "../../../../node_modules/semantic-ui-react";
 
 class Dashboard extends Component {
@@ -20,8 +24,7 @@ class Dashboard extends Component {
     this.state = {
       activeOrg: "",
       activeClass: "",
-      selectedOrgId: "",
-      selectedOrgName: ""
+      activeOrgName: ""
     };
   }
 
@@ -35,8 +38,9 @@ class Dashboard extends Component {
     this.props.getOrganizationClasses({ id: this.state.activeOrg });
   };
 
-  handleOrgMenuClick = (e, { name }) => {
-    this.setState({ activeOrg: name });
+  handleOrgMenuClick = (e, { name, content }) => {
+    this.setState({ activeOrg: name, activeOrgName: content, activeClass: "" });
+    this.props.newOrgErrors.name = "";
   };
 
   handleClassMenuClick = (e, { name }) => {
@@ -65,6 +69,14 @@ class Dashboard extends Component {
     ) {
       this.getClasses();
     }
+
+    // New Class created -> Updating Classes
+    if (
+      this.props.createdClass &&
+      this.props.createdClass !== prevProps.createdClass
+    ) {
+      this.getClasses();
+    }
   };
 
   componentDidMount = () => {
@@ -79,7 +91,11 @@ class Dashboard extends Component {
           <Grid.Column width={5}>
             <Menu size="massive" fluid vertical inverted color="blue">
               <Menu.Item>
-                <Menu.Header>Organizations</Menu.Header>
+                <Menu.Header>
+                  {this.props.organizations.length
+                    ? "Organizations"
+                    : "You aren't a part of any organizations yet"}
+                </Menu.Header>
                 <Menu.Menu>
                   {this.props.organizations.map((org, index) => {
                     return (
@@ -92,11 +108,6 @@ class Dashboard extends Component {
                       />
                     );
                   })}
-                  {!this.props.organizations.length ? (
-                    <Menu.Item
-                      content={"You haven't created an organization yet!"}
-                    />
-                  ) : null}
                   <Menu.Item
                     content="Add a new organization"
                     icon="add"
@@ -108,7 +119,11 @@ class Dashboard extends Component {
               </Menu.Item>
               {this.state.activeOrg && this.state.activeOrg !== "addOrg" ? (
                 <Menu.Item>
-                  <Menu.Header>Classes</Menu.Header>
+                  <Menu.Header>
+                    {!this.props.orgClasses.length
+                      ? `${this.state.activeOrgName} currently has no classes`
+                      : "Classes"}
+                  </Menu.Header>
                   <Menu.Menu>
                     {this.props.orgClasses.map((aClass, index) => {
                       return (
@@ -121,12 +136,13 @@ class Dashboard extends Component {
                         />
                       );
                     })}
-                    {!this.props.orgClasses.length ? (
-                      <Menu.Item
-                        content={"That organization currently has no classes!"}
-                      />
-                    ) : null}
-                    <Menu.Item content="Add a new class" icon="add" />
+                    <Menu.Item
+                      content="Add a new class"
+                      icon="add"
+                      name="addClass"
+                      active={activeClass === "addClass"}
+                      onClick={this.handleClassMenuClick}
+                    />
                   </Menu.Menu>
                 </Menu.Item>
               ) : null}
@@ -134,13 +150,39 @@ class Dashboard extends Component {
           </Grid.Column>
           <Grid.Column width={11}>
             {activeOrg === "" ? (
-              <Segment>{"<-- select/create an organization"}</Segment>
+              <Segment>
+                {"<-- select/create an organization (Placeholder)"}
+              </Segment>
             ) : null}
             {activeOrg === "addOrg" ? (
               <AddOrganization
                 addOrg={this.props.addAdminOrganization}
                 addOrgErrors={this.props.newOrgErrors}
               />
+            ) : null}
+            {activeOrg !== "" &&
+            activeOrg !== "addOrg" &&
+            activeClass === "" ? (
+              <Segment>
+                {
+                  "Show organization details here. Maybe statistics of all classes overall (Placeholder)"
+                }
+              </Segment>
+            ) : null}
+            {activeClass === "addClass" ? (
+              <AddClass
+                orgId={this.state.activeOrg}
+                orgName={this.state.activeOrgName}
+                addClass={this.props.addOrganizationClass}
+                addClassErrors={this.props.newClassErrors}
+              />
+            ) : null}
+            {activeClass !== "" && activeClass !== "addClass" ? (
+              <Segment>
+                {
+                  "Show class card here. Needs to show class details, student cards, have ability to go to class leaderboard, and edit class details (Placeholder)"
+                }
+              </Segment>
             ) : null}
           </Grid.Column>
         </Grid>
@@ -154,11 +196,19 @@ const mapStateToProps = state => {
     organizations: state.adminOrganizations,
     newOrgErrors: state.newOrganizationErrors,
     createdOrganization: state.createdOrganization,
-    orgClasses: state.organizationClasses
+
+    orgClasses: state.organizationClasses,
+    newClassErrors: state.newClassErrors,
+    createdClass: state.createdClass
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getAdminOrganizations, addAdminOrganization, getOrganizationClasses }
+  {
+    getAdminOrganizations,
+    addAdminOrganization,
+    getOrganizationClasses,
+    addOrganizationClass
+  }
 )(Dashboard);

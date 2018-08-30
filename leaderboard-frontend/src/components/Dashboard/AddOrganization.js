@@ -20,7 +20,6 @@ export default class AddOrganization extends Component {
   };
 
   render() {
-    console.log("state", this.state, "props", this.props);
     return (
       <Segment>
         <Header as="h2" icon textAlign="center" size="huge">
