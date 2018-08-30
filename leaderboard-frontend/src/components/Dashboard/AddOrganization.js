@@ -24,7 +24,7 @@ export default class AddOrganization extends Component {
       <Segment>
         <Header as="h2" icon textAlign="center" size="huge">
           <Icon name="users" circular />
-          <Header.Content>New Organization</Header.Content>
+          <Header.Content>Add New Organization</Header.Content>
         </Header>
 
         <Segment>

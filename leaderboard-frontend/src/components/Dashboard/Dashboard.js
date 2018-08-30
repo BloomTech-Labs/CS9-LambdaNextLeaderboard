@@ -97,7 +97,7 @@ class Dashboard extends Component {
       <Container>
         <Grid>
           <Grid.Column width={5}>
-            <Menu size="massive" fluid vertical inverted color="blue">
+            <Menu size="massive" fluid vertical color="blue">
               <Menu.Item>
                 <Menu.Header>
                   {this.props.organizations.length
