@@ -429,11 +429,15 @@ export const loginAction = (obj, history) => {
     };
 };
 
-export const logoutAction = () => {
+export const logoutAction = (history) => {
     localStorage.removeItem("token");
     localStorage.removeItem("adminID");
+    localStorage.removeItem("invalid")
+    history.push("/")
+
+    localStorage.removeItem("invalid");
     return dispatch => {
-        dispatch({type: LOGOUT_ACTION, successfulLogin: false});
+        dispatch({type: LOGOUT_ACTION});
     };
 };
 

@@ -27,25 +27,32 @@ class ClassList extends Component {
         }
         if (localStorage.getItem("token") === null) {
             this.props.props.props.history.push('/')
+            localStorage.removeItem("invalid");
+            localStorage.removeItem("adminID")
         }
     }
 
     componentWillUpdate(nextProps, nextState) {
 
         if (localStorage.getItem("invalid")) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("invalid");
+            localStorage.removeItem("adminID")
             this.props.props.props.history.push('/')
         }
         if (localStorage.getItem("token") === null) {
+            localStorage.removeItem("invalid");
+            localStorage.removeItem("adminID")
             this.props.props.props.history.push('/')
         }
     }
 
 
     render() {
-        if (localStorage.getItem("invalid")) {
-            localStorage.removeItem("invalid");
-            this.props.props.props.history.push('/')
-        }
+        // if (localStorage.getItem("invalid")) {
+        //     localStorage.removeItem("invalid");
+        //     this.props.props.props.history.push('/')
+        // }
 
         if (this.props.isLoading()) {
             if (localStorage.getItem("invalid")) {

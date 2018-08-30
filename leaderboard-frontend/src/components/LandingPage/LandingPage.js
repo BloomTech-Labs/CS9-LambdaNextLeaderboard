@@ -22,16 +22,28 @@ class LandingPage extends Component {
     componentDidMount() {
         if (localStorage.getItem("invalid")) {
             localStorage.removeItem("token");
-            localStorage.removeItem("invalid")
+            localStorage.removeItem("invalid");
+            localStorage.removeItem(("adminID"))
         }
-        if (localStorage.getItem("token")) {
+        if (!localStorage.getItem("invalid") && localStorage.removeItem("token") ) {
             this.props.history.push('/classlist')
         }
+        if (localStorage.getItem("token") === null) {
+            localStorage.removeItem(("adminID"))
+            localStorage.removeItem("invalid")
+        }
+
+
     }
 
     componentWillUpdate(nextProps, nextState) {
         if (localStorage.getItem("invalid")) {
             localStorage.removeItem("token");
+            localStorage.removeItem("invalid")
+            localStorage.removeItem(("adminID"))
+        }
+        if (localStorage.getItem("token") === null) {
+            localStorage.removeItem(("adminID"))
             localStorage.removeItem("invalid")
         }
     }
