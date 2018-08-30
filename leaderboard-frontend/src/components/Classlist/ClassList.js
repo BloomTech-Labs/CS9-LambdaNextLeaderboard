@@ -117,7 +117,7 @@ export function loadDataAsProps({store, ownProps}) {
     return {
         classdata: () => dispatch(queryAllMyData(path)),
         students: () => dispatch(queryStudents()),
-        github: () => dispatch(queryGithub())
+        // github: () => dispatch(queryGithub())
     };
 }
 
