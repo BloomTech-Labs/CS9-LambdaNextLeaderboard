@@ -13,17 +13,16 @@ import "./App.css";
 
 //________REACT COMPONENTS________
 import NAVBAR from "./components/Navbar/Nav";
-import CLASSLIST from "./components/Classlist/index";
+// import CLASSLIST from "./components/Classlist/index";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import CREATEEDIT from "./components/CreateOrEditClass/CreateEditClass";
-import Register from './components/Testing/Register'
-
-import LeaderBoard from "./components/Leaderboard/LeaderBoard"
+import Register from "./components/Testing/Register";
+import LeaderBoard from "./components/Leaderboard/LeaderBoard";
 import BILLING from "./components/Billing/Billing";
-
+import Dashboard from "./components/Dashboard/Dashboard";
+import testing from "./components/NewBackendTesting/NewBackendTesting";
 
 //________STYLING________
-
 
 class App extends Component {
   constructor(props) {
@@ -42,16 +41,17 @@ class App extends Component {
           <Route path="/" component={NAVBAR} />
           <div className="APP__BODY">
             <Route exact path="/" component={LANDINGPAGE} />
-            <Route exact path="/classlist" component={CLASSLIST} />
+            {/* <Route exact path="/classlist" component={CLASSLIST} /> */}
             <Route
               path="/classlist/:name/"
               exact
               component={withRouter(CREATEEDIT)}
             />
-            <Route exact path="/registertest" component={Register}/>
-             <Route exact path="/billing" component={BILLING} />
+            <Route exact path="/registertest" component={Register} />
+            <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
-
+            <Route exact path="/newbackend" component={testing} />
+            <Route exact path="/dashboard" component={Dashboard} />
           </div>
         </div>
       </Router>
