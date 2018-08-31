@@ -38,11 +38,11 @@ function LeftContent() {
 function RightContent(props) {
   return (
     <div className="RightContent" style={{ height: "100%" }}>
-      <div style={{ height: "52%" }}>
+      <div style={{ height: "50%" }}>
         <ClassCreateEdit props={props} />
       </div>
 
-      <div className="ClassList" style={{ height: "48%" }}>
+      <div className="ClassList" style={{ height: "50%" }}>
         <StudentList props={props} />
       </div>
     </div>
@@ -74,18 +74,21 @@ class CreateEdit extends React.Component {
 
     render() {
         return (
-            <div style={{ height: "100%" }}>
-                <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
-                    <Breadcrumb.Section>
-                        <Link to="/">Home</Link>
-                    </Breadcrumb.Section>
-                    <Breadcrumb.Divider icon="right chevron" />
-                    <Breadcrumb.Section>
-                        <Link to="/classlist">Classes</Link>
-                    </Breadcrumb.Section>
-                    <Breadcrumb.Divider icon="right chevron" />
-                    <Breadcrumb.Section active>Create or Edit Class</Breadcrumb.Section>
-                </Breadcrumb>
+            <div className="CreateEdit">
+                <div className="BreadCrumb" >
+                    <Breadcrumb size="huge">
+                        <Breadcrumb.Section>
+                            <Link to="/">Home</Link>
+                        </Breadcrumb.Section>
+                        <Breadcrumb.Divider icon="right chevron" />
+                        <Breadcrumb.Section>
+                            <Link to="/classlist">Classes</Link>
+                        </Breadcrumb.Section>
+                        <Breadcrumb.Divider icon="right chevron" />
+                        <Breadcrumb.Section active>Create or Edit Class</Breadcrumb.Section>
+                    </Breadcrumb>
+                </div>
+
 
                 <SplitPane
                     left={<LeftContent />}

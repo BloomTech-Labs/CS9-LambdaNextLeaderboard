@@ -44,14 +44,15 @@ html, body, #root {
 .LeftContent {
     margin-left: 5%;
     width: 100%;
-    /* height: 90%;  */
+     height: 100%;
     background: lightgray;
+    /*font-size: 3em;*/
 }
 
 .RightContent {
     margin-right: 3%;
     width: 95%;
-    /*height: 100%;*/
+    height: 100%;
     background: #f2f1f2;
     /*box-sizing: border-box;*/
     /* background: red; */
@@ -61,4 +62,13 @@ html, body, #root {
     /*width: 100%;*/
     /*height: 100%;*/
 
+}
+.classList {
+    height: 100%;
+}
+
+.BreadCrumb {
+    margin-left: 1%;
+    margin-top: 0.5%;
+    margin-bottom: 0.5%;
 }
