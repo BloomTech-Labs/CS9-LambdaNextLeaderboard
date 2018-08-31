@@ -75,16 +75,35 @@ export function queryGithub() {
   };
 }
 export const getGithubDataAction = () => {
-  const token = localStorage.getItem("token");
-  const id = {
-    id: localStorage.getItem("adminID")
-  };
-  return dispatch => {
-    const options = {
-      method: "POST",
-      headers: { "content-type": "application/json", Authorization: token },
-      url: `${CLASS_URL}data`,
-      data: id
+    const token = localStorage.getItem("token");
+    const id = {
+        id: localStorage.getItem("adminID")
+    }
+    return dispatch => {
+        const options = {
+            method: "POST",
+            headers: {"content-type": "application/json", Authorization: token},
+            url: `${CLASS_URL}data`,
+                data: id
+        };
+        axios(options)
+            .then(res => {
+                localStorage.removeItem("invalid");
+                dispatch({
+                    type: GET_GITHUB_DATA,
+                    payload: res.data,
+                    githubStats: res.data
+                });
+            })
+            .catch(err => {
+                localStorage.setItem("invalid", err.response.data);
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data,
+                    // allClasses: err.response.data,
+                    // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
+                });
+            });
     };
     axios(options)
       .then(res => {
@@ -115,7 +134,36 @@ export const redirectDataClass = () => {
     });
   };
 };
+export const updateUserAction = (userObject) => {
+    const token = localStorage.getItem("token");
+    // const user = studentData.firstname + " " + studentData.lastname;
+    return dispatch => {
+        // const options = {
+        //     method: "PUT",
+        //     headers: {"content-type": "application/json", Authorization: token},
+        //     data: userObject,
+        //     url: `${USER_URL}updateuser`
+        // };
+        axios
+            .put(`${USER_URL}updateuser`, {token: dataEncrypt(userObject)})
+        // (options)
+            .then(res => {
+                dispatch({
+                    type: UPDATE_ADMIN,
+                    payload: res.admin, //Student data object returned
+                    // class_name: res.name,
+                    // user: user,
+                });
 
+            })
+            .catch(err => {
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data
+                });
+            });
+    }
+}
 export const getClassStudentsAction = classname => {
   const token = localStorage.getItem("token");
 

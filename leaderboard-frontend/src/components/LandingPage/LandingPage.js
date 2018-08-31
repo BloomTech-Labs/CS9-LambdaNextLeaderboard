@@ -22,7 +22,7 @@ class LandingPage extends Component {
       localStorage.removeItem("invalid");
     }
     if (localStorage.getItem("token")) {
-      // this.props.history.push('/classlist')
+      this.props.history.push("/dashboard");
     }
   }
 

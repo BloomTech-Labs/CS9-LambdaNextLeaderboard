@@ -87,6 +87,7 @@ class Nav extends Component {
     this.props.logoutAction();
     this.setState({ SignedIn: false });
     localStorage.removeItem("token");
+    localStorage.removeItem("adminID");
     this.props.history.push("/");
   };
 
