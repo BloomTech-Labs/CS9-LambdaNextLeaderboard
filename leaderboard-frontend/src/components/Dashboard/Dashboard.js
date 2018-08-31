@@ -55,12 +55,7 @@ class Dashboard extends Component {
     this.props.newClassErrors.name = "";
   };
 
-  componentWillUpdate = (nextProps, nextState) => {
-    console.log("I am going to set the state for real", this.state);
-  };
-
   componentDidUpdate = (prevProps, prevState) => {
-    console.log("It changed", prevProps, this.props, prevState, this.state);
     // New Organization created -> Updating Organizations
     if (
       this.props.createdOrganization &&
@@ -157,12 +152,7 @@ class Dashboard extends Component {
             </Menu>
           </Grid.Column>
           <Grid.Column width={11}>
-            {activeOrg === "" ? (
-              <Segment>
-                {"<-- select/create an organization (Placeholder)"}
-              </Segment>
-            ) : null}
-            {activeOrg === "addOrg" ? (
+            {activeOrg === "addOrg" || !this.props.organizations.length ? (
               <AddOrganization
                 addOrg={this.props.addAdminOrganization}
                 addOrgErrors={this.props.newOrgErrors}

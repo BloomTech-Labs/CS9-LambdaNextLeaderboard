@@ -32,7 +32,6 @@ export default class AddStudent extends Component {
   };
 
   render() {
-    console.log("add student", this.props);
     return (
       <Segment>
         <Header as="h2" icon textAlign="center" size="huge">

@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const admins = require("./routes/api/admin");
 const organizations = require("./routes/api/organization");
 const classes = require("./routes/api/class");
+const students = require("./routes/api/student");
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
 
@@ -85,6 +86,12 @@ app.use(
   cors(corsOptions),
   passport.authenticate("jwt", { session: false }),
   classes
+);
+app.use(
+  "/api/students",
+  cors(corsOptions),
+  passport.authenticate("jwt", { session: false }),
+  students
 );
 // app.use("/api/data", cors(corsOptions), githubData);
 // app.use("/api/billing", cors(corsOptions), billing);

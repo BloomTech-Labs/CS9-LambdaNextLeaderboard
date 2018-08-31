@@ -8,6 +8,7 @@ import AddStudent from "./AddStudent";
 
 // actions
 import { getClassStudents, addClassStudent } from "../../actions/classActions";
+import { updateStudent, deleteStudent } from "../../actions/studentActions";
 
 class ClassView extends Component {
   constructor(props) {
@@ -20,11 +21,12 @@ class ClassView extends Component {
     this.props.getClassStudents({ id: this.props.classId });
   };
 
-  componentWillReceiveProps = nextProps => {
-    console.log("Receiving =====", this.props, nextProps);
-  };
-
   componentDidUpdate = (prevProps, prevState) => {
+    // Selected Class was changed -> Updating Students
+    if (this.props.classId && this.props.classId !== prevProps.classId) {
+      this.getStudents();
+    }
+
     // New Student created -> Updating Students
     if (
       this.props.createdStudent &&
@@ -33,8 +35,19 @@ class ClassView extends Component {
       this.getStudents();
     }
 
-    // Selected Class was changed -> Updating Students
-    if (this.props.classId && this.props.classId !== prevProps.classId) {
+    // Student updated -> Updating Students
+    if (
+      this.props.updatedStudent &&
+      this.props.updatedStudent !== prevProps.updatedStudent
+    ) {
+      this.getStudents();
+    }
+
+    // Student deleted -> Updating Students
+    if (
+      this.props.deletedStudent &&
+      this.props.deletedStudent !== prevProps.deletedStudent
+    ) {
       this.getStudents();
     }
   };
@@ -44,7 +57,7 @@ class ClassView extends Component {
   };
 
   render() {
-    console.log("PROPS===== ", this.props);
+    console.log(this.props);
     return (
       <Segment.Group>
         <Segment>
@@ -54,11 +67,14 @@ class ClassView extends Component {
                 {this.props.className}
               </Card.Header>
               <List bulleted horizontal>
-                <List.Item>Students: {this.props.students.length}</List.Item>
+                <List.Item>
+                  Students: {this.props.students.unhired.length}
+                </List.Item>
                 <List.Item>Participation: 0%</List.Item>
                 <List.Item>
-                  Hired: 0/
-                  {this.props.students.length}
+                  Hired: {this.props.students.hired.length}/
+                  {this.props.students.unhired.length +
+                    this.props.students.hired.length}
                 </List.Item>
               </List>
             </Card.Content>
@@ -70,7 +86,7 @@ class ClassView extends Component {
                 color="blue"
                 size="large"
               />
-              {this.props.students.length ? (
+              {this.props.students.unhired.length ? (
                 <Button
                   icon="ordered list"
                   content="Leaderboard"
@@ -82,7 +98,7 @@ class ClassView extends Component {
             </Card.Content>
           </Card>
         </Segment>
-        {this.props.students.length ? (
+        {this.props.students.unhired.length ? (
           <Segment>
             <Input
               fluid
@@ -92,8 +108,12 @@ class ClassView extends Component {
             />
           </Segment>
         ) : null}
-        {this.props.students.length ? (
-          <StudentList students={this.props.students} />
+        {this.props.students.unhired.length ? (
+          <StudentList
+            students={this.props.students.unhired}
+            updateStudent={this.props.updateStudent}
+            deleteStudent={this.props.deleteStudent}
+          />
         ) : null}
         <AddStudent
           classId={this.props.classId}
@@ -109,11 +129,13 @@ const mapStateToProps = state => {
   return {
     students: state.classStudents,
     newStudentErrors: state.newStudentErrors,
-    createdStudent: state.createdStudent
+    updatedStudent: state.updatedStudent,
+    createdStudent: state.createdStudent,
+    deletedStudent: state.deletedStudent
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getClassStudents, addClassStudent }
+  { getClassStudents, addClassStudent, updateStudent, deleteStudent }
 )(ClassView);
