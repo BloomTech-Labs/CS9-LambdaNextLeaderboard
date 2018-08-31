@@ -89,15 +89,14 @@ class ClassView extends Component {
                 disabled
               />
               {this.props.students.unhired.length ? (
-                <Link to="/leaderboard">
-                  <Button
-                    icon="ordered list"
-                    content="Leaderboard"
-                    inverted
-                    color="green"
-                    size="large"
-                  />
-                </Link>
+                <Button
+                  icon="ordered list"
+                  content="Leaderboard"
+                  inverted
+                  color="green"
+                  size="large"
+                  disabled
+                />
               ) : null}
             </Card.Content>
           </Card>
