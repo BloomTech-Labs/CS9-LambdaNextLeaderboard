@@ -41,22 +41,12 @@ class Nav extends Component {
 
   handleCloseModal = () => {
     this.setState({ activeItem: "", openModal: false });
-    // this.props.registerErrors.username = "";
-    // this.props.registerErrors.email = "";
-    // this.props.registerErrors.password = "";
-    // this.props.registerErrors.password2 = "";
-    // this.props.loginErrors.username = "";
-    // this.props.loginErrors.password = "";
+    this.clearErrors();
   };
 
   handleMenuItemClick = (e, { name }) => {
     this.setState({ activeItem: name });
-    // this.props.registerErrors.username = "";
-    // this.props.registerErrors.email = "";
-    // this.props.registerErrors.password = "";
-    // this.props.registerErrors.password2 = "";
-    // this.props.loginErrors.username = "";
-    // this.props.loginErrors.password = "";
+    this.clearErrors();
   };
 
   handleInput = (e, { name, value }) => {
@@ -72,6 +62,7 @@ class Nav extends Component {
     });
 
     this.setState({ RegisterPassword: "", RegisterPassword2: "" });
+    this.clearErrors();
   };
 
   handleSubmitLogin = () => {
@@ -91,26 +82,40 @@ class Nav extends Component {
     this.props.history.push("/");
   };
 
-  componentWillUpdate = nextProps => {
-    if (
-      nextProps.successfulLogin &&
-      (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
-    ) {
-      this.setState({ SignInEmail: "", SignedIn: true, openModal: false });
-      // this.props.history.push("/classlist");
-    }
+  clearErrors = () => {
+    this.props.registerErrors.username = "";
+    this.props.registerErrors.email = "";
+    this.props.registerErrors.password = "";
+    this.props.registerErrors.password2 = "";
+    this.props.loginErrors.email = "";
+    this.props.loginErrors.password = "";
+  };
 
-    // if (
-    //   nextProps.successfulRegister &&
-    //   this.state.openModal &&
-    //   this.state.activeItem === "Register"
-    // ) {
-    //   this.setState({
-    //     activeItem: "Sign In",
-    //     RegisterUsername: "",
-    //     RegisterEmail: ""
-    //   });
-    // }
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.props.successfulLogin && !prevProps.successfulLogin) {
+      if (this.state.openModal) {
+        this.setState({
+          openModal: false,
+          RegisterUsername: "",
+          RegisterEmail: "",
+          RegisterPassword: "",
+          RegisterPassword2: "",
+          SignInEmail: "",
+          SignInPassword: ""
+        });
+        this.props.history.push("/dashboard");
+      } else {
+        this.setState({
+          RegisterUsername: "",
+          RegisterEmail: "",
+          RegisterPassword: "",
+          RegisterPassword2: "",
+          SignInEmail: "",
+          SignInPassword: ""
+        });
+        this.props.history.push("/dashboard");
+      }
+    }
   };
 
   render() {
