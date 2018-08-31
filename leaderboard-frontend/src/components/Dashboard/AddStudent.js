@@ -8,7 +8,8 @@ import {
   Label,
   Button,
   Input,
-  Tab
+  Tab,
+  Divider
 } from "semantic-ui-react";
 
 export default class AddStudent extends Component {
@@ -45,6 +46,7 @@ export default class AddStudent extends Component {
       csvFile: e.target.files[0]
     });
     console.log("CSV ready for upload.");
+    console.log(this.props)
   };
 
   handleImportSubmit = e => {
@@ -63,7 +65,7 @@ export default class AddStudent extends Component {
   render() {
     const panes = [
       {
-        menuItem: "Create new student",
+        menuItem: { key: 'user', icon: 'user', content: "Create New Student"},
         render: () => (
           <Tab.Pane>
             <Header as="h2" icon textAlign="center" size="huge">
@@ -89,6 +91,7 @@ export default class AddStudent extends Component {
                     onChange={this.handleInput}
                   />
                 </Form.Field>
+
                 <Form.Field
                   error={Boolean(this.props.addStudentErrors.lastname)}
                 >
@@ -105,6 +108,7 @@ export default class AddStudent extends Component {
                     onChange={this.handleInput}
                   />
                 </Form.Field>
+
                 <Form.Field error={Boolean(this.props.addStudentErrors.email)}>
                   {this.props.addStudentErrors.email ? (
                     <Label
@@ -119,6 +123,7 @@ export default class AddStudent extends Component {
                     onChange={this.handleInput}
                   />
                 </Form.Field>
+
                 <Form.Field error={Boolean(this.props.addStudentErrors.github)}>
                   {this.props.addStudentErrors.github ? (
                     <Label
@@ -133,6 +138,7 @@ export default class AddStudent extends Component {
                     onChange={this.handleInput}
                   />
                 </Form.Field>
+
                 <Form.Field>
                   <Form.Button
                     content="Create new student"
@@ -146,9 +152,14 @@ export default class AddStudent extends Component {
         )
       },
       {
-        menuItem: "Import CSV",
+        menuItem: { key: 'cloud upload', icon: 'cloud upload', content: "Import CSV File"},
         render: () => (
           <Tab.Pane>
+            <Header as="h2" icon textAlign="center" size="huge">
+              <Icon name="cloud upload" circular />
+              <Header.Content>Import CSV File</Header.Content>
+            </Header>
+
             <Input
               focus
               type="file"
@@ -161,6 +172,7 @@ export default class AddStudent extends Component {
               placeholder="UploadCSV"
               onChange={this.handleImportChange}
             />
+
             <Button
               className="ui clearing segment BtnImport"
               onClick={this.handleImportSubmit}
@@ -175,7 +187,10 @@ export default class AddStudent extends Component {
       }
     ];
 
-    const addStudentsTabs = () => <Tab panes={panes} />;
+    const grid = {paneWidth: 12, tabWidth: 6}
+
+    const addStudentsTabs = () => <Tab panes={panes}/>;
+    
     return addStudentsTabs();
   }
 }
