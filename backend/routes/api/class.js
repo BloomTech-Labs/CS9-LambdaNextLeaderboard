@@ -282,14 +282,14 @@ router.post("/:name/importcsv", (req, res) => {
   let adminID = req.user._id;
   let classID;
 
-  // 
+  // Query to find existing class
   function queryCollection() {
     return ClassModel.findOne({ name: csvClassName });
   }
 
+  // Parse csv and check for existing class in db
   async function run() {
     classID = await queryCollection();
-    console.log(classID);
 
     csv
       .fromString(csvClassFile.data.toString(), {
@@ -297,7 +297,8 @@ router.post("/:name/importcsv", (req, res) => {
         ignoreEmpty: true
       })
       .on("data", function(data) {
-        if (StudentModel.findOne({ email: data["email"] }) !== data["email"]) {
+        // Add students to db, rejected if email exists (unique)
+        StudentModel.findOne({ email: data["email"] }).then(student => {
           let newStudent = new StudentModel();
 
           newStudent.firstname = data["firstname"];
@@ -309,52 +310,16 @@ router.post("/:name/importcsv", (req, res) => {
           newStudent._admin = adminID;
           newStudent._class = classID;
 
-          newStudent.save(function(err, data) {
-            if (err) console.log(err);
-            else {
-              console.log("Saved: ", data);
-            }
-          });
-        }
+          newStudent
+            .save()
+            .then(data =>
+              console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`)
+            )
+            .catch(err => console.log(err));
+        });
       });
   }
-
+  
   run();
-  // console.log("ClassID is:", classID);
-
-  // Populated as CSV parsed
-  const importStudents = [];
-  //let className = "";
-
-  console.log("UPLOAD BUTTON WORKING");
-
-  //2nd attempt
-  //let stream = fs.createReadStream(csvClassFile.toString());
-
-  // csv
-  //   // Accept CSV as string, ignore headers + empty rows
-  //   .fromString(csvClassFile.data.toString(), {
-  //     headers: [firstname, lastname, email, github, huntr],
-  //     ignoreEmpty: true
-  //   })
-  //   // Listener | Called every row, assigns _id to student
-  //   .on("data", function(data) {
-  //     //data["_id"] = new mongoose.Types.ObjectId();
-  //     //className = data.classname
-  //     //delete data.classname
-
-  //     console.log(data);
-
-  //     importStudents.push(data);
-  //   })
-  //   // Listener | End of parse, pass new students arr students arr in Class model
-  //   .on("end", function() {
-  //     if (error) {
-  //       return res.status(500).json({ error });
-  //     }
-  //   });
-
-  // //res.send(students.length + " users have been successfully uploaded.");
-  // console.log("Upload success");
 });
 module.exports = router;

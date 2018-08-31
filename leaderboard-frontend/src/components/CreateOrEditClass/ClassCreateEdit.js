@@ -56,26 +56,14 @@ class ClassCreateEdit extends Component {
   handleImportSubmit = e => {
     e.preventDefault();
     console.log("Import submit");
-    
-    let classID;
+
     let classname = this.props.props.props.match.params.name;
     let csvData = new FormData();
 
     csvData.append("file", this.state.csvFile);
 
-    this.props.allClasses.forEach(each => {
-      if (each.name === classname) {
-        classID = each._id;
-      }
-    });
-
-    const studentIDsObject = {
-      _admin: localStorage.getItem("adminID"),
-      _class: classID
-    };
-    
-    // Pass CSV, classname, student _class, student _admin info
-    this.props.postCsvStudents(csvData, classname, studentIDsObject);
+    // Pass CSV, classname
+    this.props.postCsvStudents(csvData, classname);
   };
 
   handleAdd = e => {

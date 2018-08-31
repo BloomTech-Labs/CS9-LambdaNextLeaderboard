@@ -452,13 +452,13 @@ export const addStudent = obj => {
   };
 };
 
-export const postCsvStudents = (csvFile, classname, studentIDsObject) => {
+export const postCsvStudents = (csvFile, classname) => {
   const token = localStorage.getItem("token");
 
   return dispatch => {
     const options = {
       method: "POST",
-      headers: { "content-type": "text/csv", Authorization: token, _class: studentIDsObject._admin, _admin: studentIDsObject._class },
+      headers: { "content-type": "text/csv", Authorization: token,},
       data: csvFile,
       url: `${CLASS_URL}${classname}/importcsv`
     };
