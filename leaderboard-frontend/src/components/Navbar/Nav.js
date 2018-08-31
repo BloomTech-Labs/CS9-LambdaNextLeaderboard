@@ -41,22 +41,12 @@ class Nav extends Component {
 
   handleCloseModal = () => {
     this.setState({ activeItem: "", openModal: false });
-    // this.props.registerErrors.username = "";
-    // this.props.registerErrors.email = "";
-    // this.props.registerErrors.password = "";
-    // this.props.registerErrors.password2 = "";
-    // this.props.loginErrors.username = "";
-    // this.props.loginErrors.password = "";
+    this.clearErrors();
   };
 
   handleMenuItemClick = (e, { name }) => {
     this.setState({ activeItem: name });
-    // this.props.registerErrors.username = "";
-    // this.props.registerErrors.email = "";
-    // this.props.registerErrors.password = "";
-    // this.props.registerErrors.password2 = "";
-    // this.props.loginErrors.username = "";
-    // this.props.loginErrors.password = "";
+    this.clearErrors();
   };
 
   handleInput = (e, { name, value }) => {
@@ -64,22 +54,22 @@ class Nav extends Component {
   };
 
   handleSubmitRegister = () => {
+    this.clearErrors();
     this.props.createUserAction({
       username: this.state.RegisterUsername,
       email: this.state.RegisterEmail,
       password: this.state.RegisterPassword,
       password2: this.state.RegisterPassword2
     });
-
     this.setState({ RegisterPassword: "", RegisterPassword2: "" });
   };
 
   handleSubmitLogin = () => {
+    this.clearErrors();
     this.props.loginAction({
       email: this.state.SignInEmail,
       password: this.state.SignInPassword
     });
-
     this.setState({ SignInPassword: "", SignInUsername: "" });
   };
 
@@ -91,26 +81,54 @@ class Nav extends Component {
     this.props.history.push("/");
   };
 
-  componentWillUpdate = nextProps => {
+  clearErrors = () => {
+    this.props.registerErrors.username = "";
+    this.props.registerErrors.email = "";
+    this.props.registerErrors.password = "";
+    this.props.registerErrors.password2 = "";
+    this.props.loginErrors.email = "";
+    this.props.loginErrors.password = "";
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    // registration successful -> showing login
     if (
-      nextProps.successfulLogin &&
-      (this.state.openModal || (!this.state.Modal && !this.state.SignedIn))
+      this.props.successfulRegister &&
+      !prevProps.successfulRegister &&
+      this.state.openModal
     ) {
-      this.setState({ SignInEmail: "", SignedIn: true, openModal: false });
-      // this.props.history.push("/classlist");
+      this.setState({
+        RegisterUsername: "",
+        RegisterEmail: "",
+        activeItem: "Sign In"
+      });
     }
 
-    // if (
-    //   nextProps.successfulRegister &&
-    //   this.state.openModal &&
-    //   this.state.activeItem === "Register"
-    // ) {
-    //   this.setState({
-    //     activeItem: "Sign In",
-    //     RegisterUsername: "",
-    //     RegisterEmail: ""
-    //   });
-    // }
+    // login successful -> redirecting to dashboard
+    if (this.props.successfulLogin && !prevProps.successfulLogin) {
+      if (this.state.openModal) {
+        this.setState({
+          openModal: false,
+          RegisterUsername: "",
+          RegisterEmail: "",
+          RegisterPassword: "",
+          RegisterPassword2: "",
+          SignInEmail: "",
+          SignInPassword: ""
+        });
+        this.props.history.push("/dashboard");
+      } else {
+        this.setState({
+          RegisterUsername: "",
+          RegisterEmail: "",
+          RegisterPassword: "",
+          RegisterPassword2: "",
+          SignInEmail: "",
+          SignInPassword: ""
+        });
+        this.props.history.push("/dashboard");
+      }
+    }
   };
 
   render() {
