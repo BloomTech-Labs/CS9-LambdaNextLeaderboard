@@ -61,7 +61,6 @@ export default class StudentList extends Component {
                     <List>
                       <List.Item>Email Address: {student.email}</List.Item>
                       <List.Item>Github Handle: {student.github}</List.Item>
-                      <List.Item>Huntr Handle: {student.huntr}</List.Item>
                     </List>
                   </Card.Description>
                 </Card.Content>
@@ -117,8 +116,8 @@ const DeleteModal = props => {
       <Modal.Content>
         Are you sure you want to delete this student?
       </Modal.Content>
-      <Modal.Actions>
-        <Button basic color="red" onClick={props.delete}>
+      <Modal.Actions onClick={props.close}>
+        <Button color="red" onClick={props.delete}>
           <Icon name="trash alternate" />
           Delete
         </Button>

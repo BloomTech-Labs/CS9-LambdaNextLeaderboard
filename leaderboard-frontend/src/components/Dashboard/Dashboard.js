@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 // components
 import AddOrganization from "./AddOrganization";
+import OrganizationView from "./OrganizationView";
 import AddClass from "./AddClass";
 import ClassView from "./ClassView";
 
@@ -87,6 +88,7 @@ class Dashboard extends Component {
   };
 
   render() {
+    console.log(this.props.orgClasses.length);
     const { activeOrg, activeClass } = this.state;
     return (
       <Container>
@@ -152,21 +154,25 @@ class Dashboard extends Component {
             </Menu>
           </Grid.Column>
           <Grid.Column width={11}>
+            {/* ADD ORGANIZATION VIEW */}
             {activeOrg === "addOrg" || !this.props.organizations.length ? (
               <AddOrganization
                 addOrg={this.props.addAdminOrganization}
                 addOrgErrors={this.props.newOrgErrors}
               />
             ) : null}
+
+            {/* ORGANIZATION VIEW */}
             {activeOrg !== "" &&
             activeOrg !== "addOrg" &&
             activeClass === "" ? (
-              <Segment>
-                {
-                  "Show organization details here. Maybe statistics of all classes overall (Placeholder)"
-                }
-              </Segment>
+              <OrganizationView
+                name={this.state.activeOrgName}
+                numOfClasses={this.props.orgClasses.length}
+              />
             ) : null}
+
+            {/* ADD CLASS VIEW */}
             {activeClass === "addClass" ? (
               <AddClass
                 orgId={this.state.activeOrg}
@@ -175,12 +181,9 @@ class Dashboard extends Component {
                 addClassErrors={this.props.newClassErrors}
               />
             ) : null}
+
+            {/* CLASS VIEW */}
             {activeClass !== "" && activeClass !== "addClass" ? (
-              // <Segment>
-              //   {
-              //     "Show class card here. Needs to show class details, student cards, have ability to go to class leaderboard, and edit class details (Placeholder)"
-              //   }
-              //   </Segment>
               <ClassView
                 classId={this.state.activeClass}
                 className={this.state.activeClassName}

@@ -8,7 +8,7 @@ module.exports = function validateAddStudentInput(data) {
   data.firstname = !checkEmpty(data.firstname) ? data.firstname : "";
   data.email = !checkEmpty(data.email) ? data.email : "";
   data.github = !checkEmpty(data.github) ? data.github : "";
-  data.huntr = !checkEmpty(data.huntr) ? data.huntr : "";
+  // data.huntr = !checkEmpty(data.huntr) ? data.huntr : "";
 
   // lastname
   if (Validator.isEmpty(data.lastname)) {
@@ -41,9 +41,9 @@ module.exports = function validateAddStudentInput(data) {
   }
 
   // huntr
-  if (Validator.isEmpty(data.huntr)) {
-    errors.huntr = "Huntr handle is required";
-  }
+  // if (Validator.isEmpty(data.huntr)) {
+  //   errors.huntr = "Huntr handle is required";
+  // }
 
   return {
     errors,
