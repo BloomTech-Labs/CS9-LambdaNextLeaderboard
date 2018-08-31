@@ -17,6 +17,7 @@ import {
     EDIT_STUDENT,
     REMOVE_STUDENT
 } from "../actions/";
+import {UPDATE_ADMIN} from "../actions";
 
 const initialState = {
     loginErrors: {},
@@ -37,7 +38,8 @@ const initialState = {
     githubData: null,
     updatedStudent: null,
     editStudent: null,
-    removedStudent: null
+    removedStudent: null,
+    updateAdmin: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -155,6 +157,10 @@ const studentReducer = (state = initialState, action) => {
                 removedStudent: action.payload,
                 allStudents: null,
                 allClasses: null
+            })
+        case UPDATE_ADMIN:
+            return Object.assign({}, state, {
+                updateAdmin: action.payload
             })
 
         default:

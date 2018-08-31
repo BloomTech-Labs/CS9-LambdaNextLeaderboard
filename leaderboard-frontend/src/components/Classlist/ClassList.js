@@ -19,36 +19,60 @@ class ClassList extends Component {
     if (localStorage.getItem("invalid")) {
       localStorage.removeItem("token");
       localStorage.removeItem("invalid");
+      localStorage.removeItem("email");
+      localStorage.removeItem("adminID");
+      localStorage.removeItem("organization");
       this.props.props.props.history.push("/");
     }
     if (localStorage.getItem("token") === null) {
       this.props.props.props.history.push("/");
+      localStorage.removeItem("invalid");
+      localStorage.removeItem("adminID");
+      localStorage.removeItem("organization");
+      localStorage.removeItem("email");
     }
   }
 
   componentWillUpdate(nextProps, nextState) {
     if (localStorage.getItem("invalid")) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("invalid");
+      localStorage.removeItem("adminID");
+      localStorage.removeItem("organization");
+      localStorage.removeItem("email");
       this.props.props.props.history.push("/");
     }
     if (localStorage.getItem("token") === null) {
+      localStorage.removeItem("invalid");
+      localStorage.removeItem("adminID");
+      localStorage.removeItem("organization");
+      localStorage.removeItem("email");
       this.props.props.props.history.push("/");
     }
   }
 
   render() {
-    if (localStorage.getItem("invalid")) {
-      localStorage.removeItem("invalid");
-      this.props.props.props.history.push("/");
-    }
+    // if (localStorage.getItem("invalid")) {
+    //     localStorage.removeItem("invalid");
+    //     this.props.props.props.history.push('/')
+    // }
 
     if (this.props.isLoading()) {
       if (localStorage.getItem("invalid")) {
         localStorage.removeItem("token");
         localStorage.removeItem("invalid");
+        localStorage.removeItem("organization");
+        localStorage.removeItem("email");
         this.props.props.props.history.push("/");
       }
       return <div>Loading...</div>;
     }
+
+    if (this.props.loadedWithErrors()) {
+      return <div>Oh no! Something went wrong</div>;
+    }
+    // const class = this.props.class
+    // const students = this.props.students
 
     if (this.props.loadedWithErrors()) {
       return <div>Oh no! Something went wrong</div>;
@@ -105,8 +129,8 @@ export function loadDataAsProps({ store, ownProps }) {
   console.log(ownProps);
   return {
     classdata: () => dispatch(queryAllMyData(path)),
-    students: () => dispatch(queryStudents()),
-    github: () => dispatch(queryGithub())
+    students: () => dispatch(queryStudents())
+    // github: () => dispatch(queryGithub())
   };
 }
 

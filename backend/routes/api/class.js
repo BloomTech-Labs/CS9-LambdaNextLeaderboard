@@ -8,82 +8,158 @@ const validateAddStudent = require("../../validation/classes/addstudent");
 require("dotenv").config();
 const axios = require("axios");
 const _ = require("lodash");
-const clientID = process.env.CLIENT_ID;
-const clientSecret = process.env.CLIENT_SECRET;
 const csv = require("fast-csv");
 const fs = require("fs");
-let storage;
+const clientID = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+let huntrData;
+let storageData;
+let huntrDataFech;
 
-async function fetchGithubData() {
-  let authStr = "Bearer " + process.env.GITHUB_AUTH_TOKEN; // Add token
+async function fetchGithubData(studentData) {
+  // gitDataFetch = []
+
+  return studentData.forEach(async (each, i) => {
+    let gitHubHandle = each.github;
+    let authStr = "Bearer " + process.env.GITHUB_AUTH_TOKEN; // Add token
+    console.log("Inside testing", i);
+    return await axios
+      .get(`https://api.github.com/users/${gitHubHandle}/events/public`, {
+        headers: {
+          Authorization: authStr
+        }
+      })
+      .then(res => {
+        let pushCount = 0;
+        let forkCount = 0;
+        let pullRequestCount = 0;
+        let createCount = 0;
+        let commitsByUser = 0;
+        let totalCommits = 0;
+        const data = res.data;
+        const distinctSize = _.map(data, _.property("payload.distinct_size"));
+        const size = _.map(data, _.property("payload.size"));
+        let created_at = _.map(data, _.property("created_at"));
+        let stats = _.map(data, _.property("type"));
+        stats.forEach((typed, i) => {
+          if (typed === "PushEvent") {
+            pushCount++;
+          } else if (typed === "ForkEvent") {
+            forkCount++;
+          } else if (typed === "PullRequestEvent") {
+            pullRequestCount++;
+          } else if (typed === "CreateEvent") {
+            createCount++;
+          } else {
+          }
+        });
+        size.forEach((each, i) => {
+          if (each) {
+            totalCommits += each;
+          }
+        });
+        distinctSize.forEach((each, i) => {
+          if (each) {
+            commitsByUser += each;
+          }
+        });
+        gitDataFetch[i] = {
+          FullName: each.firstname + " " + each.lastname,
+          totalCommits: totalCommits,
+          commitsByUser: commitsByUser,
+          pushCount: pushCount,
+          forkCount: forkCount,
+          pullRequestCount: pullRequestCount,
+          createCount: createCount,
+          size: size,
+          "distinct size": distinctSize,
+          created: created_at,
+          stats: stats
+        };
+        return {
+          totalCommits: totalCommits,
+          commitsByUser: commitsByUser,
+          pushCount: pushCount,
+          forkCount: forkCount,
+          pullRequestCount: pullRequestCount,
+          createCount: createCount,
+          size: size,
+          "distinct size": distinctSize,
+          created: created_at,
+          stats: stats
+        };
+      })
+      .catch(err => {
+        gitDataFetch[i] = {
+          FullName: each.firstname + " " + each.lastname,
+          error: "Github handle not found"
+        };
+        return {
+          FullName: each.firstname + " " + each.lastname,
+          error: "Github handle not found"
+        };
+      });
+  });
+}
+
+async function fetchHuntrData() {
+  let token = process.env.huntr_token; // Add token
 
   return await axios
-    .get(`https://api.github.com/users/abrambueno1992/events/public`, {
+    .get("https://api.huntr.co/org/events", {
       // Add user github handle
       headers: {
-        Authorization: authStr
+        Authorization: `Bearer ${token}`
       }
     })
     .then(res => {
-      let pushCount = 0;
-      let forkCount = 0;
-      let pullRequestCount = 0;
-      let createCount = 0;
-      let commitsByUser = 0;
-      let totalCommits = 0;
-      const data = res.data;
-
-      // return _.chain(data)
-      const distinctSize = _.map(data, _.property("payload.distinct_size"));
-      const size = _.map(data, _.property("payload.size"));
-      let created_at = _.map(data, _.property("created_at"));
-
-      let stats = _.map(data, _.property("type"));
-      stats.forEach((typed, i) => {
-        if (typed === "PushEvent") {
-          pushCount++;
-        } else if (typed === "ForkEvent") {
-          forkCount++;
-        } else if (typed === "PullRequestEvent") {
-          pullRequestCount++;
-        } else if (typed === "CreateEvent") {
-          createCount++;
-        } else {
-        }
+      const dataDetails = [];
+      const wholeData = [];
+      res.data.data.forEach((each, i) => {
+        dataDetails.push(each.member);
+        wholeData.push(each);
       });
-      size.forEach((each, i) => {
-        if (each) {
-          totalCommits += each;
-        }
+      const givenNameArr = [
+        ...new Set(dataDetails.map(({ givenName }) => givenName))
+      ];
+      const idArr = [...new Set(dataDetails.map(({ id }) => id))];
+      const familyName = [
+        ...new Set(dataDetails.map(({ familyName }) => familyName))
+      ];
+      const email = [...new Set(dataDetails.map(({ email }) => email))];
+      const createdAt = [
+        ...new Set(dataDetails.map(({ createdAt }) => createdAt))
+      ];
+      const isActive = [
+        ...new Set(dataDetails.map(({ isActive }) => isActive))
+      ];
+      const studentsObject = [];
+      idArr.forEach((each, i) => {
+        studentsObject.push({
+          id: idArr[i],
+          firstname: familyName[i],
+          givenNameArr: givenNameArr[i],
+          familyName: familyName[i],
+          email: email[i],
+          createdAt: createdAt[i],
+          isActive: isActive[i],
+          count: 0
+        });
       });
-      distinctSize.forEach((each, i) => {
-        if (each) {
-          commitsByUser += each;
-        }
+      wholeData.forEach(each => {
+        studentsObject.forEach((student, i) => {
+          if (student.id === each.member.id) {
+            if (each.eventType === "JOB_ADDED") {
+              studentsObject[i].count++;
+            }
+          }
+        });
       });
-
-      return {
-        totalCommits: totalCommits,
-        commitsByUser: commitsByUser,
-        pushCount: pushCount,
-        forkCount: forkCount,
-        pullRequestCount: pullRequestCount,
-        createCount: createCount,
-        size: size,
-        "distinct size": distinctSize,
-        created: created_at,
-        stats: stats
-      };
+      huntrDataFech = studentsObject;
+      return studentsObject;
     })
     .catch(err => console.log(err));
 }
-
-setInterval(async () => {
-  console.log("Fetching github data");
-  storage = await fetchGithubData();
-  console.log("Finished");
-  //console.log(storage);
-}, 5000);
 
 // @route   GET api/classes/test
 // @desc    Tests classes route
@@ -111,9 +187,13 @@ router.post("/all", (req, res) => {
 router.post("/data", (req, res) => {
   StudentModel.find({ _admin: req.body.id })
     // .populate('_class')
-    .then(students => res.json(storage))
-    // .then( () => res.send(githubData))
-    .catch(err => res.status(400).json({ noUsers: err }));
+    .then(async students => {
+      gitDataFetch = [];
+      storageData = await fetchGithubData(students);
+      huntrData = await fetchHuntrData();
+      res.status(201).json({ gitData: gitDataFetch, huntr: huntrData });
+    })
+    .catch(err => res.status(400).json({ error: err }));
 });
 
 // @route   GET api/classes/:name
@@ -243,7 +323,6 @@ router.put("/:name/updatestudent", (req, res) => {
   const options = {
     new: true
   };
-  // if (req.decoded) {
   StudentModel.findByIdAndUpdate(_id, req.body, options)
     .then(students => {
       res.send(students);
@@ -251,13 +330,19 @@ router.put("/:name/updatestudent", (req, res) => {
     .catch(err => {
       res.status(500).json(err);
     });
-  // } else {
-  //     return res.status(422).json({error: 'Unable to update student'})
-  // }
-  //
-  // let {ID } = req.body;
-  // let
 });
+router.delete("/:name/deletestudent", (req, res) => {
+  const { _id } = req.body;
+
+  StudentModel.findByIdAndRemove(_id)
+    .then(note => {
+      res.status(201).send(note);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
 router.delete("/:name/deletestudent", (req, res) => {
   const { _id } = req.body;
 
@@ -319,7 +404,7 @@ router.post("/:name/importcsv", (req, res) => {
         });
       });
   }
-  
+
   run();
 });
 module.exports = router;

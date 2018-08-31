@@ -1,8 +1,8 @@
 require('dotenv').config();
-const FRONTEND_DEV_URLS = [ process.env.ReactAPP, process.env.GitHub, 'http://localhost:4000' ];
+const FRONTEND_DEV_URLS = [ process.env.ReactAPP, process.env.GitHub, 'http://localhost:4000', 'https://api.huntr.co' ];
 
 const FRONTEND_PROD_URLS = [
-  process.env.APP_URL, 'http://localhost:4000', process.env.ReactAPP, process.env.GitHub,
+  process.env.APP_URL, 'http://localhost:4000', process.env.ReactAPP, process.env.GitHub, 'https://api.huntr.co'
 ];
 
 module.exports = process.env.NODE_ENV === 'production'

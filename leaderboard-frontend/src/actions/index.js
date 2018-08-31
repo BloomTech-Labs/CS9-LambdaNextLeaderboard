@@ -18,6 +18,7 @@ export const GET_STUDENTS = "GET_STUDENTS";
 export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
 export const EDIT_STUDENT = "EDIT_STUDENT";
 export const REMOVE_STUDENT = "REMOVE_STUDENT";
+export const UPDATE_ADMIN = "UPDATE_ADMIN";
 
 const USER_URL = process.env.REACT_APP_USER_URL;
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
@@ -75,6 +76,7 @@ export function queryGithub() {
     return { data, status, promise };
   };
 }
+
 export const getGithubDataAction = () => {
   const token = localStorage.getItem("token");
   const id = {
@@ -107,6 +109,7 @@ export const getGithubDataAction = () => {
       });
   };
 };
+
 export const redirectDataClass = () => {
   return dispatch => {
     dispatch({
@@ -114,6 +117,36 @@ export const redirectDataClass = () => {
       classlist_students: null,
       allClasses: null
     });
+  };
+};
+
+export const updateUserAction = userObject => {
+  const token = localStorage.getItem("token");
+  // const user = studentData.firstname + " " + studentData.lastname;
+  return dispatch => {
+    // const options = {
+    //     method: "PUT",
+    //     headers: {"content-type": "application/json", Authorization: token},
+    //     data: userObject,
+    //     url: `${USER_URL}updateuser`
+    // };
+    axios
+      .put(`${USER_URL}updateuser`, { token: dataEncrypt(userObject) })
+      // (options)
+      .then(res => {
+        dispatch({
+          type: UPDATE_ADMIN,
+          payload: res.admin //Student data object returned
+          // class_name: res.name,
+          // user: user,
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: ERRORS,
+          payload: err.response.data
+        });
+      });
   };
 };
 
@@ -156,6 +189,7 @@ export const getClassStudentsAction = classname => {
       });
   };
 };
+
 export const getClassesStudentsAction = () => {
   const token = localStorage.getItem("token");
   const id = {
@@ -189,6 +223,7 @@ export const getClassesStudentsAction = () => {
       });
   };
 };
+
 const getStudentsAction = classID => {
   console.log("class ID CLASS ID", classID);
   const token = localStorage.getItem("token");
@@ -222,6 +257,7 @@ const getStudentsAction = classID => {
       });
   };
 };
+
 export const addStudentAction = (classname, studentData) => {
   //STUDENT DATA {
   //     "lastname": "Bueno",
@@ -282,6 +318,7 @@ export const addStudentAction = (classname, studentData) => {
       });
   };
 };
+
 export const updateStudentAction = (classname, studentData) => {
   const token = localStorage.getItem("token");
   const user = studentData.firstname + " " + studentData.lastname;
@@ -318,6 +355,7 @@ export const editStudentAction = student => {
     });
   };
 };
+
 export const removeStudentAction = (classname, studentID) => {
   // const objID = {
   //     name: obj.name,
@@ -345,6 +383,7 @@ export const removeStudentAction = (classname, studentID) => {
       .catch(err => dispatch({ type: ERRORS, payload: err }));
   };
 };
+
 export const createUserAction = obj => {
   return dispatch => {
     axios
@@ -429,6 +468,7 @@ export const addClass = obj => {
       .catch(err => dispatch({ type: ERRORS, payload: err }));
   };
 };
+
 export const addStudent = obj => {
   const token = localStorage.getItem("token");
   return dispatch => {
@@ -458,7 +498,7 @@ export const postCsvStudents = (csvFile, classname) => {
   return dispatch => {
     const options = {
       method: "POST",
-      headers: { "content-type": "text/csv", Authorization: token,},
+      headers: { "content-type": "text/csv", Authorization: token },
       data: csvFile,
       url: `${CLASS_URL}${classname}/importcsv`
     };
