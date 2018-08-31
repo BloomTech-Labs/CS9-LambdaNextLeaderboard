@@ -274,19 +274,15 @@ router.delete("/:name/deletestudent", (req, res) => {
 // @desc    Adds a csv of students to the class
 // @access  Private
 router.post("/:name/importcsv", (req, res) => {
-  console.log("TESTING CSV ROUTE");
-
   if (!req.files) return res.status(400).send("No files were uploaded.");
-  // console.log("req.files.file", req.files.file);
-  // console.log("req.params.name", req.params.name);
-  // console.log('req', req)
 
   // Reference
   const csvClassFile = req.files.file;
   const csvClassName = req.params.name;
   let adminID = req.user._id;
-
   let classID;
+
+  // 
   function queryCollection() {
     return ClassModel.findOne({ name: csvClassName });
   }
@@ -294,35 +290,37 @@ router.post("/:name/importcsv", (req, res) => {
   async function run() {
     classID = await queryCollection();
     console.log(classID);
-    
 
     csv
-    .fromString(csvClassFile.data.toString(), {
-      headers: ["firstname", "lastname", "email", "github", "huntr"]
-    })
-    .on("data", function(data) {
-      let newStudent = new StudentModel();
+      .fromString(csvClassFile.data.toString(), {
+        headers: true,
+        ignoreEmpty: true
+      })
+      .on("data", function(data) {
+        if (StudentModel.findOne({ email: data["email"] }) !== data["email"]) {
+          let newStudent = new StudentModel();
 
-      newStudent.firstname = data["firstname"];
-      newStudent.lastname = data["lastname"];
-      newStudent.email = data["email"];
-      newStudent.github = data["github"];
-      newStudent.huntr = data["huntr"];
-      newStudent.classname = csvClassName
-      newStudent._admin = adminID
-      newStudent._class = classID
+          newStudent.firstname = data["firstname"];
+          newStudent.lastname = data["lastname"];
+          newStudent.email = data["email"];
+          newStudent.github = data["github"];
+          newStudent.huntr = data["huntr"];
+          newStudent.classname = csvClassName;
+          newStudent._admin = adminID;
+          newStudent._class = classID;
 
-      newStudent.save(function(err, data) {
-        if (err) console.log(err);
-        else {
-          console.log("Saved ", data);
+          newStudent.save(function(err, data) {
+            if (err) console.log(err);
+            else {
+              console.log("Saved: ", data);
+            }
+          });
         }
       });
-    });
   }
 
   run();
-  console.log("ClassID is:", classID);
+  // console.log("ClassID is:", classID);
 
   // Populated as CSV parsed
   const importStudents = [];
@@ -332,8 +330,6 @@ router.post("/:name/importcsv", (req, res) => {
 
   //2nd attempt
   //let stream = fs.createReadStream(csvClassFile.toString());
-
-  
 
   // csv
   //   // Accept CSV as string, ignore headers + empty rows
