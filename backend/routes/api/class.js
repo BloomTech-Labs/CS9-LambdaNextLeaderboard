@@ -287,14 +287,31 @@ router.post("/:name/importcsv", (req, res) => {
   // Reference
   const csvClassFile = req.files.file;
   const csvClassName = req.params.name;
-  let adminID = req.user._id
-  
+  let adminID = req.user._id;
+
   //test
-  getRefIDS = csvclassname => {
-    ClassModel.find({name: csvClassName}).exec();
 
-    }
+  // getRefIDS = csvClassName => {
+  //   let classID =  ClassModel.find({name: csvClassName}).exec();
+  //   console.log("ClassID is: ", classID)
+  // }
 
+  // getRefIDS()
+
+  //test2
+  // let query = ClassModel.findOne({ name: csvClassName });
+  // let classID = query.select("_id");
+  // console.log("CLASSID IS: ", classID);
+
+  //test3
+  let classID;
+  function queryCollection() {
+    return ClassModel.findOne({ name: csvClassName });
+  }
+
+  async function run() {
+    
+  }
 
   // Populated as CSV parsed
   const importStudents = [];
@@ -328,8 +345,6 @@ router.post("/:name/importcsv", (req, res) => {
   //       }
   //     });
   //   });
-
-
 
   // csv
   //   // Accept CSV as string, ignore headers + empty rows
