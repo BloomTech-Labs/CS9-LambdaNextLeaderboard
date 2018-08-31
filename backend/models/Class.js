@@ -13,6 +13,9 @@ const ClassSchema = new Schema({
       ref: "students"
     }
   ],
+  trackingDate: {
+    type: Date
+  },
   createdOn: {
     type: Date,
     default: Date.now()

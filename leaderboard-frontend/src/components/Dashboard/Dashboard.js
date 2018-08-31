@@ -17,7 +17,6 @@ import {
   getOrganizationClasses,
   addOrganizationClass
 } from "../../actions/organizationActions";
-import { Segment } from "../../../../node_modules/semantic-ui-react";
 
 class Dashboard extends Component {
   constructor(props) {

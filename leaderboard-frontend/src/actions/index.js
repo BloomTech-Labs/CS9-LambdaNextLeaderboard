@@ -117,7 +117,7 @@ export const redirectDataClass = () => {
   };
 };
 export const updateUserAction = userObject => {
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
   // const user = studentData.firstname + " " + studentData.lastname;
   return dispatch => {
     // const options = {
