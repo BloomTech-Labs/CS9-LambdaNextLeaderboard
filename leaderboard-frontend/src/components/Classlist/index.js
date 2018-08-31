@@ -53,7 +53,7 @@ class ClassList2 extends React.Component{
                 {/*<NavBar props={props} />*/}
                 <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
                     <Breadcrumb.Section>
-                        <Link to="/">Home</Link>
+                        <Link to="/classlist">Home</Link>
                     </Breadcrumb.Section>
                     <Breadcrumb.Divider icon="right chevron" />
 
