@@ -54,23 +54,22 @@ class Nav extends Component {
   };
 
   handleSubmitRegister = () => {
+    this.clearErrors();
     this.props.createUserAction({
       username: this.state.RegisterUsername,
       email: this.state.RegisterEmail,
       password: this.state.RegisterPassword,
       password2: this.state.RegisterPassword2
     });
-
     this.setState({ RegisterPassword: "", RegisterPassword2: "" });
-    this.clearErrors();
   };
 
   handleSubmitLogin = () => {
+    this.clearErrors();
     this.props.loginAction({
       email: this.state.SignInEmail,
       password: this.state.SignInPassword
     });
-
     this.setState({ SignInPassword: "", SignInUsername: "" });
   };
 
@@ -92,6 +91,20 @@ class Nav extends Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
+    // registration successful -> showing login
+    if (
+      this.props.successfulRegister &&
+      !prevProps.successfulRegister &&
+      this.state.openModal
+    ) {
+      this.setState({
+        RegisterUsername: "",
+        RegisterEmail: "",
+        activeItem: "Sign In"
+      });
+    }
+
+    // login successful -> redirecting to dashboard
     if (this.props.successfulLogin && !prevProps.successfulLogin) {
       if (this.state.openModal) {
         this.setState({
