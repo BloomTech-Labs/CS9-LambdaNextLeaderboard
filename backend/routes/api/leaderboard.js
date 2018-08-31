@@ -160,7 +160,7 @@ async function fetchHuntrData() {
 
 router.post("/data", (req, res) => {
     const { _id } = req.body
-    Class.findById(_id)
+    Class.find({_id: req.body._id})
 .populate('students')
 .then(async students => {
         gitDataFetch = []
