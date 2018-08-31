@@ -270,13 +270,10 @@ router.delete("/:name/deletestudent", (req, res) => {
     });
 });
 
-// @route   PUT api/classes/:name/importcsv
+// @route   POST api/classes/:name/importcsv
 // @desc    Adds a csv of students to the class
 // @access  Private
 router.post("/:name/importcsv", (req, res) => {
-  //console.log("req.files.file", req.files.file[0]);
-  //console.log("req.files", req.files);
-
   console.log("TESTING CSV ROUTE");
 
   if (!req.files) return res.status(400).send("No files were uploaded.");
@@ -289,29 +286,43 @@ router.post("/:name/importcsv", (req, res) => {
   const csvClassName = req.params.name;
   let adminID = req.user._id;
 
-  //test
-
-  // getRefIDS = csvClassName => {
-  //   let classID =  ClassModel.find({name: csvClassName}).exec();
-  //   console.log("ClassID is: ", classID)
-  // }
-
-  // getRefIDS()
-
-  //test2
-  // let query = ClassModel.findOne({ name: csvClassName });
-  // let classID = query.select("_id");
-  // console.log("CLASSID IS: ", classID);
-
-  //test3
   let classID;
   function queryCollection() {
     return ClassModel.findOne({ name: csvClassName });
   }
 
   async function run() {
+    classID = await queryCollection();
+    console.log(classID);
     
+
+    csv
+    .fromString(csvClassFile.data.toString(), {
+      headers: ["firstname", "lastname", "email", "github", "huntr"]
+    })
+    .on("data", function(data) {
+      let newStudent = new StudentModel();
+
+      newStudent.firstname = data["firstname"];
+      newStudent.lastname = data["lastname"];
+      newStudent.email = data["email"];
+      newStudent.github = data["github"];
+      newStudent.huntr = data["huntr"];
+      newStudent.classname = csvClassName
+      newStudent._admin = adminID
+      newStudent._class = classID
+
+      newStudent.save(function(err, data) {
+        if (err) console.log(err);
+        else {
+          console.log("Saved ", data);
+        }
+      });
+    });
   }
+
+  run();
+  console.log("ClassID is:", classID);
 
   // Populated as CSV parsed
   const importStudents = [];
@@ -322,29 +333,7 @@ router.post("/:name/importcsv", (req, res) => {
   //2nd attempt
   //let stream = fs.createReadStream(csvClassFile.toString());
 
-  // csv
-  //   .fromString(csvClassFile.data.toString(), {
-  //     headers: ["firstname", "lastname", "email", "github", "huntr"]
-  //   })
-  //   .on("data", function(data) {
-  //     let newStudent = new StudentModel();
-
-  //     newStudent.firstname = data["firstname"];
-  //     newStudent.lastname = data["lastname"];
-  //     newStudent.email = data["email"];
-  //     newStudent.github = data["github"];
-  //     newStudent.huntr = data["huntr"];
-  //     newStudent.classname = csvClassName
-  //     newStudent._admin = _admin
-  //     newStudent._class = _class
-
-  //     newStudent.save(function(err, data) {
-  //       if (err) console.log(err);
-  //       else {
-  //         console.log("Saved ", data);
-  //       }
-  //     });
-  //   });
+  
 
   // csv
   //   // Accept CSV as string, ignore headers + empty rows
