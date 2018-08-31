@@ -15,6 +15,7 @@ const classes = require("./routes/api/class");
 const students = require("./routes/api/student");
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
+const leaderboard = require("./routes/api/leaderboard");
 
 // CSV imports
 //const template = require("./template.js");
@@ -92,6 +93,11 @@ app.use(
   cors(corsOptions),
   passport.authenticate("jwt", { session: false }),
   students
+);
+app.use(
+  "/api/leaderboard",
+  cors(corsOptions),
+  leaderboard
 );
 // app.use("/api/data", cors(corsOptions), githubData);
 // app.use("/api/billing", cors(corsOptions), billing);
