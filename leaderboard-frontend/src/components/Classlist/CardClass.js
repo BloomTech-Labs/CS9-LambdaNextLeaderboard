@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {redirectDataClass} from '../../actions'
 import './ClassList.css'
-import { Button } from 'semantic-ui-react'
+import { Button, Card, CardHeader, Image } from 'semantic-ui-react'
 class CardClass extends Component {
     constructor(props) {
         super(props);
@@ -36,14 +36,16 @@ class CardClass extends Component {
             }
         }
         return (
-            <div className="APP__CLASSCARD">
-                <h5 >{this.props.classname}</h5>
-                <p >Students: {this.props.student.length}</p>
-                <p >Participation (Total): {}%</p>
-                <p >Hired: {countHired}, Not Hired: {notHired}</p>
-                <Button className="BtnEdit" onClick={this.redirectEdit}  inverted color='blue'>
-                    Edit
-                </Button>
+            <div className="Card">
+                <Card.Content>
+                <CardHeader>{this.props.classname}</CardHeader>
+                    <CardHeader>Students: {this.props.student.length}</CardHeader>
+                    <p >Participation (Total): {}%</p>
+                    <p >Hired: {countHired}, Not Hired: {notHired}</p>
+                    <Button className="BtnEdit" onClick={this.redirectEdit}  inverted color='blue'>
+                        Edit
+                    </Button>
+                </Card.Content>
                 {/*<button className="BtnEdit" onClick={this.redirectEdit} >Edit</button>*/}
                 <Button className="BtnLeaderboard" onClick={this.redirectLeaderboard} inverted color='yellow'>
                     Leaderboard
