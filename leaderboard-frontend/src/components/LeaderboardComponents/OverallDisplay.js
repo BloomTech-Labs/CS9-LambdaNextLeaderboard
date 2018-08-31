@@ -27,8 +27,17 @@ class OverallDisplay extends Component {
                             </Header>
                         </Table.Cell>
                         <Table.Cell>{this.props.github.commitsByUser + this.props.github.pushCount}</Table.Cell>
-                        <Table.Cell>{this.state.huntrDefault}</Table.Cell>
-                        <Table.Cell>{this.state.huntrDefault + this.props.github.commitsByUser + this.props.github.commitsByUser + this.props.github.pushCount}</Table.Cell>
+                        <Table.Cell>
+                            {this.props.count === 'none' ?
+                                this.state.huntrDefault:
+                                this.props.count}
+                            {/*{this.state.huntrDefault}*/}
+                            </Table.Cell>
+                        <Table.Cell>
+                            {this.props.count === 'none' ? (this.state.huntrDefault + this.props.github.commitsByUser + this.props.github.pushCount) :
+                                (this.props.count + this.props.github.commitsByUser + this.props.github.pushCount)}
+                            {/*{this.state.huntrDefault + this.props.github.commitsByUser + this.props.github.commitsByUser + this.props.github.pushCount}*/}
+                            </Table.Cell>
                     </Table.Row>
                 </Table.Body>
             </div>

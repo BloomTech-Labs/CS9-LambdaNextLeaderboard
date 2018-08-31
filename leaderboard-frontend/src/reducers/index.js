@@ -16,6 +16,7 @@ import {
   EDIT_STUDENT,
   REMOVE_STUDENT
 } from "../actions/";
+import { UPDATE_ADMIN } from "../actions";
 
 import {
   GET_ADMIN_ORGANIZATIONS,
