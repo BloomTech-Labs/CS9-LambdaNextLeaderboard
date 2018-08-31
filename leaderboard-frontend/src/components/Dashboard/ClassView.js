@@ -89,14 +89,18 @@ class ClassView extends Component {
                 disabled
               />
               {this.props.students.unhired.length ? (
-                <Button
-                  icon="ordered list"
-                  content="Leaderboard"
-                  inverted
-                  color="green"
-                  size="large"
-                  disabled
-                />
+                <a
+                  href="https://buddhaplex.github.io/leaderboard_sketches/"
+                  target="_blank"
+                >
+                  <Button
+                    icon="ordered list"
+                    content="Leaderboard"
+                    inverted
+                    color="green"
+                    size="large"
+                  />
+                </a>
               ) : null}
             </Card.Content>
           </Card>
