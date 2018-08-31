@@ -1,25 +1,26 @@
 //________MODULES________
 import React, { Component } from 'react';
 import Checkout from './Checkout';
+import axios from 'axios';
 
 //________STYLING________
-import './Billing.css'
-import { Button, Modal } from "semantic-ui-react";
+import { Button, Modal, List, Container, Icon, Radio } from "semantic-ui-react";
 
 //________BILLING________
 class Billing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            subscriptionType: '',
+            subscriptionType: [{
+                plan: '',
+            }],
             subscriptionAmount: '',
         };
     }
 
-
     // setCharges is run by the radio buttons, and sets the values to be sent to checkout.
-    setCharges = (event) => {
-        const values = event.target.value.split(', ');
+    setCharges = (e, {value}) => {
+        const values = value.split(', ');
         values[1] = values[1];
 
         this.setState({
@@ -28,15 +29,75 @@ class Billing extends Component {
         });
     };
 
+    getUserEmail = () => {
+        axios.get('https://localhost:4000/api/users/current')
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    
+
     render() {
         return (
             <div className="APP__BILLING">
+                <Container>
                 <h2 className="APP__BILLING__TITLE">Billing</h2>
 
                 {/* SUBSCRIPTION TYPE */}
                 <div className="APP__BILLING__SUBTYPE">
-                    <input type="radio" value="1 Year Subscription, 9.99" amount="9.99" checked={this.state.subscriptionType === "1 Year Subscription"} onChange={this.setCharges}/> 1 Year Subscription - $9.99<br/>
-                    <input type="radio" value="1 Year Premium Subscription, 29.99" checked={this.state.subscriptionType === "1 Year Premium Subscription"} onChange={this.setCharges}/> 1 Year Premium Subscription - $29.99
+                <List divided very relaxed>
+                    <List.Item as='a'>
+                        <Icon name='right triangle'/>
+                        <List.Content>
+                            <List.Header>Free</List.Header>
+                            <List.Description>1 Admin User</List.Description>
+                            <List.Description>1 Class</List.Description>
+                            <List.Description>Up to 50 Students</List.Description>
+                        </List.Content>
+                    </List.Item>
+                    <List.Item as='a'>
+                        <Icon name='right triangle'/>
+                        <List.Content>
+                            <List.Header>Standard</List.Header>
+                            <List.Description>5 Admin Users</List.Description>
+                            <List.Description>10 Classes</List.Description>
+                            <List.Description>Up to 500 Students</List.Description>
+                            <List.Description>
+                                {/* <input */}
+                                <Radio
+                                    label='1 Year Subscription - $9.99'
+                                    type='radio'
+                                    value="1 Year Subscription, 9.99"
+                                    amount="9.99"
+                                    checked={this.state.subscriptionType === "1 Year Subscription"}
+                                    onChange={this.setCharges}
+                                    />
+                            </List.Description>
+                        </List.Content>
+                    </List.Item>
+                    <List.Item as='a'>
+                        <Icon name='right triangle'/>
+                        <List.Content>
+                            <List.Header>Premium</List.Header>
+                            <List.Description>Unlimited Admin Users</List.Description>
+                            <List.Description>Unlimited Classes</List.Description>
+                            <List.Description>Unlimited Students</List.Description>
+                            <List.Description>
+                                <Radio
+                                    label='1 Year Premium Subscription - $29.99'
+                                    type='radio'
+                                    value="1 Year Premium Subscription, 29.99"
+                                    checked={this.state.subscriptionType === "1 Year Premium Subscription"}
+                                    onChange={this.setCharges}
+                                    />
+                            </List.Description>
+                        </List.Content>
+                    </List.Item>
+                </List>
                 </div>
                 
                 {/* MODAL - Calls Checkout from the stripe api. */}
@@ -45,10 +106,11 @@ class Billing extends Component {
                     <Modal.Content>
                         <Modal.Description>
                             <p>{this.state.subscriptionType} - {this.state.subscriptionAmount}</p>
-                            <Checkout name={"<APPLICATION NAME>"} description={this.state.subscriptionType} amount={parseInt(this.state.subscriptionAmount*100, 10)} />
+                            <Checkout name={"<APPLICATION NAME>"} item={this.state.subscriptionType} amount={parseInt(this.state.subscriptionAmount*100, 10)} email={this.getUserEmail()} />
                         </Modal.Description>
                     </Modal.Content>
                 </Modal>
+                </Container>
             </div>
         );
     };

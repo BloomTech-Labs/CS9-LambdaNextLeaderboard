@@ -88,6 +88,7 @@ class Nav extends Component {
     this.props.registerErrors.password2 = "";
     this.props.loginErrors.email = "";
     this.props.loginErrors.password = "";
+    this.props.loginErrors.invalidLogin = "";
   };
 
   componentDidUpdate = (prevProps, prevState) => {

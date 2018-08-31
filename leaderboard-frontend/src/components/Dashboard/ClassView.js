@@ -80,6 +80,20 @@ class ClassView extends Component {
               </List>
             </Card.Content>
             <Card.Content textAlign="center" extra>
+              {this.props.students.unhired.length ? (
+                <a
+                  href="https://buddhaplex.github.io/leaderboard_sketches/"
+                  target="_blank"
+                >
+                  <Button
+                    icon="ordered list"
+                    content="Leaderboard"
+                    inverted
+                    color="green"
+                    size="large"
+                  />
+                </a>
+              ) : null}
               <Button
                 icon="cog"
                 content="Settings"
@@ -88,16 +102,6 @@ class ClassView extends Component {
                 size="large"
                 disabled
               />
-              {this.props.students.unhired.length ? (
-                <Button
-                  icon="ordered list"
-                  content="Leaderboard"
-                  inverted
-                  color="green"
-                  size="large"
-                  disabled
-                />
-              ) : null}
             </Card.Content>
           </Card>
         </Segment>
