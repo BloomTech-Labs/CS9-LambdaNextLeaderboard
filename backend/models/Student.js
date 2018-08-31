@@ -1,22 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const Student = new Schema({
-  _class: {
-    type: Schema.Types.ObjectId,
-    ref: "ClassLS",
-    required: true
-  },
-  _admin: {
-    type: Schema.Types.ObjectId,
-    ref: "Admin",
-    required: true
-  },
-  classname: {
-    type: String,
-    required: true,
-    unique: false
-  },
+const StudentSchema = new Schema({
   firstname: {
     type: String,
     required: true
@@ -27,30 +12,20 @@ const Student = new Schema({
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   github: {
     type: String,
     required: true
-    // unique: true
-  },
-  huntr: {
-    type: String,
-    required: true
-    // unique: true
   },
   hired: {
     type: Boolean,
-    default: false,
-    required: true,
-    unique: false
+    default: false
   },
   createdOn: {
     type: Date,
-    default: Date.now(),
-    required: true
+    default: Date.now()
   }
 });
 
-module.exports = mongoose.model("student", Student);
+module.exports = Student = mongoose.model("students", StudentSchema);

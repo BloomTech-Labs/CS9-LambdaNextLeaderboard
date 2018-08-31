@@ -20,7 +20,7 @@ export const EDIT_STUDENT = "EDIT_STUDENT";
 export const REMOVE_STUDENT = "REMOVE_STUDENT";
 export const UPDATE_ADMIN = "UPDATE_ADMIN";
 
-const USER_URL = process.env.REACT_APP_USER_URL;
+const ADMIN_URL = process.env.REACT_APP_ADMIN_URL;
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
@@ -121,7 +121,7 @@ export const redirectDataClass = () => {
 };
 
 export const updateUserAction = userObject => {
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
   // const user = studentData.firstname + " " + studentData.lastname;
   return dispatch => {
     // const options = {
@@ -131,7 +131,7 @@ export const updateUserAction = userObject => {
     //     url: `${USER_URL}updateuser`
     // };
     axios
-      .put(`${USER_URL}updateuser`, { token: dataEncrypt(userObject) })
+      .put(`${ADMIN_URL}updateuser`, { token: dataEncrypt(userObject) })
       // (options)
       .then(res => {
         dispatch({
@@ -385,9 +385,10 @@ export const removeStudentAction = (classname, studentID) => {
 };
 
 export const createUserAction = obj => {
+  console.log("creating", obj);
   return dispatch => {
     axios
-      .post(`${USER_URL}register`, { token: dataEncrypt(obj) })
+      .post(`${ADMIN_URL}register`, { token: dataEncrypt(obj) })
       .then(res => {
         console.log(res);
         dispatch({
@@ -408,7 +409,7 @@ export const createUserAction = obj => {
 export const loginAction = (obj, history) => {
   return dispatch => {
     axios
-      .post(`${USER_URL}login`, { token: dataEncrypt(obj) })
+      .post(`${ADMIN_URL}login`, { token: dataEncrypt(obj) })
       .then(res => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("adminID", res.data.id);
@@ -476,7 +477,7 @@ export const addStudent = obj => {
       method: "PUT",
       headers: { "content-type": "application/json", Authorization: token },
       data: obj,
-      url: `${USER_URL}addclass`
+      url: `${ADMIN_URL}addclass`
     };
 
     axios(optionTwo)
