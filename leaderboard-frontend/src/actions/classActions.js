@@ -79,6 +79,6 @@ export const postCsvStudents = (csvFile, classID) => {
           class_name: resp.student
         });
       })
-      .catch(err => dispatch({ type: ERRORS, payload: err }));
+      .catch(err => dispatch({ type: "ERRORS", payload: err }));
   };
 };

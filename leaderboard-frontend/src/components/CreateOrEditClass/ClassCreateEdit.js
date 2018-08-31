@@ -6,8 +6,7 @@ import {
   addStudentAction,
   updateStudentAction,
   getClassesStudentsAction,
-  editStudentAction,
-  postCsvStudents
+  editStudentAction, 
 } from "../../actions";
 import { Button, Input, Segment } from "semantic-ui-react";
 // import StudentList from "./StudentList";
@@ -398,8 +397,7 @@ export default connect(
     addStudentAction,
     getClassesStudentsAction,
     updateStudentAction,
-    editStudentAction,
-    postCsvStudents
+    editStudentAction    
   }
 )(ClassCreateEdit);
 // export default ClassCreateEdit

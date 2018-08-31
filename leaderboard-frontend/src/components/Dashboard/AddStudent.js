@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { postCsvStudents } from "../../actions";
 import {
   Segment,
   Header,
@@ -46,20 +45,22 @@ export default class AddStudent extends Component {
       csvFile: e.target.files[0]
     });
     console.log("CSV ready for upload.");
-    console.log(this.props)
+    console.log("ClassID is: ", this.props.classId)
+    console.log(this.props.props)
   };
 
   handleImportSubmit = e => {
     e.preventDefault();
     console.log("Import submit");
 
-    let classname = this.props.props.props.match.params.name;
+    //let classname = this.props.props.props.match.params.name;
+    let classID = this.props.classId
     let csvData = new FormData();
 
     csvData.append("file", this.state.csvFile);
 
     // Pass CSV, classname
-    this.props.postCsvStudents(csvData, classname);
+    this.props.postCsvStudents(csvData, classID);
   };
 
   render() {
@@ -194,3 +195,4 @@ export default class AddStudent extends Component {
     return addStudentsTabs();
   }
 }
+
