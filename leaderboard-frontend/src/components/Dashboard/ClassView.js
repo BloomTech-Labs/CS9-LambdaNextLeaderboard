@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Segment, Card, Input, List, Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { Segment, Card, Input, List, Button } from "semantic-ui-react";
 
 // components
 import StudentList from "./StudentList";
@@ -85,15 +86,18 @@ class ClassView extends Component {
                 inverted
                 color="blue"
                 size="large"
+                disabled
               />
               {this.props.students.unhired.length ? (
-                <Button
-                  icon="ordered list"
-                  content="Leaderboard"
-                  inverted
-                  color="green"
-                  size="large"
-                />
+                <Link to="/leaderboard">
+                  <Button
+                    icon="ordered list"
+                    content="Leaderboard"
+                    inverted
+                    color="green"
+                    size="large"
+                  />
+                </Link>
               ) : null}
             </Card.Content>
           </Card>

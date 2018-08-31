@@ -18,10 +18,6 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
-  huntr: {
-    type: String,
-    required: true
-  },
   hired: {
     type: Boolean,
     default: false

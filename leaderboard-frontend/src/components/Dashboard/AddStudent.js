@@ -9,8 +9,7 @@ export default class AddStudent extends Component {
       firstname: "",
       lastname: "",
       email: "",
-      github: "",
-      huntr: ""
+      github: ""
     };
   }
 
@@ -26,8 +25,7 @@ export default class AddStudent extends Component {
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       email: this.state.email,
-      github: this.state.github,
-      huntr: this.state.huntr
+      github: this.state.github
     });
   };
 
@@ -94,20 +92,6 @@ export default class AddStudent extends Component {
               <Form.Input
                 name="github"
                 placeholder="Github handle"
-                onChange={this.handleInput}
-              />
-            </Form.Field>
-            <Form.Field error={Boolean(this.props.addStudentErrors.huntr)}>
-              {this.props.addStudentErrors.huntr ? (
-                <Label
-                  color="red"
-                  pointing="below"
-                  content={this.props.addStudentErrors.huntr}
-                />
-              ) : null}
-              <Form.Input
-                name="huntr"
-                placeholder="Huntr handle"
                 onChange={this.handleInput}
               />
             </Form.Field>
