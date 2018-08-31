@@ -103,7 +103,7 @@ router.post("/data", (req, res) => {
 // @route   POST api/classes/:name/importcsv
 // @desc    Adds a csv of students to the class
 // @access  Private
-router.post("/:name/importcsv", (req, res) => {
+router.post("/:id/importcsv", (req, res) => {
   if (!req.files) return res.status(400).send("No files were uploaded.");
 
   // Reference

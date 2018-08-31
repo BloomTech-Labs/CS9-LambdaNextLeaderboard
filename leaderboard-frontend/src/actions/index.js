@@ -6,7 +6,6 @@ export const LOGIN_ACTION = "LOGIN_ACTION";
 export const LOGOUT_ACTION = "LOGOUT_ACTION";
 export const UPDATE_STUDENT = "UPDATE_STUDENT";
 export const ADD_CLASS = "ADD_CLASS";
-export const ADD_CSV_STUDENTS = "ADD_CSV_STUDENTS";
 export const ADD_STUDENT = "ADD_STUDENT";
 export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
 export const GET_CLASSES_STUDENTS = "GET_CLASSES_STUDENTS";
@@ -485,30 +484,6 @@ export const addStudent = obj => {
         // localStorage.setItem('user', resp.data.name)
         dispatch({
           type: ADD_STUDENT,
-          user: resp.data.name,
-          class_name: resp.student
-        });
-      })
-      .catch(err => dispatch({ type: ERRORS, payload: err }));
-  };
-};
-
-export const postCsvStudents = (csvFile, classname) => {
-  const token = localStorage.getItem("token");
-
-  return dispatch => {
-    const options = {
-      method: "POST",
-      headers: { "content-type": "text/csv", Authorization: token },
-      data: csvFile,
-      url: `${CLASS_URL}${classname}/importcsv`
-    };
-
-    axios(options)
-      .then(resp => {
-        localStorage.setItem("user", resp.data.name);
-        dispatch({
-          type: ADD_CSV_STUDENTS,
           user: resp.data.name,
           class_name: resp.student
         });
