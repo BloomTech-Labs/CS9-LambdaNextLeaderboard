@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const admins = require("./routes/api/admin");
 const organizations = require("./routes/api/organization");
 const classes = require("./routes/api/class");
+const students = require("./routes/api/student");
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
 
@@ -51,7 +52,7 @@ const configureRoutes = app => {
 };
 
 configureServer(app);
-configureRoutes(app);
+// configureRoutes(app);
 
 // // ****END STRIPE****
 
@@ -86,12 +87,18 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   classes
 );
-app.use("/api/data", cors(corsOptions), githubData);
-app.use("/api/billing", cors(corsOptions), billing);
+app.use(
+  "/api/students",
+  cors(corsOptions),
+  passport.authenticate("jwt", { session: false }),
+  students
+);
+// app.use("/api/data", cors(corsOptions), githubData);
+// app.use("/api/billing", cors(corsOptions), billing);
 
 // CSV routes
-app.get("/template", cors(corsOptions));
-app.post("/create-edit", cors(corsOptions), upload.post);
+// app.get("/template", cors(corsOptions));
+// app.post("/create-edit", cors(corsOptions), upload.post);
 
 const port = process.env.PORT || 4000;
 

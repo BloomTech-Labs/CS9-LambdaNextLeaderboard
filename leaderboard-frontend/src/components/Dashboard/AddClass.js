@@ -27,8 +27,8 @@ export default class AddClass extends Component {
     return (
       <Segment>
         <Header as="h2" icon textAlign="center" size="huge">
-          <Icon name="users" circular />
-          <Header.Content>Add a class to {this.props.orgName}</Header.Content>
+          <Icon name="graduation cap" circular />
+          <Header.Content>Add New Class to {this.props.orgName}</Header.Content>
         </Header>
 
         <Segment>

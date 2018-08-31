@@ -8,23 +8,38 @@ const validateStudent = require("../../validation/students/studentValidation");
 router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
 // @route   GET api/classes/:id/students
-// @desc    Gets class' students
+// @desc    Gets a class' unhired students
 // @access  Private
 router.get("/:id/students", (req, res) => {
   const id = req.params.id;
+  let hired = [];
 
   Class.findById(id)
-    .populate("students")
-    .then(aClass => {
-      if (!aClass) {
-        return res.status(404).json({ class: "That class does not exist." });
-      }
+    .populate("students", null, { hired: true })
+    .then(aClassWithHired => {
+      hired = aClassWithHired.students;
 
-      res.json(aClass.students);
+      Class.findById(id)
+        .populate(
+          "students",
+          null,
+          { hired: false },
+          {
+            sort: { lastname: 1, firstname: 1 }
+          }
+        )
+        .then(aClass => {
+          if (!aClass) {
+            return res
+              .status(404)
+              .json({ class: "That class does not exist." });
+          }
+          res.json({ unhired: aClass.students, hired });
+        });
     });
 });
 
-// @route   POST api/classes/:id/students
+// @route   POST api/classes/:id/create
 // @desc    Creates a new student
 // @access  Private
 router.post("/:id/students/create", (req, res) => {
@@ -54,7 +69,7 @@ router.post("/:id/students/create", (req, res) => {
     newStudent.save().then(created => {
       aClass.students.push(created._id);
       aClass.save();
-      res.json(created);
+      res.status(201).json(created);
     });
   });
 });

@@ -53,7 +53,7 @@ router.post("/register", (req, res) => {
           newAdmin.password = hash;
           newAdmin
             .save()
-            .then(created => res.json(created))
+            .then(created => res.status(201).json(created))
             .catch(err => console.log(err));
         });
       });

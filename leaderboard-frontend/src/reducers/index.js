@@ -2,7 +2,7 @@ import {
   LOGIN_ACTION,
   LOGOUT_ACTION,
   CREATE_USER,
-  UPDATE_STUDENT,
+  // UPDATE_STUDENT,
   ADD_CLASS,
   ADD_STUDENT,
   // GET_CLASS_STUDENTS,
@@ -32,6 +32,7 @@ import {
   ADD_CLASS_STUDENTS_ERRORS,
   ADD_CLASS_STUDENTS
 } from "../actions/classActions";
+import { UPDATE_STUDENT, DELETE_STUDENT } from "../actions/studentActions";
 
 const initialState = {
   loginErrors: {},
@@ -50,7 +51,7 @@ const initialState = {
   fetchSuccess: false,
   fetchClasses: null,
   githubData: null,
-  updatedStudent: null,
+  // updatedStudent: null,
   editStudent: null,
   removedStudent: null,
 
@@ -62,9 +63,14 @@ const initialState = {
   newClassErrors: {},
   createdClass: {},
 
-  classStudents: [],
+  classStudents: {
+    hired: [],
+    unhired: []
+  },
   newStudentErrors: {},
-  createdStudent: {}
+  createdStudent: {},
+  updatedStudent: {},
+  deletedStudent: {}
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -165,13 +171,13 @@ const studentReducer = (state = initialState, action) => {
         githubData: action.payload,
         gitStats: action.payload.stats
       });
-    case UPDATE_STUDENT:
-      return Object.assign({}, state, {
-        updatedStudent: action.payload,
-        allStudents: null,
-        githubData: null,
-        editStudent: null
-      });
+    // case UPDATE_STUDENT:
+    //   return Object.assign({}, state, {
+    //     updatedStudent: action.payload,
+    //     allStudents: null,
+    //     githubData: null,
+    //     editStudent: null
+    //   });
     case EDIT_STUDENT:
       return Object.assign({}, state, {
         editStudent: action.payload
@@ -220,6 +226,15 @@ const studentReducer = (state = initialState, action) => {
     case ADD_CLASS_STUDENTS:
       return Object.assign({}, state, {
         createdStudent: action.payload
+      });
+
+    case UPDATE_STUDENT:
+      return Object.assign({}, state, {
+        updatedStudent: action.payload
+      });
+    case DELETE_STUDENT:
+      return Object.assign({}, state, {
+        deletedStudent: action.payload
       });
 
     default:
