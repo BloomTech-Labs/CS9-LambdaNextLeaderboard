@@ -169,8 +169,8 @@ class ClassCreateEdit extends Component {
         if (this.props.editStudent) {
             return (
                 <div className="ClassCreateEdit">
-                    <h5 style={{display: "inline", marginLeft: "1%"}}>Settings</h5>
                     <div className="Settings">
+                        <h5 className="SideHeader">Settings</h5>
                         <Input
                             focus
                             type="text"
@@ -189,19 +189,19 @@ class ClassCreateEdit extends Component {
                             {" "}
                             Import CSV
                         </Button>
-                        <form
-                            action="http://localhost:4000/create-edit"
-                            method="POST"
-                            encType="multipart/form-data"
-                        >
-                            <input type="file" name="file" accept="*.csv"/>
-                            <input type="submit" value="Upload Students"/>
-                        </form>
+                        {/*<form*/}
+                            {/*action="http://localhost:4000/create-edit"*/}
+                            {/*method="POST"*/}
+                            {/*encType="multipart/form-data"*/}
+                        {/*>*/}
+                            {/*<input type="file" name="file" accept="*.csv"/>*/}
+                            {/*<input type="submit" value="Upload Students"/>*/}
+                        {/*</form>*/}
                         {/*<button className="BtnImport" onClick={this.handleImport} >Import CSV</button>*/}
                     </div>
 
-                    <h5 style={{display: "inline", marginLeft: "1%"}}>Add Students</h5>
                     <div className="Add_Students">
+                        <h5 className="SideHeader">Add Students</h5>
                         <Input
                             focus
                             type="text"
@@ -265,39 +265,43 @@ class ClassCreateEdit extends Component {
         } else {
             return (
                 <div className="ClassCreateEdit">
-                    <h5 style={{display: "inline", marginLeft: "1%"}}>Settings</h5>
                     <div className="Settings">
-                        <Input
-                            focus
-                            type="text"
-                            name="class_name"
-                            placeholder="Class Name"
-                            className="CName"
-                            value={this.state.class_name}
-                            onChange={this.handleInput}
-                        />
+                            <h5 className="SideHeader">Settings</h5>
+                        <div className="inputBtn" >
+                            <Input
+                                focus
+                                type="text"
+                                name="class_name"
+                                placeholder="Class Name"
+                                className="CName"
+                                value={this.state.class_name}
+                                onChange={this.handleInput}
+                            />
 
-                        <Button
-                            className="ui clearing segment BtnImport"
-                            onClick={this.handleImport}
-                            primary
-                        >
-                            {" "}
-                            Import CSV
-                        </Button>
-                        <form
-                            action="http://localhost:4000/create-edit"
-                            method="POST"
-                            encType="multipart/form-data"
-                        >
-                            <input type="file" name="file" accept="*.csv"/>
-                            <input type="submit" value="Upload Students"/>
-                        </form>
+                            <Button
+                                className="ui clearing segment BtnImport"
+                                onClick={this.handleImport}
+                                primary
+                            >
+                                {" "}
+                                Import CSV
+                            </Button>
+                        </div>
+
+                        {/*<form*/}
+                            {/*action="http://localhost:4000/create-edit"*/}
+                            {/*method="POST"*/}
+                            {/*encType="multipart/form-data"*/}
+                        {/*>*/}
+                            {/*<input type="file" name="file" accept="*.csv"/>*/}
+                            {/*<input type="submit" value="Upload Students"/>*/}
+                        {/*</form>*/}
                         {/*<button className="BtnImport" onClick={this.handleImport} >Import CSV</button>*/}
                     </div>
 
-                    <h5 style={{display: "inline", marginLeft: "1%"}}>Add Students</h5>
                     <div className="Add_Students">
+                        <h5 className="SideHeader">Add Students</h5>
+
                         <Input
                             focus
                             type="text"

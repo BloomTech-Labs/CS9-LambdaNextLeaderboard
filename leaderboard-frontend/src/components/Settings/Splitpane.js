@@ -42,7 +42,7 @@ const updateUser = (props) => {
                 <div className="Crumb">
                     <Breadcrumb  size="huge" >
                         <Breadcrumb.Section>
-                            <Link to="/">Home</Link>
+                            <Link to="/classlist">Home</Link>
                         </Breadcrumb.Section>
                         <Breadcrumb.Divider icon="right chevron" />
                         <Breadcrumb.Section active>Billing</Breadcrumb.Section>

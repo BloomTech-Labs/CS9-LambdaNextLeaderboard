@@ -20,40 +20,40 @@ class LandingPage extends Component {
     }
 
     componentDidMount() {
-        if (localStorage.getItem("invalid")) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("invalid");
-            localStorage.removeItem(("adminID"))
-            localStorage.removeItem("organization")
-            localStorage.removeItem("email")
-        }
-        if (!localStorage.getItem("invalid") && localStorage.removeItem("token") ) {
-            this.props.history.push('/classlist')
-        }
-        if (localStorage.getItem("token") === null) {
-            localStorage.removeItem(("adminID"))
-            localStorage.removeItem("invalid")
-            localStorage.removeItem("organization")
-            localStorage.removeItem("email")
-        }
+        // if (localStorage.getItem("invalid")) {
+        //     localStorage.removeItem("token");
+        //     localStorage.removeItem("invalid");
+        //     localStorage.removeItem(("adminID"))
+        //     localStorage.removeItem("organization")
+        //     localStorage.removeItem("email")
+        // }
+        // if (!localStorage.getItem("invalid") && localStorage.removeItem("token") ) {
+        //     this.props.history.push('/classlist')
+        // }
+        // if (localStorage.getItem("token") === null) {
+        //     localStorage.removeItem(("adminID"))
+        //     localStorage.removeItem("invalid")
+        //     localStorage.removeItem("organization")
+        //     localStorage.removeItem("email")
+        // }
 
 
     }
 
     componentWillUpdate(nextProps, nextState) {
-        if (localStorage.getItem("invalid")) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("invalid")
-            localStorage.removeItem(("adminID"))
-            localStorage.removeItem("organization")
-            localStorage.removeItem("email")
-        }
-        if (localStorage.getItem("token") === null) {
-            localStorage.removeItem(("adminID"))
-            localStorage.removeItem("invalid")
-            localStorage.removeItem("organization")
-            localStorage.removeItem("email")
-        }
+        // if (localStorage.getItem("invalid")) {
+        //     localStorage.removeItem("token");
+        //     localStorage.removeItem("invalid")
+        //     localStorage.removeItem(("adminID"))
+        //     localStorage.removeItem("organization")
+        //     localStorage.removeItem("email")
+        // }
+        // if (localStorage.getItem("token") === null) {
+        //     localStorage.removeItem(("adminID"))
+        //     localStorage.removeItem("invalid")
+        //     localStorage.removeItem("organization")
+        //     localStorage.removeItem("email")
+        // }
     }
 
 

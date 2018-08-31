@@ -27,14 +27,14 @@ class LeaderBoard extends Component {
     render() {
         if (localStorage.getItem("invalid")) {
             localStorage.removeItem("invalid");
-            this.props.props.props.history.push('/')
+            this.props.history.push('/')
         }
 
         if (this.props.isLoading()) {
             if (localStorage.getItem("invalid")) {
                 localStorage.removeItem("token");
                 localStorage.removeItem("invalid");
-                this.props.props.props.history.push('/')
+                this.props.history.push('/')
             }
             return <div>Loading...</div>
         }

@@ -58,7 +58,7 @@ class StudentList extends Component {
         if (students[0]) {
             return (
                 <div className="main">
-                    <h5 style={{marginLeft: "1%"}}>StudentList</h5>
+                    <h5 style={{marginLeft: "0%"}}>StudentList</h5>
 
                     {students.map((student_data, i) => {
                         return (

@@ -25,7 +25,7 @@ function SplitPane(props) {
 //Left Component
 function LeftContent() {
   return (
-    <div className="LeftContent" style={{ height: "100%" }}>
+    <div className="LeftContent">
       <MenuBar />
     </div>
   );
@@ -34,7 +34,7 @@ function LeftContent() {
 //Right Component
 function RightContent(props) {
   return (
-    <div className="RightContent" style={{ height: "100%" }}>
+    <div className="RightContent" >
       <ClassList props={props} />
     </div>
   );
@@ -49,16 +49,19 @@ class ClassList2 extends React.Component{
 
     render() {
         return (
-            <div style={{ height: "100%" }}>
+            <div className="classList" >
                 {/*<NavBar props={props} />*/}
-                <Breadcrumb size="large" style={{ height: "3%", marginLeft: "1%" }}>
-                    <Breadcrumb.Section>
-                        <Link to="/">Home</Link>
-                    </Breadcrumb.Section>
-                    <Breadcrumb.Divider icon="right chevron" />
+                <div className="BreadCrumb" >
+                    <Breadcrumb size="huge">
+                        <Breadcrumb.Section>
+                            <Link to="/classlist">Home</Link>
+                        </Breadcrumb.Section>
+                        <Breadcrumb.Divider icon="right chevron" />
 
-                    <Breadcrumb.Section active>Classes</Breadcrumb.Section>
-                </Breadcrumb>
+                        <Breadcrumb.Section active>Classes</Breadcrumb.Section>
+                    </Breadcrumb>
+                </div>
+
 
                 <SplitPane
                     left={<LeftContent />}
