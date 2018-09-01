@@ -107,12 +107,11 @@ class LeaderBoard extends Component {
         <div class="ui horizontal divider" />
         <div>
           {/*<OverallLeaderboard />*/}
-          {/* <OverallData
-            props={this.props}
-            gitObject={gitObject}
-            data={this.props.data}
+          <OverallData
+
+            data={gitObject}
             // students={this.props.students}
-          /> */}
+          />
         </div>
       </div>
     );
