@@ -428,7 +428,9 @@ class Nav extends Component {
           mountOnShow
           unmountOnHide
         >
-          <div className="expiredToken">Your login session has expired.</div>
+          <div className="expiredToken" onClick={this.hideExpiredMsg}>
+            Your login session has expired.
+          </div>
         </Transition>
       </nav>
     );
