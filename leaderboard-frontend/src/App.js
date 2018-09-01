@@ -1,6 +1,7 @@
 //________MODULES________
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import jwt from "jsonwebtoken";
 import "./App.css";
 
 //________REACT COMPONENTS________
@@ -18,8 +19,24 @@ class App extends Component {
     this.state = {};
   }
 
-  openNavModal = () => {
-    this.nav.handleOpenModal(null, { content: "Register" });
+  checkTokenExpiry = () => {
+    // check token expiry
+    if (localStorage.token) {
+      let currentTime = new Date();
+      let decoded = jwt.decode(localStorage.token.split(" ")[1]);
+      if (currentTime.getTime() >= decoded.exp * 1000) {
+        this.nav.sessionHasExpired();
+      }
+    }
+  };
+
+  componentDidMount = () => {
+    this.interval = setInterval(this.checkTokenExpiry, 5000);
+    this.checkTokenExpiry();
+  };
+
+  componentWillUnmount = () => {
+    clearInterval(this.interval);
   };
 
   render() {
@@ -27,13 +44,15 @@ class App extends Component {
       <Router>
         <div className="APP">
           {/* onRef gives App has access to Navbar methods   Ex: this.nav.handleLogout() */}
-          <NAVBAR onRef={ref => (this.nav = ref)} />
+          <NAVBAR
+            onRef={ref => (this.nav = ref)}
+            checkTokenExpiry={this.checkTokenExpiry}
+          />
           <div className="APP__BODY">
             <Route exact path="/" component={LANDINGPAGE} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
-            <button onClick={this.openNavModal}>oh don't do it</button>
           </div>
         </div>
       </Router>
