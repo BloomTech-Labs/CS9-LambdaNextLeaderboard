@@ -58,7 +58,6 @@ class ClassView extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <Segment.Group>
         <Segment>

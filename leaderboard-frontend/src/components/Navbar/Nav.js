@@ -14,7 +14,7 @@ import {
   Container,
   Transition
 } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   registerAdminAction,
@@ -61,7 +61,6 @@ class Nav extends Component {
   };
 
   handleLoginInput = (e, { id, name, value }) => {
-    console.log(this.props.registerErrors[id]);
     this.setState({ [name]: value });
     this.props.loginErrors[id] = "";
   };
@@ -108,7 +107,6 @@ class Nav extends Component {
   };
 
   hideExpiredMsg = () => {
-    console.log("here");
     this.setState({ expiredToken: false });
   };
 
@@ -116,18 +114,34 @@ class Nav extends Component {
     if (localStorage.token) {
       let currentTime = new Date();
       let decoded = jwt.decode(localStorage.token.split(" ")[1]);
-      console.log(localStorage.token.split(" ")[1]);
-      console.log(decoded.exp, currentTime.getTime());
       if (currentTime.getTime() >= decoded.exp * 1000) {
         this.handleLogout();
         this.setState({ expiredToken: true });
       }
     }
+
+    this.props.onRef(this);
+  };
+
+  componentWillUnmount() {
+    this.props.onRef(undefined);
+  }
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (localStorage.token) {
+      let currentTime = new Date();
+      let decoded = jwt.decode(localStorage.token.split(" ")[1]);
+      if (currentTime.getTime() >= decoded.exp * 1000) {
+        this.handleLogout();
+        this.setState({ expiredToken: true });
+      }
+    }
+
+    return true;
   };
 
   componentDidUpdate = (prevProps, prevState) => {
     // registration successful -> showing login
-    console.log(this.props, prevProps);
     if (
       this.props.registeredAdmin &&
       this.props.registeredAdmin !== prevProps.registeredAdmin &&
@@ -170,11 +184,6 @@ class Nav extends Component {
     }
 
     // logged out -> redirecting to landing page
-    console.log(
-      "check",
-      !this.props.loggedInAdmin,
-      this.props.loggedInAdmin !== prevProps.loggedInAdmin
-    );
     if (
       !this.props.loggedInAdmin &&
       this.props.loggedInAdmin !== prevProps.loggedInAdmin
@@ -423,8 +432,10 @@ class Nav extends Component {
         </Modal>
         <Transition
           visible={this.state.expiredToken}
-          animation="scale"
+          animation="drop"
           duration={500}
+          mountOnShow
+          unmountOnHide
         >
           <div className="expiredToken">Your login session has expired.</div>
         </Transition>
@@ -442,7 +453,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { loginAdminAction, registerAdminAction, logoutAdminAction }
-)(Nav);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { loginAdminAction, registerAdminAction, logoutAdminAction }
+  )(Nav)
+);
