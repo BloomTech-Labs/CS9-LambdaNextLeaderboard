@@ -14,7 +14,11 @@ import {
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { loginAction, createUserAction, logoutAction } from "../../actions";
+import {
+  registerAdminAction,
+  loginAdminAction,
+  logoutAdminAction
+} from "../../actions/adminActions";
 
 import "./Nav.css";
 
@@ -49,13 +53,20 @@ class Nav extends Component {
     this.clearErrors();
   };
 
-  handleInput = (e, { name, value }) => {
+  handleRegisterInput = (e, { id, name, value }) => {
     this.setState({ [name]: value });
+    this.props.registerErrors[id] = "";
+  };
+
+  handleLoginInput = (e, { id, name, value }) => {
+    console.log(this.props.registerErrors[id]);
+    this.setState({ [name]: value });
+    this.props.loginErrors[id] = "";
   };
 
   handleSubmitRegister = () => {
     this.clearErrors();
-    this.props.createUserAction({
+    this.props.registerAdminAction({
       username: this.state.RegisterUsername,
       email: this.state.RegisterEmail,
       password: this.state.RegisterPassword,
@@ -66,7 +77,7 @@ class Nav extends Component {
 
   handleSubmitLogin = () => {
     this.clearErrors();
-    this.props.loginAction({
+    this.props.loginAdminAction({
       email: this.state.SignInEmail,
       password: this.state.SignInPassword
     });
@@ -74,7 +85,7 @@ class Nav extends Component {
   };
 
   handleLogout = () => {
-    this.props.logoutAction();
+    this.props.logoutAdminAction();
     this.setState({ SignedIn: false });
     localStorage.removeItem("token");
     localStorage.removeItem("adminID");
@@ -93,9 +104,10 @@ class Nav extends Component {
 
   componentDidUpdate = (prevProps, prevState) => {
     // registration successful -> showing login
+    console.log(this.props, prevProps);
     if (
-      this.props.successfulRegister &&
-      !prevProps.successfulRegister &&
+      this.props.registeredAdmin &&
+      this.props.registeredAdmin !== prevProps.registeredAdmin &&
       this.state.openModal
     ) {
       this.setState({
@@ -106,7 +118,10 @@ class Nav extends Component {
     }
 
     // login successful -> redirecting to dashboard
-    if (this.props.successfulLogin && !prevProps.successfulLogin) {
+    if (
+      this.props.loggedInAdmin &&
+      this.props.loggedInAdmin !== prevProps.loggedInAdmin
+    ) {
       if (this.state.openModal) {
         this.setState({
           openModal: false,
@@ -130,6 +145,19 @@ class Nav extends Component {
         this.props.history.push("/dashboard");
       }
     }
+
+    // logged out -> redirecting to landing page
+    console.log(
+      "check",
+      !this.props.loggedInAdmin,
+      this.props.loggedInAdmin !== prevProps.loggedInAdmin
+    );
+    if (
+      !this.props.loggedInAdmin &&
+      this.props.loggedInAdmin !== prevProps.loggedInAdmin
+    ) {
+      this.props.history.push("/");
+    }
   };
 
   render() {
@@ -139,7 +167,7 @@ class Nav extends Component {
       <nav className="Nav">
         <Container>
           <div className="Nav__container">
-            <Link to="/classlist" className="Nav__link">
+            <Link to="/" className="Nav__link">
               <h1>Leaderboard</h1>
             </Link>
             {!localStorage.getItem("token") ? (
@@ -212,9 +240,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="email"
                           name="SignInEmail"
                           value={this.state.SignInEmail}
-                          onChange={this.handleInput}
+                          onChange={this.handleLoginInput}
                           icon="mail"
                           iconPosition="left"
                           placeholder="Your email address"
@@ -235,9 +264,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="password"
                           name="SignInPassword"
                           value={this.state.SignInPassword}
-                          onChange={this.handleInput}
+                          onChange={this.handleLoginInput}
                           icon="lock"
                           iconPosition="left"
                           placeholder="Your password"
@@ -277,9 +307,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="username"
                           name="RegisterUsername"
                           value={this.state.RegisterUsername}
-                          onChange={this.handleInput}
+                          onChange={this.handleRegisterInput}
                           icon="user"
                           iconPosition="left"
                           placeholder="Pick a username"
@@ -297,9 +328,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="email"
                           name="RegisterEmail"
                           value={this.state.RegisterEmail}
-                          onChange={this.handleInput}
+                          onChange={this.handleRegisterInput}
                           icon="mail"
                           iconPosition="left"
                           placeholder="Your email address"
@@ -317,9 +349,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="password"
                           name="RegisterPassword"
                           value={this.state.RegisterPassword}
-                          onChange={this.handleInput}
+                          onChange={this.handleRegisterInput}
                           icon="lock"
                           iconPosition="left"
                           placeholder="Create a password"
@@ -337,9 +370,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="password2"
                           name="RegisterPassword2"
                           value={this.state.RegisterPassword2}
-                          onChange={this.handleInput}
+                          onChange={this.handleRegisterInput}
                           icon="lock"
                           iconPosition="left"
                           placeholder="Confirm password"
@@ -369,14 +403,14 @@ class Nav extends Component {
 
 const mapStateToProps = state => {
   return {
-    loginErrors: state.loginErrors,
     registerErrors: state.registerErrors,
-    successfulLogin: state.successfulLogin,
-    successfulRegister: state.successfulRegister
+    loginErrors: state.loginErrors,
+    registeredAdmin: state.registeredAdmin,
+    loggedInAdmin: state.loggedInAdmin
   };
 };
 
 export default connect(
   mapStateToProps,
-  { createUserAction, loginAction, logoutAction }
+  { loginAdminAction, registerAdminAction, logoutAdminAction }
 )(Nav);
