@@ -137,7 +137,7 @@ router.post("/:id/importcsv", (req, res) => {
             .then(created => {
               aClass.students.push(created._id);
               aClass.save();
-              res.status(201).json(created);
+              //res.status(201).json(created); //Error: Can't set headers after they are sent.
             })
             .catch(err => console.log(err));
           console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
