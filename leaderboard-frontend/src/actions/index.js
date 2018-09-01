@@ -78,13 +78,14 @@ export function queryGithub() {
 export const getGithubDataAction = () => {
   const token = localStorage.getItem("token");
   const id = {
-    id: localStorage.getItem("adminID")
+    // id: localStorage.getItem("adminID")
+    id: "5b89b5b5bf794029f43b4869"
   };
   return dispatch => {
     const options = {
       method: "POST",
       headers: { "content-type": "application/json", Authorization: token },
-      url: `${CLASS_URL}data`,
+      url: `http://localhost:4000/api/leaderboard/data`,
       data: id
     };
     axios(options)
@@ -221,13 +222,13 @@ const getStudentsAction = classID => {
   console.log("class ID CLASS ID", classID);
   const token = localStorage.getItem("token");
   const id = {
-    id: localStorage.getItem("adminID")
+    _id: localStorage.getItem("adminID")
   };
   return dispatch => {
     const options = {
       method: "POST",
       headers: { "content-type": "application/json", Authorization: token },
-      url: `${CLASS_URL}/all`,
+      url: `${CLASS_URL}all`,
       data: id
     };
     axios(options)
