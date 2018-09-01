@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import jwt from "jsonwebtoken";
 import {
   Button,
   Modal,
@@ -34,8 +35,7 @@ class Nav extends Component {
       RegisterPassword: "",
       RegisterPassword2: "",
       SignInEmail: "",
-      SignInPassword: "",
-      SignedIn: false
+      SignInPassword: ""
     };
   }
 
@@ -86,7 +86,6 @@ class Nav extends Component {
 
   handleLogout = () => {
     this.props.logoutAdminAction();
-    this.setState({ SignedIn: false });
     localStorage.removeItem("token");
     localStorage.removeItem("adminID");
     this.props.history.push("/");
@@ -100,6 +99,18 @@ class Nav extends Component {
     this.props.loginErrors.email = "";
     this.props.loginErrors.password = "";
     this.props.loginErrors.invalidLogin = "";
+  };
+
+  componentWillMount = () => {
+    if (localStorage.token) {
+      let currentTime = new Date();
+      let decoded = jwt.decode(localStorage.token.split(" ")[1]);
+      console.log(localStorage.token.split(" ")[1]);
+      console.log(decoded.exp, currentTime.getTime());
+      if (currentTime.getTime() > decoded.exp) {
+        this.handleLogout();
+      }
+    }
   };
 
   componentDidUpdate = (prevProps, prevState) => {
