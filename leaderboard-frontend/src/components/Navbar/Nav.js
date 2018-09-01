@@ -11,7 +11,8 @@ import {
   Label,
   Popup,
   GridRow,
-  Container
+  Container,
+  Transition
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -35,7 +36,8 @@ class Nav extends Component {
       RegisterPassword: "",
       RegisterPassword2: "",
       SignInEmail: "",
-      SignInPassword: ""
+      SignInPassword: "",
+      expiredToken: false
     };
   }
 
@@ -101,14 +103,24 @@ class Nav extends Component {
     this.props.loginErrors.invalidLogin = "";
   };
 
-  componentWillMount = () => {
+  showExpiredMsg = () => {
+    this.setState({ expiredToken: true });
+  };
+
+  hideExpiredMsg = () => {
+    console.log("here");
+    this.setState({ expiredToken: false });
+  };
+
+  componentDidMount = () => {
     if (localStorage.token) {
       let currentTime = new Date();
       let decoded = jwt.decode(localStorage.token.split(" ")[1]);
       console.log(localStorage.token.split(" ")[1]);
       console.log(decoded.exp, currentTime.getTime());
-      if (currentTime.getTime() > decoded.exp) {
+      if (currentTime.getTime() >= decoded.exp * 1000) {
         this.handleLogout();
+        this.setState({ expiredToken: true });
       }
     }
   };
@@ -173,7 +185,9 @@ class Nav extends Component {
 
   render() {
     const { activeItem } = this.state;
-
+    if (this.state.expiredToken) {
+      setTimeout(this.hideExpiredMsg, 7000);
+    }
     return (
       <nav className="Nav">
         <Container>
@@ -407,6 +421,13 @@ class Nav extends Component {
           </Modal.Content>
           <Modal.Actions />
         </Modal>
+        <Transition
+          visible={this.state.expiredToken}
+          animation="scale"
+          duration={500}
+        >
+          <div className="expiredToken">Your login session has expired.</div>
+        </Transition>
       </nav>
     );
   }

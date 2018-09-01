@@ -89,7 +89,7 @@ router.post("/login", (req, res) => {
         if (isMatch) {
           // Successful login creating token
           const payload = { id: admin._id, username: admin.username };
-          jwt.sign(payload, ACCESS_KEY, { expiresIn: "1h" }, (err, token) => {
+          jwt.sign(payload, ACCESS_KEY, { expiresIn: "60m" }, (err, token) => {
             res.json({
               success: true,
               token: "Bearer " + token,
