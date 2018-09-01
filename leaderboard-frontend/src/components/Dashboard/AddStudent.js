@@ -7,8 +7,7 @@ import {
   Label,
   Button,
   Input,
-  Tab,
-  Divider
+  Tab
 } from "semantic-ui-react";
 
 export default class AddStudent extends Component {
@@ -45,16 +44,13 @@ export default class AddStudent extends Component {
       csvFile: e.target.files[0]
     });
     console.log("CSV ready for upload.");
-    console.log("ClassID is: ", this.props.classId)
-    console.log(this.props.props)
   };
 
   handleImportSubmit = e => {
     e.preventDefault();
     console.log("Import submit");
 
-    //let classname = this.props.props.props.match.params.name;
-    let classID = this.props.classId
+    let classID = this.props.classId;
     let csvData = new FormData();
 
     csvData.append("file", this.state.csvFile);
@@ -66,7 +62,7 @@ export default class AddStudent extends Component {
   render() {
     const panes = [
       {
-        menuItem: { key: 'user', icon: 'user', content: "Create New Student"},
+        menuItem: { key: "user", icon: "user", content: "Create New Student" },
         render: () => (
           <Tab.Pane>
             <Header as="h2" icon textAlign="center" size="huge">
@@ -153,7 +149,11 @@ export default class AddStudent extends Component {
         )
       },
       {
-        menuItem: { key: 'cloud upload', icon: 'cloud upload', content: "Import CSV File"},
+        menuItem: {
+          key: "cloud upload",
+          icon: "cloud upload",
+          content: "Import CSV File"
+        },
         render: () => (
           <Tab.Pane>
             <Header as="h2" icon textAlign="center" size="huge">
@@ -188,11 +188,8 @@ export default class AddStudent extends Component {
       }
     ];
 
-    const grid = {paneWidth: 12, tabWidth: 6}
+    const addStudentsTabs = () => <Tab panes={panes} />;
 
-    const addStudentsTabs = () => <Tab panes={panes}/>;
-    
     return addStudentsTabs();
   }
 }
-

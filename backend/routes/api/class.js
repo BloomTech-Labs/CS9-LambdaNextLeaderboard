@@ -107,45 +107,40 @@ router.post("/:id/importcsv", (req, res) => {
   if (!req.files) return res.status(400).send("No files were uploaded.");
 
   // Reference
-  const csvClassFile = req.files.file;
-  const csvClassName = req.params.name;
-  let adminID = req.user._id;
-  let classID;
-
-  // Query to find existing class
-  function queryCollection() {
-    return ClassModel.findOne({ name: csvClassName });
-  }
+  const csvClassFile = req.files.file;  
+  const classID = req.params.id;
 
   // Parse csv and check for existing class in db
   async function run() {
-    classID = await queryCollection();
-
     csv
       .fromString(csvClassFile.data.toString(), {
         headers: true,
         ignoreEmpty: true
       })
       .on("data", function(data) {
-        // Add students to db, rejected if email exists (unique)
-        StudentModel.findOne({ email: data["email"] }).then(student => {
-          let newStudent = new StudentModel();
+        Class.findById(classID).then(aClass => {
+          if (!aClass) {
+            return res
+              .status(404)
+              .json({ class: "That class does not exist." });
+          }
+
+          let newStudent = new Student();
 
           newStudent.firstname = data["firstname"];
           newStudent.lastname = data["lastname"];
           newStudent.email = data["email"];
           newStudent.github = data["github"];
-          newStudent.huntr = data["huntr"];
-          newStudent.classname = csvClassName;
-          newStudent._admin = adminID;
-          newStudent._class = classID;
 
           newStudent
             .save()
-            .then(data =>
-              console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`)
-            )
+            .then(created => {
+              aClass.students.push(created._id);
+              aClass.save();
+              res.status(201).json(created);
+            })
             .catch(err => console.log(err));
+          console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
         });
       });
   }
