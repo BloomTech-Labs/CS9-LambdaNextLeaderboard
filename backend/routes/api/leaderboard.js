@@ -1,15 +1,11 @@
 const router = require("express").Router();
-const jwt = require("jsonwebtoken");
-const Class = require("../../models/Class");
-const Student = require("../../models/Student");
+const Classd = require("../../models/Class");
 const validateStudent = require("../../validation/students/studentValidation");
 
 
-
+require("dotenv").config();
 const axios = require("axios");
 const _ = require("lodash");
-const clientID = process.env.CLIENT_ID;
-const clientSecret = process.env.CLIENT_SECRET;
 let huntrData;
 let storageData;
 let huntrDataFech;
@@ -133,8 +129,7 @@ async function fetchHuntrData() {
             idArr.forEach((each, i) => {
                 studentsObject.push({
                     'id': idArr[i],
-                    'firstname': familyName[i],
-                    'givenNameArr': givenNameArr[i],
+                    'firstname': givenNameArr[i],
                     'familyName': familyName[i],
                     'email': email[i],
                     'createdAt': createdAt[i],
@@ -159,12 +154,13 @@ async function fetchHuntrData() {
 }
 
 router.post("/data", (req, res) => {
-    const { _id } = req.body
-    Class.find({_id: req.body._id})
-.populate('students')
-.then(async students => {
+    // const { _id } = req.body
+    const _id = req.body.id;
+    Classd.findById(_id)
+        .populate('students')
+.then(async student => {
         gitDataFetch = []
-        storageData = await fetchGithubData(students)
+        storageData = await fetchGithubData(student.students)
         huntrData = await fetchHuntrData()
         res.status(201).json({'gitData': gitDataFetch, 'huntr': huntrData})
     }

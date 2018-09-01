@@ -186,6 +186,7 @@ class Dashboard extends Component {
               <ClassView
                 classId={this.state.activeClass}
                 className={this.state.activeClassName}
+                props={this.props}
               />
             ) : null}
           </Grid.Column>

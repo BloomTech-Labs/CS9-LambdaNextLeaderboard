@@ -75,12 +75,15 @@ export function queryGithub() {
     return { data, status, promise };
   };
 }
-export const getGithubDataAction = () => {
+export const getGithubDataAction = (idClass) => {
+  console.log("action, id", idClass)
   const token = localStorage.getItem("token");
   const id = {
     // id: localStorage.getItem("adminID")
-    id: "5b89b5b5bf794029f43b4869"
+    // id: "5b89e652c89dc5730cdf04f2"
+      id: idClass
   };
+  // history.push("/leaderboard")
   return dispatch => {
     const options = {
       method: "POST",

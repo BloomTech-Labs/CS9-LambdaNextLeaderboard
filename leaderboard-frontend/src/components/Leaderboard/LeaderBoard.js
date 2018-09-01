@@ -77,6 +77,18 @@ class LeaderBoard extends Component {
     //     </div>
     //   );
     // }
+      const gitObject = [];
+    this.props.githubData.gitData.forEach((git, x) => {
+        this.props.githubData.huntr.forEach(huntr => {
+            if (git !== null) {
+                if (git.FullName === huntr.firstname + ' ' + huntr.familyName) {
+                    gitObject.push({Git: git, Huntr: huntr})
+                }
+            }
+        })
+    })
+      console.log('leaderboard params:', this.props)
+      console.log("Git Huntr Pair", gitObject[0].Huntr)
     return (
       <div className="App">
         <p />
@@ -85,12 +97,12 @@ class LeaderBoard extends Component {
         </div>
         <div>
           {/*<WeeklyLeaderboard />*/}
-          {/* <WeeklyData
-            props={this.props}
-            gitObject={gitObject}
-            data={this.props.data}
+           <WeeklyData
+            // props={this.props}
+            // gitObject={gitObject}
+            data={gitObject}
             // students={this.props.students}
-          /> */}
+          />
         </div>
         <div class="ui horizontal divider" />
         <div>
