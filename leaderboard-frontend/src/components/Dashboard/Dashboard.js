@@ -96,6 +96,10 @@ class Dashboard extends Component {
       this.props.createdClass !== prevProps.createdClass
     ) {
       this.getClasses();
+      this.handleClassMenuClick(null, {
+        name: this.props.createdClass._id,
+        content: this.props.createdClass.name
+      });
     }
   };
 

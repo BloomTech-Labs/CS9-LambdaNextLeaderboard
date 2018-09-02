@@ -59,7 +59,7 @@ class ClassView extends Component {
 
   render() {
     return (
-      <Segment.Group>
+      <Segment.Group loading>
         <Segment>
           <Card fluid color="blue">
             <Card.Content textAlign="center">
