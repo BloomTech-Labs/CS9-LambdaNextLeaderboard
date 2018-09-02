@@ -1,11 +1,13 @@
+const jwt = require("jsonwebtoken");
+
+export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
+
 const LEADERBOARD_URL = process.env.REACT_APP_LEADERBOARD_URL;
 
 export const getGithubDataAction = () => {
   const token = localStorage.getItem("token");
-  const id = {
-    // id: localStorage.getItem("adminID")
-    id: "5b89b5b5bf794029f43b4869"
-  };
+  const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+
   return dispatch => {
     const options = {
       method: "POST",
