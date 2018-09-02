@@ -1,3 +1,5 @@
+const LEADERBOARD_URL = process.env.REACT_APP_LEADERBOARD_URL;
+
 export const getGithubDataAction = () => {
   const token = localStorage.getItem("token");
   const id = {
@@ -8,7 +10,7 @@ export const getGithubDataAction = () => {
     const options = {
       method: "POST",
       headers: { "content-type": "application/json", Authorization: token },
-      url: `http://localhost:4000/api/leaderboard/data`,
+      url: `${LEADERBOARD_URL}data`,
       data: id
     };
     axios(options)

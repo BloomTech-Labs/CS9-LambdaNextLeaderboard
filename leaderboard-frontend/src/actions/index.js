@@ -66,58 +66,6 @@
 //   };
 // }
 
-<<<<<<< HEAD
-export function queryGithub() {
-  return (dispatch, getState) => {
-    const data = getState().githubData;
-    console.log("DATA DATA DATA", data);
-    const status = data ? "complete" : "loading";
-    const promise = data ? Promise.resolve : dispatch(getGithubDataAction());
-    return { data, status, promise };
-  };
-}
-
-export const redirectDataClass = () => {
-  return dispatch => {
-    dispatch({
-      type: REDIRECT_DATA_CLASS,
-      classlist_students: null,
-      allClasses: null
-    });
-  };
-};
-export const updateUserAction = userObject => {
-  // const token = localStorage.getItem("token");
-  // const user = studentData.firstname + " " + studentData.lastname;
-  return dispatch => {
-    // const options = {
-    //     method: "PUT",
-    //     headers: {"content-type": "application/json", Authorization: token},
-    //     data: userObject,
-    //     url: `${USER_URL}updateuser`
-    // };
-    axios
-      .put(`${ADMIN_URL}updateuser`, { token: dataEncrypt(userObject) })
-      // (options)
-      .then(res => {
-        dispatch({
-          type: UPDATE_ADMIN,
-          payload: res.admin //Student data object returned
-          // class_name: res.name,
-          // user: user,
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data
-        });
-      });
-  };
-};
-export const getClassStudentsAction = classname => {
-  const token = localStorage.getItem("token");
-=======
 // export function queryGithub() {
 //   return (dispatch, getState) => {
 //     const data = getState().githubData;
@@ -199,7 +147,6 @@ export const getClassStudentsAction = classname => {
 // };
 // export const getClassStudentsAction = classname => {
 //   const token = localStorage.getItem("token");
->>>>>>> master
 
 //   return dispatch => {
 //     const options = {
@@ -218,180 +165,6 @@ export const getClassStudentsAction = classname => {
 //           // test: res
 //           //PAYLOAD {
 
-<<<<<<< HEAD
-          //     "hired": false,
-          //     "_id": "5b79b4a6223c9800043f5a1e",
-          //     "lastname": "Bueno",
-          //     "firstname": "Abraham",
-          //     "email": "abrambueno1992@gmail.com",
-          //     "github": "abrambueno1992",
-          //     "huntr": "abrambueno1992@gmail.com"
-          // }
-        });
-      })
-      .catch(err => {
-        localStorage.setItem("invalid", err.response.data);
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data
-        });
-      });
-  };
-};
-export const getClassesStudentsAction = () => {
-  const token = localStorage.getItem("token");
-  const id = {
-    id: localStorage.getItem("adminID")
-  };
-  return dispatch => {
-    const options = {
-      method: "POST",
-      headers: { "content-type": "application/json", Authorization: token },
-      url: `${CLASS_URL}`,
-      data: id
-    };
-    axios(options)
-      .then(res => {
-        localStorage.removeItem("invalid");
-        dispatch({
-          type: GET_CLASSES_STUDENTS,
-          payload: res.data,
-          fetchClasses: true
-        });
-      })
-      .catch(err => {
-        localStorage.setItem("invalid", err.response.data);
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data,
-          fetchClasses: true
-          // allClasses: err.response.data,
-          // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
-        });
-      });
-  };
-};
-const getStudentsAction = classID => {
-  console.log("class ID CLASS ID", classID);
-  const token = localStorage.getItem("token");
-  const id = {
-    _id: localStorage.getItem("adminID")
-  };
-  return dispatch => {
-    const options = {
-      method: "POST",
-      headers: { "content-type": "application/json", Authorization: token },
-      url: `${CLASS_URL}all`,
-      data: id
-    };
-    axios(options)
-      .then(res => {
-        localStorage.removeItem("invalid");
-        dispatch({
-          type: GET_STUDENTS,
-          payload: res.data
-        });
-      })
-      .catch(err => {
-        localStorage.setItem("invalid", err.response.data);
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data,
-          fetchClasses: true
-          // allClasses: err.response.data,
-          // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
-        });
-      });
-  };
-};
-export const addStudentAction = (classname, studentData) => {
-  //STUDENT DATA {
-  //     "lastname": "Bueno",
-  //     "firstname": "Abraham",
-  //     "email": "abrambueno1992@gmail.com",
-  //     "github": "abrambueno1992",
-  //     "huntr": "abrambueno1992@gmail.com"
-  // }
-  const token = localStorage.getItem("token");
-  const user = studentData.firstname + " " + studentData.lastname;
-  return dispatch => {
-    const options = {
-      method: "POST",
-      headers: { "content-type": "application/json", Authorization: token },
-      data: studentData,
-      url: `${CLASS_URL}${classname}/addStudent`
-    };
-    // console.log("NewStudent", classname, stu)
-    axios(options)
-      .then(res => {
-        dispatch({
-          type: ADD_STUDENT,
-          payload: res.students, //Student data object returned
-          class_name: res.name,
-          user: user
-        });
-        //RESPONSE DATA {
-        //     "_id": "5b79b366223c9800043f5a1d",
-        //     "name": "CS9",
-        //     "students": [
-        //     {
-        //         "hired": false,
-        //         "_id": "5b79b4a6223c9800043f5a1e",
-        //         "lastname": "Bueno",
-        //         "firstname": "Abraham",
-        //         "email": "abrambueno1992@gmail.com",
-        //         "github": "abrambueno1992",
-        //         "huntr": "abrambueno1992@gmail.com"
-        //     },
-        //     {
-        //         "hired": false,
-        //         "_id": "5b79e913e4056e00046b549d",
-        //         "lastname": "Bueno",
-        //         "firstname": "Abraham",
-        //         "email": "abrambueno1992@gmail.com",
-        //         "github": "abrambueno1992",
-        //         "huntr": "abrambueno1992@gmail.com"
-        //     }
-        // ],
-        //     "__v": 2
-        // }
-      })
-      .catch(err => {
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data
-        });
-      });
-  };
-};
-export const updateStudentAction = (classname, studentData) => {
-  const token = localStorage.getItem("token");
-  const user = studentData.firstname + " " + studentData.lastname;
-  return dispatch => {
-    const options = {
-      method: "PUT",
-      headers: { "content-type": "application/json", Authorization: token },
-      data: studentData,
-      url: `${CLASS_URL}${classname}/updatestudent`
-    };
-    axios(options)
-      .then(res => {
-        dispatch({
-          type: UPDATE_STUDENT,
-          payload: res.students, //Student data object returned
-          // class_name: res.name,
-          user: user
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data
-        });
-      });
-  };
-};
-=======
 //           //     "hired": false,
 //           //     "_id": "5b79b4a6223c9800043f5a1e",
 //           //     "lastname": "Bueno",
@@ -564,7 +337,6 @@ export const updateStudentAction = (classname, studentData) => {
 //       });
 //   };
 // };
->>>>>>> master
 
 // export const editStudentAction = student => {
 //   return dispatch => {
