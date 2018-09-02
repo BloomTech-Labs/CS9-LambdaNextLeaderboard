@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const Organization = require("../../models/Organization");
 const Class = require("../../models/Class");
 const validateClass = require("../../validation/classes/classValidation");
+const validateOrganization = require("../../validation/organizations/organizationValidation");
 
 const ACCESS_KEY = process.env.ACCESS_KEY;
 
@@ -56,15 +57,6 @@ router.post("/:id/classes/create", (req, res) => {
         });
       }
 
-      // Class names shouldn't be unique so that different organizations can use the same class name.
-
-      // Class.findOne({ name }).then(aClass => {
-      //   if (aClass) {
-      //     errors.name = "A class with that name already exists";
-      //     return res.status(400).json(errors);
-      //   }
-      // });
-
       const newClass = new Class({ name });
       newClass.save().then(created => {
         org.classes.push(created._id);
@@ -72,6 +64,47 @@ router.post("/:id/classes/create", (req, res) => {
         res.status(201).json(created);
       });
     });
+});
+
+// @route   PUT api/organizations/:id/update
+// @desc    Updates the organization's info
+// @access  Private
+router.put("/:id/update", (req, res) => {
+  const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateOrganization(data);
+
+  //   Validation Check
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const id = req.params.id;
+  const name = data.name;
+
+  Organization.findOne({ name }).then(org => {
+    if (org) {
+      errors.name = "An organization with that name already exists";
+      return res.status(400).json(errors);
+    }
+
+    Organization.findByIdAndUpdate(id, data).then(updated => {
+      res.json(updated);
+    });
+  });
+});
+
+// @route   DELETE api/organizations/:id/delete
+// @desc    Deletes the organization
+// @access  Private
+
+// Deleting the organization leaves the classes and students in the databse
+// We definitely need to implement a cleanup, but for now just deleting the organization
+router.delete("/:id/delete", (req, res) => {
+  const id = req.params.id;
+
+  Organization.findByIdAndRemove(id).then(removed => {
+    res.json(removed);
+  });
 });
 
 module.exports = router;
