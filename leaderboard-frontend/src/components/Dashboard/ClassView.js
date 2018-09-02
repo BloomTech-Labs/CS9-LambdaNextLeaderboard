@@ -59,7 +59,7 @@ class ClassView extends Component {
 
   render() {
     return (
-      <Segment.Group loading>
+      <Segment.Group>
         <Segment>
           <Card fluid color="blue">
             <Card.Content textAlign="center">
@@ -111,7 +111,7 @@ class ClassView extends Component {
               fluid
               icon="users"
               iconPosition="left"
-              placeholder="Seach students..."
+              placeholder="Search students..."
             />
           </Segment>
         ) : null}
