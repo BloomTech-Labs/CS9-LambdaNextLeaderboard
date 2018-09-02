@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
-const axios = require("axios");
-const _ = require("lodash");
 const csv = require("fast-csv");
 
 require("dotenv").config();
@@ -107,7 +105,7 @@ router.post("/:id/importcsv", (req, res) => {
   if (!req.files) return res.status(400).send("No files were uploaded.");
 
   // Reference
-  const csvClassFile = req.files.file;  
+  const csvClassFile = req.files.file;
   const classID = req.params.id;
 
   // Parse csv and check for existing class in db
@@ -116,6 +114,15 @@ router.post("/:id/importcsv", (req, res) => {
       .fromString(csvClassFile.data.toString(), {
         headers: true,
         ignoreEmpty: true
+      })
+      //THIS IS A TEST
+      .validate(function(data) {
+        return data.email !== Student.findOne({ email: data.email });
+      })
+      .on("data-invalid", function(data) {
+        console.log(
+          `Student ${data["firstname"]} ${data["lastname"]} already exists.`
+        );
       })
       .on("data", function(data) {
         Class.findById(classID).then(aClass => {
@@ -138,9 +145,9 @@ router.post("/:id/importcsv", (req, res) => {
               aClass.students.push(created._id);
               aClass.save();
               //res.status(201).json(created); //Error: Can't set headers after they are sent.
+              console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
             })
             .catch(err => console.log(err));
-          console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
         });
       });
   }
