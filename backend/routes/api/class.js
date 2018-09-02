@@ -113,8 +113,7 @@ router.post("/:id/importcsv", (req, res) => {
       .fromString(csvClassFile.data.toString(), {
         headers: true,
         ignoreEmpty: true
-      })
-      //THIS IS A TEST
+      })      
       .validate(function(data) {
         return Student.count({ email: data.email }, function(err, count) {
           if (count === 0) return;
