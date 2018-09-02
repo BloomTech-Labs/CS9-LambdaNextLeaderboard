@@ -35,12 +35,7 @@ export default class StudentList extends Component {
     this.props.deleteStudent({ id: this.state.selectedStudent });
   };
 
-  componentDidUpdate = (prevProps, prevState) => {
-    console.log("studentlist", this.props, prevProps);
-  };
-
   render() {
-    console.log("student list", this.props.students);
     return (
       <Segment>
         <DeleteModal
@@ -51,7 +46,7 @@ export default class StudentList extends Component {
         />
         <Card.Group itemsPerRow="2" stackable>
           {this.props.students.map((student, index) => {
-            return (
+            return !student.hired ? (
               <Card key={index}>
                 <Card.Content>
                   <Card.Header>{`${student.firstname} ${
@@ -95,7 +90,7 @@ export default class StudentList extends Component {
                   />
                 </Card.Content>
               </Card>
-            );
+            ) : null;
           })}
         </Card.Group>
       </Segment>

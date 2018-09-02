@@ -72,10 +72,7 @@ const initialState = {
   newClassErrors: {},
   createdClass: {},
 
-  classStudents: {
-    hired: [],
-    unhired: []
-  },
+  classStudents: {},
   newStudentErrors: {},
   createdStudent: {},
   updatedStudent: {},

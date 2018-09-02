@@ -15,14 +15,37 @@ class ClassView extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      unhired: 0,
+      hired: 0,
+      total: 0
+    };
   }
 
   getStudents = () => {
     this.props.getClassStudents({ id: this.props.classId });
   };
 
+  setStudentCounts = students => {
+    console.log("setting counts", students);
+    let count = 0;
+    for (let i = 0; i < students.length; i++) {
+      if (students[i].hired) break;
+      count++;
+    }
+    this.setState({
+      unhired: count,
+      hired: students.length - count,
+      total: students.length
+    });
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
+    // New Students -> Settings counts
+    if (this.props.students !== prevProps.students) {
+      this.setStudentCounts(this.props.students);
+    }
+
     // Selected Class was changed -> Updating Students
     if (this.props.classId && this.props.classId !== prevProps.classId) {
       this.getStudents();
@@ -67,19 +90,15 @@ class ClassView extends Component {
                 {this.props.className}
               </Card.Header>
               <List bulleted horizontal>
-                <List.Item>
-                  Students: {this.props.students.unhired.length}
-                </List.Item>
+                <List.Item>Students: {this.state.unhired}</List.Item>
                 <List.Item>Participation: 0%</List.Item>
                 <List.Item>
-                  Hired: {this.props.students.hired.length}/
-                  {this.props.students.unhired.length +
-                    this.props.students.hired.length}
+                  Hired: {this.state.hired}/{this.state.total}
                 </List.Item>
               </List>
             </Card.Content>
             <Card.Content textAlign="center" extra>
-              {this.props.students.unhired.length ? (
+              {this.state.unhired ? (
                 <a
                   href="https://buddhaplex.github.io/leaderboard_sketches/"
                   target="_blank"
@@ -105,7 +124,7 @@ class ClassView extends Component {
             </Card.Content>
           </Card>
         </Segment>
-        {this.props.students.unhired.length ? (
+        {this.state.unhired ? (
           <Segment>
             <Input
               fluid
@@ -115,9 +134,9 @@ class ClassView extends Component {
             />
           </Segment>
         ) : null}
-        {this.props.students.unhired.length ? (
+        {this.state.unhired ? (
           <StudentList
-            students={this.props.students.unhired}
+            students={this.props.students}
             updateStudent={this.props.updateStudent}
             deleteStudent={this.props.deleteStudent}
           />
