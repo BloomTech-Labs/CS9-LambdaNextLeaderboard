@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Grid, Menu } from "semantic-ui-react";
+import { Container, Grid, Menu, Transition } from "semantic-ui-react";
 import { connect } from "react-redux";
 import jwt from "jsonwebtoken";
 
@@ -122,7 +122,21 @@ class Dashboard extends Component {
                 </Menu.Header>
                 <Menu.Menu>
                   {this.props.organizations.map((org, index) => {
-                    return (
+                    return org._id === this.props.createdOrganization._id ? (
+                      <Transition
+                        key={index}
+                        transitionOnMount
+                        animation="swing down"
+                        duration={1000}
+                      >
+                        <Menu.Item
+                          content={org.name}
+                          name={org._id}
+                          active={activeOrg === org._id}
+                          onClick={this.handleOrgMenuClick}
+                        />
+                      </Transition>
+                    ) : (
                       <Menu.Item
                         content={org.name}
                         key={index}
@@ -150,7 +164,21 @@ class Dashboard extends Component {
                   </Menu.Header>
                   <Menu.Menu>
                     {this.props.orgClasses.map((aClass, index) => {
-                      return (
+                      return aClass._id === this.props.createdClass._id ? (
+                        <Transition
+                          key={index}
+                          transitionOnMount
+                          animation="swing down"
+                          duration={1000}
+                        >
+                          <Menu.Item
+                            content={aClass.name}
+                            name={aClass._id}
+                            active={activeClass === aClass._id}
+                            onClick={this.handleClassMenuClick}
+                          />
+                        </Transition>
+                      ) : (
                         <Menu.Item
                           content={aClass.name}
                           key={index}
