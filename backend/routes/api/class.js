@@ -45,7 +45,7 @@ router.get("/:id/students", (req, res) => {
     });
 });
 
-// @route   POST api/classes/:id/create
+// @route   POST api/classes/:id/students/create
 // @desc    Creates a new student
 // @access  Private
 router.post("/:id/students/create", (req, res) => {
@@ -58,7 +58,7 @@ router.post("/:id/students/create", (req, res) => {
   }
 
   const id = req.params.id;
-  const { firstname, lastname, email, github, huntr } = data;
+  const { firstname, lastname, email, github } = data;
 
   Class.findById(id).then(aClass => {
     if (!aClass) {
@@ -69,8 +69,7 @@ router.post("/:id/students/create", (req, res) => {
       firstname,
       lastname,
       email,
-      github,
-      huntr
+      github
     });
     newStudent.save().then(created => {
       aClass.students.push(created._id);
@@ -117,7 +116,9 @@ router.post("/:id/importcsv", (req, res) => {
       })
       //THIS IS A TEST
       .validate(function(data) {
-        return data.email !== Student.findOne({ email: data.email });
+        return Student.count({ email: data.email }, function(err, count) {
+          if (count === 0) return;
+        });
       })
       .on("data-invalid", function(data) {
         console.log(

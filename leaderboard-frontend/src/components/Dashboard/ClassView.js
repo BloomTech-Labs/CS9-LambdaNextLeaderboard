@@ -58,7 +58,6 @@ class ClassView extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <Segment.Group>
         <Segment>
@@ -84,6 +83,7 @@ class ClassView extends Component {
                 <a
                   href="https://buddhaplex.github.io/leaderboard_sketches/"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Button
                     icon="ordered list"
