@@ -196,7 +196,6 @@ const studentReducer = (state = initialState, action) => {
     //   });
 
     case ADMIN_REGISTER:
-      console.log("reducer");
       return Object.assign({}, state, {
         registeredAdmin: action.payload
       });

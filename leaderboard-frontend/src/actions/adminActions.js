@@ -15,7 +15,6 @@ const ADMIN_URL = process.env.REACT_APP_ADMIN_URL;
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
 
 export const registerAdminAction = obj => {
-  console.log(obj);
   return dispatch => {
     axios
       .post(`${ADMIN_URL}register`, { token: dataEncrypt(obj) })
