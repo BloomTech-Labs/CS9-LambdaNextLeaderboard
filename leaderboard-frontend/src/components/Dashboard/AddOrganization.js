@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Segment, Header, Icon, Form, Label } from "semantic-ui-react";
+import jwt from "jsonwebtoken";
 
 export default class AddOrganization extends Component {
   constructor(props) {
@@ -16,7 +17,8 @@ export default class AddOrganization extends Component {
   };
 
   handleSubmit = () => {
-    this.props.addOrg({ name: this.state.newOrgName });
+    const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+    this.props.addOrg({ id, name: this.state.newOrgName });
   };
 
   render() {

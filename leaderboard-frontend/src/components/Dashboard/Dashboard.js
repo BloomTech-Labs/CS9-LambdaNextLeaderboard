@@ -56,12 +56,29 @@ class Dashboard extends Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
+    // No Organizations -> Showing add organization component
+    if (!this.props.organizations.length && this.state.activeOrg !== "addOrg") {
+      this.setState({ activeOrg: "addOrg" });
+    }
+
+    // Admin has Organization(s) -> Showing the first one
+    if (this.props.organizations.length && this.state.activeOrg === "") {
+      this.handleOrgMenuClick(null, {
+        name: this.props.organizations[0]._id,
+        content: this.props.organizations[0].name
+      });
+    }
+
     // New Organization created -> Updating Organizations
     if (
       this.props.createdOrganization &&
       this.props.createdOrganization !== prevProps.createdOrganization
     ) {
       this.getOrganizations();
+      this.handleOrgMenuClick(null, {
+        name: this.props.createdOrganization._id,
+        content: this.props.createdOrganization.name
+      });
     }
 
     // Selected Organization was changed -> Updating Classes
@@ -153,7 +170,7 @@ class Dashboard extends Component {
           </Grid.Column>
           <Grid.Column width={11}>
             {/* ADD ORGANIZATION VIEW */}
-            {activeOrg === "addOrg" || !this.props.organizations.length ? (
+            {activeOrg === "addOrg" ? (
               <AddOrganization
                 addOrg={this.props.addAdminOrganization}
                 addOrgErrors={this.props.newOrgErrors}
