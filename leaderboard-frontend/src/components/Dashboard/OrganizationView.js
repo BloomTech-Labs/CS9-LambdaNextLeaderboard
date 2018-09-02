@@ -3,7 +3,6 @@ import { Segment, Card, List, Button } from "semantic-ui-react";
 
 export default class OrganizationView extends Component {
   render() {
-    console.log(this.props);
     return (
       <Segment.Group>
         <Segment>

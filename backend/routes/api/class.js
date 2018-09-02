@@ -52,7 +52,7 @@ router.post("/:id/students/create", (req, res) => {
   }
 
   const id = req.params.id;
-  const { firstname, lastname, email, github, huntr } = data;
+  const { firstname, lastname, email, github } = data;
 
   Class.findById(id).then(aClass => {
     if (!aClass) {
@@ -63,8 +63,7 @@ router.post("/:id/students/create", (req, res) => {
       firstname,
       lastname,
       email,
-      github,
-      huntr
+      github
     });
     newStudent.save().then(created => {
       aClass.students.push(created._id);

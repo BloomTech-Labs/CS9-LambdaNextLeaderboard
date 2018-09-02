@@ -87,7 +87,6 @@ class Dashboard extends Component {
   };
 
   render() {
-    console.log(this.props.orgClasses.length);
     const { activeOrg, activeClass } = this.state;
     return (
       <Container>
