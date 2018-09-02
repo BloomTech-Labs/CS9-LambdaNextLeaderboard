@@ -14,13 +14,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 //________STYLING________
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   checkTokenExpiry = () => {
-    // check token expiry
     if (localStorage.token) {
       let currentTime = new Date();
       let decoded = jwt.decode(localStorage.token.split(" ")[1]);
@@ -32,7 +26,6 @@ class App extends Component {
 
   componentDidMount = () => {
     this.interval = setInterval(this.checkTokenExpiry, 5000);
-    this.checkTokenExpiry();
   };
 
   componentWillUnmount = () => {
@@ -43,7 +36,7 @@ class App extends Component {
     return (
       <Router>
         <div className="APP">
-          {/* onRef gives App has access to Navbar methods   Ex: this.nav.handleLogout() */}
+          {/* onRef gives App access to Navbar methods   Ex: this.nav.sessionHasExpired() */}
           <NAVBAR
             onRef={ref => (this.nav = ref)}
             checkTokenExpiry={this.checkTokenExpiry}

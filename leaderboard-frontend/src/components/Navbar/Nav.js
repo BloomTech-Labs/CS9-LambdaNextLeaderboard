@@ -211,6 +211,11 @@ class Nav extends Component {
               </div>
             ) : (
               <div>
+                {this.props.history.location.pathname !== "/dashboard" ? (
+                  <Link to="/dashboard">
+                    <Button size="small" color="blue" content="Dashboard" />
+                  </Link>
+                ) : null}
                 <Button
                   size="small"
                   color="red"
