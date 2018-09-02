@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Container, Grid, Menu } from "semantic-ui-react";
 import { connect } from "react-redux";
+import jwt from "jsonwebtoken";
 
 // components
 import AddOrganization from "./AddOrganization";
@@ -31,9 +32,8 @@ class Dashboard extends Component {
   }
 
   getOrganizations = () => {
-    this.props.getAdminOrganizations({
-      id: localStorage.getItem("adminID")
-    });
+    const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+    this.props.getAdminOrganizations({ id });
   };
 
   getClasses = () => {

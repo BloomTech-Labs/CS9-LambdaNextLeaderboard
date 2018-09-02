@@ -40,7 +40,6 @@ export const loginAdminAction = obj => {
       .post(`${ADMIN_URL}login`, { token: dataEncrypt(obj) })
       .then(res => {
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("adminID", res.data.id);
         dispatch({
           type: ADMIN_LOGIN,
           successfulLogin: true,
@@ -48,8 +47,6 @@ export const loginAdminAction = obj => {
         });
       })
       .catch(err => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("adminID");
         dispatch({ type: ADMIN_LOGIN_ERRORS, payload: err.response.data });
       });
   };
@@ -57,19 +54,18 @@ export const loginAdminAction = obj => {
 
 export const logoutAdminAction = () => {
   localStorage.removeItem("token");
-  localStorage.removeItem("adminID");
   return dispatch => {
     dispatch({ type: ADMIN_LOGOUT });
   };
 };
 
-export const getAdminOrganizations = () => {
+export const getAdminOrganizations = ({ id }) => {
   return dispatch => {
     axios
-      .get(`${ADMIN_URL}${localStorage.getItem("adminID")}/organizations`, {
+      .get(`${ADMIN_URL}${id}/organizations`, {
         headers: {
           "content-type": "application/json",
-          Authorization: localStorage.getItem("token")
+          Authorization: localStorage.token
         }
       })
       .then(res => {
@@ -88,13 +84,13 @@ export const getAdminOrganizations = () => {
 };
 
 export const addAdminOrganization = obj => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.token;
   return dispatch => {
     const options = {
       method: "POST",
       headers: { "content-type": "application/json", Authorization: token },
       data: { token: dataEncrypt(obj) },
-      url: `${ADMIN_URL}${localStorage.getItem("adminID")}/organizations/create`
+      url: `${ADMIN_URL}${obj.id}/organizations/create`
     };
     axios(options)
       .then(res => {

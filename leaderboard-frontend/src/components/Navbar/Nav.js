@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import jwt from "jsonwebtoken";
 import {
   Button,
   Modal,
@@ -195,7 +194,7 @@ class Nav extends Component {
             <Link to="/" className="Nav__link">
               <h1>Leaderboard</h1>
             </Link>
-            {!localStorage.getItem("token") ? (
+            {!localStorage.token ? (
               <div>
                 <Button
                   size="small"
