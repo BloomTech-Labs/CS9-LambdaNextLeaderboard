@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 // import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Segment, Card, Input, List, Button } from "semantic-ui-react";
+import {
+  Segment,
+  Card,
+  Input,
+  List,
+  Button,
+  Modal,
+  Header
+} from "semantic-ui-react";
 
 // components
 import StudentList from "./StudentList";
@@ -18,7 +26,8 @@ class ClassView extends Component {
     this.state = {
       unhired: 0,
       hired: 0,
-      total: 0
+      total: 0,
+      openEditModal: false
     };
   }
 
@@ -37,6 +46,14 @@ class ClassView extends Component {
       hired: students.length - count,
       total: students.length
     });
+  };
+
+  openModal = () => {
+    this.setState({ openEditModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ openEditModal: false });
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -82,6 +99,7 @@ class ClassView extends Component {
   render() {
     return (
       <Segment.Group>
+        <EditModal open={this.state.openEditModal} close={this.closeModal} />
         <Segment>
           <Card fluid color="blue">
             <Card.Content textAlign="center">
@@ -118,7 +136,7 @@ class ClassView extends Component {
                 inverted
                 color="blue"
                 size="large"
-                disabled
+                onClick={this.openModal}
               />
             </Card.Content>
           </Card>
@@ -149,6 +167,22 @@ class ClassView extends Component {
     );
   }
 }
+
+const EditModal = props => {
+  return (
+    <Modal
+      centered
+      size="small"
+      closeIcon
+      open={props.open}
+      onClose={props.close}
+      dimmer="blurring"
+    >
+      <Header icon="cog" content="Class Settings" />
+      <Modal.Content content="Hello" />
+    </Modal>
+  );
+};
 
 const mapStateToProps = state => {
   return {
