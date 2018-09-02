@@ -101,16 +101,17 @@ router.put("/:id/update", (req, res) => {
 });
 
 // @route   DELETE api/classes/:id/delete
-// @desc    Deletes the class
+// @desc    Deletes the class and it's students
 // @access  Private
 
-// As with organization, deleting the class leaves the students in the databse
-// We definitely need to implement a cleanup, but for now just deleting the class
 router.delete("/:id/delete", (req, res) => {
   const id = req.params.id;
 
-  Class.findByIdAndRemove(id).then(removed => {
-    res.json(removed);
+  Class.findByIdAndRemove(id).then(removedClass => {
+    removedClass.students.forEach(aStudent => {
+      Student.findByIdAndRemove(aStudent);
+    });
+    res.json(removedClass);
   });
 });
 

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const Organization = require("../../models/Organization");
 const Class = require("../../models/Class");
+const Student = require("../../models/Student");
 const validateClass = require("../../validation/classes/classValidation");
 const validateOrganization = require("../../validation/organizations/organizationValidation");
 
@@ -94,16 +95,22 @@ router.put("/:id/update", (req, res) => {
 });
 
 // @route   DELETE api/organizations/:id/delete
-// @desc    Deletes the organization
+// @desc    Deletes the organization and it's classes and students
 // @access  Private
 
-// Deleting the organization leaves the classes and students in the databse
-// We definitely need to implement a cleanup, but for now just deleting the organization
 router.delete("/:id/delete", (req, res) => {
   const id = req.params.id;
 
-  Organization.findByIdAndRemove(id).then(removed => {
-    res.json(removed);
+  Organization.findByIdAndRemove(id).then(removedOrg => {
+    removedOrg.classes.forEach(aClass => {
+      Class.findByIdAndRemove(aClass).then(removedClass => {
+        removedClass.students.forEach(aStudent => {
+          Student.findByIdAndRemove(aStudent);
+        });
+      });
+    });
+
+    res.json(removedOrg);
   });
 });
 

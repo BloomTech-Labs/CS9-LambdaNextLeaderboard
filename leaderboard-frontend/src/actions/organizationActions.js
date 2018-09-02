@@ -5,6 +5,7 @@ export const GET_ORGANIZATION_CLASSES = "GET_ORGANIZATION_CLASSES";
 export const ADD_ORGANIZATION_CLASSES = "ADD_ORGANIZATION_CLASSES";
 export const ADD_ORGANIZATION_CLASSES_ERRORS =
   "ADD_ORGANIZATION_CLASSES_ERRORS";
+export const DELETE_ORGANIZATION = "DELETE_ORGANIZATION";
 
 const ORGANIZATION_URL = process.env.REACT_APP_ORGANIZATION_URL;
 
@@ -55,6 +56,24 @@ export const addOrganizationClass = obj => {
           type: ADD_ORGANIZATION_CLASSES_ERRORS,
           payload: err.response.data
         });
+      });
+  };
+};
+
+export const deleteOrganization = obj => {
+  return dispatch => {
+    axios
+      .delete(`${ORGANIZATION_URL}${obj.id}/delete`, {
+        headers: {
+          "content-type": "application/json",
+          Authorization: localStorage.token
+        }
+      })
+      .then(res => {
+        dispatch({ type: DELETE_ORGANIZATION, payload: res.data });
+      })
+      .catch(err => {
+        dispatch({ type: "ERRORS", payload: err.response.data });
       });
   };
 };
