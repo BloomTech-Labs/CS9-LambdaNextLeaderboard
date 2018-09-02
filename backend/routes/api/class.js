@@ -15,24 +15,21 @@ router.get("/:id/students", (req, res) => {
   let hired = [];
 
   Class.findById(id)
-    .populate("students", null, { hired: true })
+    .populate({ path: "students", match: { hired: true } })
     .then(aClassWithHired => {
       hired = aClassWithHired.students;
 
       Class.findById(id)
-        .populate(
-          "students",
-          null,
-          { hired: false },
-          {
+        .populate({
+          path: "students",
+          match: { hired: false },
+          options: {
             sort: { lastname: 1, firstname: 1 }
           }
-        )
+        })
         .then(aClass => {
           if (!aClass) {
-            return res
-              .status(404)
-              .json({ class: "That class does not exist." });
+            return res.status(404).json({ class: "That class does not exist" });
           }
           res.json({ unhired: aClass.students, hired });
         });
@@ -56,7 +53,7 @@ router.post("/:id/students/create", (req, res) => {
 
   Class.findById(id).then(aClass => {
     if (!aClass) {
-      return res.status(404).json({ class: "That class does not exist." });
+      return res.status(404).json({ class: "That class does not exist" });
     }
 
     const newStudent = new Student({

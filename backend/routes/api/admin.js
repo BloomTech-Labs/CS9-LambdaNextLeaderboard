@@ -115,10 +115,10 @@ router.get(
     const id = req.params.id;
 
     Admin.findById(id)
-      .populate("organizations", null, null, { sort: { name: 1 } })
+      .populate({ path: "organizations", options: { sort: { name: 1 } } })
       .then(admin => {
         if (!admin) {
-          return res.status(404).json({ user: "That user does not exist." });
+          return res.status(404).json({ user: "That user does not exist" });
         } else {
           res.json(admin.organizations);
         }
@@ -152,7 +152,7 @@ router.post(
 
       Admin.findById(id).then(admin => {
         if (!admin) {
-          return res.status(404).json({ user: "That user does not exist." });
+          return res.status(404).json({ user: "That user does not exist" });
         }
 
         const newOrg = new Organization({ name, admins: [admin._id] });
