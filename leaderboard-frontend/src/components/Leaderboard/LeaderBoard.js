@@ -26,7 +26,7 @@ class LeaderBoard extends Component {
     }
     render() {
         if (localStorage.getItem("invalid")) {
-            
+
         }
 
         if (this.props.isLoading()) {

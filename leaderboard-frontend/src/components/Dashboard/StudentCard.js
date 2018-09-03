@@ -23,8 +23,12 @@ class StudentCard extends Component {
             lastname: this.props.student.lastname,
             email: this.props.student.email,
             github: this.props.student.github,
-            edit: false
+            edit: false,
+            selectedStudent: "",
+            openEditModal: false,
+            openDeleteModal: false
         }
+
     }
     handleEdit = () => {
         this.setState({edit: !this.state.edit})
@@ -44,6 +48,7 @@ class StudentCard extends Component {
         e.preventDefault();
         this.setState({[e.target.name] : e.target.value})
     }
+
 
     render() {
         if (this.state.edit === true) {
@@ -101,6 +106,7 @@ class StudentCard extends Component {
         }
         return (
             <div>
+
                 <Card.Content>
                     <Card.Header>{`${this.props.student.firstname} ${
                         this.props.student.lastname
