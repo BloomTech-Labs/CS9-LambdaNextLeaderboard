@@ -280,7 +280,9 @@ const studentReducer = (state = initialState, action) => {
         //     })
         case CLASS_TO_QUERY:
             return Object.assign({}, state, {
-                classToQuery: action.payload
+                classToQuery: action.payload,
+                githubData: null,
+                gitStats: null
             })
         case GET_GITHUB_DATA:
             return Object.assign({}, state, {
