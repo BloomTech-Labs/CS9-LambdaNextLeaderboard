@@ -5,8 +5,11 @@ import {
   Header,
   Form,
   Input,
-  Button
+  Button,
+  Icon
 } from "semantic-ui-react";
+
+import DesktopContainer from "./LandingPageComponents/DesktopContainer";
 
 import "./LandingPage.css";
 
@@ -37,8 +40,35 @@ class LandingPage extends Component {
     return (
       <div className="Landing">
         <div className="Landing__head">
-          <Container>
-            <Grid columns={2} stackable>
+        <Container text>
+    <Header
+      as='h1'
+      content='Next Steps'
+      inverted
+      style={{
+        fontSize:'4em',
+        fontWeight: 'normal',
+        marginBottom: 0,
+        marginTop:'3em',
+      }}
+    />
+    <Header
+      as='h2'
+      content='Easily track student job progress.'
+      inverted
+      style={{
+        fontSize:'1.7em',
+        fontWeight: 'normal',
+        marginTop:'1.5em',
+      }}
+    />
+    <Button primary size='huge'>
+      Get Started
+      <Icon name='right arrow' />
+    </Button>
+  </Container>
+            
+            {/* <Grid columns={2} stackable>
               <Grid.Column verticalAlign="middle">
                 <Header as="h1" size="huge" color="olive">
                   Keep track of work and progress with NextSteps
@@ -94,8 +124,8 @@ class LandingPage extends Component {
                   />
                 </Form>
               </Grid.Column>
-            </Grid>
-          </Container>
+            </Grid> */}
+          {/* </Container> */}
         </div>
         <div className="Landing__content">Content</div>
       </div>
