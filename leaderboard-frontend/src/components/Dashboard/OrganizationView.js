@@ -1,10 +1,27 @@
 import React, { Component } from "react";
-import { Segment, Card, List, Button } from "semantic-ui-react";
+import { Segment, Card, List, Button, Modal, Header } from "semantic-ui-react";
 
 export default class OrganizationView extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      openEditModal: false
+    };
+  }
+
+  openModal = () => {
+    this.setState({ openEditModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ openEditModal: false });
+  };
+
   render() {
     return (
       <Segment.Group>
+        <EditModal open={this.state.openEditModal} close={this.closeModal} />
         <Segment>
           <Card fluid color="orange">
             <Card.Content textAlign="center">
@@ -22,7 +39,7 @@ export default class OrganizationView extends Component {
                 inverted
                 color="blue"
                 size="large"
-                disabled
+                onClick={this.openModal}
               />
             </Card.Content>
           </Card>
@@ -31,3 +48,19 @@ export default class OrganizationView extends Component {
     );
   }
 }
+
+const EditModal = props => {
+  return (
+    <Modal
+      centered
+      size="small"
+      closeIcon
+      open={props.open}
+      onClose={props.close}
+      dimmer="blurring"
+    >
+      <Header icon="cog" content="Organization Settings" />
+      <Modal.Content content="Hello" />
+    </Modal>
+  );
+};

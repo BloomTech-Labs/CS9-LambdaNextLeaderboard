@@ -15,7 +15,8 @@ export default class StudentList extends Component {
 
     this.state = {
       selectedStudent: "",
-      deleteModalOpen: false
+      openEditModal: false,
+      openDeleteModal: false
     };
   }
 
@@ -23,8 +24,12 @@ export default class StudentList extends Component {
     this.setState({ [name]: !this.state[name], selectedStudent: id });
   };
 
-  closeDeleteModal = () => {
-    this.setState({ deleteModalOpen: false, selectedStudent: "" });
+  closeModal = () => {
+    this.setState({
+      openEditModal: false,
+      openDeleteModal: false,
+      selectedStudent: ""
+    });
   };
 
   handleHire = (e, { name }) => {
@@ -35,23 +40,23 @@ export default class StudentList extends Component {
     this.props.deleteStudent({ id: this.state.selectedStudent });
   };
 
-  componentDidUpdate = (prevProps, prevState) => {
-    console.log("studentlist", this.props, prevProps);
-  };
-
   render() {
-    console.log("student list", this.props.students);
     return (
       <Segment>
         <DeleteModal
-          open={this.state.deleteModalOpen}
-          close={this.closeDeleteModal}
+          open={this.state.openDeleteModal}
+          close={this.closeModal}
           selected={this.state.selectedStudent}
           delete={this.handleDelete}
         />
+        <EditModal
+          open={this.state.openEditModal}
+          close={this.closeModal}
+          selected={this.state.selectedStudent}
+        />
         <Card.Group itemsPerRow="2" stackable>
           {this.props.students.map((student, index) => {
-            return (
+            return !student.hired ? (
               <Card key={index}>
                 <Card.Content>
                   <Card.Header>{`${student.firstname} ${
@@ -75,17 +80,18 @@ export default class StudentList extends Component {
                     onClick={this.handleHire}
                   />
                   <Button
-                    name={student._id}
+                    id={student._id}
+                    name="openEditModal"
                     icon="wrench"
                     content="Edit"
                     inverted
                     color="blue"
                     size="small"
-                    disabled
+                    onClick={this.openModal}
                   />
                   <Button
                     id={student._id}
-                    name="deleteModalOpen"
+                    name="openDeleteModal"
                     icon="trash"
                     content="Delete"
                     inverted
@@ -95,13 +101,29 @@ export default class StudentList extends Component {
                   />
                 </Card.Content>
               </Card>
-            );
+            ) : null;
           })}
         </Card.Group>
       </Segment>
     );
   }
 }
+
+const EditModal = props => {
+  return (
+    <Modal
+      centered
+      size="small"
+      closeIcon
+      open={props.open}
+      onClose={props.close}
+      dimmer="blurring"
+    >
+      <Header icon="wrench" content="Edit Student" />
+      <Modal.Content content="Hello" />
+    </Modal>
+  );
+};
 
 const DeleteModal = props => {
   return (
@@ -111,6 +133,7 @@ const DeleteModal = props => {
       closeIcon
       open={props.open}
       onClose={props.close}
+      dimmer="blurring"
     >
       <Header icon="trash" content="Delete Student" />
       <Modal.Content>

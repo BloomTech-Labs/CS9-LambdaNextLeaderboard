@@ -16,23 +16,6 @@ class LandingPage extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    if (localStorage.getItem("invalid")) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("invalid");
-    }
-    if (localStorage.getItem("token")) {
-      this.props.history.push("/dashboard");
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (localStorage.getItem("invalid")) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("invalid");
-    }
-  }
-
   render() {
     return (
       <div className="Landing">

@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 
+const Organization = require("../../models/Organization");
 const Class = require("../../models/Class");
 const Student = require("../../models/Student");
 const validateStudent = require("../../validation/students/studentValidation");
+const validateClass = require("../../validation/classes/classValidation");
 
 router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
@@ -12,30 +14,19 @@ router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 // @access  Private
 router.get("/:id/students", (req, res) => {
   const id = req.params.id;
-  let hired = [];
 
   Class.findById(id)
-    .populate("students", null, { hired: true })
-    .then(aClassWithHired => {
-      hired = aClassWithHired.students;
-
-      Class.findById(id)
-        .populate(
-          "students",
-          null,
-          { hired: false },
-          {
-            sort: { lastname: 1, firstname: 1 }
-          }
-        )
-        .then(aClass => {
-          if (!aClass) {
-            return res
-              .status(404)
-              .json({ class: "That class does not exist." });
-          }
-          res.json({ unhired: aClass.students, hired });
-        });
+    .populate({
+      path: "students",
+      options: {
+        sort: { hired: 1, lastname: 1, firstname: 1 }
+      }
+    })
+    .then(aClass => {
+      if (!aClass) {
+        return res.status(404).json({ class: "That class does not exist" });
+      }
+      res.json(aClass.students);
     });
 });
 
@@ -56,7 +47,7 @@ router.post("/:id/students/create", (req, res) => {
 
   Class.findById(id).then(aClass => {
     if (!aClass) {
-      return res.status(404).json({ class: "That class does not exist." });
+      return res.status(404).json({ class: "That class does not exist" });
     }
 
     const newStudent = new Student({
@@ -70,6 +61,57 @@ router.post("/:id/students/create", (req, res) => {
       aClass.save();
       res.status(201).json(created);
     });
+  });
+});
+
+// @route   PUT api/classes/:id/update
+// @desc    Updates the class' info
+// @access  Private
+router.put("/:id/update", (req, res) => {
+  const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateClass(data);
+
+  //   Validation Check
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const id = req.params.id;
+  const name = data.name;
+
+  Organization.findById(data.orgId)
+    .populate({ path: "classes", match: { name } })
+    .then(org => {
+      if (!org) {
+        return res
+          .status(404)
+          .json({ organization: "That organization does not exist" });
+      }
+
+      if (org.classes.length) {
+        return res.status(400).json({
+          name: "This organization already has a class with that name"
+        });
+      }
+
+      Class.findByIdAndUpdate(id, data).then(updated => {
+        res.json(updated);
+      });
+    });
+});
+
+// @route   DELETE api/classes/:id/delete
+// @desc    Deletes the class and it's students
+// @access  Private
+
+router.delete("/:id/delete", (req, res) => {
+  const id = req.params.id;
+
+  Class.findByIdAndRemove(id).then(removedClass => {
+    removedClass.students.forEach(aStudent => {
+      Student.findByIdAndRemove(aStudent);
+    });
+    res.json(removedClass);
   });
 });
 

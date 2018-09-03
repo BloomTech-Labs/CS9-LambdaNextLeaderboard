@@ -15,7 +15,7 @@ export const getClassStudents = obj => {
       .get(`${CLASS_URL}${obj.id}/students`, {
         headers: {
           "content-type": "application/json",
-          Authorization: localStorage.getItem("token")
+          Authorization: localStorage.token
         }
       })
       .then(res => {
@@ -34,7 +34,7 @@ export const getClassStudents = obj => {
 };
 
 export const addClassStudent = obj => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.token;
   return dispatch => {
     const options = {
       method: "POST",
