@@ -3,15 +3,15 @@ const jwt = require("jsonwebtoken");
 
 const Student = require("../../models/Student");
 
-// @route   PUT api/students/:id/hired
-// @desc    Sets a student's hired field to true
+// @route   PUT api/students/:id/update
+// @desc    Updates a student's info
 // @access  Private
 router.put("/:id/update", (req, res) => {
   const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
   const id = req.params.id;
 
   Student.findByIdAndUpdate(id, data).then(updated => {
-    res.status(200).json(updated);
+    res.json(updated);
   });
 });
 
@@ -22,7 +22,7 @@ router.delete("/:id/delete", (req, res) => {
   const id = req.params.id;
 
   Student.findByIdAndRemove(id).then(removed => {
-    res.status(202).json(removed);
+    res.json(removed);
   });
 });
 

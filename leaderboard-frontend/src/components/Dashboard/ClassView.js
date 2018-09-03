@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 // import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Segment, Card, Input, List, Button } from "semantic-ui-react";
+import {
+  Segment,
+  Card,
+  Input,
+  List,
+  Button,
+  Modal,
+  Header
+} from "semantic-ui-react";
 
 // components
 import StudentList from "./StudentList";
@@ -15,14 +23,45 @@ class ClassView extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      unhired: 0,
+      hired: 0,
+      total: 0,
+      openEditModal: false
+    };
   }
 
   getStudents = () => {
     this.props.getClassStudents({ id: this.props.classId });
   };
 
+  setStudentCounts = students => {
+    let count = 0;
+    for (let i = 0; i < students.length; i++) {
+      if (students[i].hired) break;
+      count++;
+    }
+    this.setState({
+      unhired: count,
+      hired: students.length - count,
+      total: students.length
+    });
+  };
+
+  openModal = () => {
+    this.setState({ openEditModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ openEditModal: false });
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
+    // New Students -> Settings counts
+    if (this.props.students !== prevProps.students) {
+      this.setStudentCounts(this.props.students);
+    }
+
     // Selected Class was changed -> Updating Students
     if (this.props.classId && this.props.classId !== prevProps.classId) {
       this.getStudents();
@@ -60,6 +99,7 @@ class ClassView extends Component {
   render() {
     return (
       <Segment.Group>
+        <EditModal open={this.state.openEditModal} close={this.closeModal} />
         <Segment>
           <Card fluid color="blue">
             <Card.Content textAlign="center">
@@ -67,19 +107,15 @@ class ClassView extends Component {
                 {this.props.className}
               </Card.Header>
               <List bulleted horizontal>
-                <List.Item>
-                  Students: {this.props.students.unhired.length}
-                </List.Item>
+                <List.Item>Students: {this.state.unhired}</List.Item>
                 <List.Item>Participation: 0%</List.Item>
                 <List.Item>
-                  Hired: {this.props.students.hired.length}/
-                  {this.props.students.unhired.length +
-                    this.props.students.hired.length}
+                  Hired: {this.state.hired}/{this.state.total}
                 </List.Item>
               </List>
             </Card.Content>
             <Card.Content textAlign="center" extra>
-              {this.props.students.unhired.length ? (
+              {this.state.unhired ? (
                 <a
                   href="https://buddhaplex.github.io/leaderboard_sketches/"
                   target="_blank"
@@ -100,24 +136,24 @@ class ClassView extends Component {
                 inverted
                 color="blue"
                 size="large"
-                disabled
+                onClick={this.openModal}
               />
             </Card.Content>
           </Card>
         </Segment>
-        {this.props.students.unhired.length ? (
+        {this.state.unhired ? (
           <Segment>
             <Input
               fluid
               icon="users"
               iconPosition="left"
-              placeholder="Seach students..."
+              placeholder="Search students..."
             />
           </Segment>
         ) : null}
-        {this.props.students.unhired.length ? (
+        {this.state.unhired ? (
           <StudentList
-            students={this.props.students.unhired}
+            students={this.props.students}
             updateStudent={this.props.updateStudent}
             deleteStudent={this.props.deleteStudent}
           />
@@ -132,6 +168,22 @@ class ClassView extends Component {
     );
   }
 }
+
+const EditModal = props => {
+  return (
+    <Modal
+      centered
+      size="small"
+      closeIcon
+      open={props.open}
+      onClose={props.close}
+      dimmer="blurring"
+    >
+      <Header icon="cog" content="Class Settings" />
+      <Modal.Content content="Hello" />
+    </Modal>
+  );
+};
 
 const mapStateToProps = state => {
   return {

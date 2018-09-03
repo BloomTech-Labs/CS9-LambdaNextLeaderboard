@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import jwt from "jsonwebtoken";
 import {
   Button,
   Modal,
@@ -102,7 +101,8 @@ class Nav extends Component {
     this.props.loginErrors.invalidLogin = "";
   };
 
-  showExpiredMsg = () => {
+  sessionHasExpired = () => {
+    this.handleLogout();
     this.setState({ expiredToken: true });
   };
 
@@ -111,15 +111,6 @@ class Nav extends Component {
   };
 
   componentDidMount = () => {
-    if (localStorage.token) {
-      let currentTime = new Date();
-      let decoded = jwt.decode(localStorage.token.split(" ")[1]);
-      if (currentTime.getTime() >= decoded.exp * 1000) {
-        this.handleLogout();
-        this.setState({ expiredToken: true });
-      }
-    }
-
     this.props.onRef(this);
   };
 
@@ -128,19 +119,18 @@ class Nav extends Component {
   }
 
   shouldComponentUpdate = (nextProps, nextState) => {
-    if (localStorage.token) {
-      let currentTime = new Date();
-      let decoded = jwt.decode(localStorage.token.split(" ")[1]);
-      if (currentTime.getTime() >= decoded.exp * 1000) {
-        this.handleLogout();
-        this.setState({ expiredToken: true });
-      }
-    }
+    // check token expiry
+    this.props.checkTokenExpiry();
 
     return true;
   };
 
   componentDidUpdate = (prevProps, prevState) => {
+    // if expired token message is showing -> hide expired token message
+    if (this.state.expiredToken) {
+      this.hideExpiredMsg();
+    }
+
     // registration successful -> showing login
     if (
       this.props.registeredAdmin &&
@@ -204,7 +194,7 @@ class Nav extends Component {
             <Link to="/" className="Nav__link">
               <h1>Leaderboard</h1>
             </Link>
-            {!localStorage.getItem("token") ? (
+            {!localStorage.token ? (
               <div>
                 <Button
                   size="small"
@@ -221,6 +211,11 @@ class Nav extends Component {
               </div>
             ) : (
               <div>
+                {this.props.history.location.pathname !== "/dashboard" ? (
+                  <Link to="/dashboard">
+                    <Button size="small" color="blue" content="Dashboard" />
+                  </Link>
+                ) : null}
                 <Button
                   size="small"
                   color="red"
@@ -437,7 +432,9 @@ class Nav extends Component {
           mountOnShow
           unmountOnHide
         >
-          <div className="expiredToken">Your login session has expired.</div>
+          <div className="expiredToken" onClick={this.hideExpiredMsg}>
+            Your login session has expired.
+          </div>
         </Transition>
       </nav>
     );

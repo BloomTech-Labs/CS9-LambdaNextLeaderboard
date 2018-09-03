@@ -4,44 +4,33 @@ const csv = require("fast-csv");
 
 require("dotenv").config();
 
+const Organization = require("../../models/Organization");
 const Class = require("../../models/Class");
 const Student = require("../../models/Student");
 const validateStudent = require("../../validation/students/studentValidation");
-const fetchGithubData = require("../../utils/githubAPI");
-const fetchHuntrData = require("../../utils/huntrAPI");
+const validateClass = require("../../validation/classes/classValidation");
 
 // TEST ROUTE
 router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
 // @route   GET api/classes/:id/students
-// @desc    Gets a class' unhired students
+// @desc    Gets a class' hired and unhired students
 // @access  Private
 router.get("/:id/students", (req, res) => {
   const id = req.params.id;
-  let hired = [];
 
   Class.findById(id)
-    .populate("students", null, { hired: true })
-    .then(aClassWithHired => {
-      hired = aClassWithHired.students;
-
-      Class.findById(id)
-        .populate(
-          "students",
-          null,
-          { hired: false },
-          {
-            sort: { lastname: 1, firstname: 1 }
-          }
-        )
-        .then(aClass => {
-          if (!aClass) {
-            return res
-              .status(404)
-              .json({ class: "That class does not exist." });
-          }
-          res.json({ unhired: aClass.students, hired });
-        });
+    .populate({
+      path: "students",
+      options: {
+        sort: { hired: 1, lastname: 1, firstname: 1 }
+      }
+    })
+    .then(aClass => {
+      if (!aClass) {
+        return res.status(404).json({ class: "That class does not exist" });
+      }
+      res.json(aClass.students);
     });
 });
 
@@ -62,7 +51,7 @@ router.post("/:id/students/create", (req, res) => {
 
   Class.findById(id).then(aClass => {
     if (!aClass) {
-      return res.status(404).json({ class: "That class does not exist." });
+      return res.status(404).json({ class: "That class does not exist" });
     }
 
     const newStudent = new Student({
@@ -79,24 +68,60 @@ router.post("/:id/students/create", (req, res) => {
   });
 });
 
-// @route   POST api/classes/data
-// @desc    Gets Github/Huntr API data
-// @access  Private(?)
-router.post("/data", (req, res) => {
-  let huntrData;
 
-  StudentModel.find({ _admin: req.body.id })
-    // .populate('_class')
-    .then(async students => {
-      gitDataFetch = [];
-      storageData = await fetchGithubData(students);
-      huntrData = await fetchHuntrData();
-      res.status(201).json({ gitData: gitDataFetch, huntr: huntrData });
-    })
-    .catch(err => res.status(400).json({ error: err }));
+
+
+// @route   PUT api/classes/:id/update
+// @desc    Updates the class' info
+// @access  Private
+router.put("/:id/update", (req, res) => {
+  const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateClass(data);
+
+  //   Validation Check
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const id = req.params.id;
+  const name = data.name;
+
+  Organization.findById(data.orgId)
+    .populate({ path: "classes", match: { name } })
+    .then(org => {
+      if (!org) {
+        return res
+          .status(404)
+          .json({ organization: "That organization does not exist" });
+      }
+
+      if (org.classes.length) {
+        return res.status(400).json({
+          name: "This organization already has a class with that name"
+        });
+      }
+
+      Class.findByIdAndUpdate(id, data).then(updated => {
+        res.json(updated);
+      });
+    });
 });
 
-// NEEDS REWORK TO FIT NEW MODELS
+// @route   DELETE api/classes/:id/delete
+// @desc    Deletes the class and it's students
+// @access  Private
+
+router.delete("/:id/delete", (req, res) => {
+  const id = req.params.id;
+
+  Class.findByIdAndRemove(id).then(removedClass => {
+    removedClass.students.forEach(aStudent => {
+      Student.findByIdAndRemove(aStudent);
+    });
+    res.json(removedClass);
+  });
+});
+
 // @route   POST api/classes/:name/importcsv
 // @desc    Adds a csv of students to the class
 // @access  Private
@@ -153,6 +178,6 @@ router.post("/:id/importcsv", (req, res) => {
   }
 
   run();
-});
+})
 
 module.exports = router;
