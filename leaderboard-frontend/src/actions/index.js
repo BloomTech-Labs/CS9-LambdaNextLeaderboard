@@ -68,6 +68,7 @@ export  const CLASS_TO_QUERY = "CLASS_TO_QUERY";
 // }
 
 export const setClassForQuery = classID => {
+    console.log("action set query class", classID)
     return dispatch => {
         dispatch({
             type: CLASS_TO_QUERY,
@@ -76,46 +77,50 @@ export const setClassForQuery = classID => {
     }
 }
 export function queryGithub() {
-  return (dispatch, getState) => {
-    const data = getState().githubData;
-    console.log("DATA DATA DATA", data);
-    const status = data ? "complete" : "loading";
-    const promise = data ? Promise.resolve : dispatch(getGithubDataAction());
-    return { data, status, promise };
-  };
-}
-export const getGithubDataAction = (classID) => {
-  const token = localStorage.getItem("token");
-  const id = {
-    // id: localStorage.getItem("adminID")
-      id: classID
-  };
-  return dispatch => {
-    const options = {
-      method: "POST",
-      headers: { "content-type": "application/json", Authorization: token },
-      url: `${CLASS_URL}data`,
-      data: id
+    return (dispatch, getState) => {
+        const data = getState().githubData;
+        const classID = getState().classToQuery;
+        console.log("CLASS ID TO QUERY", classID);
+        const status = data ? "complete" : "loading";
+        const promise = data ? Promise.resolve : dispatch(getGithubDataAction(classID));
+        return { data, status, promise };
     };
-    axios(options)
-      .then(res => {
-        localStorage.removeItem("invalid");
-        dispatch({
-          type: GET_GITHUB_DATA,
-          payload: res.data,
-          githubStats: res.data
-        });
-      })
-      .catch(err => {
-        localStorage.setItem("invalid", err.response.data);
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data
-          // allClasses: err.response.data,
-          // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
-        });
-      });
-  };
+}
+export const getGithubDataAction = (idClass) => {
+    console.log("action, id", idClass)
+    const token = localStorage.getItem("token");
+    const id = {
+        // id: localStorage.getItem("adminID")
+        // id: "5b89e652c89dc5730cdf04f2"
+        id: idClass
+    };
+    // history.push("/leaderboard")
+    return dispatch => {
+        const options = {
+            method: "POST",
+            headers: { "content-type": "application/json", Authorization: token },
+            url: `http://localhost:4000/api/leaderboard/data`,
+            data: id
+        };
+        axios(options)
+            .then(res => {
+                localStorage.removeItem("invalid");
+                dispatch({
+                    type: GET_GITHUB_DATA,
+                    payload: res.data,
+                    githubStats: res.data
+                });
+            })
+            .catch(err => {
+                localStorage.setItem("invalid", err.response.data);
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data
+                    // allClasses: err.response.data,
+                    // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
+                });
+            });
+    };
 };
 // export const redirectDataClass = () => {
 //   return dispatch => {
