@@ -40,6 +40,7 @@ import {
     ADD_CLASS_STUDENTS
 } from "../actions/classActions";
 import {UPDATE_STUDENT, DELETE_STUDENT} from "../actions/studentActions";
+import {SET_CLASS_QUERY} from "../actions";
 
 const initialState = {
     // registeredAdmin: {},
@@ -273,10 +274,19 @@ const studentReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 deletedStudent: action.payload
             });
+        // case CLASS_TO_QUERY:
+        //     return Object.assign({}.state, {
+        //         classToQuery: action.payload
+        //     })
         case CLASS_TO_QUERY:
-            return Object.assign({}.state, {
+            return Object.assign({}, state, {
                 classToQuery: action.payload
             })
+        case GET_GITHUB_DATA:
+            return Object.assign({}, state, {
+                githubData: action.payload,
+                gitStats: action.payload.stats
+            });
 
         default:
             return state;

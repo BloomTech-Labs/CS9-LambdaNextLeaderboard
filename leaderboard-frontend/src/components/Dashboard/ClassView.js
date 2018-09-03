@@ -100,7 +100,7 @@ class ClassView extends Component {
     getData = () => {
         console.log("Send data", this.props.props.history, this.props.classId)
         // this.props.getGithubDataAction(this.props.classId)
-        // this.props.setClassForQuery(this.props.classId)
+        this.props.setClassForQuery(this.props.classId)
     }
 
     componentWillUpdate(nextProps, nextState) {
