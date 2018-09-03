@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {getGithubDataAction} from '../../actions'
+import {getGithubDataAction, setClassForQuery} from '../../actions'
 import {Segment, Card, Input, List, Button} from "semantic-ui-react";
 
 // components
@@ -17,7 +17,9 @@ class ClassView extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            leaderboard: false
+        };
     }
 
     getStudents = () => {
@@ -54,10 +56,20 @@ class ClassView extends Component {
             this.getStudents();
         }
     };
+
     getData = () => {
         console.log("Send data", this.props.props.history)
-        this.props.getGithubDataAction(this.props.classId)
+        // this.props.getGithubDataAction(this.props.classId)
+        this.props.setClassForQuery(this.props.classId)
     }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps.classToQuery !== null && this.props.classToQuery !== nextProps.classToQuery) {
+            console.log("Ready to FIre, this.props.classToQuery", nextProps.classToQuery, this.props)
+            this.setState({leaderboard: true})
+        }
+    }
+
 
     componentDidMount = () => {
         this.getStudents();
@@ -65,9 +77,9 @@ class ClassView extends Component {
 
     render() {
         console.log(this.props);
-        if (this.props.githubData) {
+        if (this.state.leaderboard === true && this.props.classToQuery !== null) {
             return (
-                <LeaderBoard githubData={this.props.githubData} />
+                <LeaderBoard  />
             )
         }
         return (
@@ -139,88 +151,6 @@ class ClassView extends Component {
             </Segment.Group>
         );
     }
-<<<<<<< HEAD
-=======
-  };
-
-  componentDidMount = () => {
-    this.getStudents();
-  };
-
-  render() {
-    return (
-      <Segment.Group>
-        <Segment>
-          <Card fluid color="blue">
-            <Card.Content textAlign="center">
-              <Card.Header textAlign="center">
-                {this.props.className}
-              </Card.Header>
-              <List bulleted horizontal>
-                <List.Item>
-                  Students: {this.props.students.unhired.length}
-                </List.Item>
-                <List.Item>Participation: 0%</List.Item>
-                <List.Item>
-                  Hired: {this.props.students.hired.length}/
-                  {this.props.students.unhired.length +
-                    this.props.students.hired.length}
-                </List.Item>
-              </List>
-            </Card.Content>
-            <Card.Content textAlign="center" extra>
-              {this.props.students.unhired.length ? (
-                <a
-                  href="https://buddhaplex.github.io/leaderboard_sketches/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button
-                    icon="ordered list"
-                    content="Leaderboard"
-                    inverted
-                    color="green"
-                    size="large"
-                  />
-                </a>
-              ) : null}
-              <Button
-                icon="cog"
-                content="Settings"
-                inverted
-                color="blue"
-                size="large"
-                disabled
-              />
-            </Card.Content>
-          </Card>
-        </Segment>
-        {this.props.students.unhired.length ? (
-          <Segment>
-            <Input
-              fluid
-              icon="users"
-              iconPosition="left"
-              placeholder="Seach students..."
-            />
-          </Segment>
-        ) : null}
-        {this.props.students.unhired.length ? (
-          <StudentList
-            students={this.props.students.unhired}
-            updateStudent={this.props.updateStudent}
-            deleteStudent={this.props.deleteStudent}
-          />
-        ) : null}
-        <AddStudent
-          classId={this.props.classId}
-          addStudent={this.props.addClassStudent}
-          addStudentErrors={this.props.newStudentErrors}
-        />
-      </Segment.Group>
-    );
-  }
->>>>>>> 2f70c54f24eacd480e676c17e80564bd4a541eaf
 }
 
 const mapStateToProps = state => {
@@ -230,12 +160,13 @@ const mapStateToProps = state => {
         updatedStudent: state.updatedStudent,
         createdStudent: state.createdStudent,
         deletedStudent: state.deletedStudent,
-        githubData: state.githubData
+        githubData: state.githubData,
+        classToQuery: state.classToQuery
 
     };
 };
 
 export default connect(
     mapStateToProps,
-    {getClassStudents,getGithubDataAction, addClassStudent, updateStudent, deleteStudent}
+    {getClassStudents,getGithubDataAction, setClassForQuery, addClassStudent, updateStudent, deleteStudent}
 )(ClassView);

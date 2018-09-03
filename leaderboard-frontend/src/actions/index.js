@@ -1,5 +1,5 @@
-// import axios from "axios";
-// import jwt from "jsonwebtoken";
+import axios from "axios";
+import jwt from "jsonwebtoken";
 
 // // export const CREATE_USER = "CREATE_USER";
 // // export const LOGIN_ACTION = "LOGIN_ACTION";
@@ -11,10 +11,11 @@
 // // export const GET_CLASSES_STUDENTS = "GET_CLASSES_STUDENTS";
 // // export const LOGIN_ERRORS = "LOGIN_ERRORS";
 // // export const REGISTER_ERRORS = "REGISTER_ERRORS";
-// export const ERRORS = "ERRORS";
+export const ERRORS = "ERRORS";
 // export const REDIRECT_DATA_CLASS = "REDIRECT_DATA_CLASS";
 // // export const GET_STUDENTS = "GET_STUDENTS";
 export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
+export const SET_CLASS_QUERY = "SET_CLASS_QUERY";
 // // export const EDIT_STUDENT = "EDIT_STUDENT";
 // // export const REMOVE_STUDENT = "REMOVE_STUDENT";
 // // export const UPDATE_ADMIN = "UPDATE_ADMIN";
@@ -65,13 +66,21 @@ export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
 //     return { data, status, promise };
 //   };
 // }
-
+export const setClassForQuery = classID => {
+  return dispatch => {
+      dispatch({
+          type: SET_CLASS_QUERY,
+          payload: classID
+      })
+  }
+}
 export function queryGithub() {
   return (dispatch, getState) => {
     const data = getState().githubData;
-    console.log("DATA DATA DATA", data);
+    const classID = getState().classToQuery;
+    console.log("CLASS ID TO QUERY", classID);
     const status = data ? "complete" : "loading";
-    const promise = data ? Promise.resolve : dispatch(getGithubDataAction());
+    const promise = data ? Promise.resolve : dispatch(getGithubDataAction(classID));
     return { data, status, promise };
   };
 }
@@ -111,46 +120,46 @@ export const getGithubDataAction = (idClass) => {
       });
   };
 };
-export const redirectDataClass = () => {
-  return dispatch => {
-    dispatch({
-      type: REDIRECT_DATA_CLASS,
-      classlist_students: null,
-      allClasses: null
-    });
-  };
-};
-export const updateUserAction = userObject => {
-  // const token = localStorage.getItem("token");
-  // const user = studentData.firstname + " " + studentData.lastname;
-  return dispatch => {
-    // const options = {
-    //     method: "PUT",
-    //     headers: {"content-type": "application/json", Authorization: token},
-    //     data: userObject,
-    //     url: `${USER_URL}updateuser`
-    // };
-    axios
-      .put(`${ADMIN_URL}updateuser`, { token: dataEncrypt(userObject) })
-      // (options)
-      .then(res => {
-        dispatch({
-          type: UPDATE_ADMIN,
-          payload: res.admin //Student data object returned
-          // class_name: res.name,
-          // user: user,
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: ERRORS,
-          payload: err.response.data
-        });
-      });
-  };
-};
-export const getClassStudentsAction = classname => {
-  const token = localStorage.getItem("token");
+// export const redirectDataClass = () => {
+//   return dispatch => {
+//     dispatch({
+//       type: REDIRECT_DATA_CLASS,
+//       classlist_students: null,
+//       allClasses: null
+//     });
+//   };
+// };
+// export const updateUserAction = userObject => {
+//   // const token = localStorage.getItem("token");
+//   // const user = studentData.firstname + " " + studentData.lastname;
+//   return dispatch => {
+//     // const options = {
+//     //     method: "PUT",
+//     //     headers: {"content-type": "application/json", Authorization: token},
+//     //     data: userObject,
+//     //     url: `${USER_URL}updateuser`
+//     // };
+//     axios
+//       .put(`${ADMIN_URL}updateuser`, { token: dataEncrypt(userObject) })
+//       // (options)
+//       .then(res => {
+//         dispatch({
+//           type: UPDATE_ADMIN,
+//           payload: res.admin //Student data object returned
+//           // class_name: res.name,
+//           // user: user,
+//         });
+//       })
+//       .catch(err => {
+//         dispatch({
+//           type: ERRORS,
+//           payload: err.response.data
+//         });
+//       });
+//   };
+// };
+// export const getClassStudentsAction = classname => {
+//   const token = localStorage.getItem("token");
 
 //   return dispatch => {
 //     const options = {

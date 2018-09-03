@@ -42,44 +42,10 @@ class LeaderBoard extends Component {
     if (this.props.loadedWithErrors()) {
       return <div>Oh no! Something went wrong</div>;
     }
-    // let count = []
-    // const studentsObject = [];
-    // this.props.students.forEach((each, i) => {
-    //   if (each.classname === this.props.match.params.classname) {
-    //     studentsObject.push({
-    //       each
-    //     });
-    //   }
-    // });
-    // const gitObject = [];
-    // this.props.data.gitData.forEach((git, x) => {
-    //   studentsObject.forEach(student => {
-    //     //GitHub sometimes returns a null value
-    //     //This is due to some requests having a valid handle
-    //     //but github fails to return the users data
-    //     //the .then response is a null object
-    //     //because it's a null object, git.FullName will crash the application
-    //     //the quick solution is (git !== null)
-    //     if (git !== null) {
-    //       if (
-    //         git.FullName ===
-    //         student.each.firstname + " " + student.each.lastname
-    //       ) {
-    //         gitObject.push(git);
-    //       }
-    //     }
-    //   });
-    // });
-    // if (gitObject.length === 0) {
-    //   return (
-    //     <div>
-    //       <h1>No Students</h1>
-    //     </div>
-    //   );
-    // }
+   
       const gitObject = [];
-    this.props.githubData.gitData.forEach((git, x) => {
-        this.props.githubData.huntr.forEach(huntr => {
+    this.props.data.gitData.forEach((git, x) => {
+        this.props.data.huntr.forEach(huntr => {
             if (git !== null) {
                 if (git.FullName === huntr.firstname + ' ' + huntr.familyName) {
                     gitObject.push({Git: git, Huntr: huntr})
@@ -87,8 +53,7 @@ class LeaderBoard extends Component {
             }
         })
     })
-      console.log('leaderboard params:', this.props)
-      console.log("Git Huntr Pair", gitObject[0].Huntr)
+
     return (
       <div className="App">
         <p />
@@ -117,14 +82,9 @@ class LeaderBoard extends Component {
     );
   }
 }
-export function loadDataAsProps({ store, ownProps }) {
+export function loadDataAsProps({ store }) {
   const { dispatch } = store;
-
-  // const path = "/"; // Use the actual path when it's created as needed
-  console.log(ownProps);
   return {
-    // classdata: () => dispatch(queryAllMyData(path)),
-    // students: () => dispatch(queryStudents()),
     data: () => dispatch(queryGithub())
   };
 }
