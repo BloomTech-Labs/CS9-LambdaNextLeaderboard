@@ -37,7 +37,8 @@ class StudentCard extends Component {
             github: this.state.github,
             id: this.props.student._id
         };
-        this.props.updateStudent(studentObject)
+        this.props.updateStudent(studentObject);
+        this.setState({edit: false})
     }
     handleInput = e => {
         e.preventDefault();
