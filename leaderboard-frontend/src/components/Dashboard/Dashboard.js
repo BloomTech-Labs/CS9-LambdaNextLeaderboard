@@ -46,7 +46,6 @@ class Dashboard extends Component {
   };
 
   handleOrgMenuClick = (e, { id, name }) => {
-    console.log("setting", id, name, this.props);
     this.setState({
       activeOrg: id,
       activeOrgName: name,
@@ -92,7 +91,6 @@ class Dashboard extends Component {
       this.props.deletedOrganization._id &&
       prevProps.deletedOrganization !== this.props.deletedOrganization
     ) {
-      console.log(this.props);
       if (this.props.organizations.length > 1) {
         if (
           this.props.organizations[0]._id !== this.props.deletedOrganization._id
