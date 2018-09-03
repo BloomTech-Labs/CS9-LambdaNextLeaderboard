@@ -67,8 +67,16 @@ export  const CLASS_TO_QUERY = "CLASS_TO_QUERY";
 //   };
 // }
 
+// export const setClassForQuery = classID => {
+//     console.log("action set query class", classID)
+//     return dispatch => {
+//         dispatch({
+//             type: CLASS_TO_QUERY,
+//             payload: classID
+//         })
+//     }
+// }
 export const setClassForQuery = classID => {
-    console.log("action set query class", classID)
     return dispatch => {
         dispatch({
             type: CLASS_TO_QUERY,
