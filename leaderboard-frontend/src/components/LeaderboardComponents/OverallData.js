@@ -24,21 +24,21 @@ class OverallData extends Component {
               </Table.Row>
             </Table.Header>
 
-            {this.props.gitObject.map((each, x) => {
-              this.props.data.huntr.forEach(hunt => {
-                if (
-                  each.FullName ===
-                  hunt.givenNameArr + " " + hunt.familyName
-                ) {
-                  count[x] = hunt.count;
-                }
-              });
+            {this.props.data.map((each, x) => {
+              // this.props.data.huntr.forEach(hunt => {
+              //   if (
+              //     each.FullName ===
+              //     hunt.givenNameArr + " " + hunt.familyName
+              //   ) {
+              //     count[x] = hunt.count;
+              //   }
+              // });
               return (
                 <div>
                   <OverallDisplay
-                    github={each}
-                    count={count[x]}
-                    huntr={this.props.data.huntr}
+                    github={each.Git}
+                    count={each.Huntr.count}
+                    huntr={each.Huntr}
                   />
                 </div>
               );
