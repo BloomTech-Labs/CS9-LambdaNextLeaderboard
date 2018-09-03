@@ -139,6 +139,88 @@ class ClassView extends Component {
             </Segment.Group>
         );
     }
+<<<<<<< HEAD
+=======
+  };
+
+  componentDidMount = () => {
+    this.getStudents();
+  };
+
+  render() {
+    return (
+      <Segment.Group>
+        <Segment>
+          <Card fluid color="blue">
+            <Card.Content textAlign="center">
+              <Card.Header textAlign="center">
+                {this.props.className}
+              </Card.Header>
+              <List bulleted horizontal>
+                <List.Item>
+                  Students: {this.props.students.unhired.length}
+                </List.Item>
+                <List.Item>Participation: 0%</List.Item>
+                <List.Item>
+                  Hired: {this.props.students.hired.length}/
+                  {this.props.students.unhired.length +
+                    this.props.students.hired.length}
+                </List.Item>
+              </List>
+            </Card.Content>
+            <Card.Content textAlign="center" extra>
+              {this.props.students.unhired.length ? (
+                <a
+                  href="https://buddhaplex.github.io/leaderboard_sketches/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    icon="ordered list"
+                    content="Leaderboard"
+                    inverted
+                    color="green"
+                    size="large"
+                  />
+                </a>
+              ) : null}
+              <Button
+                icon="cog"
+                content="Settings"
+                inverted
+                color="blue"
+                size="large"
+                disabled
+              />
+            </Card.Content>
+          </Card>
+        </Segment>
+        {this.props.students.unhired.length ? (
+          <Segment>
+            <Input
+              fluid
+              icon="users"
+              iconPosition="left"
+              placeholder="Seach students..."
+            />
+          </Segment>
+        ) : null}
+        {this.props.students.unhired.length ? (
+          <StudentList
+            students={this.props.students.unhired}
+            updateStudent={this.props.updateStudent}
+            deleteStudent={this.props.deleteStudent}
+          />
+        ) : null}
+        <AddStudent
+          classId={this.props.classId}
+          addStudent={this.props.addClassStudent}
+          addStudentErrors={this.props.newStudentErrors}
+        />
+      </Segment.Group>
+    );
+  }
+>>>>>>> 2f70c54f24eacd480e676c17e80564bd4a541eaf
 }
 
 const mapStateToProps = state => {
