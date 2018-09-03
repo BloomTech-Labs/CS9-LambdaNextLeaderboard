@@ -8,9 +8,7 @@ const validateStudent = require("../../validation/students/studentValidation");
 router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
 // @route   GET api/classes/:id/students
-// @route   GET api/classes/leaderboard
-
-// @desc    Gets a class' unhired students
+// @desc    Gets a class' hired and unhired students
 // @access  Private
 router.get("/:id/students", (req, res) => {
   const id = req.params.id;
