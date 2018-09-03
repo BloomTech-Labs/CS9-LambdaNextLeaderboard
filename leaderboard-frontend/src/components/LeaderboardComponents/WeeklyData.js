@@ -21,18 +21,18 @@ class WeeklyData extends Component {
                                 <Table.HeaderCell>Total</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
-                            {this.props.gitObject.map((each, x) => {
-                                this.props.data.huntr.forEach(hunt => {
-                                    if (each.FullName === hunt.givenNameArr + ' ' + hunt.familyName) {
-                                        count[x] = hunt.count;
-                                    }
-                                })
-                               return (
-                                   <div>
-                                       <WeeklyDisplay github={each} count={count[x]} huntr={this.props.data.huntr} />
-                                   </div>
-                                   )
-                            })}
+                        {this.props.data.map((each, x) => {
+                            // this.props.data.huntr.forEach(hunt => {
+                            //     if (each.FullName === hunt.givenNameArr + ' ' + hunt.familyName) {
+                            //         count[x] = hunt.count;
+                            //     }
+                            // })
+                            return (
+                                <div>
+                                    <WeeklyDisplay github={each.Git} count={each.Huntr.count} huntr={each.Huntr} />
+                                </div>
+                            )
+                        })}
                     </Table>
                 </Container>
             </div>
