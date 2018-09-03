@@ -18,6 +18,8 @@ import {
   getOrganizationClasses,
   addOrganizationClass
 } from "../../actions/organizationActions";
+import {setClassForQuery} from '../../actions'
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -53,6 +55,8 @@ class Dashboard extends Component {
   handleClassMenuClick = (e, { name, content }) => {
     this.setState({ activeClass: name, activeClassName: content });
     this.props.newClassErrors.name = "";
+      this.props.setClassForQuery(null)
+
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -234,6 +238,7 @@ class Dashboard extends Component {
               <ClassView
                 classId={this.state.activeClass}
                 className={this.state.activeClassName}
+                props={this.props}
               />
             ) : null}
           </Grid.Column>
@@ -261,6 +266,7 @@ export default connect(
     getAdminOrganizations,
     addAdminOrganization,
     getOrganizationClasses,
-    addOrganizationClass
+    addOrganizationClass,
+      setClassForQuery
   }
 )(Dashboard);

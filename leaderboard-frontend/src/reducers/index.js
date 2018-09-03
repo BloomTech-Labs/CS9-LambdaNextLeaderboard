@@ -1,4 +1,4 @@
-// import {
+import {
 //   LOGIN_ACTION,
 //   LOGOUT_ACTION,
 //   CREATE_USER,
@@ -12,10 +12,10 @@
 //   ERRORS,
 //   REDIRECT_DATA_CLASS,
 //   GET_STUDENTS,
-//   GET_GITHUB_DATA,
+  GET_GITHUB_DATA,
 //   EDIT_STUDENT,
 //   REMOVE_STUDENT
-// } from "../actions/";
+} from "../actions/";
 
 import {
   ADMIN_REGISTER,
@@ -56,7 +56,7 @@ const initialState = {
   // allStudents: null,
   // fetchSuccess: false,
   // fetchClasses: null,
-  // githubData: null,
+  githubData: null,
   // // updatedStudent: null,
   // editStudent: null,
   // removedStudent: null,
@@ -79,7 +79,8 @@ const initialState = {
   newStudentErrors: {},
   createdStudent: {},
   updatedStudent: {},
-  deletedStudent: {}
+  deletedStudent: {},
+    classToQuery: null
 };
 
 const studentReducer = (state = initialState, action) => {

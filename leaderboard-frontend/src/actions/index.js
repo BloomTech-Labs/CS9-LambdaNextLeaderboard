@@ -1,4 +1,4 @@
-// import axios from "axios";
+import axios from "axios";
 // import jwt from "jsonwebtoken";
 
 // // export const CREATE_USER = "CREATE_USER";
@@ -11,10 +11,11 @@
 // // export const GET_CLASSES_STUDENTS = "GET_CLASSES_STUDENTS";
 // // export const LOGIN_ERRORS = "LOGIN_ERRORS";
 // // export const REGISTER_ERRORS = "REGISTER_ERRORS";
-// export const ERRORS = "ERRORS";
+export const ERRORS = "ERRORS";
 // export const REDIRECT_DATA_CLASS = "REDIRECT_DATA_CLASS";
 // // export const GET_STUDENTS = "GET_STUDENTS";
-// export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
+export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
+export  const CLASS_TO_QUERY = "CLASS_TO_QUERY";
 // // export const EDIT_STUDENT = "EDIT_STUDENT";
 // // export const REMOVE_STUDENT = "REMOVE_STUDENT";
 // // export const UPDATE_ADMIN = "UPDATE_ADMIN";
@@ -34,7 +35,7 @@
 //     const promise = data
 //       ? Promise.resolve
 //       : dispatch(getClassStudentsAction(param.toString()));
-
+//
 //     return { data, status, promise };
 //   };
 // }
@@ -49,7 +50,7 @@
 //     const promise = data
 //       ? Promise.resolve
 //       : dispatch(getClassesStudentsAction());
-
+//
 //     return { data, status, promise };
 //   };
 // }
@@ -66,47 +67,56 @@
 //   };
 // }
 
-// export function queryGithub() {
-//   return (dispatch, getState) => {
-//     const data = getState().githubData;
-//     console.log("DATA DATA DATA", data);
-//     const status = data ? "complete" : "loading";
-//     const promise = data ? Promise.resolve : dispatch(getGithubDataAction());
-//     return { data, status, promise };
-//   };
-// }
-// export const getGithubDataAction = () => {
-//   const token = localStorage.getItem("token");
-//   const id = {
-//     id: localStorage.getItem("adminID")
-//   };
-//   return dispatch => {
-//     const options = {
-//       method: "POST",
-//       headers: { "content-type": "application/json", Authorization: token },
-//       url: `${CLASS_URL}data`,
-//       data: id
-//     };
-//     axios(options)
-//       .then(res => {
-//         localStorage.removeItem("invalid");
-//         dispatch({
-//           type: GET_GITHUB_DATA,
-//           payload: res.data,
-//           githubStats: res.data
-//         });
-//       })
-//       .catch(err => {
-//         localStorage.setItem("invalid", err.response.data);
-//         dispatch({
-//           type: ERRORS,
-//           payload: err.response.data
-//           // allClasses: err.response.data,
-//           // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
-//         });
-//       });
-//   };
-// };
+export const setClassForQuery = classID => {
+    return dispatch => {
+        dispatch({
+            type: CLASS_TO_QUERY,
+            payload: classID
+        })
+    }
+}
+export function queryGithub() {
+  return (dispatch, getState) => {
+    const data = getState().githubData;
+    console.log("DATA DATA DATA", data);
+    const status = data ? "complete" : "loading";
+    const promise = data ? Promise.resolve : dispatch(getGithubDataAction());
+    return { data, status, promise };
+  };
+}
+export const getGithubDataAction = (classID) => {
+  const token = localStorage.getItem("token");
+  const id = {
+    // id: localStorage.getItem("adminID")
+      id: classID
+  };
+  return dispatch => {
+    const options = {
+      method: "POST",
+      headers: { "content-type": "application/json", Authorization: token },
+      url: `${CLASS_URL}data`,
+      data: id
+    };
+    axios(options)
+      .then(res => {
+        localStorage.removeItem("invalid");
+        dispatch({
+          type: GET_GITHUB_DATA,
+          payload: res.data,
+          githubStats: res.data
+        });
+      })
+      .catch(err => {
+        localStorage.setItem("invalid", err.response.data);
+        dispatch({
+          type: ERRORS,
+          payload: err.response.data
+          // allClasses: err.response.data,
+          // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
+        });
+      });
+  };
+};
 // export const redirectDataClass = () => {
 //   return dispatch => {
 //     dispatch({

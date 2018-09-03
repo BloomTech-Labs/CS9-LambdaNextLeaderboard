@@ -190,7 +190,9 @@ const mapStateToProps = state => {
     newStudentErrors: state.newStudentErrors,
     updatedStudent: state.updatedStudent,
     createdStudent: state.createdStudent,
-    deletedStudent: state.deletedStudent
+    deletedStudent: state.deletedStudent,
+      githubData: state.githubData,
+      classToQuery: state.classToQuery
   };
 };
 
