@@ -18,10 +18,19 @@ export default class OrganizationView extends Component {
     this.setState({ openEditModal: false });
   };
 
+  handleDelete = () => {
+    this.setState({ openEditModal: false });
+    this.props.delete({ id: this.props.id });
+  };
+
   render() {
     return (
       <Segment.Group>
-        <EditModal open={this.state.openEditModal} close={this.closeModal} />
+        <EditModal
+          open={this.state.openEditModal}
+          close={this.closeModal}
+          delete={this.handleDelete}
+        />
         <Segment>
           <Card fluid color="orange">
             <Card.Content textAlign="center">
@@ -61,6 +70,14 @@ const EditModal = props => {
     >
       <Header icon="cog" content="Organization Settings" />
       <Modal.Content content="Hello" />
+      <Modal.Actions>
+        <Button
+          color="red"
+          icon="trash alternate"
+          content="Delete this Organization"
+          onClick={props.delete}
+        />
+      </Modal.Actions>
     </Modal>
   );
 };
