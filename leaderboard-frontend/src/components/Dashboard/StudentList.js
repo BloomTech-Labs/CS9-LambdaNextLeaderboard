@@ -33,12 +33,13 @@ export default class StudentList extends Component {
     });
   };
 
-  handleHire = (e, { name }) => {
-    this.props.updateStudent({ id: name, hired: true });
+  handleHire = (e, { id }) => {
+    this.props.updateStudent({ id, hired: true });
   };
 
   openEditView = (e, { student }) => {
     let current = {};
+    current.id = student._id;
     current.firstname = student.firstname;
     current.lastname = student.lastname;
     current.email = student.email;
@@ -58,6 +59,11 @@ export default class StudentList extends Component {
     let current = Object.assign({}, this.state.updatedInfo);
     current[name] = value;
     this.setState({ updatedInfo: current });
+  };
+
+  handleUpdate = () => {
+    this.props.updateStudent(this.state.updatedInfo);
+    this.closeEditView();
   };
 
   handleDelete = () => {
@@ -112,7 +118,13 @@ export default class StudentList extends Component {
                   </Card.Content>
                   <Card.Content extra>
                     <Button.Group widths="2">
-                      <Button content="Update" color="blue" inverted />
+                      <Button
+                        id={student._id}
+                        content="Update"
+                        onClick={this.handleUpdate}
+                        color="blue"
+                        inverted
+                      />
                       <Button
                         content="Cancel"
                         onClick={this.closeEditView}
@@ -138,7 +150,7 @@ export default class StudentList extends Component {
                   <Card.Content extra>
                     <Button.Group widths="3">
                       <Button
-                        name={student._id}
+                        id={student._id}
                         icon="money"
                         content="Hired"
                         inverted
