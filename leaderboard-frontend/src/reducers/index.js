@@ -53,7 +53,7 @@ const initialState = {
     // error: {},
     // successfulRegister: false,
     // user_logged_in: null,
-    // successfulLogin: false,
+    successfulLogin: false,
     // updateCheck: false,
     // created_class: null,
     // added_student: null,
@@ -218,7 +218,13 @@ const studentReducer = (state = initialState, action) => {
             });
         case ADMIN_LOGIN:
             return Object.assign({}, state, {
-                loggedInAdmin: action.payload
+                loggedInAdmin : {
+                    token: action.payload,
+                    username: action.username,
+                    email: action.email
+                },
+                successfulLogin: true
+
             });
         case ADMIN_LOGIN_ERRORS:
             return Object.assign({}, state, {

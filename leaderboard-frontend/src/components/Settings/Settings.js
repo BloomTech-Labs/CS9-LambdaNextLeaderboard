@@ -10,7 +10,7 @@ class Settings extends Component {
         super(props);
         this.state = {
             email: localStorage.getItem("email"),
-            organization: localStorage.getItem("organization"),
+            organization: this.props.adminOrganizations[0].name,
             username: '',
             oldPassword: '',
             newPassword: '',
@@ -34,8 +34,9 @@ class Settings extends Component {
         }
         console.log('Saved', this.state)
         console.log("org", updateAdmin)
-        this.props.updateAdminAction(updateAdmin)
-        this.props.setSettingsAction(false)
+        console.log("organizations", this.props.adminOrganizations[0].name)
+        // this.props.updateAdminAction(updateAdmin)
+        // this.props.setSettingsAction(false)
 
     }
     checkCredentials = () => {
