@@ -234,7 +234,12 @@ class LandingPage extends Component {
 
                   <Grid.Column width={7}>
                     <Header inverted as="h4" content="Made by students from:" />
-                    <Image size="small" src={lambdaLogo} />
+                    <Image
+                      size="small"
+                      as='a'
+                      href="https://lambdaschool.com/"
+                      src={lambdaLogo}
+                    />
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
