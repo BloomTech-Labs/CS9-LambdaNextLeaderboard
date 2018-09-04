@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
 export const ADD_CLASS_STUDENTS = "ADD_CLASS_STUDENTS";
 export const ADD_CLASS_STUDENTS_ERRORS = "ADD_CLASS_STUDENTS_ERRORS";
+export const ADD_CSV_STUDENTS = "ADD_CSV_STUDENTS";
 
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
 
@@ -15,7 +16,7 @@ export const getClassStudents = obj => {
       .get(`${CLASS_URL}${obj.id}/students`, {
         headers: {
           "content-type": "application/json",
-          Authorization: localStorage.getItem("token")
+          Authorization: localStorage.token
         }
       })
       .then(res => {
@@ -34,7 +35,7 @@ export const getClassStudents = obj => {
 };
 
 export const addClassStudent = obj => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.token;
   return dispatch => {
     const options = {
       method: "POST",
@@ -55,5 +56,29 @@ export const addClassStudent = obj => {
           payload: err.response.data
         });
       });
+  };
+};
+
+export const postCsvStudents = (csvFile, classID) => {
+  const token = localStorage.getItem("token");
+
+  return dispatch => {
+    const options = {
+      method: "POST",
+      headers: { "content-type": "text/csv", Authorization: token },
+      data: csvFile,
+      url: `${CLASS_URL}${classID}/importcsv`
+    };
+
+    axios(options)
+      .then(resp => {
+        localStorage.setItem("user", resp.data.name);
+        dispatch({
+          type: ADD_CSV_STUDENTS,
+          user: resp.data.name,
+          class_name: resp.student
+        });
+      })
+      .catch(err => dispatch({ type: "ERRORS", payload: err }));
   };
 };

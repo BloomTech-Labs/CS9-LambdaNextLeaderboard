@@ -10,11 +10,16 @@ import {
   Label,
   Popup,
   GridRow,
-  Container
+  Container,
+  Transition
 } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { loginAction, createUserAction, logoutAction } from "../../actions";
+import {
+  registerAdminAction,
+  loginAdminAction,
+  logoutAdminAction
+} from "../../actions/adminActions";
 
 import "./Nav.css";
 
@@ -31,7 +36,7 @@ class Nav extends Component {
       RegisterPassword2: "",
       SignInEmail: "",
       SignInPassword: "",
-      SignedIn: false
+      expiredToken: false
     };
   }
 
@@ -49,13 +54,19 @@ class Nav extends Component {
     this.clearErrors();
   };
 
-  handleInput = (e, { name, value }) => {
+  handleRegisterInput = (e, { id, name, value }) => {
     this.setState({ [name]: value });
+    this.props.registerErrors[id] = "";
+  };
+
+  handleLoginInput = (e, { id, name, value }) => {
+    this.setState({ [name]: value });
+    this.props.loginErrors[id] = "";
   };
 
   handleSubmitRegister = () => {
     this.clearErrors();
-    this.props.createUserAction({
+    this.props.registerAdminAction({
       username: this.state.RegisterUsername,
       email: this.state.RegisterEmail,
       password: this.state.RegisterPassword,
@@ -66,7 +77,7 @@ class Nav extends Component {
 
   handleSubmitLogin = () => {
     this.clearErrors();
-    this.props.loginAction({
+    this.props.loginAdminAction({
       email: this.state.SignInEmail,
       password: this.state.SignInPassword
     });
@@ -74,8 +85,7 @@ class Nav extends Component {
   };
 
   handleLogout = () => {
-    this.props.logoutAction();
-    this.setState({ SignedIn: false });
+    this.props.logoutAdminAction();
     localStorage.removeItem("token");
     localStorage.removeItem("adminID");
     this.props.history.push("/");
@@ -91,11 +101,40 @@ class Nav extends Component {
     this.props.loginErrors.invalidLogin = "";
   };
 
+  sessionHasExpired = () => {
+    this.handleLogout();
+    this.setState({ expiredToken: true });
+  };
+
+  hideExpiredMsg = () => {
+    this.setState({ expiredToken: false });
+  };
+
+  componentDidMount = () => {
+    this.props.onRef(this);
+  };
+
+  componentWillUnmount() {
+    this.props.onRef(undefined);
+  }
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    // check token expiry
+    this.props.checkTokenExpiry();
+
+    return true;
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
+    // if expired token message is showing -> hide expired token message
+    if (this.state.expiredToken) {
+      this.hideExpiredMsg();
+    }
+
     // registration successful -> showing login
     if (
-      this.props.successfulRegister &&
-      !prevProps.successfulRegister &&
+      this.props.registeredAdmin &&
+      this.props.registeredAdmin !== prevProps.registeredAdmin &&
       this.state.openModal
     ) {
       this.setState({
@@ -106,7 +145,10 @@ class Nav extends Component {
     }
 
     // login successful -> redirecting to dashboard
-    if (this.props.successfulLogin && !prevProps.successfulLogin) {
+    if (
+      this.props.loggedInAdmin &&
+      this.props.loggedInAdmin !== prevProps.loggedInAdmin
+    ) {
       if (this.state.openModal) {
         this.setState({
           openModal: false,
@@ -130,19 +172,29 @@ class Nav extends Component {
         this.props.history.push("/dashboard");
       }
     }
+
+    // logged out -> redirecting to landing page
+    if (
+      !this.props.loggedInAdmin &&
+      this.props.loggedInAdmin !== prevProps.loggedInAdmin
+    ) {
+      this.props.history.push("/");
+    }
   };
 
   render() {
     const { activeItem } = this.state;
-
+    if (this.state.expiredToken) {
+      setTimeout(this.hideExpiredMsg, 7000);
+    }
     return (
       <nav className="Nav">
         <Container>
           <div className="Nav__container">
-            <Link to="/classlist" className="Nav__link">
+            <Link to="/" className="Nav__link">
               <h1>Leaderboard</h1>
             </Link>
-            {!localStorage.getItem("token") ? (
+            {!localStorage.token ? (
               <div>
                 <Button
                   size="small"
@@ -159,6 +211,11 @@ class Nav extends Component {
               </div>
             ) : (
               <div>
+                {this.props.history.location.pathname !== "/dashboard" ? (
+                  <Link to="/dashboard">
+                    <Button size="small" color="blue" content="Dashboard" />
+                  </Link>
+                ) : null}
                 <Button
                   size="small"
                   color="red"
@@ -212,9 +269,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="email"
                           name="SignInEmail"
                           value={this.state.SignInEmail}
-                          onChange={this.handleInput}
+                          onChange={this.handleLoginInput}
                           icon="mail"
                           iconPosition="left"
                           placeholder="Your email address"
@@ -235,9 +293,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="password"
                           name="SignInPassword"
                           value={this.state.SignInPassword}
-                          onChange={this.handleInput}
+                          onChange={this.handleLoginInput}
                           icon="lock"
                           iconPosition="left"
                           placeholder="Your password"
@@ -277,9 +336,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="username"
                           name="RegisterUsername"
                           value={this.state.RegisterUsername}
-                          onChange={this.handleInput}
+                          onChange={this.handleRegisterInput}
                           icon="user"
                           iconPosition="left"
                           placeholder="Pick a username"
@@ -297,9 +357,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="email"
                           name="RegisterEmail"
                           value={this.state.RegisterEmail}
-                          onChange={this.handleInput}
+                          onChange={this.handleRegisterInput}
                           icon="mail"
                           iconPosition="left"
                           placeholder="Your email address"
@@ -317,9 +378,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="password"
                           name="RegisterPassword"
                           value={this.state.RegisterPassword}
-                          onChange={this.handleInput}
+                          onChange={this.handleRegisterInput}
                           icon="lock"
                           iconPosition="left"
                           placeholder="Create a password"
@@ -337,9 +399,10 @@ class Nav extends Component {
                           />
                         ) : null}
                         <Input
+                          id="password2"
                           name="RegisterPassword2"
                           value={this.state.RegisterPassword2}
-                          onChange={this.handleInput}
+                          onChange={this.handleRegisterInput}
                           icon="lock"
                           iconPosition="left"
                           placeholder="Confirm password"
@@ -362,6 +425,17 @@ class Nav extends Component {
           </Modal.Content>
           <Modal.Actions />
         </Modal>
+        <Transition
+          visible={this.state.expiredToken}
+          animation="drop"
+          duration={500}
+          mountOnShow
+          unmountOnHide
+        >
+          <div className="expiredToken" onClick={this.hideExpiredMsg}>
+            Your login session has expired.
+          </div>
+        </Transition>
       </nav>
     );
   }
@@ -369,14 +443,16 @@ class Nav extends Component {
 
 const mapStateToProps = state => {
   return {
-    loginErrors: state.loginErrors,
     registerErrors: state.registerErrors,
-    successfulLogin: state.successfulLogin,
-    successfulRegister: state.successfulRegister
+    loginErrors: state.loginErrors,
+    registeredAdmin: state.registeredAdmin,
+    loggedInAdmin: state.loggedInAdmin
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { createUserAction, loginAction, logoutAction }
-)(Nav);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { loginAdminAction, registerAdminAction, logoutAdminAction }
+  )(Nav)
+);

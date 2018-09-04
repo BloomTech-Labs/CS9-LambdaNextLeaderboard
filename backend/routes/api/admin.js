@@ -89,7 +89,7 @@ router.post("/login", (req, res) => {
         if (isMatch) {
           // Successful login creating token
           const payload = { id: admin._id, username: admin.username };
-          jwt.sign(payload, ACCESS_KEY, { expiresIn: "10h" }, (err, token) => {
+          jwt.sign(payload, ACCESS_KEY, { expiresIn: "60m" }, (err, token) => {
             res.json({
               success: true,
               token: "Bearer " + token,
@@ -105,6 +105,64 @@ router.post("/login", (req, res) => {
     });
 });
 
+// @route   POST api/admins/update
+// @desc    Login admin and return JWT
+// @access  Public
+router.put("/update", (req, res) => {
+    const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+    // const { errors, isValid } = validateLogin(data);
+    //
+    // //   Validation Check
+    // if (!isValid) {
+    //     return res.status(400).json(errors);
+    // }
+
+    const username = data.username;
+    const oldPassword = data.oldPassword;
+    let newPassword = data.newPassword;
+    const email = data.email;
+    const options = {
+        new: true
+    }
+
+
+    Admin.findOne({ email })
+        .select("+password")
+        .then(admin => {
+            if (!admin) {
+                errors.invalidLogin = "Invalid Credentials";
+                return res.status(400).json(errors);
+            }
+
+            // Check Password
+            bcrypt.compare(oldPassword, admin.password).then(isMatch => {
+                if (isMatch) {
+
+                    bcrypt.genSalt(11, (err, salt) => {
+                        bcrypt.hash(newPassword, salt, (err, hash) => {
+                            if (err) return res.status(400).json(err);
+                            newPassword = hash;
+                            const updateUser = {
+                                "username": username,
+                                "password": newPassword,
+                                "email": email,
+                                // "organization": organization
+                            }
+                            Admin.findByIdAndUpdate(admin._id, updateUser, options)
+                                // .save()
+                                .then(admin => res.status(201).json(admin))
+                                .catch(err => console.log(err));
+                        });
+                    });
+
+                } else {
+                    errors.invalidLogin = "Invalid Credentials";
+                    return res.status(400).json(errors);
+                }
+            });
+        });
+});
+
 // @route   GET api/admins/:id/organizations
 // @desc    Gets all of the admin's organizations
 // @access  Private
@@ -115,10 +173,10 @@ router.get(
     const id = req.params.id;
 
     Admin.findById(id)
-      .populate("organizations", null, null, { sort: { name: 1 } })
+      .populate({ path: "organizations", options: { sort: { name: 1 } } })
       .then(admin => {
         if (!admin) {
-          return res.status(404).json({ user: "That user does not exist." });
+          return res.status(404).json({ user: "That user does not exist" });
         } else {
           res.json(admin.organizations);
         }
@@ -152,7 +210,7 @@ router.post(
 
       Admin.findById(id).then(admin => {
         if (!admin) {
-          return res.status(404).json({ user: "That user does not exist." });
+          return res.status(404).json({ user: "That user does not exist" });
         }
 
         const newOrg = new Organization({ name, admins: [admin._id] });

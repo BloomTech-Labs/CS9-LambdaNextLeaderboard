@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {updateUserAction} from '../../actions'
+// import {updateUserAction} from '../../actions'
+import  {setSettingsAction} from '../../actions'
+import {updateAdminAction} from '../../actions/adminActions'
 import "./Setings.css"
 
 class Settings extends Component {
@@ -21,18 +23,20 @@ class Settings extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
     handleSave = () => {
-        const organization = localStorage.getItem("organization")
+        // const organization = localStorage.getItem("organization")
         const updateAdmin = {
             "username": this.state.username,
             "oldPassword": this.state.oldPassword,
             "newPassword": this.state.newPassword,
             "email": this.state.email,
-            "organization": this.state.organization,
-            "_id": localStorage.getItem("adminID")
+            // "organization": this.state.organization,
+            // "_id": localStorage.getItem("adminID")
         }
         console.log('Saved', this.state)
         console.log("org", updateAdmin)
-        this.props.updateUserAction(updateAdmin)
+        this.props.updateAdminAction(updateAdmin)
+        this.props.setSettingsAction(false)
+
     }
     checkCredentials = () => {
 
@@ -141,7 +145,8 @@ class Settings extends Component {
 }
 const maptStateToProps = state => {
     return {
-        updateAdmin: state.updateAdmin
+        updateAdmin: state.updateAdmin,
+        adminOrganizations: state.adminOrganizations
     }
 }
-export default connect(maptStateToProps, {updateUserAction})(Settings)
+export default connect(maptStateToProps, {setSettingsAction, updateAdminAction})(Settings)
