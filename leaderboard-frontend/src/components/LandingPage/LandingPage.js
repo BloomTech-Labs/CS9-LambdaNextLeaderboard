@@ -15,7 +15,7 @@ import {
 import leadboardExample from "./LandingPageComponents/img/LeadboardExample.PNG";
 import githubLogo from "./LandingPageComponents/img/github-logo.png";
 import gitHuntrLogo from "./LandingPageComponents/img/gitHuntrLogo.png";
-import lambdaLogo from "./LandingPageComponents/img/Lambda_Logo_Full.png"
+import lambdaLogo from "./LandingPageComponents/img/Lambda_Logo_Full.png";
 
 import "./LandingPage.css";
 
@@ -69,10 +69,12 @@ class LandingPage extends Component {
               marginTop: "1.5em"
             }}
           />
-          <Button primary size="huge">
-            Get Started
-            <Icon name="right arrow" />
-          </Button>
+          <Grid centered style={{ paddingBottom: "2em", paddingTop: "2em" }}>
+            <Button primary size="huge">
+              Get Started
+              <Icon name="right arrow" />
+            </Button>
+          </Grid>
         </Container>
 
         <Container fluid>
@@ -83,7 +85,7 @@ class LandingPage extends Component {
               padded="vertically"
               verticalAlign="middle"
             >
-              <Grid.Row divided>
+              <Grid.Row>
                 <Grid.Column width={8}>
                   <Header as="h3" style={{ fontSize: "2em" }}>
                     Github and Huntr data combined.{" "}
@@ -98,7 +100,7 @@ class LandingPage extends Component {
                   <Image bordered rounded size="massive" src={gitHuntrLogo} />
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row divided>
+              <Grid.Row>
                 <Grid.Column width={6}>
                   <Image bordered rounded size="huge" src={leadboardExample} />
                 </Grid.Column>
@@ -145,9 +147,9 @@ class LandingPage extends Component {
             </Grid>
           </Segment>
 
-          <Segment padded="very">
-            <Grid>
-              <Grid.Column>
+          <Segment>
+            <Grid centered>
+              <Grid.Column width={9}>
                 <Header as="h3" textAlign="center" style={{ fontSize: "2em" }}>
                   Sign up now!{" "}
                 </Header>
@@ -217,14 +219,8 @@ class LandingPage extends Component {
                   </Grid.Column>
 
                   <Grid.Column width={7}>
-                    
-                      <Header
-                        inverted
-                        as="h4"
-                        content="Made by students from:"
-                      />
-                      <Image  size='small' src={lambdaLogo} />
-                    
+                    <Header inverted as="h4" content="Made by students from:" />
+                    <Image size="small" src={lambdaLogo} />
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
