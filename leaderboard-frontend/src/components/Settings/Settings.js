@@ -145,7 +145,8 @@ class Settings extends Component {
 }
 const maptStateToProps = state => {
     return {
-        updateAdmin: state.updateAdmin
+        updateAdmin: state.updateAdmin,
+        adminOrganizations: state.adminOrganizations
     }
 }
 export default connect(maptStateToProps, {setSettingsAction, updateAdminAction})(Settings)

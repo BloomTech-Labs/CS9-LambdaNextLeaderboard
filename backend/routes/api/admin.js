@@ -154,7 +154,7 @@ router.put("/update", (req, res) => {
                                 .catch(err => console.log(err));
                         });
                     });
-                    
+
                 } else {
                     errors.invalidLogin = "Invalid Credentials";
                     return res.status(400).json(errors);

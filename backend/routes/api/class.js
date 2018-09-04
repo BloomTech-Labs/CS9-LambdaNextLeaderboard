@@ -1,5 +1,8 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
+const csv = require("fast-csv");
+
+require("dotenv").config();
 
 const Organization = require("../../models/Organization");
 const Class = require("../../models/Class");
@@ -7,6 +10,7 @@ const Student = require("../../models/Student");
 const validateStudent = require("../../validation/students/studentValidation");
 const validateClass = require("../../validation/classes/classValidation");
 
+// TEST ROUTE
 router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
 // @route   GET api/classes/:id/students
@@ -64,6 +68,9 @@ router.post("/:id/students/create", (req, res) => {
   });
 });
 
+
+
+
 // @route   PUT api/classes/:id/update
 // @desc    Updates the class' info
 // @access  Private
@@ -114,5 +121,63 @@ router.delete("/:id/delete", (req, res) => {
     res.json(removedClass);
   });
 });
+
+// @route   POST api/classes/:name/importcsv
+// @desc    Adds a csv of students to the class
+// @access  Private
+router.post("/:id/importcsv", (req, res) => {
+  if (!req.files) return res.status(400).send("No files were uploaded.");
+
+  // Reference
+  const csvClassFile = req.files.file;
+  const classID = req.params.id;
+
+  // Parse csv and check for existing class in db
+  async function run() {
+    csv
+      .fromString(csvClassFile.data.toString(), {
+        headers: true,
+        ignoreEmpty: true
+      })      
+      .validate(function(data) {
+        return Student.count({ email: data.email }, function(err, count) {
+          if (count === 0) return;
+        });
+      })
+      .on("data-invalid", function(data) {
+        console.log(
+          `Student ${data["firstname"]} ${data["lastname"]} already exists.`
+        );
+      })
+      .on("data", function(data) {
+        Class.findById(classID).then(aClass => {
+          if (!aClass) {
+            return res
+              .status(404)
+              .json({ class: "That class does not exist." });
+          }
+
+          let newStudent = new Student();
+
+          newStudent.firstname = data["firstname"];
+          newStudent.lastname = data["lastname"];
+          newStudent.email = data["email"];
+          newStudent.github = data["github"];
+
+          newStudent
+            .save()
+            .then(created => {
+              aClass.students.push(created._id);
+              aClass.save();
+              //res.status(201).json(created); //Error: Can't set headers after they are sent.
+              console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
+            })
+            .catch(err => console.log(err));
+        });
+      });
+  }
+
+  run();
+})
 
 module.exports = router;

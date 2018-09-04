@@ -21,6 +21,9 @@ class WeeklyData extends Component {
                                 <Table.HeaderCell>Total</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
+                        <Table.Body >
+                            <Table.Row >
+                                <Table.HeaderCell colSpan="4">
                         {this.props.data.map((each, x) => {
                             // this.props.data.huntr.forEach(hunt => {
                             //     if (each.FullName === hunt.givenNameArr + ' ' + hunt.familyName) {
@@ -28,11 +31,14 @@ class WeeklyData extends Component {
                             //     }
                             // })
                             return (
-                                <div>
+
                                     <WeeklyDisplay github={each.Git} count={each.Huntr.count} huntr={each.Huntr} />
-                                </div>
+
                             )
                         })}
+                                </Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Body>
                     </Table>
                 </Container>
             </div>

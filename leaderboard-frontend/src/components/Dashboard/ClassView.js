@@ -19,7 +19,7 @@ import LeaderBoard from "../Leaderboard/LeaderBoard";
 
 
 // actions
-import {getClassStudents, addClassStudent} from "../../actions/classActions";
+import {getClassStudents, addClassStudent, postCsvStudents} from "../../actions/classActions";
 import {updateStudent, deleteStudent} from "../../actions/studentActions";
 import {getGithubDataAction, setClassForQuery, setSettingsAction} from '../../actions'
 import Settings from "../Settings/Settings";
@@ -195,6 +195,7 @@ class ClassView extends Component {
                     classId={this.props.classId}
                     addStudent={this.props.addClassStudent}
                     addStudentErrors={this.props.newStudentErrors}
+                    postCsvStudents={this.props.postCsvStudents}
                 />
             </Segment.Group>
         );
@@ -232,5 +233,5 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    {getClassStudents, setSettingsAction, getGithubDataAction, setClassForQuery, addClassStudent, updateStudent, deleteStudent}
+    {getClassStudents, setSettingsAction, getGithubDataAction, setClassForQuery, addClassStudent, updateStudent, deleteStudent, postCsvStudents}
 )(ClassView);
