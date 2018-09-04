@@ -143,6 +143,15 @@ class LandingPage extends Component {
                 everyone is capable of achieving their goals.
               </p>
               <Image bordered rounded size="large" centered src={climbToTop} />
+              <Grid
+                centered
+                style={{ paddingTop: "4em" }}
+              >
+                <Button primary size="huge">
+                  Get Started
+                  <Icon name="right arrow" />
+                </Button>
+              </Grid>
             </Container>
           </Segment>
 
@@ -219,7 +228,7 @@ class LandingPage extends Component {
                     <Header inverted as="h4" content="Made by students from:" />
                     <Image
                       size="small"
-                      as='a'
+                      as="a"
                       href="https://lambdaschool.com/"
                       src={lambdaLogo}
                     />
