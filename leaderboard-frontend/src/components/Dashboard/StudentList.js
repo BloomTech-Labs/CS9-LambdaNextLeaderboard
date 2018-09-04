@@ -8,6 +8,7 @@ import {
   Header,
   Icon
 } from "semantic-ui-react";
+import StudentCard from "./StudentCard";
 
 export default class StudentList extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class StudentList extends Component {
   }
 
   openModal = (e, { id, name }) => {
-    this.setState({ [name]: !this.state[name], selectedStudent: id });
+      this.setState({ openDeleteModal: !this.state[name], selectedStudent: id });
   };
 
   closeModal = () => {
@@ -41,6 +42,17 @@ export default class StudentList extends Component {
   };
 
   render() {
+      if (this.state.openDeleteModal === true) {
+          return (
+              <DeleteModal
+                  open={this.state.openDeleteModal}
+                  close={this.closeModal}
+                  selected={this.state.selectedStudent}
+                  delete={this.handleDelete}
+              />
+              )
+
+      }
     return (
       <Segment>
         <DeleteModal
@@ -49,57 +61,59 @@ export default class StudentList extends Component {
           selected={this.state.selectedStudent}
           delete={this.handleDelete}
         />
-        <EditModal
-          open={this.state.openEditModal}
-          close={this.closeModal}
-          selected={this.state.selectedStudent}
-        />
+        {/*<EditModal*/}
+          {/*open={this.state.openEditModal}*/}
+          {/*close={this.closeModal}*/}
+          {/*selected={this.state.selectedStudent}*/}
+        {/*/>*/}
         <Card.Group itemsPerRow="2" stackable>
           {this.props.students.map((student, index) => {
             return !student.hired ? (
               <Card key={index}>
-                <Card.Content>
-                  <Card.Header>{`${student.firstname} ${
-                    student.lastname
-                  }`}</Card.Header>
-                  <Card.Description>
-                    <List>
-                      <List.Item>Email Address: {student.email}</List.Item>
-                      <List.Item>Github Handle: {student.github}</List.Item>
-                    </List>
-                  </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                  <Button
-                    name={student._id}
-                    icon="money"
-                    content="Hired"
-                    inverted
-                    color="green"
-                    size="small"
-                    onClick={this.handleHire}
-                  />
-                  <Button
-                    id={student._id}
-                    name="openEditModal"
-                    icon="wrench"
-                    content="Edit"
-                    inverted
-                    color="blue"
-                    size="small"
-                    onClick={this.openModal}
-                  />
-                  <Button
-                    id={student._id}
-                    name="openDeleteModal"
-                    icon="trash"
-                    content="Delete"
-                    inverted
-                    color="red"
-                    size="small"
-                    onClick={this.openModal}
-                  />
-                </Card.Content>
+                  <StudentCard student={student} handleHire={this.handleHire} openModal={this.openModal} />
+
+                {/*<Card.Content>*/}
+                  {/*<Card.Header>{`${student.firstname} ${*/}
+                    {/*student.lastname*/}
+                  {/*}`}</Card.Header>*/}
+                  {/*<Card.Description>*/}
+                    {/*<List>*/}
+                      {/*<List.Item>Email Address: {student.email}</List.Item>*/}
+                      {/*<List.Item>Github Handle: {student.github}</List.Item>*/}
+                    {/*</List>*/}
+                  {/*</Card.Description>*/}
+                {/*</Card.Content>*/}
+                {/*<Card.Content extra>*/}
+                  {/*<Button*/}
+                    {/*name={student._id}*/}
+                    {/*icon="money"*/}
+                    {/*content="Hired"*/}
+                    {/*inverted*/}
+                    {/*color="green"*/}
+                    {/*size="small"*/}
+                    {/*onClick={this.handleHire}*/}
+                  {/*/>*/}
+                  {/*<Button*/}
+                    {/*id={student._id}*/}
+                    {/*name="openEditModal"*/}
+                    {/*icon="wrench"*/}
+                    {/*content="Edit"*/}
+                    {/*inverted*/}
+                    {/*color="blue"*/}
+                    {/*size="small"*/}
+                    {/*onClick={this.openModal}*/}
+                  {/*/>*/}
+                  {/*<Button*/}
+                    {/*id={student._id}*/}
+                    {/*name="openDeleteModal"*/}
+                    {/*icon="trash"*/}
+                    {/*content="Delete"*/}
+                    {/*inverted*/}
+                    {/*color="red"*/}
+                    {/*size="small"*/}
+                    {/*onClick={this.openModal}*/}
+                  {/*/>*/}
+                {/*</Card.Content>*/}
               </Card>
             ) : null;
           })}
@@ -109,21 +123,21 @@ export default class StudentList extends Component {
   }
 }
 
-const EditModal = props => {
-  return (
-    <Modal
-      centered
-      size="small"
-      closeIcon
-      open={props.open}
-      onClose={props.close}
-      dimmer="blurring"
-    >
-      <Header icon="wrench" content="Edit Student" />
-      <Modal.Content content="Hello" />
-    </Modal>
-  );
-};
+// const EditModal = props => {
+//   return (
+//     <Modal
+//       centered
+//       size="small"
+//       closeIcon
+//       open={props.open}
+//       onClose={props.close}
+//       dimmer="blurring"
+//     >
+//       <Header icon="wrench" content="Edit Student" />
+//       <Modal.Content content="Hello" />
+//     </Modal>
+//   );
+// };
 
 const DeleteModal = props => {
   return (
