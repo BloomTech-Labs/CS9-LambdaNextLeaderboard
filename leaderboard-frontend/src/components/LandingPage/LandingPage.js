@@ -8,11 +8,13 @@ import {
   Button,
   Icon,
   Segment,
-  GridColumn,
+  List,
   Image
 } from "semantic-ui-react";
 
 import DesktopContainer from "./LandingPageComponents/DesktopContainer";
+import leadboardExample from "./LandingPageComponents/img/LeadboardExample.PNG";
+import githubLogo from "./LandingPageComponents/img/github-logo.png";
 
 import "./LandingPage.css";
 
@@ -42,11 +44,12 @@ class LandingPage extends Component {
   render() {
     return (
       <div>
-        <Container text>
+        <Container fluid className="Landing__head">
           <Header
             as="h1"
             content="Next Steps"
-            // inverted
+            inverted
+            textAlign="center"
             style={{
               fontSize: "4em",
               fontWeight: "normal",
@@ -57,7 +60,8 @@ class LandingPage extends Component {
           <Header
             as="h2"
             content="Easily track student job progress."
-            // inverted
+            inverted
+            textAlign="center"
             style={{
               fontSize: "1.7em",
               fontWeight: "normal",
@@ -69,38 +73,43 @@ class LandingPage extends Component {
             <Icon name="right arrow" />
           </Button>
         </Container>
+
         <Container fluid>
-          <Segment>
+          <Segment padded="very">
             <Grid container stackable verticalAlign="middle">
               <Grid.Row>
                 <Grid.Column width={8}>
                   <Header as="h3" style={{ fontSize: "2em" }}>
-                    Fun and competetive leaderboards.{" "}
+                    Github and Huntr data combined.{" "}
                   </Header>
                   <p style={{ fontSize: "1.33em" }}>
-                    Do some things in this paragraph that are cool
-                  </p>
-                  <Header as="h3" style={{ fontSize: "2em" }}>
-                    {" "}
-                    Realtime statistics{" "}
-                  </Header>
-                  <p style={{ fontSize: "1.33em" }}>
-                    More thoughtful things to say
+                    Data fetched from Github and Huntr APIs provide up to date
+                    information to track student effort and initiative towards
+                    getting a job.
                   </p>
                 </Grid.Column>
                 <Grid.Column floated="right" width={6}>
-                  <Image bordered rounded size="large" src="temp" />
+                  <Image bordered rounded size="huge" src={leadboardExample} />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
-                <Grid.Column textAlign="center">
-                  <Button size="huge">Sign up</Button>
+                <Grid.Column width={6}>
+                  <Image bordered rounded size="huge" src={leadboardExample} />
+                </Grid.Column>
+                <Grid.Column floated="right" width={8}>
+                  <Header as="h3" style={{ fontSize: "2em" }}>
+                    Fun and competitive leaderboards.{" "}
+                  </Header>
+                  <p style={{ fontSize: "1.33em" }}>
+                    Students are ranked based on tracked events, turning the job
+                    hunt into a friendly competition!
+                  </p>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
           </Segment>
 
-          <Segment style={{ padding: "0em" }} vertical>
+          <Segment vertical padded="very">
             <Grid celled="internally" columns="equal" stackable>
               <Grid.Row textAlign="center">
                 <Grid.Column
@@ -122,10 +131,7 @@ class LandingPage extends Component {
                     to the top!"
                   </Header>
                   <p style={{ fontSize: "1.33em" }}>
-                    <Image
-                      avatar
-                      src="./LandingPageComponents/img/github-logo.png"
-                    />
+                    <Image avatar src={githubLogo} />
                     <b>Nan</b> - Github user
                   </p>
                 </Grid.Column>
@@ -133,9 +139,12 @@ class LandingPage extends Component {
             </Grid>
           </Segment>
 
-          <Segment>
+          <Segment padded="very">
             <Grid>
               <Grid.Column>
+                <Header as="h3" textAlign="center" style={{ fontSize: "2em" }}>
+                  Sign up now!{" "}
+                </Header>
                 <Form size="large">
                   <Form.Field>
                     <Input
@@ -153,7 +162,6 @@ class LandingPage extends Component {
                       iconPosition="left"
                       placeholder="Your email address"
                       type="text"
-                      disabled
                     />
                   </Form.Field>
                   <Form.Field>
@@ -183,6 +191,45 @@ class LandingPage extends Component {
                 </Form>
               </Grid.Column>
             </Grid>
+          </Segment>
+
+          <Segment
+            inverted
+            vertical
+            style={{ padding: "5em 0em" }}
+            className="Landing__footer"
+          >
+            <Container>
+              <Grid divided inverted stackable>
+                <Grid.Row>
+                  <Grid.Column width={3}>
+                    <List link inverted>
+                      <List.Item as="a">Contact Us</List.Item>
+                      <List.Item as="a">Religious Ceremonies</List.Item>
+                      <List.Item as="a">Gazebo Plans</List.Item>
+                    </List>
+                  </Grid.Column>
+                  <Grid.Column width={3}>
+                    <Header inverted as="h4" content="Services" />
+                    <List link inverted>
+                      <List.Item as="a">Banana Pre-Order</List.Item>
+                      <List.Item as="a">DNA FAQ</List.Item>
+                      <List.Item as="a">How To Access</List.Item>
+                      <List.Item as="a">Favorite X-Men</List.Item>
+                    </List>
+                  </Grid.Column>
+                  <Grid.Column width={7}>
+                    <Header as="h4" inverted>
+                      Footer Header
+                    </Header>
+                    <p>
+                      Extra space for a call to action inside the footer that
+                      could help re-engage users.
+                    </p>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Container>
           </Segment>
         </Container>
       </div>
