@@ -12,6 +12,8 @@ import {
   Image
 } from "semantic-ui-react";
 
+import Nav from "../Navbar/Nav";
+
 import leadboardExample from "./img/LeadboardExample.PNG";
 import githubLogo from "./img/github-logo.png";
 import gitHuntrLogo from "./img/gitHuntrLogo.png";
@@ -23,12 +25,21 @@ import "./LandingPage.css";
 class LandingPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { openModal: false };
   }
+
+  componentDidMount = () => {
+    this.refs.modal.handleOpenModal()
+    this.refs.modal.handleCloseModal()
+  }
+
+  
+ 
 
   render() {
     return (
       <div>
+        <Nav container={this} ref = "modal"  />
         <Container fluid className="Landing__head">
           <Header
             as="h1"
@@ -143,10 +154,7 @@ class LandingPage extends Component {
                 everyone is capable of achieving their goals.
               </p>
               <Image bordered rounded size="large" centered src={climbToTop} />
-              <Grid
-                centered
-                style={{ paddingTop: "4em" }}
-              >
+              <Grid centered style={{ paddingTop: "4em" }}>
                 <Button primary size="huge">
                   Get Started
                   <Icon name="right arrow" />
