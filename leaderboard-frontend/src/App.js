@@ -29,6 +29,7 @@ class App extends Component {
   };
 
   componentDidMount = () => {
+    this.checkTokenExpiry();
     this.interval = setInterval(this.checkTokenExpiry, 5000);
   };
 

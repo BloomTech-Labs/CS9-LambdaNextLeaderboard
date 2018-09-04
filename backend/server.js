@@ -46,16 +46,7 @@ const configureServer = app => {
   app.use(bodyParser.json());
 };
 
-const paymentApi = require("./billing/payment");
-
-const configureRoutes = app => {
-  paymentApi(app);
-};
-
 configureServer(app);
-// configureRoutes(app);
-
-// // ****END STRIPE****
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "../leaderboard-frontend/build")));
@@ -100,7 +91,10 @@ app.use(
   leaderboard
 );
 // app.use("/api/data", cors(corsOptions), githubData);
-// app.use("/api/billing", cors(corsOptions), billing);
+app.use("/api/billing",
+  cors(corsOptions),
+  billing
+);
 
 // CSV routes
 // app.get("/template", cors(corsOptions));

@@ -70,50 +70,50 @@ export default class StudentList extends Component {
           {this.props.students.map((student, index) => {
             return !student.hired ? (
               <Card key={index}>
-                  <StudentCard student={student} handleHire={this.handleHire} openModal={this.openModal} />
-
-                {/*<Card.Content>*/}
-                  {/*<Card.Header>{`${student.firstname} ${*/}
-                    {/*student.lastname*/}
-                  {/*}`}</Card.Header>*/}
-                  {/*<Card.Description>*/}
-                    {/*<List>*/}
-                      {/*<List.Item>Email Address: {student.email}</List.Item>*/}
-                      {/*<List.Item>Github Handle: {student.github}</List.Item>*/}
-                    {/*</List>*/}
-                  {/*</Card.Description>*/}
-                {/*</Card.Content>*/}
-                {/*<Card.Content extra>*/}
-                  {/*<Button*/}
-                    {/*name={student._id}*/}
-                    {/*icon="money"*/}
-                    {/*content="Hired"*/}
-                    {/*inverted*/}
-                    {/*color="green"*/}
-                    {/*size="small"*/}
-                    {/*onClick={this.handleHire}*/}
-                  {/*/>*/}
-                  {/*<Button*/}
-                    {/*id={student._id}*/}
-                    {/*name="openEditModal"*/}
-                    {/*icon="wrench"*/}
-                    {/*content="Edit"*/}
-                    {/*inverted*/}
-                    {/*color="blue"*/}
-                    {/*size="small"*/}
-                    {/*onClick={this.openModal}*/}
-                  {/*/>*/}
-                  {/*<Button*/}
-                    {/*id={student._id}*/}
-                    {/*name="openDeleteModal"*/}
-                    {/*icon="trash"*/}
-                    {/*content="Delete"*/}
-                    {/*inverted*/}
-                    {/*color="red"*/}
-                    {/*size="small"*/}
-                    {/*onClick={this.openModal}*/}
-                  {/*/>*/}
-                {/*</Card.Content>*/}
+                <Card.Content>
+                  <Card.Header>{`${student.firstname} ${
+                    student.lastname
+                  }`}</Card.Header>
+                  <Card.Description>
+                    <List>
+                      <List.Item>Email Address: {student.email}</List.Item>
+                      <List.Item>Github Handle: {student.github}</List.Item>
+                    </List>
+                  </Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                  <Button.Group widths="3">
+                    <Button
+                      name={student._id}
+                      icon="money"
+                      content="Hired"
+                      inverted
+                      color="green"
+                      size="small"
+                      onClick={this.handleHire}
+                    />
+                    <Button
+                      id={student._id}
+                      name="openEditModal"
+                      icon="wrench"
+                      content="Edit"
+                      inverted
+                      color="blue"
+                      size="small"
+                      onClick={this.openModal}
+                    />
+                    <Button
+                      id={student._id}
+                      name="openDeleteModal"
+                      icon="trash"
+                      content="Delete"
+                      inverted
+                      color="red"
+                      size="small"
+                      onClick={this.openModal}
+                    />
+                  </Button.Group>
+                </Card.Content>
               </Card>
             ) : null;
           })}

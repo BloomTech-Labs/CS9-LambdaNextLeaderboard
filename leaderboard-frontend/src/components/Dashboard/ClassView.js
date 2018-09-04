@@ -122,84 +122,77 @@ class ClassView extends Component {
         this.props.setSettingsAction(true);
     }
 
-    render() {
-        if (this.state.leaderboard === true && this.props.classToQuery !== null) {
-            return (
-                <LeaderBoard/>
-            )
-        }
-        if (this.state.settings === true && this.props.changeSettings === true) {
-            return (
-                <Settings/>
-
-                )
-        }
-
-        return (
-            <Segment.Group>
-                <EditModal open={this.state.openEditModal} close={this.closeModal}/>
-                <Segment>
-                    <Card fluid color="blue">
-                        <Card.Content textAlign="center">
-                            <Card.Header textAlign="center">
-                                {this.props.className}
-                            </Card.Header>
-                            <List bulleted horizontal>
-                                <List.Item>Students: {this.state.unhired}</List.Item>
-                                <List.Item>Participation: 0%</List.Item>
-                                <List.Item>
-                                    Hired: {this.state.hired}/{this.state.total}
-                                </List.Item>
-                            </List>
-                        </Card.Content>
-                        <Card.Content textAlign="center" extra>
-                            {this.state.unhired ? (
-                                <Button
-                                    icon="ordered list"
-                                    content="Leaderboard"
-                                    inverted
-                                    color="green"
-                                    size="large"
-                                    onClick={this.getData}
-                                />
-                            ) : null}
-                            <Button
-                                icon="cog"
-                                content="Settings"
-                                inverted
-                                color="blue"
-                                size="large"
-                                onClick={this.setSettings}
-                            />
-                        </Card.Content>
-                    </Card>
-                </Segment>
-                {this.state.unhired ? (
-                    <Segment>
-                        <Input
-                            fluid
-                            icon="users"
-                            iconPosition="left"
-                            placeholder="Search students..."
-                        />
-                    </Segment>
-                ) : null}
-                {this.state.unhired ? (
-                    <StudentList
-                        students={this.props.students}
-                        updateStudent={this.props.updateStudent}
-                        deleteStudent={this.props.deleteStudent}
-                    />
-                ) : null}
-                <AddStudent
-                    classId={this.props.classId}
-                    addStudent={this.props.addClassStudent}
-                    addStudentErrors={this.props.newStudentErrors}
-                    postCsvStudents={this.props.postCsvStudents}
-                />
-            </Segment.Group>
-        );
-    }
+  render() {
+    return (
+      <Segment.Group>
+        <EditModal open={this.state.openEditModal} close={this.closeModal} />
+        <Segment>
+          <Header as="h2" content="Class View" textAlign="center" />
+          <Card fluid color="blue">
+            <Card.Content textAlign="center">
+              <Card.Header textAlign="center">
+                {this.props.className}
+              </Card.Header>
+              <List bulleted horizontal>
+                <List.Item>Students: {this.state.unhired}</List.Item>
+                <List.Item>Participation: 0%</List.Item>
+                <List.Item>
+                  Hired: {this.state.hired}/{this.state.total}
+                </List.Item>
+              </List>
+            </Card.Content>
+            <Card.Content textAlign="center" extra>
+              {this.state.unhired ? (
+                <a
+                  href="https://buddhaplex.github.io/leaderboard_sketches/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    icon="ordered list"
+                    content="Leaderboard"
+                    inverted
+                    color="green"
+                    size="large"
+                  />
+                </a>
+              ) : null}
+              <Button
+                icon="cog"
+                content="Settings"
+                inverted
+                color="blue"
+                size="large"
+                onClick={this.openModal}
+              />
+            </Card.Content>
+          </Card>
+        </Segment>
+        {this.state.unhired ? (
+          <Segment>
+            <Input
+              fluid
+              icon="users"
+              iconPosition="left"
+              placeholder="Search students..."
+            />
+          </Segment>
+        ) : null}
+        {this.state.unhired ? (
+          <StudentList
+            students={this.props.students}
+            updateStudent={this.props.updateStudent}
+            deleteStudent={this.props.deleteStudent}
+          />
+        ) : null}
+        <AddStudent
+          classId={this.props.classId}
+          addStudent={this.props.addClassStudent}
+          addStudentErrors={this.props.newStudentErrors}
+        />
+      </Segment.Group>
+    );
+  }
 }
 
 const EditModal = props => {
