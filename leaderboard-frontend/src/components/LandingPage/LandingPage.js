@@ -12,9 +12,10 @@ import {
   Image
 } from "semantic-ui-react";
 
-import DesktopContainer from "./LandingPageComponents/DesktopContainer";
 import leadboardExample from "./LandingPageComponents/img/LeadboardExample.PNG";
 import githubLogo from "./LandingPageComponents/img/github-logo.png";
+import gitHuntrLogo from "./LandingPageComponents/img/gitHuntrLogo.png";
+import lambdaLogo from "./LandingPageComponents/img/Lambda_Logo_Full.png"
 
 import "./LandingPage.css";
 
@@ -76,8 +77,13 @@ class LandingPage extends Component {
 
         <Container fluid>
           <Segment padded="very">
-            <Grid container stackable verticalAlign="middle">
-              <Grid.Row>
+            <Grid
+              container
+              stackable
+              padded="vertically"
+              verticalAlign="middle"
+            >
+              <Grid.Row divided>
                 <Grid.Column width={8}>
                   <Header as="h3" style={{ fontSize: "2em" }}>
                     Github and Huntr data combined.{" "}
@@ -89,10 +95,10 @@ class LandingPage extends Component {
                   </p>
                 </Grid.Column>
                 <Grid.Column floated="right" width={6}>
-                  <Image bordered rounded size="huge" src={leadboardExample} />
+                  <Image bordered rounded size="massive" src={gitHuntrLogo} />
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row>
+              <Grid.Row divided>
                 <Grid.Column width={6}>
                   <Image bordered rounded size="huge" src={leadboardExample} />
                 </Grid.Column>
@@ -196,7 +202,7 @@ class LandingPage extends Component {
           <Segment
             inverted
             vertical
-            style={{ padding: "5em 0em" }}
+            style={{ padding: "1em 0em" }}
             className="Landing__footer"
           >
             <Container>
@@ -204,28 +210,21 @@ class LandingPage extends Component {
                 <Grid.Row>
                   <Grid.Column width={3}>
                     <List link inverted>
+                      <List.Item as="a">About</List.Item>
+                      <List.Item as="a">Pricing</List.Item>
                       <List.Item as="a">Contact Us</List.Item>
-                      <List.Item as="a">Religious Ceremonies</List.Item>
-                      <List.Item as="a">Gazebo Plans</List.Item>
                     </List>
                   </Grid.Column>
-                  <Grid.Column width={3}>
-                    <Header inverted as="h4" content="Services" />
-                    <List link inverted>
-                      <List.Item as="a">Banana Pre-Order</List.Item>
-                      <List.Item as="a">DNA FAQ</List.Item>
-                      <List.Item as="a">How To Access</List.Item>
-                      <List.Item as="a">Favorite X-Men</List.Item>
-                    </List>
-                  </Grid.Column>
+
                   <Grid.Column width={7}>
-                    <Header as="h4" inverted>
-                      Footer Header
-                    </Header>
-                    <p>
-                      Extra space for a call to action inside the footer that
-                      could help re-engage users.
-                    </p>
+                    
+                      <Header
+                        inverted
+                        as="h4"
+                        content="Made by students from:"
+                      />
+                      <Image  size='small' src={lambdaLogo} />
+                    
                   </Grid.Column>
                 </Grid.Row>
               </Grid>
