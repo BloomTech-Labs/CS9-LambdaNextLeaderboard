@@ -1,41 +1,36 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
+const csv = require("fast-csv");
 
+require("dotenv").config();
+
+const Organization = require("../../models/Organization");
 const Class = require("../../models/Class");
 const Student = require("../../models/Student");
 const validateStudent = require("../../validation/students/studentValidation");
+const validateClass = require("../../validation/classes/classValidation");
 
+// TEST ROUTE
 router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
 
 // @route   GET api/classes/:id/students
-// @desc    Gets a class' unhired students
+// @desc    Gets a class' hired and unhired students
 // @access  Private
 router.get("/:id/students", (req, res) => {
   const id = req.params.id;
-  let hired = [];
 
   Class.findById(id)
-    .populate("students", null, { hired: true })
-    .then(aClassWithHired => {
-      hired = aClassWithHired.students;
-
-      Class.findById(id)
-        .populate(
-          "students",
-          null,
-          { hired: false },
-          {
-            sort: { lastname: 1, firstname: 1 }
-          }
-        )
-        .then(aClass => {
-          if (!aClass) {
-            return res
-              .status(404)
-              .json({ class: "That class does not exist." });
-          }
-          res.json({ unhired: aClass.students, hired });
-        });
+    .populate({
+      path: "students",
+      options: {
+        sort: { hired: 1, lastname: 1, firstname: 1 }
+      }
+    })
+    .then(aClass => {
+      if (!aClass) {
+        return res.status(404).json({ class: "That class does not exist" });
+      }
+      res.json(aClass.students);
     });
 });
 
@@ -56,7 +51,7 @@ router.post("/:id/students/create", (req, res) => {
 
   Class.findById(id).then(aClass => {
     if (!aClass) {
-      return res.status(404).json({ class: "That class does not exist." });
+      return res.status(404).json({ class: "That class does not exist" });
     }
 
     const newStudent = new Student({
@@ -72,5 +67,117 @@ router.post("/:id/students/create", (req, res) => {
     });
   });
 });
+
+
+
+
+// @route   PUT api/classes/:id/update
+// @desc    Updates the class' info
+// @access  Private
+router.put("/:id/update", (req, res) => {
+  const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateClass(data);
+
+  //   Validation Check
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const id = req.params.id;
+  const name = data.name;
+
+  Organization.findById(data.orgId)
+    .populate({ path: "classes", match: { name } })
+    .then(org => {
+      if (!org) {
+        return res
+          .status(404)
+          .json({ organization: "That organization does not exist" });
+      }
+
+      if (org.classes.length) {
+        return res.status(400).json({
+          name: "This organization already has a class with that name"
+        });
+      }
+
+      Class.findByIdAndUpdate(id, data).then(updated => {
+        res.json(updated);
+      });
+    });
+});
+
+// @route   DELETE api/classes/:id/delete
+// @desc    Deletes the class and it's students
+// @access  Private
+
+router.delete("/:id/delete", (req, res) => {
+  const id = req.params.id;
+
+  Class.findByIdAndRemove(id).then(removedClass => {
+    removedClass.students.forEach(aStudent => {
+      Student.findByIdAndRemove(aStudent);
+    });
+    res.json(removedClass);
+  });
+});
+
+// @route   POST api/classes/:name/importcsv
+// @desc    Adds a csv of students to the class
+// @access  Private
+router.post("/:id/importcsv", (req, res) => {
+  if (!req.files) return res.status(400).send("No files were uploaded.");
+
+  // Reference
+  const csvClassFile = req.files.file;
+  const classID = req.params.id;
+
+  // Parse csv and check for existing class in db
+  async function run() {
+    csv
+      .fromString(csvClassFile.data.toString(), {
+        headers: true,
+        ignoreEmpty: true
+      })      
+      .validate(function(data) {
+        return Student.count({ email: data.email }, function(err, count) {
+          if (count === 0) return;
+        });
+      })
+      .on("data-invalid", function(data) {
+        console.log(
+          `Student ${data["firstname"]} ${data["lastname"]} already exists.`
+        );
+      })
+      .on("data", function(data) {
+        Class.findById(classID).then(aClass => {
+          if (!aClass) {
+            return res
+              .status(404)
+              .json({ class: "That class does not exist." });
+          }
+
+          let newStudent = new Student();
+
+          newStudent.firstname = data["firstname"];
+          newStudent.lastname = data["lastname"];
+          newStudent.email = data["email"];
+          newStudent.github = data["github"];
+
+          newStudent
+            .save()
+            .then(created => {
+              aClass.students.push(created._id);
+              aClass.save();
+              //res.status(201).json(created); //Error: Can't set headers after they are sent.
+              console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
+            })
+            .catch(err => console.log(err));
+        });
+      });
+  }
+
+  run();
+})
 
 module.exports = router;

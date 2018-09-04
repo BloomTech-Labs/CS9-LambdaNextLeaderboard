@@ -9,7 +9,7 @@ const STUDENT_URL = process.env.REACT_APP_STUDENT_URL;
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
 
 export const updateStudent = obj => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.token;
   return dispatch => {
     const options = {
       method: "PUT",
@@ -39,7 +39,7 @@ export const deleteStudent = obj => {
       .delete(`${STUDENT_URL}${obj.id}/delete`, {
         headers: {
           "content-type": "application/json",
-          Authorization: localStorage.getItem("token")
+          Authorization: localStorage.token
         }
       })
       .then(res => {

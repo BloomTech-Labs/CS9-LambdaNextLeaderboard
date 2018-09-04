@@ -16,7 +16,6 @@ export default class AddClass extends Component {
   };
 
   handleSubmit = () => {
-    console.log("submitting class");
     this.props.addClass({
       id: this.props.orgId,
       name: this.state.newClassName
