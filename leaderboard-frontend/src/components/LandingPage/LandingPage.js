@@ -16,6 +16,7 @@ import leadboardExample from "./LandingPageComponents/img/LeadboardExample.PNG";
 import githubLogo from "./LandingPageComponents/img/github-logo.png";
 import gitHuntrLogo from "./LandingPageComponents/img/gitHuntrLogo.png";
 import lambdaLogo from "./LandingPageComponents/img/Lambda_Logo_Full.png";
+import climbToTop from "./LandingPageComponents/img/climbToTop.png";
 
 import "./LandingPage.css";
 
@@ -121,7 +122,7 @@ class LandingPage extends Component {
             <Grid celled="internally" columns="equal" stackable>
               <Grid.Row textAlign="center">
                 <Grid.Column
-                  style={{ paddingBottom: "5em", paddingTop: "5em" }}
+                  style={{ paddingBottom: "4em", paddingTop: "4em" }}
                 >
                   <Header as="h3" style={{ fontSize: "2em" }}>
                     "Next Steps is the perfect way to ensure that our students
@@ -132,7 +133,7 @@ class LandingPage extends Component {
                   </p>
                 </Grid.Column>
                 <Grid.Column
-                  style={{ paddingBottom: "5em", paddingTop: "5em" }}
+                  style={{ paddingBottom: "4em", paddingTop: "4em" }}
                 >
                   <Header as="h3" style={{ fontSize: "2em" }}>
                     "I always thought I made too many commits. Now it's taken me
@@ -147,59 +148,72 @@ class LandingPage extends Component {
             </Grid>
           </Segment>
 
-          
-            <Grid centered padded='vertically'>
-              <Grid.Column width={9}>
-                <Header as="h3" textAlign="center" style={{ fontSize: "2em" }}>
-                  Sign up now!{" "}
-                </Header>
-                <Form size="large">
-                  <Form.Field>
-                    <Input
-                      name="RegisterUsername"
-                      icon="user"
-                      iconPosition="left"
-                      placeholder="Pick a username"
-                      type="text"
-                    />
-                  </Form.Field>
-                  <Form.Field>
-                    <Input
-                      name="RegisterEmail"
-                      icon="mail"
-                      iconPosition="left"
-                      placeholder="Your email address"
-                      type="text"
-                    />
-                  </Form.Field>
-                  <Form.Field>
-                    <Input
-                      name="RegisterPassword"
-                      icon="lock"
-                      iconPosition="left"
-                      placeholder="Create a password"
-                      type="password"
-                    />
-                  </Form.Field>
-                  <Form.Field>
-                    <Input
-                      name="RegisterPassword2"
-                      icon="lock"
-                      iconPosition="left"
-                      placeholder="Confirm password"
-                      type="password"
-                    />
-                  </Form.Field>
-                  <Button
-                    fluid
-                    color="green"
-                    content="Create My Account"
-                    size="large"
+          <Segment style={{ padding: "4em 0em" }} vertical>
+            <Container text>
+              <Header as="h3" style={{ fontSize: "2em" }}>
+                Help everyone stay on top, to get to the top.
+              </Header>
+              <p style={{ fontSize: "1.33em" }}>
+                Student effort reflects not only on the student, but the
+                organization as well. Easily track and identify activities than
+                can then be used to create a collaborative environment where
+                everyone is capable of achieving their goals.
+              </p>
+              <Image bordered rounded size="large" centered src={climbToTop} />
+            </Container>
+          </Segment>
+
+          {/* <Grid centered padded="vertically">
+            <Grid.Column width={9}>
+              <Header as="h2" textAlign="center" style={{ fontSize: "2em" }}>
+                Sign up now!{" "}
+              </Header>
+              <Form size="large">
+                <Form.Field>
+                  <Input
+                    name="RegisterUsername"
+                    icon="user"
+                    iconPosition="left"
+                    placeholder="Pick a username"
+                    type="text"
                   />
-                </Form>
-              </Grid.Column>
-            </Grid>
-         
+                </Form.Field>
+                <Form.Field>
+                  <Input
+                    name="RegisterEmail"
+                    icon="mail"
+                    iconPosition="left"
+                    placeholder="Your email address"
+                    type="text"
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Input
+                    name="RegisterPassword"
+                    icon="lock"
+                    iconPosition="left"
+                    placeholder="Create a password"
+                    type="password"
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Input
+                    name="RegisterPassword2"
+                    icon="lock"
+                    iconPosition="left"
+                    placeholder="Confirm password"
+                    type="password"
+                  />
+                </Form.Field>
+                <Button
+                  fluid
+                  color="green"
+                  content="Create My Account"
+                  size="large"
+                />
+              </Form>
+            </Grid.Column>
+          </Grid> */}
 
           <Segment
             inverted
