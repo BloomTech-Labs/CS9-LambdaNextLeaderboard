@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {updateUserAction} from '../../actions'
+// import {updateUserAction} from '../../actions'
+import  {setSettingsAction} from '../../actions'
 import "./Setings.css"
 
 class Settings extends Component {
@@ -32,7 +33,8 @@ class Settings extends Component {
         }
         console.log('Saved', this.state)
         console.log("org", updateAdmin)
-        this.props.updateUserAction(updateAdmin)
+        this.props.setSettingsAction(false)
+        // this.props.updateUserAction(updateAdmin)
     }
     checkCredentials = () => {
 
@@ -144,4 +146,4 @@ const maptStateToProps = state => {
         updateAdmin: state.updateAdmin
     }
 }
-export default connect(maptStateToProps, {updateUserAction})(Settings)
+export default connect(maptStateToProps, {setSettingsAction})(Settings)

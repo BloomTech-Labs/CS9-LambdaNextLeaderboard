@@ -16,6 +16,7 @@ export const ERRORS = "ERRORS";
 // // export const GET_STUDENTS = "GET_STUDENTS";
 export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
 export  const CLASS_TO_QUERY = "CLASS_TO_QUERY";
+export const CHANGE_SETTINGS = "CHANGE_SETTINGS"
 // // export const EDIT_STUDENT = "EDIT_STUDENT";
 // // export const REMOVE_STUDENT = "REMOVE_STUDENT";
 // // export const UPDATE_ADMIN = "UPDATE_ADMIN";
@@ -81,6 +82,14 @@ export const setClassForQuery = classID => {
         dispatch({
             type: CLASS_TO_QUERY,
             payload: classID
+        })
+    }
+}
+export const setSettingsAction = (status) => {
+    return dispatch => {
+        dispatch({
+            type: CHANGE_SETTINGS,
+            payload: status
         })
     }
 }

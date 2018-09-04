@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 // import { Link } from "react-router-dom";
 import {connect} from "react-redux";
-import {getGithubDataAction, setClassForQuery} from '../../actions'
 
 import {
     Segment,
@@ -22,6 +21,9 @@ import LeaderBoard from "../Leaderboard/LeaderBoard";
 // actions
 import {getClassStudents, addClassStudent} from "../../actions/classActions";
 import {updateStudent, deleteStudent} from "../../actions/studentActions";
+import {getGithubDataAction, setClassForQuery, setSettingsAction} from '../../actions'
+import Settings from "../Settings/Settings";
+
 
 class ClassView extends Component {
     constructor(props) {
@@ -32,7 +34,8 @@ class ClassView extends Component {
             hired: 0,
             total: 0,
             openEditModal: false,
-            leaderboard: false
+            leaderboard: false,
+            settings: false
 
         };
     }
@@ -114,12 +117,22 @@ class ClassView extends Component {
     componentDidMount = () => {
         this.getStudents();
     };
+    setSettings = () => {
+        this.setState({settings: true})
+        this.props.setSettingsAction(true);
+    }
 
     render() {
         if (this.state.leaderboard === true && this.props.classToQuery !== null) {
             return (
                 <LeaderBoard/>
             )
+        }
+        if (this.state.settings === true && this.props.changeSettings === true) {
+            return (
+                <Settings/>
+
+                )
         }
 
         return (
@@ -156,7 +169,7 @@ class ClassView extends Component {
                                 inverted
                                 color="blue"
                                 size="large"
-                                onClick={this.openModal}
+                                onClick={this.setSettings}
                             />
                         </Card.Content>
                     </Card>
@@ -212,11 +225,12 @@ const mapStateToProps = state => {
         createdStudent: state.createdStudent,
         deletedStudent: state.deletedStudent,
         githubData: state.githubData,
-        classToQuery: state.classToQuery
+        classToQuery: state.classToQuery,
+        changeSettings: state.changeSettings
     };
 };
 
 export default connect(
     mapStateToProps,
-    {getClassStudents, getGithubDataAction, setClassForQuery, addClassStudent, updateStudent, deleteStudent}
+    {getClassStudents, setSettingsAction, getGithubDataAction, setClassForQuery, addClassStudent, updateStudent, deleteStudent}
 )(ClassView);

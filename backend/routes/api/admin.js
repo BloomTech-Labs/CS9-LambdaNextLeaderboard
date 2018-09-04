@@ -105,6 +105,51 @@ router.post("/login", (req, res) => {
     });
 });
 
+// @route   POST api/admins/update
+// @desc    Login admin and return JWT
+// @access  Public
+router.post("/update", (req, res) => {
+    const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+    const { errors, isValid } = validateLogin(data);
+
+    //   Validation Check
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const email = data.email;
+    const password = data.password;
+
+    Admin.findOne({ email })
+        .select("+password")
+        .then(admin => {
+            if (!admin) {
+                errors.invalidLogin = "Invalid Credentials";
+                return res.status(400).json(errors);
+            }
+
+            // Check Password
+            bcrypt.compare(password, admin.password).then(isMatch => {
+                if (isMatch) {
+                    // Successful login creating token
+                    // const payload = { id: admin._id, username: admin.username };
+                    // jwt.sign(payload, ACCESS_KEY, { expiresIn: "60m" }, (err, token) => {
+                    //     res.json({
+                    //         success: true,
+                    //         token: "Bearer " + token,
+                    //         username: admin.username,
+                    //         id: admin._id
+                    //     });
+                    // });
+                    
+                } else {
+                    errors.invalidLogin = "Invalid Credentials";
+                    return res.status(400).json(errors);
+                }
+            });
+        });
+});
+
 // @route   GET api/admins/:id/organizations
 // @desc    Gets all of the admin's organizations
 // @access  Private

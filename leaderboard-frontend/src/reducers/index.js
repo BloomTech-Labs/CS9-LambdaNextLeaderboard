@@ -13,7 +13,8 @@ import {
 //   REDIRECT_DATA_CLASS,
 //   GET_STUDENTS,
     GET_GITHUB_DATA,
-    CLASS_TO_QUERY
+    CLASS_TO_QUERY,
+    CHANGE_SETTINGS
 //   EDIT_STUDENT,
 //   REMOVE_STUDENT
 } from "../actions/";
@@ -84,6 +85,7 @@ const initialState = {
     createdStudent: {},
     updatedStudent: {},
     deletedStudent: {},
+    changeSettings: false
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -289,6 +291,10 @@ const studentReducer = (state = initialState, action) => {
                 githubData: action.payload,
                 gitStats: action.payload.stats
             });
+        case CHANGE_SETTINGS:
+            return Object.assign({}, state, {
+                changeSettings: action.payload
+            })
 
         default:
             return state;
