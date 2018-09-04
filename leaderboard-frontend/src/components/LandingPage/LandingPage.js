@@ -147,8 +147,8 @@ class LandingPage extends Component {
             </Grid>
           </Segment>
 
-          <Segment>
-            <Grid centered>
+          
+            <Grid centered padded='vertically'>
               <Grid.Column width={9}>
                 <Header as="h3" textAlign="center" style={{ fontSize: "2em" }}>
                   Sign up now!{" "}
@@ -199,7 +199,7 @@ class LandingPage extends Component {
                 </Form>
               </Grid.Column>
             </Grid>
-          </Segment>
+         
 
           <Segment
             inverted
