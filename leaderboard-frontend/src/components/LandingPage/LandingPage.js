@@ -28,18 +28,14 @@ class LandingPage extends Component {
     this.state = { openModal: false };
   }
 
-  componentDidMount = () => {
-    this.refs.modal.handleOpenModal()
-    this.refs.modal.handleCloseModal()
-  }
-
-  
- 
+  handleCTAClick = () => {
+    console.log(this.props);
+    this.props.handleCTAClick();
+  };
 
   render() {
     return (
       <div>
-        <Nav container={this} ref = "modal"  />
         <Container fluid className="Landing__head">
           <Header
             as="h1"
@@ -65,7 +61,7 @@ class LandingPage extends Component {
             }}
           />
           <Grid centered style={{ paddingBottom: "2em", paddingTop: "2em" }}>
-            <Button primary size="huge">
+            <Button primary size="huge" onClick={this.handleCTAClick}>
               Get Started
               <Icon name="right arrow" />
             </Button>
@@ -155,65 +151,13 @@ class LandingPage extends Component {
               </p>
               <Image bordered rounded size="large" centered src={climbToTop} />
               <Grid centered style={{ paddingTop: "4em" }}>
-                <Button primary size="huge">
+                <Button primary size="huge" onClick={this.handleCTAClick}>
                   Get Started
                   <Icon name="right arrow" />
                 </Button>
               </Grid>
             </Container>
           </Segment>
-
-          {/* <Grid centered padded="vertically">
-            <Grid.Column width={9}>
-              <Header as="h2" textAlign="center" style={{ fontSize: "2em" }}>
-                Sign up now!{" "}
-              </Header>
-              <Form size="large">
-                <Form.Field>
-                  <Input
-                    name="RegisterUsername"
-                    icon="user"
-                    iconPosition="left"
-                    placeholder="Pick a username"
-                    type="text"
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Input
-                    name="RegisterEmail"
-                    icon="mail"
-                    iconPosition="left"
-                    placeholder="Your email address"
-                    type="text"
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Input
-                    name="RegisterPassword"
-                    icon="lock"
-                    iconPosition="left"
-                    placeholder="Create a password"
-                    type="password"
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Input
-                    name="RegisterPassword2"
-                    icon="lock"
-                    iconPosition="left"
-                    placeholder="Confirm password"
-                    type="password"
-                  />
-                </Form.Field>
-                <Button
-                  fluid
-                  color="green"
-                  content="Create My Account"
-                  size="large"
-                />
-              </Form>
-            </Grid.Column>
-          </Grid> */}
 
           <Segment
             inverted
@@ -237,6 +181,7 @@ class LandingPage extends Component {
                     <Image
                       size="small"
                       as="a"
+                      target="_blank"
                       href="https://lambdaschool.com/"
                       src={lambdaLogo}
                     />

@@ -24,6 +24,10 @@ class App extends Component {
     }
   };
 
+  handleOpenModal = () => {
+    this.nav.handleOpenModal(null, { content: "Register" });
+  };
+
   componentDidMount = () => {
     this.interval = setInterval(this.checkTokenExpiry, 5000);
   };
@@ -35,14 +39,21 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="APP">
+        <div className="APP">          
           {/* onRef gives App access to Navbar methods   Ex: this.nav.sessionHasExpired() */}
           <NAVBAR
             onRef={ref => (this.nav = ref)}
             checkTokenExpiry={this.checkTokenExpiry}
           />
           <div className="APP__BODY">
-            <Route exact path="/" component={LANDINGPAGE} />
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <LANDINGPAGE {...props} handleCTAClick={this.handleOpenModal} />
+              )}
+              // component={LANDINGPAGE}
+            />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
