@@ -68,9 +68,6 @@ router.post("/:id/students/create", (req, res) => {
   });
 });
 
-
-
-
 // @route   PUT api/classes/:id/update
 // @desc    Updates the class' info
 // @access  Private
@@ -132,52 +129,69 @@ router.post("/:id/importcsv", (req, res) => {
   const csvClassFile = req.files.file;
   const classID = req.params.id;
 
+  let invalidStudents = [];
+  let validStudents = [];
+
   // Parse csv and check for existing class in db
   async function run() {
     csv
       .fromString(csvClassFile.data.toString(), {
         headers: true,
         ignoreEmpty: true
-      })      
-      .validate(function(data) {
-        return Student.count({ email: data.email }, function(err, count) {
-          if (count === 0) return;
-        });
       })
-      .on("data-invalid", function(data) {
-        console.log(
-          `Student ${data["firstname"]} ${data["lastname"]} already exists.`
-        );
-      })
+      // .validate(function(data) {
+      //   return Student.count({ email: data.email }, function(err, count) {
+      //     if (count < 0) return;
+      //   });
+      // })
+      // .on("data-invalid", function(data) {
+      //   console.log(
+      //     `Student ${data["firstname"]} ${data["lastname"]} already exists.`
+      //   );
+      // })
       .on("data", function(data) {
-        Class.findById(classID).then(aClass => {
-          if (!aClass) {
-            return res
-              .status(404)
-              .json({ class: "That class does not exist." });
+        const { errors, isValid } = validateStudent(data);
+
+        if (!isValid) {
+          console.log("Data is invalid.");
+          return invalidStudents.push(data);
+        }
+
+        Student.findOne({ email: data.email }).then(aStudent => {
+          if (aStudent) {
+            console.log(`${data.email} already in use.`)
+            return invalidStudents.push(data);
           }
 
-          let newStudent = new Student();
+          Class.findById(classID).then(aClass => {
+            if (!aClass) {
+              return res
+                .status(404)
+                .json({ class: "That class does not exist." });
+            }
 
-          newStudent.firstname = data["firstname"];
-          newStudent.lastname = data["lastname"];
-          newStudent.email = data["email"];
-          newStudent.github = data["github"];
+            let newStudent = new Student();
 
-          newStudent
-            .save()
-            .then(created => {
-              aClass.students.push(created._id);
-              aClass.save();
-              //res.status(201).json(created); //Error: Can't set headers after they are sent.
-              console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
-            })
-            .catch(err => console.log(err));
+            newStudent.firstname = data["firstname"];
+            newStudent.lastname = data["lastname"];
+            newStudent.email = data["email"];
+            newStudent.github = data["github"];
+
+            newStudent
+              .save()
+              .then(created => {
+                aClass.students.push(created._id);
+                aClass.save();
+                //res.status(201).json(created); //Error: Can't set headers after they are sent.
+                console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
+              })
+              .catch(err => console.log(err));
+          });
         });
       });
   }
 
   run();
-})
+});
 
 module.exports = router;
