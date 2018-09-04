@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Segment, Card, List, Button, Modal, Form } from "semantic-ui-react";
+import {
+  Segment,
+  Card,
+  List,
+  Button,
+  Modal,
+  Form,
+  Header
+} from "semantic-ui-react";
 
 export default class OrganizationView extends Component {
   constructor(props) {
@@ -33,7 +41,11 @@ export default class OrganizationView extends Component {
   };
 
   handleDelete = () => {
-    this.setState({ openEditModal: false, openConfirm: false });
+    this.setState({
+      openEditModal: false,
+      openConfirm: false,
+      confirmationInput: ""
+    });
     this.props.delete({ id: this.props.id });
   };
 
@@ -41,6 +53,7 @@ export default class OrganizationView extends Component {
     return (
       <Segment.Group>
         <Segment>
+          <Header as="h2" content="Organization View" textAlign="center" />
           <Card fluid color="orange">
             <Card.Content textAlign="center">
               <Card.Header>{this.props.name}</Card.Header>
@@ -92,7 +105,7 @@ const EditModal = props => {
       dimmer="blurring"
     >
       <Modal.Header icon="cog" content="Organization Settings" />
-      <Modal.Content content="Hello" />
+      <Modal.Content content="Billing options or current subscription details." />
       <Modal.Actions>
         <Button
           color="red"

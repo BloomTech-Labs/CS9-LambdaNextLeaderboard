@@ -101,6 +101,7 @@ class ClassView extends Component {
       <Segment.Group>
         <EditModal open={this.state.openEditModal} close={this.closeModal} />
         <Segment>
+          <Header as="h2" content="Class View" textAlign="center" />
           <Card fluid color="blue">
             <Card.Content textAlign="center">
               <Card.Header textAlign="center">

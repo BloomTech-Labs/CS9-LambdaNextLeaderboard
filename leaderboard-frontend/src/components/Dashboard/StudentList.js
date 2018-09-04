@@ -70,35 +70,37 @@ export default class StudentList extends Component {
                   </Card.Description>
                 </Card.Content>
                 <Card.Content extra>
-                  <Button
-                    name={student._id}
-                    icon="money"
-                    content="Hired"
-                    inverted
-                    color="green"
-                    size="small"
-                    onClick={this.handleHire}
-                  />
-                  <Button
-                    id={student._id}
-                    name="openEditModal"
-                    icon="wrench"
-                    content="Edit"
-                    inverted
-                    color="blue"
-                    size="small"
-                    onClick={this.openModal}
-                  />
-                  <Button
-                    id={student._id}
-                    name="openDeleteModal"
-                    icon="trash"
-                    content="Delete"
-                    inverted
-                    color="red"
-                    size="small"
-                    onClick={this.openModal}
-                  />
+                  <Button.Group widths="3">
+                    <Button
+                      name={student._id}
+                      icon="money"
+                      content="Hired"
+                      inverted
+                      color="green"
+                      size="small"
+                      onClick={this.handleHire}
+                    />
+                    <Button
+                      id={student._id}
+                      name="openEditModal"
+                      icon="wrench"
+                      content="Edit"
+                      inverted
+                      color="blue"
+                      size="small"
+                      onClick={this.openModal}
+                    />
+                    <Button
+                      id={student._id}
+                      name="openDeleteModal"
+                      icon="trash"
+                      content="Delete"
+                      inverted
+                      color="red"
+                      size="small"
+                      onClick={this.openModal}
+                    />
+                  </Button.Group>
                 </Card.Content>
               </Card>
             ) : null;

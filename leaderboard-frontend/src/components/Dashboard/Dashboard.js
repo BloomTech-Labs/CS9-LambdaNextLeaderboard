@@ -62,7 +62,11 @@ class Dashboard extends Component {
 
   componentDidUpdate = (prevProps, prevState) => {
     // No Organizations -> Showing add organization component
-    if (!this.props.organizations.length && this.state.activeOrg !== "addOrg") {
+    if (
+      !this.props.organizations.length &&
+      this.state.activeOrg !== "addOrg" &&
+      !this.props.createdOrganization._id
+    ) {
       this.handleOrgMenuClick(null, { id: "addOrg", name: "addOrg" });
     }
 
