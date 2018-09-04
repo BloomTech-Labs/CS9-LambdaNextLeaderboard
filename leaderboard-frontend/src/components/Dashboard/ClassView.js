@@ -198,6 +198,7 @@ class ClassView extends Component {
           classId={this.props.classId}
           addStudent={this.props.addClassStudent}
           addStudentErrors={this.props.newStudentErrors}
+          postCsvStudents={this.props.postCsvStudents}
         />
       </Segment.Group>
     );
