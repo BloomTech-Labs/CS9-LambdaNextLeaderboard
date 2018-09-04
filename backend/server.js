@@ -16,6 +16,7 @@ const students = require("./routes/api/student");
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
 const leaderboard = require("./routes/api/leaderboard");
+const customer = require('./routes/api/customerCreation');
 
 // CSV imports
 //const template = require("./template.js");
@@ -94,6 +95,11 @@ app.use(
 app.use("/api/billing",
   cors(corsOptions),
   billing
+);
+
+app.use("/api/customer",
+  cors(corsOptions),
+  customer
 );
 
 // CSV routes
