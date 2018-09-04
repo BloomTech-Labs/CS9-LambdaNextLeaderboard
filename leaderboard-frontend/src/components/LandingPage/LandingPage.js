@@ -12,11 +12,11 @@ import {
   Image
 } from "semantic-ui-react";
 
-import leadboardExample from "./LandingPageComponents/img/LeadboardExample.PNG";
-import githubLogo from "./LandingPageComponents/img/github-logo.png";
-import gitHuntrLogo from "./LandingPageComponents/img/gitHuntrLogo.png";
-import lambdaLogo from "./LandingPageComponents/img/Lambda_Logo_Full.png";
-import climbToTop from "./LandingPageComponents/img/climbToTop.png";
+import leadboardExample from "./img/LeadboardExample.PNG";
+import githubLogo from "./img/github-logo.png";
+import gitHuntrLogo from "./img/gitHuntrLogo.png";
+import lambdaLogo from "./img/Lambda_Logo_Full.png";
+import climbToTop from "./img/climbToTop.png";
 
 import "./LandingPage.css";
 
