@@ -107,37 +107,34 @@ class LandingPage extends Component {
                   style={{ paddingBottom: "5em", paddingTop: "5em" }}
                 >
                   <Header as="h3" style={{ fontSize: "2em" }}>
-                    "What a Company"
+                    "Next Steps is the perfect way to ensure that our students
+                    stay proactive in keeping their coding skills sharp."
                   </Header>
                   <p style={{ fontSize: "1.33em" }}>
-                    That is what they all say about us
+                    <b>Bobby Lecturer</b> - Lambda School instructor, probably
                   </p>
                 </Grid.Column>
                 <Grid.Column
                   style={{ paddingBottom: "5em", paddingTop: "5em" }}
                 >
                   <Header as="h3" style={{ fontSize: "2em" }}>
-                    "I always thought I made too many commits.  Now it's taken me to the top!"
+                    "I always thought I made too many commits. Now it's taken me
+                    to the top!"
                   </Header>
                   <p style={{ fontSize: "1.33em" }}>
-                    <Image avatar src="/images/avatar/large/nan.jpg" />
-                    <b>Nan</b> Github user
+                    <Image
+                      avatar
+                      src="./LandingPageComponents/img/github-logo.png"
+                    />
+                    <b>Nan</b> - Github user
                   </p>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
           </Segment>
-        </Container>
 
-        {/* <Grid columns={2} stackable>
-              <Grid.Column verticalAlign="middle">
-                <Header as="h1" size="huge" color="olive">
-                  Keep track of work and progress with NextSteps
-                </Header>
-                <Header as="h2">
-                  It's a fun and competitive way to gain experience.
-                </Header>
-              </Grid.Column>
+          <Segment>
+            <Grid>
               <Grid.Column>
                 <Form size="large">
                   <Form.Field>
@@ -185,8 +182,9 @@ class LandingPage extends Component {
                   />
                 </Form>
               </Grid.Column>
-            </Grid> */}
-        {/* </Container> */}
+            </Grid>
+          </Segment>
+        </Container>
       </div>
     );
   }
