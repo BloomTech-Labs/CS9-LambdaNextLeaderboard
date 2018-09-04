@@ -9,6 +9,7 @@ import {
   Icon,
   Input
 } from "semantic-ui-react";
+import StudentCard from "./StudentCard";
 
 export default class StudentList extends Component {
   constructor(props) {
@@ -74,11 +75,11 @@ export default class StudentList extends Component {
           selected={this.state.selectedStudent}
           delete={this.handleDelete}
         />
-        <EditModal
-          open={this.state.openEditModal}
-          close={this.closeModal}
-          selected={this.state.selectedStudent}
-        />
+        {/*<EditModal*/}
+        {/*open={this.state.openEditModal}*/}
+        {/*close={this.closeModal}*/}
+        {/*selected={this.state.selectedStudent}*/}
+        {/*/>*/}
         <Card.Group itemsPerRow="2" stackable>
           {this.props.students.map((student, index) => {
             return !student.hired ? (
@@ -187,21 +188,21 @@ export default class StudentList extends Component {
   }
 }
 
-const EditModal = props => {
-  return (
-    <Modal
-      centered
-      size="small"
-      closeIcon
-      open={props.open}
-      onClose={props.close}
-      dimmer="blurring"
-    >
-      <Header icon="wrench" content="Edit Student" />
-      <Modal.Content content="Hello" />
-    </Modal>
-  );
-};
+// const EditModal = props => {
+//   return (
+//     <Modal
+//       centered
+//       size="small"
+//       closeIcon
+//       open={props.open}
+//       onClose={props.close}
+//       dimmer="blurring"
+//     >
+//       <Header icon="wrench" content="Edit Student" />
+//       <Modal.Content content="Hello" />
+//     </Modal>
+//   );
+// };
 
 const DeleteModal = props => {
   return (

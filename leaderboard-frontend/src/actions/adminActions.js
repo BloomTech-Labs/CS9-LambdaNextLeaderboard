@@ -9,7 +9,8 @@ export const ADMIN_LOGOUT = "ADMIN_LOGOUT";
 export const GET_ADMIN_ORGANIZATIONS = "GET_ADMIN_ORGANIZATIONS";
 export const ADD_ADMIN_ORGANIZATIONS = "ADD_ADMIN_ORGANIZATIONS";
 export const ADD_ADMIN_ORGANIZATIONS_ERRORS = "ADD_ADMIN_ORGANIZATIONS_ERRORS";
-
+export const UPDATE_ADMIN = "UPDATE_ADMIN";
+export const ERRORS = "ERRORS";
 const ADMIN_URL = process.env.REACT_APP_ADMIN_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
@@ -50,7 +51,24 @@ export const loginAdminAction = obj => {
       });
   };
 };
-
+export const updateAdminAction = (adminObject) => {
+    return dispatch => {
+        axios
+            .put(`${ADMIN_URL}update`, {token: dataEncrypt(adminObject)})
+            .then(res => {
+                dispatch({
+                    type: UPDATE_ADMIN,
+                    payload: res.admin, //Student data object returned
+                });
+            })
+            .catch(err => {
+                dispatch({
+                    type: ERRORS,
+                    payload: err.response.data
+                });
+            });
+    }
+}
 export const logoutAdminAction = () => {
   localStorage.removeItem("token");
   return dispatch => {

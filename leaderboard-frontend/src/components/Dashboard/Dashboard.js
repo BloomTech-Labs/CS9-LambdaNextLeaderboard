@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Container, Grid, Menu, Transition, Label } from "semantic-ui-react";
 import { connect } from "react-redux";
+
 import jwt from "jsonwebtoken";
 
 // components
@@ -11,31 +12,37 @@ import ClassView from "./ClassView";
 
 // actions
 import {
-  getAdminOrganizations,
-  addAdminOrganization
+    getAdminOrganizations,
+    addAdminOrganization
 } from "../../actions/adminActions";
 import {
   getOrganizationClasses,
   addOrganizationClass,
   deleteOrganization
 } from "../../actions/organizationActions";
+import {setClassForQuery, setSettingsAction} from '../../actions'
+
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      activeOrg: "",
-      activeClass: "",
-      activeOrgName: "",
-      activeClassName: ""
+        this.state = {
+            activeOrg: "",
+            activeClass: "",
+            activeOrgName: "",
+            activeClassName: ""
+        };
+    }
+
+    getOrganizations = () => {
+        const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+        this.props.getAdminOrganizations({id});
     };
-  }
 
-  getOrganizations = () => {
-    const id = jwt.decode(localStorage.token.split(" ")[1]).id;
-    this.props.getAdminOrganizations({ id });
-  };
+    getClasses = () => {
+        this.props.getOrganizationClasses({id: this.state.activeOrg});
+    };
 
   getClasses = id => {
     if (id) {
@@ -137,9 +144,9 @@ class Dashboard extends Component {
     }
   };
 
-  componentDidMount = () => {
-    this.getOrganizations();
-  };
+    componentDidMount = () => {
+        this.getOrganizations();
+    };
 
   render() {
     const { activeOrg, activeClass } = this.state;
@@ -258,28 +265,29 @@ class Dashboard extends Component {
               />
             ) : null}
 
-            {/* ADD CLASS VIEW */}
-            {activeClass === "addClass" ? (
-              <AddClass
-                orgId={this.state.activeOrg}
-                orgName={this.state.activeOrgName}
-                addClass={this.props.addOrganizationClass}
-                addClassErrors={this.props.newClassErrors}
-              />
-            ) : null}
+                        {/* ADD CLASS VIEW */}
+                        {activeClass === "addClass" ? (
+                            <AddClass
+                                orgId={this.state.activeOrg}
+                                orgName={this.state.activeOrgName}
+                                addClass={this.props.addOrganizationClass}
+                                addClassErrors={this.props.newClassErrors}
+                            />
+                        ) : null}
 
-            {/* CLASS VIEW */}
-            {activeClass !== "" && activeClass !== "addClass" ? (
-              <ClassView
-                classId={this.state.activeClass}
-                className={this.state.activeClassName}
-              />
-            ) : null}
-          </Grid.Column>
-        </Grid>
-      </Container>
-    );
-  }
+                        {/* CLASS VIEW */}
+                        {activeClass !== "" && activeClass !== "addClass" ? (
+                            <ClassView
+                                classId={this.state.activeClass}
+                                className={this.state.activeClassName}
+                                props={this.props}
+                            />
+                        ) : null}
+                    </Grid.Column>
+                </Grid>
+            </Container>
+        );
+    }
 }
 
 const mapStateToProps = state => {
@@ -289,10 +297,10 @@ const mapStateToProps = state => {
     createdOrganization: state.createdOrganization,
     deletedOrganization: state.deletedOrganization,
 
-    orgClasses: state.organizationClasses,
-    newClassErrors: state.newClassErrors,
-    createdClass: state.createdClass
-  };
+        orgClasses: state.organizationClasses,
+        newClassErrors: state.newClassErrors,
+        createdClass: state.createdClass
+    };
 };
 
 export default connect(
