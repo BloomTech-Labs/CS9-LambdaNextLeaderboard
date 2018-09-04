@@ -27,7 +27,9 @@ import {
     ADMIN_LOGOUT,
     GET_ADMIN_ORGANIZATIONS,
     ADD_ADMIN_ORGANIZATIONS_ERRORS,
-    ADD_ADMIN_ORGANIZATIONS
+    ADD_ADMIN_ORGANIZATIONS,
+    UPDATE_ADMIN,
+    ERRORS
 } from "../actions/adminActions";
 import {
     GET_ORGANIZATION_CLASSES,
@@ -85,7 +87,8 @@ const initialState = {
     createdStudent: {},
     updatedStudent: {},
     deletedStudent: {},
-    changeSettings: false
+    changeSettings: false,
+    updateAdmin: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -127,10 +130,10 @@ const studentReducer = (state = initialState, action) => {
         //   return Object.assign({}, state, {
         //     registerErrors: action.payload
         //   });
-        // case ERRORS:
-        //   return Object.assign({}, state, {
-        //     errors: action.payload
-        //   });
+        case ERRORS:
+          return Object.assign({}, state, {
+            errors: action.payload
+          });
         // // case ADD_CLASS:
         // //     return Object.assign({}, state, {
         // //         students: {...state.user, username: action.user},
@@ -294,6 +297,10 @@ const studentReducer = (state = initialState, action) => {
         case CHANGE_SETTINGS:
             return Object.assign({}, state, {
                 changeSettings: action.payload
+            });
+        case UPDATE_ADMIN:
+            return Object.assign({}, state, {
+                updateAdmin: action.payload
             })
 
         default:
