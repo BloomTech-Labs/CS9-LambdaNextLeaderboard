@@ -16,7 +16,7 @@ import StudentList from "./StudentList";
 import AddStudent from "./AddStudent";
 
 // actions
-import { getClassStudents, addClassStudent } from "../../actions/classActions";
+import { getClassStudents, addClassStudent, postCsvStudents } from "../../actions/classActions";
 import { updateStudent, deleteStudent } from "../../actions/studentActions";
 
 class ClassView extends Component {
@@ -162,6 +162,7 @@ class ClassView extends Component {
           classId={this.props.classId}
           addStudent={this.props.addClassStudent}
           addStudentErrors={this.props.newStudentErrors}
+          postCsvStudents={this.props.postCsvStudents}
         />
       </Segment.Group>
     );
@@ -196,5 +197,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { getClassStudents, addClassStudent, updateStudent, deleteStudent }
+  { getClassStudents, addClassStudent, updateStudent, deleteStudent, postCsvStudents }
 )(ClassView);

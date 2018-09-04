@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Segment, Header, Icon, Form, Label } from "semantic-ui-react";
+import {
+  Segment,
+  Header,
+  Icon,
+  Form,
+  Label,
+  Button,
+  Input,
+  Tab
+} from "semantic-ui-react";
 
 export default class AddStudent extends Component {
   constructor(props) {
@@ -9,7 +18,8 @@ export default class AddStudent extends Component {
       firstname: "",
       lastname: "",
       email: "",
-      github: ""
+      github: "",
+      csvFile: null
     };
   }
 
@@ -29,82 +39,157 @@ export default class AddStudent extends Component {
     });
   };
 
-  render() {
-    return (
-      <Segment>
-        <Header as="h2" icon textAlign="center" size="huge">
-          <Icon name="user" circular />
-          <Header.Content>Add New Student</Header.Content>
-        </Header>
+  handleImportChange = e => {
+    this.setState({
+      csvFile: e.target.files[0]
+    });
+    console.log("CSV ready for upload.");
+  };
 
-        <Segment>
-          <Form>
-            <Form.Field error={Boolean(this.props.addStudentErrors.firstname)}>
-              {this.props.addStudentErrors.firstname ? (
-                <Label
-                  color="red"
-                  pointing="below"
-                  content={this.props.addStudentErrors.firstname}
-                />
-              ) : null}
-              <Form.Input
-                name="firstname"
-                placeholder="First name"
-                onChange={this.handleInput}
-              />
-            </Form.Field>
-            <Form.Field error={Boolean(this.props.addStudentErrors.lastname)}>
-              {this.props.addStudentErrors.lastname ? (
-                <Label
-                  color="red"
-                  pointing="below"
-                  content={this.props.addStudentErrors.lastname}
-                />
-              ) : null}
-              <Form.Input
-                name="lastname"
-                placeholder="Last name"
-                onChange={this.handleInput}
-              />
-            </Form.Field>
-            <Form.Field error={Boolean(this.props.addStudentErrors.email)}>
-              {this.props.addStudentErrors.email ? (
-                <Label
-                  color="red"
-                  pointing="below"
-                  content={this.props.addStudentErrors.email}
-                />
-              ) : null}
-              <Form.Input
-                name="email"
-                placeholder="Email address"
-                onChange={this.handleInput}
-              />
-            </Form.Field>
-            <Form.Field error={Boolean(this.props.addStudentErrors.github)}>
-              {this.props.addStudentErrors.github ? (
-                <Label
-                  color="red"
-                  pointing="below"
-                  content={this.props.addStudentErrors.github}
-                />
-              ) : null}
-              <Form.Input
-                name="github"
-                placeholder="Github handle"
-                onChange={this.handleInput}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Form.Button
-                content="Create new student"
-                color="green"
-                onClick={this.handleSubmit}
-              />
-            </Form.Field>
-          </Form>
-        </Segment>
-      </Segment>
-    );
+  handleImportSubmit = e => {
+    e.preventDefault();
+    console.log("Import submit");
+
+    let classID = this.props.classId;
+    let csvData = new FormData();
+
+    csvData.append("file", this.state.csvFile);
+
+    // Pass CSV, classname
+    this.props.postCsvStudents(csvData, classID);
+  };
+
+  render() {
+    const panes = [
+      {
+        menuItem: { key: "user", icon: "user", content: "Create New Student" },
+        render: () => (
+          <Tab.Pane>
+            <Header as="h2" icon textAlign="center" size="huge">
+              <Icon name="user" circular />
+              <Header.Content>Add New Student</Header.Content>
+            </Header>
+
+            <Segment>
+              <Form>
+                <Form.Field
+                  error={Boolean(this.props.addStudentErrors.firstname)}
+                >
+                  {this.props.addStudentErrors.firstname ? (
+                    <Label
+                      color="red"
+                      pointing="below"
+                      content={this.props.addStudentErrors.firstname}
+                    />
+                  ) : null}
+                  <Form.Input
+                    name="firstname"
+                    placeholder="First name"
+                    onChange={this.handleInput}
+                  />
+                </Form.Field>
+
+                <Form.Field
+                  error={Boolean(this.props.addStudentErrors.lastname)}
+                >
+                  {this.props.addStudentErrors.lastname ? (
+                    <Label
+                      color="red"
+                      pointing="below"
+                      content={this.props.addStudentErrors.lastname}
+                    />
+                  ) : null}
+                  <Form.Input
+                    name="lastname"
+                    placeholder="Last name"
+                    onChange={this.handleInput}
+                  />
+                </Form.Field>
+
+                <Form.Field error={Boolean(this.props.addStudentErrors.email)}>
+                  {this.props.addStudentErrors.email ? (
+                    <Label
+                      color="red"
+                      pointing="below"
+                      content={this.props.addStudentErrors.email}
+                    />
+                  ) : null}
+                  <Form.Input
+                    name="email"
+                    placeholder="Email address"
+                    onChange={this.handleInput}
+                  />
+                </Form.Field>
+
+                <Form.Field error={Boolean(this.props.addStudentErrors.github)}>
+                  {this.props.addStudentErrors.github ? (
+                    <Label
+                      color="red"
+                      pointing="below"
+                      content={this.props.addStudentErrors.github}
+                    />
+                  ) : null}
+                  <Form.Input
+                    name="github"
+                    placeholder="Github handle"
+                    onChange={this.handleInput}
+                  />
+                </Form.Field>
+
+                <Form.Field>
+                  <Form.Button
+                    content="Create new student"
+                    color="green"
+                    onClick={this.handleSubmit}
+                  />
+                </Form.Field>
+              </Form>
+            </Segment>
+          </Tab.Pane>
+        )
+      },
+      {
+        menuItem: {
+          key: "cloud upload",
+          icon: "cloud upload",
+          content: "Import CSV File"
+        },
+        render: () => (
+          <Tab.Pane>
+            <Header as="h2" icon textAlign="center" size="huge">
+              <Icon name="cloud upload" circular />
+              <Header.Content>Import CSV File</Header.Content>
+            </Header>
+
+            <Input
+              focus
+              type="file"
+              ref={input => {
+                this.filesInput = input;
+              }}
+              name="file"
+              icon="file alternate outline"
+              iconPosition="left"
+              placeholder="UploadCSV"
+              onChange={this.handleImportChange}
+            />
+
+            <Button
+              className="ui clearing segment BtnImport"
+              onClick={this.handleImportSubmit}
+              primary
+              size="large"
+              fluid
+            >
+              Upload CSV
+            </Button>
+          </Tab.Pane>
+        )
+      }
+    ];
+
+    const addStudentsTabs = () => <Tab panes={panes} />;
+
+    return addStudentsTabs();
   }
 }
