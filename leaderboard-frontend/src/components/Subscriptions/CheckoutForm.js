@@ -32,6 +32,7 @@ class CheckoutForm extends React.Component {
         })
       }).then((res) => res.json()).then((response) => {
         console.log('response', response)
+        // TODO: set organization stripeCustomerId
       })
     });
 
