@@ -41,7 +41,7 @@ class Nav extends Component {
   }
 
   handleOpenModal = (e, { content }) => {
-    this.setState({ activeItem: content, openModal: true });
+    this.setState({ activeItem: content, openModal: true });    
   };
 
   handleCloseModal = () => {
