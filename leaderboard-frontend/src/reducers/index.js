@@ -36,7 +36,7 @@ import {
   GET_ORGANIZATION_CLASSES,
   ADD_ORGANIZATION_CLASSES_ERRORS,
   ADD_ORGANIZATION_CLASSES,
-  DELETE_ORGANIZATION
+  DELETE_ORGANIZATION, ACTIVE_ORGANIZATION
 } from "../actions/organizationActions";
 import {
   GET_CLASS_STUDENTS,
@@ -89,7 +89,8 @@ const initialState = {
   updatedStudent: {},
   deletedStudent: {},
   changeSettings: false,
-  updateAdmin: null
+  updateAdmin: null,
+  activeOrganization: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -303,6 +304,10 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         updateAdmin: action.payload
       });
+    case ACTIVE_ORGANIZATION:
+      return Object.assign({}, state, {
+        activeOrganization: action.payload
+      })
 
     default:
       return state;

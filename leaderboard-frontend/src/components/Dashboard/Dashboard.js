@@ -18,7 +18,8 @@ import {
 import {
   getOrganizationClasses,
   addOrganizationClass,
-  deleteOrganization
+  deleteOrganization,
+  activeOrganization
 } from "../../actions/organizationActions";
 
 class Dashboard extends Component {
@@ -57,6 +58,8 @@ class Dashboard extends Component {
       activeClass: "",
       activeClassName: ""
     });
+    this.props.activeOrganization(id);
+
     this.props.newOrgErrors.name = "";
   };
 
@@ -308,6 +311,7 @@ export default connect(
     addAdminOrganization,
     deleteOrganization,
     getOrganizationClasses,
-    addOrganizationClass
+    addOrganizationClass,
+    activeOrganization
   }
 )(Dashboard);

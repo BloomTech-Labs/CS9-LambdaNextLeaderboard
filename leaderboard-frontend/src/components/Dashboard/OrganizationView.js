@@ -125,7 +125,7 @@ const EditModal = props => {
     >
       <Modal.Header icon="cog" content="Organization Settings" />
       {/* <Modal.Content content="Billing options or current subscription details." /> */}
-      <Modal.Content>{this.orgInformation}</Modal.Content>
+      <Modal.Content><SUBSCRIPTION/></Modal.Content>
       <Modal.Actions>
         <Button
           color="red"

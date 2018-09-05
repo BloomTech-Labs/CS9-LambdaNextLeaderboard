@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const stripe = require('../../billing/stripe');
+const Organization = require("../../models/Organization");
 
-
-router.post('/create', function (req, res, next) {
+router.put('/create', function (req, res, next) {
   const token = req.body.token;
-
+  const id = req.body.id;
   if(!token) {
     return res.send({
       success: false,
@@ -19,11 +19,21 @@ router.post('/create', function (req, res, next) {
       if(err) {
         console.error(err);
       } else {
-        res.send({
-          success: true,
-          customer: customer,
-          customerId: customer.id,
-        });
+        const updateObject = {
+          stripeCustomerID: customer.id
+        }
+        const options = {
+          new: true
+        }
+        Organization.findByIdAndUpdate(id, updateObject, options)
+          .then(organization => res.status(201).json(organization))
+          .catch(err => res.json(err))
+
+        // res.send({
+        //   success: true,
+        //   customer: customer,
+        //   customerId: customer.id,
+        // });
       }
     }
   );
@@ -32,7 +42,7 @@ router.post('/create', function (req, res, next) {
 router.post('/subscribe', function (req, res, next) {
   // Step 1: grab plan and coupon
   let {
-    plan, 
+    plan,
     coupon
   } = req.body;
 

@@ -6,6 +6,8 @@ export const ADD_ORGANIZATION_CLASSES = "ADD_ORGANIZATION_CLASSES";
 export const ADD_ORGANIZATION_CLASSES_ERRORS =
   "ADD_ORGANIZATION_CLASSES_ERRORS";
 export const DELETE_ORGANIZATION = "DELETE_ORGANIZATION";
+export const ADD_STRIPE_CUSTOMER_ID = "ADD_STRIPE_CUSTOMER_ID";
+export const ACTIVE_ORGANIZATION = "ACTIVE_ORGANIZATION";
 
 const ORGANIZATION_URL = process.env.REACT_APP_ORGANIZATION_URL;
 
@@ -34,6 +36,17 @@ export const getOrganizationClasses = obj => {
       });
   };
 };
+
+// export const stripeCustomerID =
+
+export const activeOrganization = id => {
+  return dispatch => {
+    dispatch({
+      type: ACTIVE_ORGANIZATION,
+      payload: id
+    })
+  }
+}
 
 export const addOrganizationClass = obj => {
   const token = localStorage.token;
