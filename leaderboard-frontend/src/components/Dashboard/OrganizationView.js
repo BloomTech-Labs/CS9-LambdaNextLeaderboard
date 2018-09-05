@@ -11,8 +11,10 @@ import {
 import axios from 'axios';
 import SUBSCRIPTION from '../Subscriptions/Subscriptions';
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
+import {connect} from 'react-redux'
+import Sub2 from "../Sub2/Sub2";
 
-export default class OrganizationView extends Component {
+class OrganizationView extends Component {
   constructor(props) {
     super(props);
 
@@ -66,6 +68,7 @@ export default class OrganizationView extends Component {
   }
 
   render() {
+    console.log(this.props.stripeCustomerID)
     return (
       <Segment.Group>
         <Segment>
@@ -96,6 +99,7 @@ export default class OrganizationView extends Component {
           open={this.state.openEditModal}
           close={this.closeEditModal}
           openConfirm={this.openConfirm}
+          stripeCustomerID={this.props.stripeCustomerID}
         />
         <ConfirmDeleteModal
           open={this.state.openConfirm}
@@ -113,7 +117,31 @@ export default class OrganizationView extends Component {
 const EditModal = props => {
   // If there is a stripeCustomerID on the org, display subscription info
   // else display a button to go subscribe.
-
+  console.log(props.stripeCustomerID)
+  if (props.stripeCustomerID !== null) {
+    return (
+      <Modal
+        centered
+        size="large"
+        closeIcon
+        open={props.open}
+        onClose={props.close}
+        dimmer="blurring"
+      >
+        <Modal.Header icon="cog" content="Organization Settings" />
+        {/* <Modal.Content content="Billing options or current subscription details." /> */}
+        <Modal.Content><Sub2/></Modal.Content>
+        <Modal.Actions>
+          <Button
+            color="red"
+            icon="trash alternate"
+            content="Delete this Organization"
+            onClick={props.openConfirm}
+          />
+        </Modal.Actions>
+      </Modal>
+    )
+  }
   return (
     <Modal
       centered
@@ -172,3 +200,10 @@ const ConfirmDeleteModal = props => {
     </Modal>
   );
 };
+
+const mapStateToProps = state => {
+  return {
+    stripeCustomerID: state.stripeCustomerID
+  }
+}
+export  default connect(mapStateToProps, {})(OrganizationView)

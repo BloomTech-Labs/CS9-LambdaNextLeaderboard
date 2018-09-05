@@ -51,14 +51,15 @@ class Dashboard extends Component {
     }
   };
 
-  handleOrgMenuClick = (e, { id, name }) => {
+  handleOrgMenuClick = (e, { id, name, stripe}) => {
     this.setState({
       activeOrg: id,
       activeOrgName: name,
       activeClass: "",
       activeClassName: ""
     });
-    this.props.activeOrganization(id);
+    console.log(id, name, stripe)
+    this.props.activeOrganization(id, stripe);
 
     this.props.newOrgErrors.name = "";
   };
@@ -82,7 +83,8 @@ class Dashboard extends Component {
     if (this.props.organizations.length && this.state.activeOrg === "") {
       this.handleOrgMenuClick(null, {
         id: this.props.organizations[0]._id,
-        name: this.props.organizations[0].name
+        name: this.props.organizations[0].name,
+        stripe: this.props.organizations[0].stripeCustomerID
       });
     }
 
@@ -177,6 +179,7 @@ class Dashboard extends Component {
                         <Menu.Item
                           name={org.name}
                           id={org._id}
+                          stripe={org.stripeCustomerID}
                           active={activeOrg === org._id}
                           onClick={this.handleOrgMenuClick}
                         >

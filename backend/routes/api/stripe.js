@@ -43,7 +43,8 @@ router.post('/subscribe', function (req, res, next) {
   // Step 1: grab plan and coupon
   let {
     plan,
-    coupon
+    coupon,
+    stripe_customer_id
   } = req.body;
 
   //format
@@ -61,13 +62,13 @@ router.post('/subscribe', function (req, res, next) {
     });
   }
   // step 3: grab current user info and pull out customer id
-  const customerId = 'cus_DXrzYdu7MFOV28';
+  // const customerId = 'cus_DXrzYdu7MFOV28';
 
   if(plan == 'standard') plan = "plan_DX4jmAAz73XN9M";
   else if(plan == 'premium') plan = "plan_DX4kZpY63l2RtQ";
 
   let params = {
-    customer: customerId,
+    customer: stripe_customer_id,
     items: [{ plan: plan }]
   };
 
@@ -89,5 +90,18 @@ router.post('/subscribe', function (req, res, next) {
     }
   });
 });
+
+router.get('/retrieve', function (req,res, next) {
+  let {
+    stripe_customer_id
+  } = req.body;
+
+  stripe.customers.retrieve(
+    stripe_customer_id,
+    function(err, customer) {
+      res.send(customer)
+    }
+  );
+})
 
 module.exports = router;

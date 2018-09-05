@@ -39,11 +39,13 @@ export const getOrganizationClasses = obj => {
 
 // export const stripeCustomerID =
 
-export const activeOrganization = id => {
+export const activeOrganization = (id, stripe) => {
+  console.log('active', id, stripe)
   return dispatch => {
     dispatch({
       type: ACTIVE_ORGANIZATION,
-      payload: id
+      payload: id,
+      stripeCustomerID: stripe
     })
   }
 }

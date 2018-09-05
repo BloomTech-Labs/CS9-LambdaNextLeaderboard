@@ -90,7 +90,8 @@ const initialState = {
   deletedStudent: {},
   changeSettings: false,
   updateAdmin: null,
-  activeOrganization: null
+  activeOrganization: null,
+  stripeCustomerID: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -306,7 +307,8 @@ const studentReducer = (state = initialState, action) => {
       });
     case ACTIVE_ORGANIZATION:
       return Object.assign({}, state, {
-        activeOrganization: action.payload
+        activeOrganization: action.payload,
+        stripeCustomerID: action.stripeCustomerID
       })
 
     default:

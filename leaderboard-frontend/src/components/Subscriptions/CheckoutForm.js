@@ -60,7 +60,8 @@ class CheckoutForm extends React.Component {
 }
 const mapStateToProps = state => {
   return {
-    activeOrganization: state.activeOrganization
+    activeOrganization: state.activeOrganization,
+    stripeCustomerID: state.stripeCustomerID
   }
 }
 
