@@ -8,6 +8,9 @@ import {
   Form,
   Header
 } from "semantic-ui-react";
+import axios from 'axios';
+import SUBSCRIPTION from '../Subscriptions/Subscriptions';
+// import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 
 export default class OrganizationView extends Component {
   constructor(props) {
@@ -48,6 +51,19 @@ export default class OrganizationView extends Component {
     });
     this.props.delete({ id: this.props.id });
   };
+
+  orgInformation = () => {
+    // axios.get()
+    // TODO:  Organization settings
+    // if(stripeCustomerID){
+    //   return <CUSTOMERINFO />
+    //   This is stripeCustomerID and info  ID, subscription end date, subscription type(premium/standard)
+    //   Subscription upgrade button
+    // } else {
+    //   return <SUBSCRIPTION />
+    //   start subscription stuff (this creates a stripeCustomerId)
+    // }
+  }
 
   render() {
     return (
@@ -95,6 +111,9 @@ export default class OrganizationView extends Component {
 }
 
 const EditModal = props => {
+  // If there is a stripeCustomerID on the org, display subscription info
+  // else display a button to go subscribe.
+
   return (
     <Modal
       centered
@@ -105,7 +124,8 @@ const EditModal = props => {
       dimmer="blurring"
     >
       <Modal.Header icon="cog" content="Organization Settings" />
-      <Modal.Content content="Billing options or current subscription details." />
+      {/* <Modal.Content content="Billing options or current subscription details." /> */}
+      <Modal.Content>{this.orgInformation}</Modal.Content>
       <Modal.Actions>
         <Button
           color="red"
