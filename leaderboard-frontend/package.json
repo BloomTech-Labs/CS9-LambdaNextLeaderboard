@@ -21,6 +21,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "react-stripe-checkout": "^2.6.3",
+    "react-stripe-elements": "^2.0.1",
     "reactstrap": "^5.0.0-beta.3",
     "redux": "^4.0.0",
     "redux-autoloader": "^1.0.0-rc.13",
