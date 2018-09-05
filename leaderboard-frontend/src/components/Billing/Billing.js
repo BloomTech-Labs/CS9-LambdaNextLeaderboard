@@ -11,9 +11,7 @@ class Billing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            subscriptionType: [{
-                plan: '',
-            }],
+            subscriptionType: '',
             subscriptionAmount: '',
         };
     }
@@ -21,25 +19,12 @@ class Billing extends Component {
     // setCharges is run by the radio buttons, and sets the values to be sent to checkout.
     setCharges = (e, {value}) => {
         const values = value.split(', ');
-        values[1] = values[1];
 
         this.setState({
             subscriptionType: values[0],
             subscriptionAmount: values[1]
         });
     };
-
-    getUserEmail = () => {
-        axios.get('https://localhost:4000/api/users/current')
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
-
-    
 
     render() {
         return (
@@ -106,7 +91,11 @@ class Billing extends Component {
                     <Modal.Content>
                         <Modal.Description>
                             <p>{this.state.subscriptionType} - {this.state.subscriptionAmount}</p>
-                            <Checkout name={"<APPLICATION NAME>"} item={this.state.subscriptionType} amount={parseInt(this.state.subscriptionAmount*100, 10)} email={this.getUserEmail()} />
+                            <Checkout
+                                name={"NextSteps"}
+                                description={this.state.subscriptionType}
+                                amount={parseInt(this.state.subscriptionAmount*100, 10)}
+                            />
                         </Modal.Description>
                     </Modal.Content>
                 </Modal>

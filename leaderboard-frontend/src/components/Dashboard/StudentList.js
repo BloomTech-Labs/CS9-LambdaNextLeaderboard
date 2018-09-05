@@ -6,9 +6,9 @@ import {
   List,
   Modal,
   Header,
-  Icon
+  Icon,
+  Input
 } from "semantic-ui-react";
-import StudentCard from "./StudentCard";
 
 export default class StudentList extends Component {
   constructor(props) {
@@ -16,25 +16,54 @@ export default class StudentList extends Component {
 
     this.state = {
       selectedStudent: "",
-      openEditModal: false,
-      openDeleteModal: false
+      editStudent: false,
+      openDeleteModal: false,
+      updatedInfo: {}
     };
   }
 
-  openModal = (e, { id, name }) => {
-      this.setState({ openDeleteModal: !this.state[name], selectedStudent: id });
+  openModal = (e, { id }) => {
+    this.setState({ openDeleteModal: true, selectedStudent: id });
   };
 
   closeModal = () => {
     this.setState({
-      openEditModal: false,
       openDeleteModal: false,
       selectedStudent: ""
     });
   };
 
-  handleHire = (e, { name }) => {
-    this.props.updateStudent({ id: name, hired: true });
+  handleHire = (e, { id }) => {
+    this.props.updateStudent({ id, hired: true });
+  };
+
+  openEditView = (e, { student }) => {
+    let current = {};
+    current.id = student._id;
+    current.firstname = student.firstname;
+    current.lastname = student.lastname;
+    current.email = student.email;
+    current.github = student.github;
+    this.setState({
+      editStudent: true,
+      selectedStudent: student._id,
+      updatedInfo: current
+    });
+  };
+
+  closeEditView = () => {
+    this.setState({ editStudent: false, selectedStudent: "", updatedInfo: {} });
+  };
+
+  handleInput = (e, { name, value }) => {
+    let current = Object.assign({}, this.state.updatedInfo);
+    current[name] = value;
+    this.setState({ updatedInfo: current });
+  };
+
+  handleUpdate = () => {
+    this.props.updateStudent(this.state.updatedInfo);
+    this.closeEditView();
   };
 
   handleDelete = () => {
@@ -42,17 +71,7 @@ export default class StudentList extends Component {
   };
 
   render() {
-      if (this.state.openDeleteModal === true) {
-          return (
-              <DeleteModal
-                  open={this.state.openDeleteModal}
-                  close={this.closeModal}
-                  selected={this.state.selectedStudent}
-                  delete={this.handleDelete}
-              />
-              )
-
-      }
+    console.log(this.state);
     return (
       <Segment>
         <DeleteModal
@@ -61,60 +80,112 @@ export default class StudentList extends Component {
           selected={this.state.selectedStudent}
           delete={this.handleDelete}
         />
-        {/*<EditModal*/}
-          {/*open={this.state.openEditModal}*/}
-          {/*close={this.closeModal}*/}
-          {/*selected={this.state.selectedStudent}*/}
-        {/*/>*/}
         <Card.Group itemsPerRow="2" stackable>
           {this.props.students.map((student, index) => {
             return !student.hired ? (
-              <Card key={index}>
-                  <StudentCard student={student} handleHire={this.handleHire} openModal={this.openModal} />
-
-                {/*<Card.Content>*/}
-                  {/*<Card.Header>{`${student.firstname} ${*/}
-                    {/*student.lastname*/}
-                  {/*}`}</Card.Header>*/}
-                  {/*<Card.Description>*/}
-                    {/*<List>*/}
-                      {/*<List.Item>Email Address: {student.email}</List.Item>*/}
-                      {/*<List.Item>Github Handle: {student.github}</List.Item>*/}
-                    {/*</List>*/}
-                  {/*</Card.Description>*/}
-                {/*</Card.Content>*/}
-                {/*<Card.Content extra>*/}
-                  {/*<Button*/}
-                    {/*name={student._id}*/}
-                    {/*icon="money"*/}
-                    {/*content="Hired"*/}
-                    {/*inverted*/}
-                    {/*color="green"*/}
-                    {/*size="small"*/}
-                    {/*onClick={this.handleHire}*/}
-                  {/*/>*/}
-                  {/*<Button*/}
-                    {/*id={student._id}*/}
-                    {/*name="openEditModal"*/}
-                    {/*icon="wrench"*/}
-                    {/*content="Edit"*/}
-                    {/*inverted*/}
-                    {/*color="blue"*/}
-                    {/*size="small"*/}
-                    {/*onClick={this.openModal}*/}
-                  {/*/>*/}
-                  {/*<Button*/}
-                    {/*id={student._id}*/}
-                    {/*name="openDeleteModal"*/}
-                    {/*icon="trash"*/}
-                    {/*content="Delete"*/}
-                    {/*inverted*/}
-                    {/*color="red"*/}
-                    {/*size="small"*/}
-                    {/*onClick={this.openModal}*/}
-                  {/*/>*/}
-                {/*</Card.Content>*/}
-              </Card>
+              this.state.editStudent &&
+              this.state.selectedStudent === student._id ? (
+                <Card key={index}>
+                  <Card.Content>
+                    <Input
+                      name="firstname"
+                      placeholder="Student first name"
+                      value={this.state.updatedInfo.firstname}
+                      onChange={this.handleInput}
+                      fluid
+                    />
+                    <Input
+                      name="lastname"
+                      placeholder="Student last name"
+                      value={this.state.updatedInfo.lastname}
+                      onChange={this.handleInput}
+                      fluid
+                    />
+                    <Input
+                      name="email"
+                      placeholder="Student email address"
+                      value={this.state.updatedInfo.email}
+                      onChange={this.handleInput}
+                      fluid
+                    />
+                    <Input
+                      name="github"
+                      placeholder="Student Github handle"
+                      value={this.state.updatedInfo.github}
+                      onChange={this.handleInput}
+                      fluid
+                    />
+                  </Card.Content>
+                  <Card.Content extra>
+                    <Button.Group widths="2">
+                      <Button
+                        id={student._id}
+                        content="Update"
+                        onClick={this.handleUpdate}
+                        color="blue"
+                        inverted
+                      />
+                      <Button
+                        content="Cancel"
+                        onClick={this.closeEditView}
+                        color="red"
+                        inverted
+                      />
+                    </Button.Group>
+                  </Card.Content>
+                </Card>
+              ) : (
+                <Card key={index}>
+                  <Card.Content>
+                    <Card.Header>{`${student.firstname} ${
+                      student.lastname
+                    }`}</Card.Header>
+                    <Card.Description>
+                      <List>
+                        <List.Item>Email Address: {student.email}</List.Item>
+                        <List.Item>Github Handle: {student.github}</List.Item>
+                      </List>
+                    </Card.Description>
+                  </Card.Content>
+                  <Card.Content extra>
+                    <Button.Group widths="3">
+                      <Button
+                        id={student._id}
+                        icon="money"
+                        content="Hired"
+                        inverted
+                        color="green"
+                        size="small"
+                        onClick={this.handleHire}
+                        disabled={this.state.editStudent}
+                      />
+                      <Button
+                        id={student._id}
+                        student={student}
+                        name="openEditModal"
+                        icon="wrench"
+                        content="Edit"
+                        inverted
+                        color="blue"
+                        size="small"
+                        onClick={this.openEditView}
+                        disabled={this.state.editStudent}
+                      />
+                      <Button
+                        id={student._id}
+                        name="openDeleteModal"
+                        icon="trash"
+                        content="Delete"
+                        inverted
+                        color="red"
+                        size="small"
+                        onClick={this.openModal}
+                        disabled={this.state.editStudent}
+                      />
+                    </Button.Group>
+                  </Card.Content>
+                </Card>
+              )
             ) : null;
           })}
         </Card.Group>
@@ -122,22 +193,6 @@ export default class StudentList extends Component {
     );
   }
 }
-
-// const EditModal = props => {
-//   return (
-//     <Modal
-//       centered
-//       size="small"
-//       closeIcon
-//       open={props.open}
-//       onClose={props.close}
-//       dimmer="blurring"
-//     >
-//       <Header icon="wrench" content="Edit Student" />
-//       <Modal.Content content="Hello" />
-//     </Modal>
-//   );
-// };
 
 const DeleteModal = props => {
   return (

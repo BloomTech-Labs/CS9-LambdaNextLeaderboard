@@ -1,11 +1,8 @@
-import React, {Component} from "react";
-// import './LeaderBoard.css';
+import React, { Component } from "react";
 
 import "../LeaderboardComponents/ActivityFeed";
 import ActivityFeed from "../LeaderboardComponents/ActivityFeed";
-// import WeeklyLeaderboard from '../LeaderboardComponents/WeeeklyLeaderboard';
 import WeeklyData from "../LeaderboardComponents/WeeklyData";
-// import OverallLeaderboard from '../LeaderboardComponents/OverallLeaderboard';
 import OverallData from "../LeaderboardComponents/OverallData";
 import {connectAsync} from "iguazu";
 import {queryGithub, queryStudents} from "../../actions";

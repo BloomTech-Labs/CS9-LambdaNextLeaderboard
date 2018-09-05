@@ -1,6 +1,7 @@
-import React, {Component} from "react";
-import {Container, Grid, Menu, Transition} from "semantic-ui-react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { Container, Grid, Menu, Transition, Label } from "semantic-ui-react";
+import { connect } from "react-redux";
+
 import jwt from "jsonwebtoken";
 
 // components
@@ -16,10 +17,11 @@ import {
 } from "../../actions/adminActions";
 import {
   getOrganizationClasses,
-  addOrganizationClass
+  addOrganizationClass,
+  deleteOrganization
 } from "../../actions/organizationActions";
-import {setClassForQuery, setSettingsAction} from '../../actions'
-
+import {setSettingsAction,
+  setClassForQuery} from '../../actions';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -62,33 +64,62 @@ class Dashboard extends Component {
 
   componentDidUpdate = (prevProps, prevState) => {
     // No Organizations -> Showing add organization component
-    if (!this.props.organizations.length && this.state.activeOrg !== "addOrg") {
-      this.setState({activeOrg: "addOrg"});
+    if (
+      !this.props.organizations.length &&
+      this.state.activeOrg !== "addOrg" &&
+      !this.props.createdOrganization._id
+    ) {
+      this.handleOrgMenuClick(null, { id: "addOrg", name: "addOrg" });
     }
 
-    // Admin has Organization(s) -> Showing the first one
+    // Admin has Organization(s) -> Showing the first
     if (this.props.organizations.length && this.state.activeOrg === "") {
       this.handleOrgMenuClick(null, {
-        name: this.props.organizations[0]._id,
-        content: this.props.organizations[0].name
+        id: this.props.organizations[0]._id,
+        name: this.props.organizations[0].name
       });
     }
 
-    // New Organization created -> Updating Organizations
+    // New Organization created -> Updating Organizations and showing newest
     if (
-      this.props.createdOrganization &&
+      this.props.createdOrganization._id &&
       this.props.createdOrganization !== prevProps.createdOrganization
     ) {
-      this.getOrganizations();
       this.handleOrgMenuClick(null, {
-        name: this.props.createdOrganization._id,
-        content: this.props.createdOrganization.name
+        id: this.props.createdOrganization._id,
+        name: this.props.createdOrganization.name
       });
+      this.getOrganizations();
+    }
+
+    // Organization deleted -> Updating Organization
+    if (
+      this.props.deletedOrganization._id &&
+      prevProps.deletedOrganization !== this.props.deletedOrganization
+    ) {
+      if (this.props.organizations.length > 1) {
+        if (
+          this.props.organizations[0]._id !== this.props.deletedOrganization._id
+        ) {
+          this.handleOrgMenuClick(null, {
+            id: this.props.organizations[0]._id,
+            name: this.props.organizations[0].name
+          });
+        } else {
+          this.handleOrgMenuClick(null, {
+            id: this.props.organizations[1]._id,
+            name: this.props.organizations[1].name
+          });
+        }
+      } else {
+        this.handleOrgMenuClick(null, { id: "addOrg", name: "addOrg" });
+      }
+      this.getOrganizations();
     }
 
     // Selected Organization was changed -> Updating Classes
     if (
-      this.state.activeOrg &&
+      this.state.activeOrg !== "" &&
       this.state.activeOrg !== "addOrg" &&
       this.state.activeOrg !== prevState.activeOrg
     ) {
@@ -97,13 +128,13 @@ class Dashboard extends Component {
 
     // New Class created -> Updating Classes
     if (
-      this.props.createdClass &&
+      this.props.createdClass._id &&
       this.props.createdClass !== prevProps.createdClass
     ) {
       this.getClasses();
       this.handleClassMenuClick(null, {
-        name: this.props.createdClass._id,
-        content: this.props.createdClass.name
+        id: this.props.createdClass._id,
+        name: this.props.createdClass.name
       });
     }
   };
@@ -113,7 +144,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    const {activeOrg, activeClass} = this.state;
+    const { activeOrg, activeClass } = this.state;
     return (
       <Container>
         <Grid>
@@ -127,34 +158,35 @@ class Dashboard extends Component {
                 </Menu.Header>
                 <Menu.Menu>
                   {this.props.organizations.map((org, index) => {
-                    return org._id === this.props.createdOrganization._id ? (
+                    return (
                       <Transition
                         key={index}
-                        transitionOnMount
+                        transitionOnMount={
+                          this.props.createdOrganization._id === org._id
+                        }
                         animation="swing down"
                         duration={1000}
+                        unmountOnHide
                       >
                         <Menu.Item
-                          content={org.name}
-                          name={org._id}
+                          name={org.name}
+                          id={org._id}
                           active={activeOrg === org._id}
                           onClick={this.handleOrgMenuClick}
-                        />
+                        >
+                          {org.name}
+                          {org.name === this.props.createdOrganization.name ? (
+                            <Label color="teal">Newest</Label>
+                          ) : null}
+                        </Menu.Item>
                       </Transition>
-                    ) : (
-                      <Menu.Item
-                        content={org.name}
-                        key={index}
-                        name={org._id}
-                        active={activeOrg === org._id}
-                        onClick={this.handleOrgMenuClick}
-                      />
                     );
                   })}
                   <Menu.Item
                     content="Add a new organization"
                     icon="add"
                     name="addOrg"
+                    id="addOrg"
                     active={activeOrg === "addOrg"}
                     onClick={this.handleOrgMenuClick}
                   />
@@ -169,34 +201,35 @@ class Dashboard extends Component {
                   </Menu.Header>
                   <Menu.Menu>
                     {this.props.orgClasses.map((aClass, index) => {
-                      return aClass._id === this.props.createdClass._id ? (
+                      return (
                         <Transition
                           key={index}
-                          transitionOnMount
+                          transitionOnMount={
+                            this.props.createdClass._id === aClass._id
+                              ? true
+                              : false
+                          }
                           animation="swing down"
                           duration={1000}
                         >
                           <Menu.Item
-                            content={aClass.name}
-                            name={aClass._id}
+                            id={aClass._id}
+                            name={aClass.name}
                             active={activeClass === aClass._id}
                             onClick={this.handleClassMenuClick}
-                          />
+                          >
+                            {aClass.name}
+                            {this.props.createdClass._id === aClass._id ? (
+                              <Label color="teal">Newest</Label>
+                            ) : null}
+                          </Menu.Item>
                         </Transition>
-                      ) : (
-                        <Menu.Item
-                          content={aClass.name}
-                          key={index}
-                          name={aClass._id}
-                          active={activeClass === aClass._id}
-                          onClick={this.handleClassMenuClick}
-                        />
                       );
                     })}
                     <Menu.Item
                       content="Add a new class"
                       icon="add"
-                      name="addClass"
+                      id="addClass"
                       active={activeClass === "addClass"}
                       onClick={this.handleClassMenuClick}
                     />
@@ -211,6 +244,7 @@ class Dashboard extends Component {
               <AddOrganization
                 addOrg={this.props.addAdminOrganization}
                 addOrgErrors={this.props.newOrgErrors}
+                getOrgs={this.props.getAdminOrganizations}
               />
             ) : null}
 
@@ -219,8 +253,10 @@ class Dashboard extends Component {
             activeOrg !== "addOrg" &&
             activeClass === "" ? (
               <OrganizationView
+                id={this.state.activeOrg}
                 name={this.state.activeOrgName}
                 numOfClasses={this.props.orgClasses.length}
+                delete={this.props.deleteOrganization}
               />
             ) : null}
 
@@ -254,6 +290,7 @@ const mapStateToProps = state => {
     organizations: state.adminOrganizations,
     newOrgErrors: state.newOrganizationErrors,
     createdOrganization: state.createdOrganization,
+    deletedOrganization: state.deletedOrganization,
 
     orgClasses: state.organizationClasses,
     newClassErrors: state.newClassErrors,
@@ -269,6 +306,7 @@ export default connect(
     getOrganizationClasses,
     addOrganizationClass,
     setClassForQuery,
-    setSettingsAction
+    setSettingsAction,
+    deleteOrganization
   }
 )(Dashboard);

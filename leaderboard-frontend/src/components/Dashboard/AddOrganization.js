@@ -19,6 +19,7 @@ export default class AddOrganization extends Component {
   handleSubmit = () => {
     const id = jwt.decode(localStorage.token.split(" ")[1]).id;
     this.props.addOrg({ id, name: this.state.newOrgName });
+    this.props.getOrgs({ id });
   };
 
   render() {

@@ -16,6 +16,7 @@ const students = require("./routes/api/student");
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
 const leaderboard = require("./routes/api/leaderboard");
+const customer = require('./routes/api/customerCreation');
 
 // CSV imports
 //const template = require("./template.js");
@@ -46,16 +47,7 @@ const configureServer = app => {
   app.use(bodyParser.json());
 };
 
-const paymentApi = require("./billing/payment");
-
-const configureRoutes = app => {
-  paymentApi(app);
-};
-
 configureServer(app);
-// configureRoutes(app);
-
-// // ****END STRIPE****
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "../leaderboard-frontend/build")));
@@ -100,7 +92,15 @@ app.use(
   leaderboard
 );
 // app.use("/api/data", cors(corsOptions), githubData);
-// app.use("/api/billing", cors(corsOptions), billing);
+app.use("/api/billing",
+  cors(corsOptions),
+  billing
+);
+
+app.use("/api/customer",
+  cors(corsOptions),
+  customer
+);
 
 // CSV routes
 // app.get("/template", cors(corsOptions));
