@@ -72,6 +72,7 @@ export const postCsvStudents = (csvFile, classID) => {
 
     axios(options)
       .then(resp => {
+        console.log(resp.data)
         localStorage.setItem("user", resp.data.name);
         dispatch({
           type: ADD_CSV_STUDENTS,

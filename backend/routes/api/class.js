@@ -129,69 +129,91 @@ router.post("/:id/importcsv", (req, res) => {
   const csvClassFile = req.files.file;
   const classID = req.params.id;
 
+  // Parse csv and check for existing class in db
+  // function run() {
   let invalidStudents = [];
   let validStudents = [];
 
-  // Parse csv and check for existing class in db
-  async function run() {
-    csv
-      .fromString(csvClassFile.data.toString(), {
-        headers: true,
-        ignoreEmpty: true
-      })
-      // .validate(function(data) {
+  csv
+    .fromString(csvClassFile.data.toString(), {
+      headers: true,
+      ignoreEmpty: true
+    })
+    .validate(function(data) {
       //   return Student.count({ email: data.email }, function(err, count) {
       //     if (count < 0) return;
       //   });
-      // })
-      // .on("data-invalid", function(data) {
-      //   console.log(
-      //     `Student ${data["firstname"]} ${data["lastname"]} already exists.`
-      //   );
-      // })
-      .on("data", function(data) {
-        const { errors, isValid } = validateStudent(data);
+      console.log("========", data);
 
-        if (!isValid) {
-          console.log("Data is invalid.");
-          return invalidStudents.push(data);
+      let validEmail = true;
+      let dbEmail;
+
+      let { isValid, errors } = validateStudent(data);
+
+      Student.findOne({ email: data.email }).then(aStudent => {
+        //console.log(aStudent);
+        let count;
+        if (aStudent) {
+          console.log(`${data.email} already in use.`);
+          errors.email = "Email already in use.";
+          data.errors = errors;
+
+          validEmail = false;
+          // let count = 1;
+          dbEmail = aStudent.email;
+        }
+        return data.email === dbEmail;
+      });
+      console.log(isValid);
+
+      // return isValid && validEmail;
+    })
+    .on("data-invalid", function(data) {
+      //const { errors } = validateStudent(data)
+
+      //data.errors = errors;
+      console.log("INVALID DATA:", data);
+      return invalidStudents.push(data);
+
+      // console.log(
+      //   `Student ${data["firstname"]} ${data["lastname"]} already exists.`
+      // );
+    })
+    .on("data", function(data) {
+      validStudents.push(data);
+      //const { errors } = validateStudent(data)
+
+      Class.findById(classID).then(aClass => {
+        if (!aClass) {
+          return res.status(404).json({ class: "That class does not exist." });
         }
 
-        Student.findOne({ email: data.email }).then(aStudent => {
-          if (aStudent) {
-            console.log(`${data.email} already in use.`)
-            return invalidStudents.push(data);
-          }
+        let newStudent = new Student();
 
-          Class.findById(classID).then(aClass => {
-            if (!aClass) {
-              return res
-                .status(404)
-                .json({ class: "That class does not exist." });
-            }
+        newStudent.firstname = data["firstname"];
+        newStudent.lastname = data["lastname"];
+        newStudent.email = data["email"];
+        newStudent.github = data["github"];
 
-            let newStudent = new Student();
-
-            newStudent.firstname = data["firstname"];
-            newStudent.lastname = data["lastname"];
-            newStudent.email = data["email"];
-            newStudent.github = data["github"];
-
-            newStudent
-              .save()
-              .then(created => {
-                aClass.students.push(created._id);
-                aClass.save();
-                //res.status(201).json(created); //Error: Can't set headers after they are sent.
-                console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
-              })
-              .catch(err => console.log(err));
-          });
-        });
+        newStudent
+          .save()
+          .then(created => {
+            aClass.students.push(created._id);
+            aClass.save();
+            //res.status(201).json(created); //Error: Can't set headers after they are sent.
+            console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
+          })
+          .catch(err => console.log(err));
       });
-  }
+    })
+    .on("end", function() {
+      console.log("ON END INVALID: ", invalidStudents);
+      console.log("ON END VALID: ", validStudents);
+      return res.status(200).json({ validStudents, invalidStudents });
+    });
+  // }
 
-  run();
+  // run();
 });
 
 module.exports = router;
