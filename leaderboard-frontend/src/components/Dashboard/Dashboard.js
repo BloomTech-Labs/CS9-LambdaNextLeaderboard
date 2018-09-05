@@ -19,7 +19,8 @@ import {
   getOrganizationClasses,
   addOrganizationClass,
   deleteOrganization,
-  activeOrganization
+  activeOrganization,
+  getSubscriptionInfo,
 } from "../../actions/organizationActions";
 
 class Dashboard extends Component {
@@ -32,6 +33,12 @@ class Dashboard extends Component {
       activeOrgName: "",
       activeClassName: ""
     };
+  }
+
+  componentWillUpdate = (nextProps) => {
+    if(nextProps.stripeCustomerID !== null) {
+      this.props.getSubscriptionInfo(nextProps.stripeCustomerID);
+    } 
   }
 
   getOrganizations = () => {
@@ -300,7 +307,7 @@ const mapStateToProps = state => {
     newOrgErrors: state.newOrganizationErrors,
     createdOrganization: state.createdOrganization,
     deletedOrganization: state.deletedOrganization,
-
+    stripeCustomerID: state.stripeCustomerID,
     orgClasses: state.organizationClasses,
     newClassErrors: state.newClassErrors,
     createdClass: state.createdClass
@@ -315,6 +322,7 @@ export default connect(
     deleteOrganization,
     getOrganizationClasses,
     addOrganizationClass,
-    activeOrganization
+    activeOrganization,
+    getSubscriptionInfo
   }
 )(Dashboard);
