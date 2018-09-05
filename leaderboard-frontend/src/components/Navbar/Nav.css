@@ -1,12 +1,12 @@
 .Nav {
-  background-color: rgba(1, 1, 1, 0.7);
-  padding: 15px 0;
+  background-color: rgba(100, 1, 1, 0.7);
 }
 
 .Nav__container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 66px;
 }
 
 .Nav__link {
