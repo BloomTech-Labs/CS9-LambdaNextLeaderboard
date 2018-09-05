@@ -1,15 +1,15 @@
 // CheckoutForm.js
-import React from 'react';
-import {injectStripe} from 'react-stripe-elements';
-import axios from 'axios';
+import React from "react";
+import { injectStripe } from "react-stripe-elements";
+// import axios from 'axios';
 
 // import AddressSection from './AddressSection';
-import CardSection from './CardSection';
+import CardSection from "./CardSection";
 
 class CheckoutForm extends React.Component {
   constructor(props) {
-    super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(ev) {
     // We don't want to let default form submission happen here, which would refresh the page.
@@ -20,19 +20,21 @@ class CheckoutForm extends React.Component {
     // this.props.stripe.createToken({}).then(({token}) => {
     //   console.log('Received Stripe token:', token);
 
-    this.props.stripe.createToken({}).then(({token}) => {
-      console.log('Received Stripe token:', token);
-      fetch('http://localhost:4000/api/customer/create', {
-        method: 'POST',
+    this.props.stripe.createToken({}).then(({ token }) => {
+      console.log("Received Stripe token:", token);
+      fetch("http://localhost:4000/api/customer/create", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           token: token.id
         })
-      }).then((res) => res.json()).then((response) => {
-        console.log('response', response)
       })
+        .then(res => res.json())
+        .then(response => {
+          console.log("response", response);
+        });
     });
 
     // However, this line of code will do the same thing:
@@ -43,7 +45,7 @@ class CheckoutForm extends React.Component {
     // documentation for more: https://stripe.com/docs/stripe-js/reference#stripe-create-source
     //
     // this.props.stripe.createSource({type: 'card', name: 'Jenny Rosen'});
-  };
+  }
 
   render() {
     return (

@@ -3,16 +3,12 @@ import {
   Container,
   Grid,
   Header,
-  Form,
-  Input,
   Button,
   Icon,
   Segment,
   List,
   Image
 } from "semantic-ui-react";
-
-import Nav from "../Navbar/Nav";
 
 import leadboardExample from "./img/LeadboardExample.PNG";
 import githubLogo from "./img/github-logo.png";
