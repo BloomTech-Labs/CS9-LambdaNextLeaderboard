@@ -23,7 +23,11 @@ const OrganizationSchema = new Schema({
   createdOn: {
     type: Date,
     default: Date.now()
-  }
+  },
+  stripeCustomerID: {
+    type: String,
+    default: null,
+  },
 });
 
 module.exports = Organization = mongoose.model(
