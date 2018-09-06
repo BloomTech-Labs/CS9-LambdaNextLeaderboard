@@ -32,8 +32,7 @@ class Pricing extends Component {
             style={{
               fontSize: "4em",
               fontWeight: "normal",
-              marginBottom: 0,
-              marginTop: "3em"
+              marginTop: "2em"
             }}
           />
           <Header
@@ -43,39 +42,49 @@ class Pricing extends Component {
             style={{
               fontSize: "1.7em",
               fontWeight: "normal",
-              marginTop: "1.5em"
+              marginTop: "1em",
+              marginBottom: "2em"
             }}
           />
           <Grid container centered>
             <Grid.Column width={5}>
               <Card className="Pricing__card">
-                <Card.Content as="h2" header="FREE" textAlign="center" />
+                <Card.Content header textAlign="center">
+                  <h2>Free</h2>
+                </Card.Content>
                 <Card.Content>
                   <List divided relaxed size="huge">
                     <List.Item>
                       <List.Content>
-                        <List.Header as="h3" className=".Pricing__cardHeader">
-                          $0/month
-                        </List.Header>
+                        <List.Header as="h1">$0/month</List.Header>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="address card" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
                           <strong>1</strong> Admin User
                         </List.Description>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="users" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
                           <strong>1</strong> Class
                         </List.Description>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="user" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
                           <strong>50</strong> Students
                         </List.Description>
                       </List.Content>
@@ -92,29 +101,44 @@ class Pricing extends Component {
             </Grid.Column>
             <Grid.Column width={5}>
               <Card className="Pricing__card">
-                <Card.Content header="STANDARD" textAlign="center" />
+                <Card.Content header textAlign="center">
+                  <h2>Standard</h2>
+                </Card.Content>
                 <Card.Content>
                   <List divided relaxed size="huge">
                     <List.Item>
                       <List.Content>
-                        <List.Header as="h5">$10/month</List.Header>
+                        <List.Header as="h1">$10/month</List.Header>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="address card" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
                           <strong>5</strong> Admin Users
                         </List.Description>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>10 Classes</List.Description>
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="users" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
+                          <strong>10</strong> Classes
+                        </List.Description>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>Up to 500 Students</List.Description>
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="user" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
+                          <strong>500</strong> Students
+                        </List.Description>
                       </List.Content>
                     </List.Item>
                   </List>
@@ -129,29 +153,44 @@ class Pricing extends Component {
             </Grid.Column>
             <Grid.Column width={5}>
               <Card className="Pricing__card">
-                <Card.Content header="PREMIUM" textAlign="center" />
+                <Card.Content header textAlign="center">
+                  <h2>Premium</h2>
+                </Card.Content>
                 <Card.Content>
                   <List divided relaxed size="huge">
                     <List.Item>
                       <List.Content>
-                        <List.Header as="h5">$15/month</List.Header>
+                        <List.Header as="h1">$15/month</List.Header>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>
-                          Unlimited Admin Users
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="address card" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
+                          <strong>Unlimited</strong> Admin Users
                         </List.Description>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>Unlimited Classes</List.Description>
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="users" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
+                          <strong>Unlimited</strong> Classes
+                        </List.Description>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>Unlimited Students</List.Description>
+                        <List.Description className="Pricing__cardDescription">
+                          <Icon name="user" circular />
+                        </List.Description>
+                        <List.Description className="Pricing__cardDescription--text">
+                          <strong>Unlimited</strong> Students
+                        </List.Description>
                       </List.Content>
                     </List.Item>
                   </List>

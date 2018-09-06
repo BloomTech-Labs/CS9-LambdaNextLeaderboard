@@ -1,7 +1,13 @@
 .Pricing__card {
-  text-align: center
+  text-align: center;
 }
 
-.Pricing__cardHeader {
-  background-color: #009A92
+.Pricing__cardDescription {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.Pricing__cardDescription--text {
+  /* padding-top: 0.5em; */
+  padding-bottom: 0.5em;
 }
