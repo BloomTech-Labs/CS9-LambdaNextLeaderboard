@@ -1,15 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import {
-  Segment,
-  Card,
-  Input,
-  List,
-  Button,
-  Modal,
-  Header
-} from "semantic-ui-react";
+import { Segment, Input, List, Button, Modal, Header } from "semantic-ui-react";
 
 // components
 import StudentList from "./StudentList";
@@ -184,6 +176,7 @@ class ClassView extends Component {
         ) : null}
         {this.state.unhired ? (
           <StudentList
+            className={this.props.className}
             students={this.props.students}
             updateStudent={this.props.updateStudent}
             deleteStudent={this.props.deleteStudent}

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  Segment,
   Header,
   Icon,
   Form,
@@ -70,7 +69,7 @@ export default class AddStudent extends Component {
               <Header.Content>Add New Student</Header.Content>
             </Header>
 
-            <Form fluid>
+            <Form>
               <Form.Field
                 error={Boolean(this.props.addStudentErrors.firstname)}
               >
