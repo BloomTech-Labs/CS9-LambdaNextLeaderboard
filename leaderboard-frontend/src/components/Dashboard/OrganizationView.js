@@ -100,6 +100,8 @@ class OrganizationView extends Component {
           close={this.closeEditModal}
           openConfirm={this.openConfirm}
           stripeCustomerID={this.props.stripeCustomerID}
+          getSubscriptionStatus={this.props.getSubscriptionStatus}
+          getSubscriptionInfo={this.props.getSubscriptionInfo}
         />
         <ConfirmDeleteModal
           open={this.state.openConfirm}
@@ -118,6 +120,33 @@ const EditModal = props => {
   // If there is a stripeCustomerID on the org, display subscription info
   // else display a button to go subscribe.
   console.log(props.stripeCustomerID)
+  if (props.getSubscriptionStatus === true) {
+    return (
+      <Modal
+    centered
+    size="large"
+    closeIcon
+    open={props.open}
+    onClose={props.close}
+    dimmer="blurring"
+      >
+      <Modal.Header icon="cog" content="Organization Settings" />
+      {/* <Modal.Content content="Billing options or current subscription details." /> */}
+    <Modal.Content>
+      <h1>You already have a subscription: {props.getSubscriptionInfo.nickname}</h1>
+      <h2>Active subscription: {props.getSubscriptionStatus.toString()}</h2>
+    </Modal.Content>
+    <Modal.Actions>
+    <Button
+    color="red"
+    icon="trash alternate"
+    content="Delete this Organization"
+    onClick={props.openConfirm}
+    />
+  </Modal.Actions>
+  </Modal>
+    )
+  }
   if (props.stripeCustomerID !== null) {
     return (
       <Modal
@@ -203,7 +232,9 @@ const ConfirmDeleteModal = props => {
 
 const mapStateToProps = state => {
   return {
-    stripeCustomerID: state.stripeCustomerID
+    stripeCustomerID: state.stripeCustomerID,
+    getSubscriptionStatus: state.getSubscriptionStatus,
+    getSubscriptionInfo: state.getSubscriptionInfo
   }
 }
 export  default connect(mapStateToProps, {})(OrganizationView)
