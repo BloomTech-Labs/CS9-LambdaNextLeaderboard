@@ -30,7 +30,7 @@ router.get("/:id/students", (req, res) => {
       if (!aClass) {
         return res.status(404).json({ class: "That class does not exist" });
       }
-      res.json(aClass.students);
+      res.json({ students: aClass.students, querying: false });
     });
 });
 
@@ -54,11 +54,15 @@ router.get("/:id/students/:query", (req, res) => {
         return (
           aStudent.firstname.toLowerCase().includes(query.toLowerCase()) ||
           aStudent.lastname.toLowerCase().includes(query.toLowerCase()) ||
-          aStudent.email.toLowerCase().includes(query.toLowerCase()) ||
+          aStudent.email
+            .toLowerCase()
+            .split(".")
+            .join("")
+            .includes(query.toLowerCase()) ||
           aStudent.github.toLowerCase().includes(query.toLowerCase())
         );
       });
-      res.json(result);
+      res.json({ students: result, querying: true });
     })
     .catch(err => console.log(err));
 });

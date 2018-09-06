@@ -84,6 +84,7 @@ const initialState = {
   createdClass: {},
 
   classStudents: {},
+  queryingStudents: false,
   newStudentErrors: {},
   createdStudent: {},
   updatedStudent: {},
@@ -228,6 +229,10 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         loggedInAdmin: ""
       });
+    case UPDATE_ADMIN:
+      return Object.assign({}, state, {
+        updateAdmin: action.payload
+      });
 
     case GET_ADMIN_ORGANIZATIONS:
       return Object.assign({}, state, {
@@ -261,7 +266,8 @@ const studentReducer = (state = initialState, action) => {
 
     case GET_CLASS_STUDENTS:
       return Object.assign({}, state, {
-        classStudents: action.payload
+        classStudents: action.payload.students,
+        queryingStudents: action.payload.querying
       });
     case ADD_CLASS_STUDENTS_ERRORS:
       return Object.assign({}, state, {
@@ -280,10 +286,7 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         deletedStudent: action.payload
       });
-    // case CLASS_TO_QUERY:
-    //     return Object.assign({}.state, {
-    //         classToQuery: action.payload
-    //     })
+
     case CLASS_TO_QUERY:
       return Object.assign({}, state, {
         classToQuery: action.payload,
@@ -298,10 +301,6 @@ const studentReducer = (state = initialState, action) => {
     case CHANGE_SETTINGS:
       return Object.assign({}, state, {
         changeSettings: action.payload
-      });
-    case UPDATE_ADMIN:
-      return Object.assign({}, state, {
-        updateAdmin: action.payload
       });
 
     default:

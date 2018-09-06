@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { Segment, Input, List, Button, Modal, Header } from "semantic-ui-react";
+import {
+  Segment,
+  Input,
+  List,
+  Button,
+  Modal,
+  Header,
+  Label,
+  Form
+} from "semantic-ui-react";
 
 // components
 import StudentList from "./StudentList";
@@ -169,15 +178,26 @@ class ClassView extends Component {
             onClick={this.openModal}
           />
         </Segment>
-        {this.state.unhired ? (
+        {this.props.queryingStudents || this.state.unhired ? (
           <Segment>
-            <Input
-              fluid
-              icon="users"
-              iconPosition="left"
-              placeholder="Search students..."
-              onChange={this.queryStudents}
-            />
+            <Form>
+              <Form.Field>
+                {!this.state.unhired && this.props.queryingStudents ? (
+                  <Label
+                    pointing="below"
+                    content="No students found"
+                    color="orange"
+                  />
+                ) : null}
+                <Input
+                  fluid
+                  icon="users"
+                  iconPosition="left"
+                  placeholder="Search students..."
+                  onChange={this.queryStudents}
+                />
+              </Form.Field>
+            </Form>
           </Segment>
         ) : null}
         {this.state.unhired ? (
@@ -220,6 +240,7 @@ const EditModal = props => {
 const mapStateToProps = state => {
   return {
     students: state.classStudents,
+    queryingStudents: state.queryingStudents,
     newStudentErrors: state.newStudentErrors,
     updatedStudent: state.updatedStudent,
     createdStudent: state.createdStudent,
