@@ -83,7 +83,7 @@ export default class StudentList extends Component {
           delete={this.handleDelete}
         />
         <Card.Group itemsPerRow="1" stackable>
-          {this.props.students.map((student, index) => {
+          {this.props.students.sort((a, b) => a.firstname.localeCompare(b.firstname)).map((student, index) => {
             return !student.hired ? (
               this.state.editStudent &&
               this.state.selectedStudent === student._id ? (
