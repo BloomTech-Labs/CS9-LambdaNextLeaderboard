@@ -61,7 +61,13 @@ class App extends Component {
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
-            <Route exact path="/pricing" component={PRICING} />
+            <Route
+              exact
+              path="/pricing"
+              render={props => (
+                <PRICING {...props} handleCTAClick={this.handleOpenModal} />
+              )}
+            />
             <Route exact path="/subscriptions" component={SUBSCRIPTIONS} />
             <Route exact path="/sub2" component={SUB2} />
           </div>

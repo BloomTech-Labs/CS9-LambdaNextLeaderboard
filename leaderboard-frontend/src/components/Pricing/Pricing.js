@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Container, Header, Grid, Card, List } from "semantic-ui-react";
+import {
+  Container,
+  Header,
+  Grid,
+  Card,
+  List,
+  Button,
+  Icon
+} from "semantic-ui-react";
 
 class Pricing extends Component {
   constructor(props) {
@@ -7,13 +15,17 @@ class Pricing extends Component {
     this.state = "";
   }
 
+  handleCTAClick = () => {
+    this.props.handleCTAClick();
+  };
+
   render() {
     return (
       <div>
         <Container>
           <Header
             as="h1"
-            content="pricing"
+            content="Pricing"
             textAlign="center"
             style={{
               fontSize: "4em",
@@ -46,17 +58,25 @@ class Pricing extends Component {
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>1 Admin User</List.Description>
+                        <List.Description>
+                          <span style={{ fontWeight: "bold" }}>1</span> Admin
+                          User
+                        </List.Description>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>1 Class</List.Description>
+                        <List.Description>
+                          <span style={{ fontWeight: "bold" }}>1</span> Class
+                        </List.Description>
                       </List.Content>
                     </List.Item>
                     <List.Item>
                       <List.Content>
-                        <List.Description>Up to 50 Students</List.Description>
+                        <List.Description>
+                          <span style={{ fontWeight: "bold" }}>50</span>{" "}
+                          Students
+                        </List.Description>
                       </List.Content>
                     </List.Item>
                   </List>
@@ -126,6 +146,12 @@ class Pricing extends Component {
                 <Card.Content extra>'Choose this plan'</Card.Content>
               </Card>
             </Grid.Column>
+          </Grid>
+          <Grid centered style={{ paddingBottom: "2em", paddingTop: "2em" }}>
+            <Button primary size="huge" onClick={this.handleCTAClick}>
+              Get Started
+              <Icon name="right arrow" />
+            </Button>
           </Grid>
         </Container>
       </div>
