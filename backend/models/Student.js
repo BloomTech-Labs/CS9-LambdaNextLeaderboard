@@ -12,8 +12,7 @@ const StudentSchema = new Schema({
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   github: {
     type: String,

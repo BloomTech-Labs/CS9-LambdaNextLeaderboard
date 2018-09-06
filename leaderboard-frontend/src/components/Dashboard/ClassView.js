@@ -182,7 +182,9 @@ class ClassView extends Component {
           <Segment>
             <Form>
               <Form.Field>
-                {!this.state.unhired && this.props.queryingStudents ? (
+                {this.props.students &&
+                !this.state.unhired &&
+                this.props.queryingStudents ? (
                   <Label
                     pointing="below"
                     content="No students found"

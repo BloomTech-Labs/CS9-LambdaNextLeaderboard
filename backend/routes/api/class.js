@@ -81,23 +81,41 @@ router.post("/:id/students/create", (req, res) => {
   const id = req.params.id;
   const { firstname, lastname, email, github } = data;
 
-  Class.findById(id).then(aClass => {
-    if (!aClass) {
-      return res.status(404).json({ class: "That class does not exist" });
-    }
+  Class.findById(id)
+    .populate({
+      path: "students",
+      select: ["email", "github"],
+      match: { $or: [{ email }, { github }] }
+    })
+    .then(aClass => {
+      if (!aClass) {
+        return res.status(404).json({ class: "That class does not exist" });
+      }
 
-    const newStudent = new Student({
-      firstname,
-      lastname,
-      email,
-      github
+      if (aClass.students.length) {
+        if (aClass.students[0].email === email) {
+          errors.email =
+            "This class already has a student with that email address";
+        }
+        if (aClass.students[0].github === github) {
+          errors.github =
+            "This class already has a student with that Github handle";
+        }
+        return res.status(400).json(errors);
+      }
+
+      const newStudent = new Student({
+        firstname,
+        lastname,
+        email,
+        github
+      });
+      newStudent.save().then(created => {
+        aClass.students.push(created._id);
+        aClass.save();
+        res.status(201).json(created);
+      });
     });
-    newStudent.save().then(created => {
-      aClass.students.push(created._id);
-      aClass.save();
-      res.status(201).json(created);
-    });
-  });
 });
 
 // @route   PUT api/classes/:id/update
