@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
+import {toggleSettings} from '../../actions/organizationActions';
+import {getAdminOrganizations} from '../../actions/adminActions';
+import jwt from "jsonwebtoken";
 class Sub2 extends Component {
   constructor(props) {
     super(props);
@@ -42,6 +45,9 @@ class Sub2 extends Component {
       }).then((res) => res.json()).then((response) => {
         console.log('response', response)
       }).catch(error => console.error('Error:', error));
+    this.props.toggleSettings(true)
+    const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+    this.props.getAdminOrganizations({ id });
   }
 
   render() {
@@ -98,4 +104,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {})(Sub2);
+export default connect(mapStateToProps, {toggleSettings, getAdminOrganizations})(Sub2);

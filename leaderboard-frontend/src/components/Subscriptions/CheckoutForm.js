@@ -5,7 +5,10 @@ import axios from 'axios';
 
 // import AddressSection from './AddressSection';
 import CardSection from './CardSection';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import {toggleSettings} from '../../actions/organizationActions'
+import {getAdminOrganizations} from '../../actions/adminActions'
+import jwt from "jsonwebtoken";
 
 class CheckoutForm extends React.Component {
   constructor(props) {
@@ -23,19 +26,25 @@ class CheckoutForm extends React.Component {
 
     this.props.stripe.createToken({}).then(({token}) => {
       console.log('Received Stripe token:', token);
-      fetch('http://localhost:4000/api/customer/create', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          token: token.id,
-          id: this.props.activeOrganization
+      if (token) {
+        fetch('http://localhost:4000/api/customer/create', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            token: token.id,
+            id: this.props.activeOrganization
+          })
+        }).then((res) => res.json()).then((response) => {
+          console.log('response', response)
+          this.props.toggleSettings(true)
+          const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+          this.props.getAdminOrganizations({ id });
+          // TODO: set organization stripeCustomerId
         })
-      }).then((res) => res.json()).then((response) => {
-        console.log('response', response)
-        // TODO: set organization stripeCustomerId
-      })
+      }
+
     });
 
     // However, this line of code will do the same thing:
@@ -65,4 +74,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {})(injectStripe(CheckoutForm));
+export default connect(mapStateToProps, {toggleSettings, getAdminOrganizations})(injectStripe(CheckoutForm));
