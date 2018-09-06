@@ -6,7 +6,7 @@ import axios from 'axios';
 // import AddressSection from './AddressSection';
 import CardSection from './CardSection';
 import {connect} from 'react-redux';
-import {toggleSettings} from '../../actions/organizationActions'
+import {toggleSettings, activeOrganization} from '../../actions/organizationActions'
 import {getAdminOrganizations} from '../../actions/adminActions'
 import jwt from "jsonwebtoken";
 
@@ -15,6 +15,14 @@ class CheckoutForm extends React.Component {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
+  // getSnapshotBeforeUpdate = (nextProps) => {
+  //   console.log(nextProps.stripeCustomerID)
+  //   if(nextProps.stripeCustomerID !== null) {
+  //     this.props.getSubscriptionInfo(nextProps.stripeCustomerID);
+  //     this.props.toggleSettings(true)
+  //
+  //   }
+  // }
   handleSubmit(ev) {
     // We don't want to let default form submission happen here, which would refresh the page.
     ev.preventDefault();
@@ -34,13 +42,15 @@ class CheckoutForm extends React.Component {
           },
           body: JSON.stringify({
             token: token.id,
-            id: this.props.activeOrganization
+            id: this.props.activeOrganizationID
           })
         }).then((res) => res.json()).then((response) => {
           console.log('response', response)
-          this.props.toggleSettings(true)
           const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+          this.props.activeOrganization(this.props.activeOrganizationID, response.stripeCustomerID)
           this.props.getAdminOrganizations({ id });
+          console.log('response customerID', response.stripeCustomerID)
+          this.props.toggleSettings(true)
           // TODO: set organization stripeCustomerId
         })
       }
@@ -69,9 +79,9 @@ class CheckoutForm extends React.Component {
 }
 const mapStateToProps = state => {
   return {
-    activeOrganization: state.activeOrganization,
+    activeOrganizationID: state.activeOrganization,
     stripeCustomerID: state.stripeCustomerID
   }
 }
 
-export default connect(mapStateToProps, {toggleSettings, getAdminOrganizations})(injectStripe(CheckoutForm));
+export default connect(mapStateToProps, {toggleSettings,activeOrganization, getAdminOrganizations})(injectStripe(CheckoutForm));

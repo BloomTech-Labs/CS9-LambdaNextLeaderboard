@@ -78,7 +78,10 @@ export const getOrganizationClasses = obj => {
 // export const stripeCustomerID =
 
 export const activeOrganization = (id, stripe) => {
-  console.log('active', id, stripe)
+  // console.log('active', id, stripe)
+  // if (stripe) {
+  //   getSubscriptionInfo(stripe)
+  // }
   return dispatch => {
     dispatch({
       type: ACTIVE_ORGANIZATION,
@@ -86,6 +89,7 @@ export const activeOrganization = (id, stripe) => {
       stripeCustomerID: stripe
     })
   }
+
 }
 
 export const addOrganizationClass = obj => {
