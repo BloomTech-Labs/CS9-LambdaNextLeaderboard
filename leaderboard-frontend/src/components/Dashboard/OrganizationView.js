@@ -12,7 +12,7 @@ import axios from 'axios';
 import SUBSCRIPTION from '../Subscriptions/Subscriptions';
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 import {connect} from 'react-redux'
-import {toggleSettings} from '../../actions/organizationActions'
+import {toggleSettings, cancelSubscription} from '../../actions/organizationActions'
 import Sub2 from "../Sub2/Sub2";
 
 class OrganizationView extends Component {
@@ -113,9 +113,9 @@ class OrganizationView extends Component {
           open={this.state.openEditModal}
           close={this.closeEditModal}
           openConfirm={this.openConfirm}
-          stripeCustomerID={this.props.stripeCustomerID}
           getSubscriptionStatus={this.props.getSubscriptionStatus}
           getSubscriptionInfo={this.props.getSubscriptionInfo}
+          cancelSubscription={this.props.cancelSubscription}
         />
         <ConfirmDeleteModal
           open={this.state.openConfirm}
@@ -148,6 +148,7 @@ const EditModal = props => {
     <Modal.Content>
       <h1>You already have a subscription: {props.getSubscriptionInfo.nickname}</h1>
       <h2>Active subscription: {props.getSubscriptionStatus.toString()}</h2>
+      <button onClick={props.cancelSubscription(props.getSubscriptionInfo.subscriptionID)}>Cancel Subscription</button>
     </Modal.Content>
     <Modal.Actions>
     <Button
@@ -252,4 +253,4 @@ const mapStateToProps = state => {
     activeOrganization: state.activeOrganization
   }
 }
-export  default connect(mapStateToProps, {toggleSettings})(OrganizationView)
+export  default connect(mapStateToProps, {toggleSettings, cancelSubscription})(OrganizationView)

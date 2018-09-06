@@ -9,7 +9,8 @@ export const DELETE_ORGANIZATION = "DELETE_ORGANIZATION";
 export const ADD_STRIPE_CUSTOMER_ID = "ADD_STRIPE_CUSTOMER_ID";
 export const ACTIVE_ORGANIZATION = "ACTIVE_ORGANIZATION";
 export const GET_SUBSCRIPTION_INFO = "GET_SUBSCRIPTION_INFO";
-export const TOGGLE_SETTINGS = "TOGGLE_SETTINGS"
+export const TOGGLE_SETTINGS = "TOGGLE_SETTINGS";
+export const CANCEL_SUBSCRIPTION = "CANCEL_SUBSCRIPTION";
 const ORGANIZATION_URL = process.env.REACT_APP_ORGANIZATION_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
@@ -31,7 +32,8 @@ export const getSubscriptionInfo = id => {
           payload: response.subscriptions.data[0].plan.active,
           nickname: response.subscriptions.data[0].plan.nickname,
           period_start: response.subscriptions.data[0].current_period_start,
-          period_end: response.subscriptions.data[0].current_period_end
+          period_end: response.subscriptions.data[0].current_period_end,
+          subscriptionID: response.subscriptions.data[0].id
         })
       }).catch(err => {
         dispatch({
@@ -39,6 +41,30 @@ export const getSubscriptionInfo = id => {
           payload: err.response
         });
       });
+  }
+}
+export const cancelSubscription = id => {
+  return dispatch => {
+    fetch('http://localhost:4000/api/customer/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: id
+      })
+    }).then((res) => res.json()).then((response) => {
+      console.log('response', response)
+      dispatch({
+        type: CANCEL_SUBSCRIPTION,
+        payload: response,
+      })
+    }).catch(err => {
+      dispatch({
+        type: "ERRORS",
+        payload: err.response
+      });
+    });
   }
 }
 export const toggleSettings = boolean => {

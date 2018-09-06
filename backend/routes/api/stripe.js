@@ -117,5 +117,25 @@ router.post('/retrieve', function (req,res, next) {
     }
   );
 })
+router.delete('/delete', function (req, res, next) {
+  let {
+    stripe_customer_id
+  } = req.body;
+  stripe.subscriptions.del(
+    stripe_customer_id,
+    function(err, confirmation) {
+      if (confirmation) {
+        res.send(confirmation)
+      }
+      if (err) {
+        res.send(err)
+      }
+      // asynchronously called
+    }
+  );
+
+
+
+})
 
 module.exports = router;
