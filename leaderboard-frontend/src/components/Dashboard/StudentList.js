@@ -33,10 +33,7 @@ export default class StudentList extends Component {
     });
   };
 
-  componentWillUpdate(nextProps, nextState) {
-
-  }
-
+  componentWillUpdate(nextProps, nextState) {}
 
   handleHire = (e, { id }) => {
     this.props.updateStudent({ id, hired: true });
@@ -142,52 +139,60 @@ export default class StudentList extends Component {
               ) : (
                 <Card key={index}>
                   <Card.Content>
-                    <Card.Header>{`${student.firstname} ${
-                      student.lastname
-                    }`}</Card.Header>
+                    <Card.Header>
+                      {`${student.firstname} ${student.lastname}`}
+                      <Button.Group compact basic floated="right" widths="1">
+                        <Button
+                          id={student._id}
+                          icon
+                          animated="vertical"
+                          onClick={this.handleHire}
+                          disabled={this.state.editStudent}
+                        >
+                          <Button.Content visible>
+                            <Icon name="trophy" color="yellow" />
+                          </Button.Content>
+                          <Button.Content hidden>Hired!</Button.Content>
+                        </Button>
+                        <Button
+                          id={student._id}
+                          student={student}
+                          name="openEditModal"
+                          icon
+                          animated="vertical"
+                          onClick={this.openEditView}
+                          disabled={this.state.editStudent}
+                        >
+                          <Button.Content visible>
+                            <Icon name="wrench" />
+                          </Button.Content>
+                          <Button.Content hidden>Edit</Button.Content>
+                        </Button>
+                        <Button
+                          id={student._id}
+                          name="openDeleteModal"
+                          icon
+                          animated="vertical"
+                          onClick={this.openModal}
+                          disabled={this.state.editStudent}
+                        >
+                          <Button.Content visible>
+                            <Icon name="trash" color="red" inverted />
+                          </Button.Content>
+                          <Button.Content hidden>Delete</Button.Content>
+                        </Button>
+                      </Button.Group>
+                    </Card.Header>
                     <Card.Description>
                       <List>
-                        <List.Item><Icon name='mail'/>: {student.email}</List.Item>
-                        <List.Item><Icon name='github'/>: {student.github}</List.Item>
+                        <List.Item>
+                          <Icon name="mail" />: {student.email}
+                        </List.Item>
+                        <List.Item>
+                          <Icon name="github" />: {student.github}
+                        </List.Item>
                       </List>
                     </Card.Description>
-                  </Card.Content>
-                  <Card.Content extra>
-                    <Button.Group widths="3">
-                      <Button
-                        id={student._id}
-                        icon="money"
-                        content="Hired"
-                        inverted
-                        color="green"
-                        size="small"
-                        onClick={this.handleHire}
-                        disabled={this.state.editStudent}
-                      />
-                      <Button
-                        id={student._id}
-                        student={student}
-                        name="openEditModal"
-                        icon="wrench"
-                        content="Edit"
-                        inverted
-                        color="blue"
-                        size="small"
-                        onClick={this.openEditView}
-                        disabled={this.state.editStudent}
-                      />
-                      <Button
-                        id={student._id}
-                        name="openDeleteModal"
-                        icon="trash"
-                        content="Delete"
-                        inverted
-                        color="red"
-                        size="small"
-                        onClick={this.openModal}
-                        disabled={this.state.editStudent}
-                      />
-                    </Button.Group>
                   </Card.Content>
                 </Card>
               )
