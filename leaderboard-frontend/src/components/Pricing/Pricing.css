@@ -5,6 +5,7 @@
 .Pricing__card--feature {
   text-align: center;
   transform: scale(1.05);
+  background: red;
 }
 
 .Pricing__cardDescription {
@@ -14,8 +15,4 @@
 
 .Pricing__cardDescription--text {
   padding-bottom: 0.5em;
-}
-
-.color {
-  background: red;
 }

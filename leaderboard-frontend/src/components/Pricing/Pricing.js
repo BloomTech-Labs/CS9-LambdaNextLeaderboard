@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Header,
@@ -6,10 +7,13 @@ import {
   Card,
   List,
   Button,
-  Icon
+  Icon,
+  Image,
+  Segment
 } from "semantic-ui-react";
 
 import "./Pricing.css";
+import lambdaLogo from "../LandingPage/img/Lambda_Logo_Full.png";
 
 class Pricing extends Component {
   constructor(props) {
@@ -49,7 +53,7 @@ class Pricing extends Component {
           <Grid container centered stretched padded="horizontally">
             <Grid.Column width={5}>
               <Card raised className="Pricing__card">
-                <Card.Content header textAlign="center" className="red">
+                <Card.Content header textAlign="center">
                   <h2>Free</h2>
                 </Card.Content>
                 <Card.Content>
@@ -153,7 +157,7 @@ class Pricing extends Component {
               </Card>
             </Grid.Column>
 
-            <Grid.Column width={5} className="Pricing__border">
+            <Grid.Column width={5}>
               <Card raised className="Pricing__card">
                 <Card.Content header textAlign="center">
                   <h2>Premium</h2>
