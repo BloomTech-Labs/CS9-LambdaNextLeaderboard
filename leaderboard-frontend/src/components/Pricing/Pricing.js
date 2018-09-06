@@ -13,7 +13,6 @@ import {
 } from "semantic-ui-react";
 
 import "./Pricing.css";
-import lambdaLogo from "../LandingPage/img/Lambda_Logo_Full.png";
 
 class Pricing extends Component {
   constructor(props) {
