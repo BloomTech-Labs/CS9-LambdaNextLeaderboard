@@ -310,7 +310,9 @@ const studentReducer = (state = initialState, action) => {
     case ACTIVE_ORGANIZATION:
       return Object.assign({}, state, {
         activeOrganization: action.payload,
-        stripeCustomerID: action.stripeCustomerID
+        stripeCustomerID: action.stripeCustomerID,
+        getSubscriptionStatus: null,
+        getSubscriptionInfo: null
       })
     case GET_SUBSCRIPTION_INFO:
       return Object.assign({}, state, {
