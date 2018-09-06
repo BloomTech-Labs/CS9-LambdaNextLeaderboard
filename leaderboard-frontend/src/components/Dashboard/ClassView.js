@@ -10,6 +10,7 @@ import AddStudent from "./AddStudent";
 // actions
 import {
   getClassStudents,
+  queryStudents,
   addClassStudent,
   postCsvStudents
 } from "../../actions/classActions";
@@ -57,6 +58,10 @@ class ClassView extends Component {
 
   closeModal = () => {
     this.setState({ openEditModal: false });
+  };
+
+  queryStudents = (e, { value }) => {
+    this.props.queryStudents({ id: this.props.classId, query: value });
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -171,6 +176,7 @@ class ClassView extends Component {
               icon="users"
               iconPosition="left"
               placeholder="Search students..."
+              onChange={this.queryStudents}
             />
           </Segment>
         ) : null}
@@ -228,12 +234,13 @@ export default connect(
   mapStateToProps,
   {
     getClassStudents,
-    setSettingsAction,
-    getGithubDataAction,
-    setClassForQuery,
+    queryStudents,
     addClassStudent,
     updateStudent,
     deleteStudent,
-    postCsvStudents
+    postCsvStudents,
+    setSettingsAction,
+    getGithubDataAction,
+    setClassForQuery
   }
 )(ClassView);

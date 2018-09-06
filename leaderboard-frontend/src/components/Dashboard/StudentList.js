@@ -77,7 +77,6 @@ export default class StudentList extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <Segment>
         <DeleteModal

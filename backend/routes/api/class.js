@@ -34,6 +34,37 @@ router.get("/:id/students", (req, res) => {
     });
 });
 
+// @route   GET api/classes/:id/students/query
+// @desc    Queries a class' hired and unhired students
+// @access  Private
+router.get("/:id/students/:query", (req, res) => {
+  console.log("querying");
+  const id = req.params.id;
+  const query = req.params.query;
+
+  Class.findById(id)
+    .populate({
+      path: "students",
+      options: { sort: { hired: 1, lastname: 1, firstname: 1 } }
+    })
+    .then(aClass => {
+      if (!aClass) {
+        return res.status(404).json({ class: "That class does not exist" });
+      }
+      let result = aClass.students.filter(aStudent => {
+        return (
+          aStudent.firstname.toLowerCase().includes(query.toLowerCase()) ||
+          aStudent.lastname.toLowerCase().includes(query.toLowerCase()) ||
+          aStudent.email.toLowerCase().includes(query.toLowerCase()) ||
+          aStudent.github.toLowerCase().includes(query.toLowerCase())
+        );
+      });
+      console.log(result);
+      res.json(result);
+    })
+    .catch(err => console.log(err));
+});
+
 // @route   POST api/classes/:id/students/create
 // @desc    Creates a new student
 // @access  Private
@@ -67,9 +98,6 @@ router.post("/:id/students/create", (req, res) => {
     });
   });
 });
-
-
-
 
 // @route   PUT api/classes/:id/update
 // @desc    Updates the class' info
@@ -138,7 +166,7 @@ router.post("/:id/importcsv", (req, res) => {
       .fromString(csvClassFile.data.toString(), {
         headers: true,
         ignoreEmpty: true
-      })      
+      })
       .validate(function(data) {
         return Student.count({ email: data.email }, function(err, count) {
           if (count === 0) return;
@@ -178,6 +206,6 @@ router.post("/:id/importcsv", (req, res) => {
   }
 
   run();
-})
+});
 
 module.exports = router;
