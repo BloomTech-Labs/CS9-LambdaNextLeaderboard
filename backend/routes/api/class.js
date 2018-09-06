@@ -38,7 +38,6 @@ router.get("/:id/students", (req, res) => {
 // @desc    Queries a class' hired and unhired students
 // @access  Private
 router.get("/:id/students/:query", (req, res) => {
-  console.log("querying");
   const id = req.params.id;
   const query = req.params.query;
 
@@ -59,7 +58,6 @@ router.get("/:id/students/:query", (req, res) => {
           aStudent.github.toLowerCase().includes(query.toLowerCase())
         );
       });
-      console.log(result);
       res.json(result);
     })
     .catch(err => console.log(err));
