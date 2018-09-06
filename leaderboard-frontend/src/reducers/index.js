@@ -37,7 +37,8 @@ import {
   ADD_ORGANIZATION_CLASSES_ERRORS,
   ADD_ORGANIZATION_CLASSES,
   DELETE_ORGANIZATION, ACTIVE_ORGANIZATION,
-  GET_SUBSCRIPTION_INFO
+  GET_SUBSCRIPTION_INFO,
+  TOGGLE_SETTINGS
 } from "../actions/organizationActions";
 import {
   GET_CLASS_STUDENTS,
@@ -94,6 +95,7 @@ const initialState = {
   activeOrganization: null,
   stripeCustomerID: null,
   getSubscriptionInfo: null,
+  toggleSettings: false
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -318,6 +320,10 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         getSubscriptionStatus: action.payload,
         getSubscriptionInfo: { nickname: action.nickname, period_start: action.period_start, period_end: action.period_end }
+      })
+    case TOGGLE_SETTINGS:
+      return Object.assign({}, state, {
+        toggleSettings: action.payload
       })
 
     default:

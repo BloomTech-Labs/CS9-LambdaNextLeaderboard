@@ -12,6 +12,7 @@ import axios from 'axios';
 import SUBSCRIPTION from '../Subscriptions/Subscriptions';
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 import {connect} from 'react-redux'
+import {toggleSettings} from '../../actions/organizationActions'
 import Sub2 from "../Sub2/Sub2";
 
 class OrganizationView extends Component {
@@ -26,6 +27,7 @@ class OrganizationView extends Component {
   }
 
   openEditModal = () => {
+    // this.props.toggleSettings(true)
     this.setState({ openEditModal: true });
   };
 
@@ -54,6 +56,15 @@ class OrganizationView extends Component {
     this.props.delete({ id: this.props.id });
   };
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.toggle === true) {
+      this.setState({openEditModal: false})
+      this.props.toggleSettings(false)
+      console.log('firing toggle', nextProps.toggleSettings.toString())
+    }
+  }
+
+
   orgInformation = () => {
     // axios.get()
     // TODO:  Organization settings
@@ -68,7 +79,7 @@ class OrganizationView extends Component {
   }
 
   render() {
-    console.log(this.props.stripeCustomerID)
+    console.log(this.props.stripeCustomerID, this.props.toggle.toString())
     return (
       <Segment.Group>
         <Segment>
@@ -119,7 +130,6 @@ class OrganizationView extends Component {
 const EditModal = props => {
   // If there is a stripeCustomerID on the org, display subscription info
   // else display a button to go subscribe.
-  console.log(props.stripeCustomerID)
   if (props.getSubscriptionStatus === true) {
     return (
       <Modal
@@ -234,7 +244,8 @@ const mapStateToProps = state => {
   return {
     stripeCustomerID: state.stripeCustomerID,
     getSubscriptionStatus: state.getSubscriptionStatus,
-    getSubscriptionInfo: state.getSubscriptionInfo
+    getSubscriptionInfo: state.getSubscriptionInfo,
+    toggle: state.toggleSettings
   }
 }
-export  default connect(mapStateToProps, {})(OrganizationView)
+export  default connect(mapStateToProps, {toggleSettings})(OrganizationView)

@@ -9,7 +9,7 @@ export const DELETE_ORGANIZATION = "DELETE_ORGANIZATION";
 export const ADD_STRIPE_CUSTOMER_ID = "ADD_STRIPE_CUSTOMER_ID";
 export const ACTIVE_ORGANIZATION = "ACTIVE_ORGANIZATION";
 export const GET_SUBSCRIPTION_INFO = "GET_SUBSCRIPTION_INFO";
-
+export const TOGGLE_SETTINGS = "TOGGLE_SETTINGS"
 const ORGANIZATION_URL = process.env.REACT_APP_ORGANIZATION_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
@@ -28,7 +28,7 @@ export const getSubscriptionInfo = id => {
         console.log('response', response)
         dispatch({
           type: GET_SUBSCRIPTION_INFO,
-          payload: response.subscriptions.data[0].plan.active, 
+          payload: response.subscriptions.data[0].plan.active,
           nickname: response.subscriptions.data[0].plan.nickname,
           period_start: response.subscriptions.data[0].current_period_start,
           period_end: response.subscriptions.data[0].current_period_end
@@ -39,6 +39,15 @@ export const getSubscriptionInfo = id => {
           payload: err.response
         });
       });
+  }
+}
+export const toggleSettings = boolean => {
+  return dispatch => {
+    dispatch({
+      type: TOGGLE_SETTINGS,
+      payload: boolean
+    })
+
   }
 }
 
