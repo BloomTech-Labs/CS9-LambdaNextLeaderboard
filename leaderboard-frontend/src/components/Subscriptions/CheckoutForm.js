@@ -5,6 +5,7 @@ import axios from 'axios';
 
 // import AddressSection from './AddressSection';
 import CardSection from './CardSection';
+import {connect} from 'react-redux'
 
 class CheckoutForm extends React.Component {
   constructor(props) {
@@ -23,15 +24,17 @@ class CheckoutForm extends React.Component {
     this.props.stripe.createToken({}).then(({token}) => {
       console.log('Received Stripe token:', token);
       fetch('http://localhost:4000/api/customer/create', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          token: token.id
+          token: token.id,
+          id: this.props.activeOrganization
         })
       }).then((res) => res.json()).then((response) => {
         console.log('response', response)
+        // TODO: set organization stripeCustomerId
       })
     });
 
@@ -55,5 +58,11 @@ class CheckoutForm extends React.Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    activeOrganization: state.activeOrganization,
+    stripeCustomerID: state.stripeCustomerID
+  }
+}
 
-export default injectStripe(CheckoutForm);
+export default connect(mapStateToProps, {})(injectStripe(CheckoutForm));

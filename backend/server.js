@@ -16,7 +16,7 @@ const students = require("./routes/api/student");
 const billing = require("./routes/api/payment");
 const githubData = require("./data/githubData");
 const leaderboard = require("./routes/api/leaderboard");
-const customer = require('./routes/api/customerCreation');
+const customer = require('./routes/api/stripe');
 
 // CSV imports
 //const template = require("./template.js");
