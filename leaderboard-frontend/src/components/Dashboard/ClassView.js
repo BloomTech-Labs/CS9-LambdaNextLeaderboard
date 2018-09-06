@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import {
@@ -135,47 +134,43 @@ class ClassView extends Component {
     return (
       <Segment.Group>
         <EditModal open={this.state.openEditModal} close={this.closeModal} />
-        <Segment>
+        <Segment inverted color="blue">
           <Header as="h2" content="Class View" textAlign="center" />
-          <Card fluid color="blue">
-            <Card.Content textAlign="center">
-              <Card.Header textAlign="center">
-                {this.props.className}
-              </Card.Header>
-              <List bulleted horizontal>
-                <List.Item>Students: {this.state.unhired}</List.Item>
-                <List.Item>Participation: 0%</List.Item>
-                <List.Item>
-                  Hired: {this.state.hired}/{this.state.total}
-                </List.Item>
-              </List>
-            </Card.Content>
-            <Card.Content textAlign="center" extra>
-              {this.state.unhired ? (
-                <a
-                  href="https://buddhaplex.github.io/leaderboard_sketches/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button
-                    icon="ordered list"
-                    content="Leaderboard"
-                    inverted
-                    color="green"
-                    size="large"
-                  />
-                </a>
-              ) : null}
+        </Segment>
+        <Segment textAlign="center">
+          <Header textAlign="center">{this.props.className}</Header>
+          <List bulleted horizontal>
+            <List.Item>Students: {this.state.unhired}</List.Item>
+            <List.Item>Participation: 0%</List.Item>
+            <List.Item>
+              Hired: {this.state.hired}/{this.state.total}
+            </List.Item>
+          </List>
+        </Segment>
+        <Segment textAlign="center">
+          {this.state.unhired ? (
+            <a
+              href="https://buddhaplex.github.io/leaderboard_sketches/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button
-                icon="cog"
-                content="Settings"
+                icon="ordered list"
+                content="Leaderboard"
                 inverted
-                color="blue"
+                color="green"
                 size="large"
-                onClick={this.openModal}
               />
-            </Card.Content>
-          </Card>
+            </a>
+          ) : null}
+          <Button
+            icon="cog"
+            content="Settings"
+            inverted
+            color="blue"
+            size="large"
+            onClick={this.openModal}
+          />
         </Segment>
         {this.state.unhired ? (
           <Segment>
@@ -194,12 +189,14 @@ class ClassView extends Component {
             deleteStudent={this.props.deleteStudent}
           />
         ) : null}
-        <AddStudent
-          classId={this.props.classId}
-          addStudent={this.props.addClassStudent}
-          addStudentErrors={this.props.newStudentErrors}
-          postCsvStudents={this.props.postCsvStudents}
-        />
+        <Segment>
+          <AddStudent
+            classId={this.props.classId}
+            addStudent={this.props.addClassStudent}
+            addStudentErrors={this.props.newStudentErrors}
+            postCsvStudents={this.props.postCsvStudents}
+          />
+        </Segment>
       </Segment.Group>
     );
   }

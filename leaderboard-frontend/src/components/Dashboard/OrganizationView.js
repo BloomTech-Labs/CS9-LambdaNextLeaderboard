@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Segment,
-  Card,
-  List,
-  Button,
-  Modal,
-  Form,
-  Header
-} from "semantic-ui-react";
+import { Segment, List, Button, Modal, Form, Header } from "semantic-ui-react";
 
 export default class OrganizationView extends Component {
   constructor(props) {
@@ -52,29 +44,25 @@ export default class OrganizationView extends Component {
   render() {
     return (
       <Segment.Group>
-        <Segment>
+        <Segment inverted color="blue">
           <Header as="h2" content="Organization View" textAlign="center" />
-          <Card fluid color="orange">
-            <Card.Content textAlign="center">
-              <Card.Header>{this.props.name}</Card.Header>
-              <List bulleted horizontal>
-                <List.Item>
-                  Number of classes: {this.props.numOfClasses}
-                </List.Item>
-              </List>
-            </Card.Content>
-            <Card.Content textAlign="center" extra>
-              <Button
-                name="openEditModal"
-                icon="cog"
-                content="Settings"
-                inverted
-                color="blue"
-                size="large"
-                onClick={this.openEditModal}
-              />
-            </Card.Content>
-          </Card>
+        </Segment>
+        <Segment textAlign="center">
+          <Header>{this.props.name}</Header>
+          <List bulleted horizontal>
+            <List.Item>Number of classes: {this.props.numOfClasses}</List.Item>
+          </List>
+        </Segment>
+        <Segment textAlign="center">
+          <Button
+            name="openEditModal"
+            icon="cog"
+            content="Settings"
+            inverted
+            color="blue"
+            size="large"
+            onClick={this.openEditModal}
+          />
         </Segment>
         <EditModal
           open={this.state.openEditModal}

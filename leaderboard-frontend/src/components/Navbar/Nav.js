@@ -90,6 +90,10 @@ class Nav extends Component {
     this.props.history.push("/dashboard");
   };
 
+  handleSettingsClick = () => {
+    this.props.history.push("/Settings");
+  };
+
   handleLogout = () => {
     this.props.logoutAdminAction();
     localStorage.removeItem("token");
@@ -198,7 +202,7 @@ class Nav extends Component {
         <Container>
           <div className="Nav__container">
             <Link to="/" className="Nav__link">
-              <h1>Leaderboard</h1>
+              <h1>NextSteps</h1>
             </Link>
             {!localStorage.token ? (
               <div>
@@ -243,7 +247,10 @@ class Nav extends Component {
                       text="Dashboard"
                       onClick={this.handleDashboardClick}
                     />
-                    <Dropdown.Item text="Settings" />
+                    <Dropdown.Item
+                      text="Settings"
+                      onClick={this.handleSettingsClick}
+                    />
                     <Dropdown.Item text="Logout" onClick={this.handleLogout} />
                   </Dropdown.Menu>
                 </Dropdown>

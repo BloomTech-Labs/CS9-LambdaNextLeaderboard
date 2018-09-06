@@ -24,11 +24,13 @@ export default class AddOrganization extends Component {
 
   render() {
     return (
-      <Segment>
-        <Header as="h2" icon textAlign="center" size="huge">
-          <Icon name="users" circular />
-          <Header.Content>Add New Organization</Header.Content>
-        </Header>
+      <Segment.Group>
+        <Segment inverted color="blue">
+          <Header as="h2" icon textAlign="center" size="huge">
+            <Icon name="users" circular />
+            <Header.Content>Add New Organization</Header.Content>
+          </Header>
+        </Segment>
 
         <Segment>
           <Form>
@@ -52,7 +54,7 @@ export default class AddOrganization extends Component {
             </Form.Field>
           </Form>
         </Segment>
-      </Segment>
+      </Segment.Group>
     );
   }
 }
