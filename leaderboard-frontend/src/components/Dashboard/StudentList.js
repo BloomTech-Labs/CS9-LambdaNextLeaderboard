@@ -39,6 +39,11 @@ export default class StudentList extends Component {
     });
   };
 
+  componentWillUpdate(nextProps, nextState) {
+
+  }
+
+
   handleHire = (e, { id }) => {
     this.props.updateStudent({ id, hired: true });
   };

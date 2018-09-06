@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
 class Sub2 extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +35,8 @@ class Sub2 extends Component {
       },
       body: JSON.stringify({
         plan: currentPlan,
-        coupon: coupon
+        coupon: coupon,
+        stripe_customer_id: this.props.stripeCustomerID
       })
     })
       .then(res => res.json())
@@ -95,5 +96,13 @@ class Sub2 extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    stripeCustomerID: state.stripeCustomerID
+  };
+};
 
-export default Sub2;
+export default connect(
+  mapStateToProps,
+  {}
+)(Sub2);

@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const stripe = require('../../billing/stripe');
+const Organization = require("../../models/Organization");
 
-
-router.post('/create', function (req, res, next) {
+router.put('/create', function (req, res, next) {
   const token = req.body.token;
-
+  const id = req.body.id;
   if(!token) {
     return res.send({
       success: false,
@@ -19,11 +19,21 @@ router.post('/create', function (req, res, next) {
       if(err) {
         console.error(err);
       } else {
-        res.send({
-          success: true,
-          customer: customer,
-          customerId: customer.id,
-        });
+        const updateObject = {
+          stripeCustomerID: customer.id
+        }
+        const options = {
+          new: true
+        }
+        Organization.findByIdAndUpdate(id, updateObject, options)
+          .then(organization => res.status(201).json(organization))
+          .catch(err => res.json(err))
+
+        // res.send({
+        //   success: true,
+        //   customer: customer,
+        //   customerId: customer.id,
+        // });
       }
     }
   );
@@ -32,8 +42,9 @@ router.post('/create', function (req, res, next) {
 router.post('/subscribe', function (req, res, next) {
   // Step 1: grab plan and coupon
   let {
-    plan, 
-    coupon
+    plan,
+    coupon,
+    stripe_customer_id
   } = req.body;
 
   //format
@@ -51,13 +62,13 @@ router.post('/subscribe', function (req, res, next) {
     });
   }
   // step 3: grab current user info and pull out customer id
-  const customerId = 'cus_DXrzYdu7MFOV28';
+  // const customerId = 'cus_DXrzYdu7MFOV28';
 
   if(plan == 'standard') plan = "plan_DX4jmAAz73XN9M";
   else if(plan == 'premium') plan = "plan_DX4kZpY63l2RtQ";
 
   let params = {
-    customer: customerId,
+    customer: stripe_customer_id,
     items: [{ plan: plan }]
   };
 
@@ -79,5 +90,32 @@ router.post('/subscribe', function (req, res, next) {
     }
   });
 });
+
+router.get('/retrieve', function (req,res, next) {
+  let {
+    stripe_customer_id
+  } = req.body;
+
+  stripe.customers.retrieve(
+    stripe_customer_id,
+    function(err, customer) {
+      res.send(customer)
+    }
+  );
+})
+
+
+router.post('/retrieve', function (req,res, next) {
+  let {
+    stripe_customer_id
+  } = req.body;
+
+  stripe.customers.retrieve(
+    stripe_customer_id,
+    function(err, customer) {
+      res.send(customer)
+    }
+  );
+})
 
 module.exports = router;

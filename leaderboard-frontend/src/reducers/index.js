@@ -36,7 +36,9 @@ import {
   GET_ORGANIZATION_CLASSES,
   ADD_ORGANIZATION_CLASSES_ERRORS,
   ADD_ORGANIZATION_CLASSES,
-  DELETE_ORGANIZATION
+  DELETE_ORGANIZATION,
+  ACTIVE_ORGANIZATION,
+  GET_SUBSCRIPTION_INFO
 } from "../actions/organizationActions";
 import {
   GET_CLASS_STUDENTS,
@@ -90,7 +92,10 @@ const initialState = {
   updatedStudent: {},
   deletedStudent: {},
   changeSettings: false,
-  updateAdmin: null
+  updateAdmin: null,
+  activeOrganization: null,
+  stripeCustomerID: null,
+  getSubscriptionInfo: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -301,6 +306,23 @@ const studentReducer = (state = initialState, action) => {
     case CHANGE_SETTINGS:
       return Object.assign({}, state, {
         changeSettings: action.payload
+      });
+
+    case ACTIVE_ORGANIZATION:
+      return Object.assign({}, state, {
+        activeOrganization: action.payload,
+        stripeCustomerID: action.stripeCustomerID,
+        getSubscriptionStatus: null,
+        getSubscriptionInfo: null
+      });
+    case GET_SUBSCRIPTION_INFO:
+      return Object.assign({}, state, {
+        getSubscriptionStatus: action.payload,
+        getSubscriptionInfo: {
+          nickname: action.nickname,
+          period_start: action.period_start,
+          period_end: action.period_end
+        }
       });
 
     default:

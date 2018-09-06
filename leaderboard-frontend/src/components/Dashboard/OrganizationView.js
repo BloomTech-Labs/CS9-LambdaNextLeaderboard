@@ -1,7 +1,20 @@
 import React, { Component } from "react";
-import { Segment, List, Button, Modal, Form, Header } from "semantic-ui-react";
+import {
+  Segment,
+  Card,
+  List,
+  Button,
+  Modal,
+  Form,
+  Header
+} from "semantic-ui-react";
+import axios from "axios";
+import SUBSCRIPTION from "../Subscriptions/Subscriptions";
+// import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
+import { connect } from "react-redux";
+import Sub2 from "../Sub2/Sub2";
 
-export default class OrganizationView extends Component {
+class OrganizationView extends Component {
   constructor(props) {
     super(props);
 
@@ -41,7 +54,21 @@ export default class OrganizationView extends Component {
     this.props.delete({ id: this.props.id });
   };
 
+  orgInformation = () => {
+    // axios.get()
+    // TODO:  Organization settings
+    // if(stripeCustomerID){
+    //   return <CUSTOMERINFO />
+    //   This is stripeCustomerID and info  ID, subscription end date, subscription type(premium/standard)
+    //   Subscription upgrade button
+    // } else {
+    //   return <SUBSCRIPTION />
+    //   start subscription stuff (this creates a stripeCustomerId)
+    // }
+  };
+
   render() {
+    console.log(this.props.stripeCustomerID);
     return (
       <Segment.Group>
         <Segment inverted color="blue">
@@ -68,6 +95,9 @@ export default class OrganizationView extends Component {
           open={this.state.openEditModal}
           close={this.closeEditModal}
           openConfirm={this.openConfirm}
+          stripeCustomerID={this.props.stripeCustomerID}
+          getSubscriptionStatus={this.props.getSubscriptionStatus}
+          getSubscriptionInfo={this.props.getSubscriptionInfo}
         />
         <ConfirmDeleteModal
           open={this.state.openConfirm}
@@ -83,6 +113,65 @@ export default class OrganizationView extends Component {
 }
 
 const EditModal = props => {
+  // If there is a stripeCustomerID on the org, display subscription info
+  // else display a button to go subscribe.
+  console.log(props.stripeCustomerID);
+  if (props.getSubscriptionStatus === true) {
+    return (
+      <Modal
+        centered
+        size="large"
+        closeIcon
+        open={props.open}
+        onClose={props.close}
+        dimmer="blurring"
+      >
+        <Modal.Header icon="cog" content="Organization Settings" />
+        {/* <Modal.Content content="Billing options or current subscription details." /> */}
+        <Modal.Content>
+          <h1>
+            You already have a subscription:{" "}
+            {props.getSubscriptionInfo.nickname}
+          </h1>
+          <h2>Active subscription: {props.getSubscriptionStatus.toString()}</h2>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button
+            color="red"
+            icon="trash alternate"
+            content="Delete this Organization"
+            onClick={props.openConfirm}
+          />
+        </Modal.Actions>
+      </Modal>
+    );
+  }
+  if (props.stripeCustomerID !== null) {
+    return (
+      <Modal
+        centered
+        size="large"
+        closeIcon
+        open={props.open}
+        onClose={props.close}
+        dimmer="blurring"
+      >
+        <Modal.Header icon="cog" content="Organization Settings" />
+        {/* <Modal.Content content="Billing options or current subscription details." /> */}
+        <Modal.Content>
+          <Sub2 />
+        </Modal.Content>
+        <Modal.Actions>
+          <Button
+            color="red"
+            icon="trash alternate"
+            content="Delete this Organization"
+            onClick={props.openConfirm}
+          />
+        </Modal.Actions>
+      </Modal>
+    );
+  }
   return (
     <Modal
       centered
@@ -93,7 +182,10 @@ const EditModal = props => {
       dimmer="blurring"
     >
       <Modal.Header icon="cog" content="Organization Settings" />
-      <Modal.Content content="Billing options or current subscription details." />
+      {/* <Modal.Content content="Billing options or current subscription details." /> */}
+      <Modal.Content>
+        <SUBSCRIPTION />
+      </Modal.Content>
       <Modal.Actions>
         <Button
           color="red"
@@ -140,3 +232,15 @@ const ConfirmDeleteModal = props => {
     </Modal>
   );
 };
+
+const mapStateToProps = state => {
+  return {
+    stripeCustomerID: state.stripeCustomerID,
+    getSubscriptionStatus: state.getSubscriptionStatus,
+    getSubscriptionInfo: state.getSubscriptionInfo
+  };
+};
+export default connect(
+  mapStateToProps,
+  {}
+)(OrganizationView);
