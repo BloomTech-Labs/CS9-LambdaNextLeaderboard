@@ -87,7 +87,6 @@ class Nav extends Component {
   };
 
   handleDashboardClick = () => {
-    console.log(jwt.decode(localStorage.token.split(" ")[1]).username);
     this.props.history.push("/dashboard");
   };
 

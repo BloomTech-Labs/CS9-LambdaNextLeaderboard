@@ -21,6 +21,9 @@ import {
   deleteOrganization
 } from "../../actions/organizationActions";
 
+// styling
+import "./Dashboard.css";
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -149,7 +152,7 @@ class Dashboard extends Component {
   render() {
     const { activeOrg, activeClass } = this.state;
     return (
-      <Container>
+      <Container className="myDashboard">
         <Grid>
           <Grid.Column width={5}>
             <Menu size="massive" fluid vertical color="blue">

@@ -1,12 +1,16 @@
 .Nav {
   background-color: rgba(100, 1, 1, 0.7);
+  border-bottom: 3px solid black;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
 }
 
 .Nav__container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 66px;
+  height: 67px;
 }
 
 .Nav__link {
