@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 
+const Admin = require("../../models/Admin");
 const Organization = require("../../models/Organization");
 const Class = require("../../models/Class");
 const Student = require("../../models/Student");
@@ -102,6 +103,15 @@ router.delete("/:id/delete", (req, res) => {
   const id = req.params.id;
 
   Organization.findByIdAndRemove(id).then(removedOrg => {
+    removedOrg.admins.forEach(orgsAdmin => {
+      Admin.findById(orgsAdmin).then(anAdmin => {
+        anAdmin.organizations = anAdmin.organizations.filter(
+          anOrg => anOrg != id
+        );
+        anAdmin.save();
+      });
+    });
+
     removedOrg.classes.forEach(aClass => {
       Class.findByIdAndRemove(aClass).then(removedClass => {
         removedClass.students.forEach(aStudent => {
