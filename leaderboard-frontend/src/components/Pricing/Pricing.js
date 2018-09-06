@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Header, Grid, Card } from "semantic-ui-react";
+import { Container, Header, Grid, Card, Segment } from "semantic-ui-react";
 
 class Pricing extends Component {
   constructor(props) {
@@ -55,3 +55,5 @@ class Pricing extends Component {
     );
   }
 }
+
+export default Pricing;
