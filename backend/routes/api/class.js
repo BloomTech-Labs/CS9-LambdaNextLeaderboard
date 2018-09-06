@@ -51,14 +51,13 @@ router.get("/:id/students/:query", (req, res) => {
         return res.status(404).json({ class: "That class does not exist" });
       }
       let result = aClass.students.filter(aStudent => {
+        email = aStudent.email.toLowerCase().split(".");
+        email.pop();
+        email = email.join(".");
         return (
           aStudent.firstname.toLowerCase().includes(query.toLowerCase()) ||
           aStudent.lastname.toLowerCase().includes(query.toLowerCase()) ||
-          aStudent.email
-            .toLowerCase()
-            .split(".")
-            .join("")
-            .includes(query.toLowerCase()) ||
+          email.includes(query.toLowerCase()) ||
           aStudent.github.toLowerCase().includes(query.toLowerCase())
         );
       });
