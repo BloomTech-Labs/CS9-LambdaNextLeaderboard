@@ -115,7 +115,7 @@ router.delete("/:id/delete", (req, res) => {
     removedOrg.classes.forEach(aClass => {
       Class.findByIdAndRemove(aClass).then(removedClass => {
         removedClass.students.forEach(aStudent => {
-          Student.findByIdAndRemove(aStudent);
+          Student.findByIdAndRemove(aStudent).then();
         });
       });
     });
