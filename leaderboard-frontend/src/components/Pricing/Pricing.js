@@ -46,10 +46,10 @@ class Pricing extends Component {
               marginBottom: "2em"
             }}
           />
-          <Grid container centered>
+          <Grid container centered stretched padded="horizontally">
             <Grid.Column width={5}>
-              <Card className="Pricing__card">
-                <Card.Content header textAlign="center">
+              <Card raised className="Pricing__card">
+                <Card.Content header textAlign="center" className="red">
                   <h2>Free</h2>
                 </Card.Content>
                 <Card.Content>
@@ -99,8 +99,9 @@ class Pricing extends Component {
                 </Card.Content>
               </Card>
             </Grid.Column>
-            <Grid.Column width={5}>
-              <Card className="Pricing__card">
+
+            <Grid.Column width={5} className="Pricing__border--feature">
+              <Card raised className="Pricing__card--feature">
                 <Card.Content header textAlign="center">
                   <h2>Standard</h2>
                 </Card.Content>
@@ -151,8 +152,9 @@ class Pricing extends Component {
                 </Card.Content>
               </Card>
             </Grid.Column>
-            <Grid.Column width={5}>
-              <Card className="Pricing__card">
+
+            <Grid.Column width={5} className="Pricing__border">
+              <Card raised className="Pricing__card">
                 <Card.Content header textAlign="center">
                   <h2>Premium</h2>
                 </Card.Content>

@@ -2,12 +2,20 @@
   text-align: center;
 }
 
+.Pricing__card--feature {
+  text-align: center;
+  transform: scale(1.05);
+}
+
 .Pricing__cardDescription {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
 
 .Pricing__cardDescription--text {
-  /* padding-top: 0.5em; */
   padding-bottom: 0.5em;
+}
+
+.color {
+  background: red;
 }
