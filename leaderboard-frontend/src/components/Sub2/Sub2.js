@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-import {toggleSettings} from '../../actions/organizationActions';
+import {toggleSettings, activeOrganization, getSubscriptionInfo} from '../../actions/organizationActions';
 import {getAdminOrganizations} from '../../actions/adminActions';
 import jwt from "jsonwebtoken";
 class Sub2 extends Component {
@@ -48,6 +48,8 @@ class Sub2 extends Component {
     this.props.toggleSettings(true)
     const id = jwt.decode(localStorage.token.split(" ")[1]).id;
     this.props.getAdminOrganizations({ id });
+    this.props.activeOrganization(this.props.activeOrganizationID, this.props.stripeCustomerID)
+    this.props.getSubscriptionInfo(this.props.stripeCustomerID)
   }
 
   render() {
@@ -100,8 +102,9 @@ class Sub2 extends Component {
 }
 const mapStateToProps = state => {
   return {
-    stripeCustomerID: state.stripeCustomerID
+    stripeCustomerID: state.stripeCustomerID,
+    activeOrganizationID: state.activeOrganization
   }
 }
 
-export default connect(mapStateToProps, {toggleSettings, getAdminOrganizations})(Sub2);
+export default connect(mapStateToProps, {getSubscriptionInfo, toggleSettings, getAdminOrganizations, activeOrganization})(Sub2);

@@ -245,7 +245,12 @@ const studentReducer = (state = initialState, action) => {
       });
     case ADD_ADMIN_ORGANIZATIONS:
       return Object.assign({}, state, {
-        createdOrganization: action.payload
+        createdOrganization: action.payload,
+        activeOrganization: action.payload._id,
+        stripeCustomerID: null,
+        getSubscriptionStatus: null,
+        getSubscriptionInfo: null
+
       });
     case DELETE_ORGANIZATION:
       return Object.assign({}, state, {
@@ -262,7 +267,9 @@ const studentReducer = (state = initialState, action) => {
       });
     case ADD_ORGANIZATION_CLASSES:
       return Object.assign({}, state, {
-        createdClass: action.payload
+        createdClass: action.payload,
+        getSubscriptionStatus: null,
+        getSubscriptionInfo: null
       });
 
     case GET_CLASS_STUDENTS:

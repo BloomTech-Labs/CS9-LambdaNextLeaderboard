@@ -62,6 +62,9 @@ class OrganizationView extends Component {
       this.props.toggleSettings(false)
       console.log('firing toggle', nextProps.toggleSettings.toString())
     }
+    // if (nextProps.activeOrganization !== this.props.activeOrganization) {
+    //   this.props.getSubscriptionInfo(nextProps.stripeCustomerID)
+    // }
   }
 
 
@@ -245,7 +248,8 @@ const mapStateToProps = state => {
     stripeCustomerID: state.stripeCustomerID,
     getSubscriptionStatus: state.getSubscriptionStatus,
     getSubscriptionInfo: state.getSubscriptionInfo,
-    toggle: state.toggleSettings
+    toggle: state.toggleSettings,
+    activeOrganization: state.activeOrganization
   }
 }
 export  default connect(mapStateToProps, {toggleSettings})(OrganizationView)
