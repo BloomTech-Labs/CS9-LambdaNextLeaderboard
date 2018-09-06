@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Header, Grid, Card, Segment } from "semantic-ui-react";
+import { Container, Header, Grid, Card, List } from "semantic-ui-react";
 
 class Pricing extends Component {
   constructor(props) {
@@ -33,21 +33,98 @@ class Pricing extends Component {
               marginTop: "1.5em"
             }}
           />
-          <Grid>
-            <Grid.Column width={4}>
-              <Segment>
-                <Card />
-              </Segment>
+          <Grid container centered>
+            <Grid.Column width={5}>
+              <Card>
+                <Card.Content header="FREE" textAlign="center" />
+                <Card.Content>
+                  <List divided relaxed size="huge">
+                    <List.Item>
+                      <List.Content>
+                        <List.Header as="h5">$0/month</List.Header>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>1 Admin User</List.Description>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>1 Class</List.Description>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>Up to 50 Students</List.Description>
+                      </List.Content>
+                    </List.Item>
+                  </List>
+                </Card.Content>
+                <Card.Content extra>'Choose this plan'</Card.Content>
+              </Card>
             </Grid.Column>
-            <Grid.Column width={4}>
-              <Segment>
-                <Card />
-              </Segment>
+            <Grid.Column width={5}>
+              <Card>
+                <Card.Content header="STANDARD" textAlign="center" />
+                <Card.Content>
+                  <List divided relaxed size="huge">
+                    <List.Item>
+                      <List.Content>
+                        <List.Header as="h5">$10/month</List.Header>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>5 Admin Users</List.Description>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>10 Classes</List.Description>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>Up to 500 Students</List.Description>
+                      </List.Content>
+                    </List.Item>
+                  </List>
+                </Card.Content>
+                <Card.Content extra>'Choose this plan'</Card.Content>
+              </Card>
             </Grid.Column>
-            <Grid.Column width={4}>
-              <Segment>
-                <Card />
-              </Segment>
+            <Grid.Column width={5}>
+              <Card>
+                <Card.Content header="PREMIUM" textAlign="center" />
+                <Card.Content>
+                  <List divided relaxed size="huge">
+                    <List.Item>
+                      <List.Content>
+                        <List.Header as="h5">$15/month</List.Header>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>
+                          Unlimited Admin Users
+                        </List.Description>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>Unlimited Classes</List.Description>
+                      </List.Content>
+                    </List.Item>
+                    <List.Item>
+                      <List.Content>
+                        <List.Description>Unlimited Students</List.Description>
+                      </List.Content>
+                    </List.Item>
+                  </List>
+                </Card.Content>
+                <Card.Content extra>'Choose this plan'</Card.Content>
+              </Card>
             </Grid.Column>
           </Grid>
         </Container>
