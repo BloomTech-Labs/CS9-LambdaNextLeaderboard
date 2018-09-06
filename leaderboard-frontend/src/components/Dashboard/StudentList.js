@@ -85,7 +85,7 @@ export default class StudentList extends Component {
           selected={this.state.selectedStudent}
           delete={this.handleDelete}
         />
-        <Card.Group itemsPerRow="2" stackable>
+        <Card.Group itemsPerRow="1" stackable>
           {this.props.students.map((student, index) => {
             return !student.hired ? (
               this.state.editStudent &&
@@ -147,8 +147,8 @@ export default class StudentList extends Component {
                     }`}</Card.Header>
                     <Card.Description>
                       <List>
-                        <List.Item>Email Address: {student.email}</List.Item>
-                        <List.Item>Github Handle: {student.github}</List.Item>
+                        <List.Item><Icon name='mail'/>: {student.email}</List.Item>
+                        <List.Item><Icon name='github'/>: {student.github}</List.Item>
                       </List>
                     </Card.Description>
                   </Card.Content>
