@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  Segment,
   Header,
   Icon,
   Form,
@@ -59,6 +58,28 @@ export default class AddStudent extends Component {
     this.props.postCsvStudents(csvData, classID);
   };
 
+  clearForm = () => {
+    this.props.addStudentErrors.firstname = "";
+    this.props.addStudentErrors.lastname = "";
+    this.props.addStudentErrors.email = "";
+    this.props.addStudentErrors.github = "";
+    this.setState({
+      firstname: "",
+      lastname: "",
+      email: "",
+      github: "",
+      csvFile: null
+    });
+  };
+
+  componentDidMount = () => {
+    this.props.onRef(this);
+  };
+
+  componentWillUnmount = () => {
+    this.props.onRef(undefined);
+  };
+
   render() {
     const panes = [
       {
@@ -70,81 +91,81 @@ export default class AddStudent extends Component {
               <Header.Content>Add New Student</Header.Content>
             </Header>
 
-            <Segment>
-              <Form>
-                <Form.Field
-                  error={Boolean(this.props.addStudentErrors.firstname)}
-                >
-                  {this.props.addStudentErrors.firstname ? (
-                    <Label
-                      color="red"
-                      pointing="below"
-                      content={this.props.addStudentErrors.firstname}
-                    />
-                  ) : null}
-                  <Form.Input
-                    name="firstname"
-                    placeholder="First name"
-                    onChange={this.handleInput}
+            <Form>
+              <Form.Field
+                error={Boolean(this.props.addStudentErrors.firstname)}
+              >
+                {this.props.addStudentErrors.firstname ? (
+                  <Label
+                    color="red"
+                    pointing="below"
+                    content={this.props.addStudentErrors.firstname}
                   />
-                </Form.Field>
+                ) : null}
+                <Form.Input
+                  name="firstname"
+                  value={this.state.firstname}
+                  placeholder="First name"
+                  onChange={this.handleInput}
+                />
+              </Form.Field>
 
-                <Form.Field
-                  error={Boolean(this.props.addStudentErrors.lastname)}
-                >
-                  {this.props.addStudentErrors.lastname ? (
-                    <Label
-                      color="red"
-                      pointing="below"
-                      content={this.props.addStudentErrors.lastname}
-                    />
-                  ) : null}
-                  <Form.Input
-                    name="lastname"
-                    placeholder="Last name"
-                    onChange={this.handleInput}
+              <Form.Field error={Boolean(this.props.addStudentErrors.lastname)}>
+                {this.props.addStudentErrors.lastname ? (
+                  <Label
+                    color="red"
+                    pointing="below"
+                    content={this.props.addStudentErrors.lastname}
                   />
-                </Form.Field>
+                ) : null}
+                <Form.Input
+                  name="lastname"
+                  value={this.state.lastname}
+                  placeholder="Last name"
+                  onChange={this.handleInput}
+                />
+              </Form.Field>
 
-                <Form.Field error={Boolean(this.props.addStudentErrors.email)}>
-                  {this.props.addStudentErrors.email ? (
-                    <Label
-                      color="red"
-                      pointing="below"
-                      content={this.props.addStudentErrors.email}
-                    />
-                  ) : null}
-                  <Form.Input
-                    name="email"
-                    placeholder="Email address"
-                    onChange={this.handleInput}
+              <Form.Field error={Boolean(this.props.addStudentErrors.email)}>
+                {this.props.addStudentErrors.email ? (
+                  <Label
+                    color="red"
+                    pointing="below"
+                    content={this.props.addStudentErrors.email}
                   />
-                </Form.Field>
+                ) : null}
+                <Form.Input
+                  name="email"
+                  value={this.state.email}
+                  placeholder="Email address"
+                  onChange={this.handleInput}
+                />
+              </Form.Field>
 
-                <Form.Field error={Boolean(this.props.addStudentErrors.github)}>
-                  {this.props.addStudentErrors.github ? (
-                    <Label
-                      color="red"
-                      pointing="below"
-                      content={this.props.addStudentErrors.github}
-                    />
-                  ) : null}
-                  <Form.Input
-                    name="github"
-                    placeholder="Github handle"
-                    onChange={this.handleInput}
+              <Form.Field error={Boolean(this.props.addStudentErrors.github)}>
+                {this.props.addStudentErrors.github ? (
+                  <Label
+                    color="red"
+                    pointing="below"
+                    content={this.props.addStudentErrors.github}
                   />
-                </Form.Field>
+                ) : null}
+                <Form.Input
+                  name="github"
+                  value={this.state.github}
+                  placeholder="Github handle"
+                  onChange={this.handleInput}
+                />
+              </Form.Field>
 
-                <Form.Field>
-                  <Form.Button
-                    content="Create new student"
-                    color="green"
-                    onClick={this.handleSubmit}
-                  />
-                </Form.Field>
-              </Form>
-            </Segment>
+              <Form.Field>
+                <Form.Button
+                  content="Create new student"
+                  color="green"
+                  onClick={this.handleSubmit}
+                />
+              </Form.Field>
+            </Form>
           </Tab.Pane>
         )
       },

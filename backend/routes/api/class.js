@@ -30,8 +30,40 @@ router.get("/:id/students", (req, res) => {
       if (!aClass) {
         return res.status(404).json({ class: "That class does not exist" });
       }
-      res.json(aClass.students);
+      res.json({ students: aClass.students, querying: false });
     });
+});
+
+// @route   GET api/classes/:id/students/query
+// @desc    Queries a class' hired and unhired students
+// @access  Private
+router.get("/:id/students/:query", (req, res) => {
+  const id = req.params.id;
+  const query = req.params.query;
+
+  Class.findById(id)
+    .populate({
+      path: "students",
+      options: { sort: { hired: 1, lastname: 1, firstname: 1 } }
+    })
+    .then(aClass => {
+      if (!aClass) {
+        return res.status(404).json({ class: "That class does not exist" });
+      }
+      let result = aClass.students.filter(aStudent => {
+        email = aStudent.email.toLowerCase().split(".");
+        email.pop();
+        email = email.join(".");
+        return (
+          aStudent.firstname.toLowerCase().includes(query.toLowerCase()) ||
+          aStudent.lastname.toLowerCase().includes(query.toLowerCase()) ||
+          email.includes(query.toLowerCase()) ||
+          aStudent.github.toLowerCase().includes(query.toLowerCase())
+        );
+      });
+      res.json({ students: result, querying: true });
+    })
+    .catch(err => console.log(err));
 });
 
 // @route   POST api/classes/:id/students/create
@@ -49,23 +81,41 @@ router.post("/:id/students/create", (req, res) => {
   const id = req.params.id;
   const { firstname, lastname, email, github } = data;
 
-  Class.findById(id).then(aClass => {
-    if (!aClass) {
-      return res.status(404).json({ class: "That class does not exist" });
-    }
+  Class.findById(id)
+    .populate({
+      path: "students",
+      select: ["email", "github"],
+      match: { $or: [{ email }, { github }] }
+    })
+    .then(aClass => {
+      if (!aClass) {
+        return res.status(404).json({ class: "That class does not exist" });
+      }
 
-    const newStudent = new Student({
-      firstname,
-      lastname,
-      email,
-      github
+      if (aClass.students.length) {
+        if (aClass.students[0].email === email) {
+          errors.email =
+            "This class already has a student with that email address";
+        }
+        if (aClass.students[0].github === github) {
+          errors.github =
+            "This class already has a student with that Github handle";
+        }
+        return res.status(400).json(errors);
+      }
+
+      const newStudent = new Student({
+        firstname,
+        lastname,
+        email,
+        github
+      });
+      newStudent.save().then(created => {
+        aClass.students.push(created._id);
+        aClass.save();
+        res.status(201).json(created);
+      });
     });
-    newStudent.save().then(created => {
-      aClass.students.push(created._id);
-      aClass.save();
-      res.status(201).json(created);
-    });
-  });
 });
 
 // @route   PUT api/classes/:id/update

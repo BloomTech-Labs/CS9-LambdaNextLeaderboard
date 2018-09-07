@@ -109,58 +109,50 @@ router.post("/login", (req, res) => {
 // @desc    Login admin and return JWT
 // @access  Public
 router.put("/update", (req, res) => {
-    const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
-    // const { errors, isValid } = validateLogin(data);
-    //
-    // //   Validation Check
-    // if (!isValid) {
-    //     return res.status(400).json(errors);
-    // }
+  const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
+  const { errors, isValid } = validateLogin(data);
 
-    const username = data.username;
-    const oldPassword = data.oldPassword;
-    let newPassword = data.newPassword;
-    const email = data.email;
-    const options = {
-        new: true
-    }
+  //   Validation Check
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
+  const username = data.username;
+  const oldPassword = data.oldPassword;
+  let newPassword = data.newPassword;
+  const email = data.email;
 
-    Admin.findOne({ email })
-        .select("+password")
-        .then(admin => {
-            if (!admin) {
-                errors.invalidLogin = "Invalid Credentials";
-                return res.status(400).json(errors);
-            }
+  Admin.findOne({ email })
+    .select("+password")
+    .then(admin => {
+      if (!admin) {
+        errors.invalidLogin = "Invalid Credentials";
+        return res.status(400).json(errors);
+      }
 
-            // Check Password
-            bcrypt.compare(oldPassword, admin.password).then(isMatch => {
-                if (isMatch) {
-
-                    bcrypt.genSalt(11, (err, salt) => {
-                        bcrypt.hash(newPassword, salt, (err, hash) => {
-                            if (err) return res.status(400).json(err);
-                            newPassword = hash;
-                            const updateUser = {
-                                "username": username,
-                                "password": newPassword,
-                                "email": email,
-                                // "organization": organization
-                            }
-                            Admin.findByIdAndUpdate(admin._id, updateUser, options)
-                                // .save()
-                                .then(admin => res.status(201).json(admin))
-                                .catch(err => console.log(err));
-                        });
-                    });
-
-                } else {
-                    errors.invalidLogin = "Invalid Credentials";
-                    return res.status(400).json(errors);
-                }
+      // Check Password
+      bcrypt.compare(oldPassword, admin.password).then(isMatch => {
+        if (isMatch) {
+          bcrypt.genSalt(11, (err, salt) => {
+            bcrypt.hash(newPassword, salt, (err, hash) => {
+              if (err) return res.status(400).json(err);
+              newPassword = hash;
+              const updateUser = {
+                username: username,
+                password: newPassword,
+                email: email
+              };
+              Admin.findByIdAndUpdate(admin._id, updateUser, { new: true })
+                .then(admin => res.status(201).json(admin))
+                .catch(err => console.log(err));
             });
-        });
+          });
+        } else {
+          errors.invalidLogin = "Invalid Credentials";
+          return res.status(400).json(errors);
+        }
+      });
+    });
 });
 
 // @route   GET api/admins/:id/organizations

@@ -16,20 +16,26 @@ export default class StudentList extends Component {
 
     this.state = {
       selectedStudent: "",
+      selectedStudentName: "",
       editStudent: false,
       openDeleteModal: false,
       updatedInfo: {}
     };
   }
 
-  openModal = (e, { id }) => {
-    this.setState({ openDeleteModal: true, selectedStudent: id });
+  openModal = (e, { id, name }) => {
+    this.setState({
+      openDeleteModal: true,
+      selectedStudent: id,
+      selectedStudentName: name
+    });
   };
 
   closeModal = () => {
     this.setState({
       openDeleteModal: false,
-      selectedStudent: ""
+      selectedStudent: "",
+      selectedStudentName: ""
     });
   };
 
@@ -73,7 +79,6 @@ export default class StudentList extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <Segment>
         <DeleteModal
@@ -81,6 +86,8 @@ export default class StudentList extends Component {
           close={this.closeModal}
           selected={this.state.selectedStudent}
           delete={this.handleDelete}
+          student={this.state.selectedStudentName}
+          class={this.props.className}
         />
         <Card.Group itemsPerRow="1" stackable>
           {this.props.students.map((student, index) => {
@@ -214,7 +221,8 @@ const DeleteModal = props => {
     >
       <Header icon="trash" content="Delete Student" />
       <Modal.Content>
-        Are you sure you want to delete this student?
+        Are you sure you want to delete <b>{props.student}</b> from{" "}
+        <b>{props.class}</b>?
       </Modal.Content>
       <Modal.Actions onClick={props.close}>
         <Button color="red" onClick={props.delete}>
