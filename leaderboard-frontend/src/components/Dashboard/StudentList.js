@@ -16,27 +16,28 @@ export default class StudentList extends Component {
 
     this.state = {
       selectedStudent: "",
+      selectedStudentName: "",
       editStudent: false,
       openDeleteModal: false,
       updatedInfo: {}
     };
   }
 
-  openModal = (e, { id }) => {
-    this.setState({ openDeleteModal: true, selectedStudent: id });
+  openModal = (e, { id, name }) => {
+    this.setState({
+      openDeleteModal: true,
+      selectedStudent: id,
+      selectedStudentName: name
+    });
   };
 
   closeModal = () => {
     this.setState({
       openDeleteModal: false,
-      selectedStudent: ""
+      selectedStudent: "",
+      selectedStudentName: ""
     });
   };
-
-  componentWillUpdate(nextProps, nextState) {
-
-  }
-
 
   handleHire = (e, { id }) => {
     this.props.updateStudent({ id, hired: true });
@@ -54,10 +55,12 @@ export default class StudentList extends Component {
       selectedStudent: student._id,
       updatedInfo: current
     });
+    this.props.toggleSearch();
   };
 
   closeEditView = () => {
     this.setState({ editStudent: false, selectedStudent: "", updatedInfo: {} });
+    this.props.toggleSearch();
   };
 
   handleInput = (e, { name, value }) => {
@@ -76,7 +79,6 @@ export default class StudentList extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <Segment>
         <DeleteModal
@@ -84,8 +86,10 @@ export default class StudentList extends Component {
           close={this.closeModal}
           selected={this.state.selectedStudent}
           delete={this.handleDelete}
+          student={this.state.selectedStudentName}
+          class={this.props.className}
         />
-        <Card.Group itemsPerRow="2" stackable>
+        <Card.Group itemsPerRow="1" stackable>
           {this.props.students.map((student, index) => {
             return !student.hired ? (
               this.state.editStudent &&
@@ -121,73 +125,79 @@ export default class StudentList extends Component {
                       fluid
                     />
                   </Card.Content>
-                  <Card.Content extra>
-                    <Button.Group widths="2">
-                      <Button
-                        id={student._id}
-                        content="Update"
-                        onClick={this.handleUpdate}
-                        color="blue"
-                        inverted
-                      />
-                      <Button
-                        content="Cancel"
-                        onClick={this.closeEditView}
-                        color="red"
-                        inverted
-                      />
-                    </Button.Group>
+                  <Card.Content textAlign="center" extra>
+                    <Button
+                      id={student._id}
+                      content="Update"
+                      onClick={this.handleUpdate}
+                      color="blue"
+                      inverted
+                    />
+                    <Button
+                      content="Cancel"
+                      onClick={this.closeEditView}
+                      color="red"
+                      inverted
+                    />
                   </Card.Content>
                 </Card>
               ) : (
                 <Card key={index}>
                   <Card.Content>
-                    <Card.Header>{`${student.firstname} ${
-                      student.lastname
-                    }`}</Card.Header>
+                    <Card.Header>
+                      {`${student.firstname} ${student.lastname}`}
+                      <Button.Group compact basic floated="right" widths="1">
+                        <Button
+                          id={student._id}
+                          icon
+                          animated="vertical"
+                          onClick={this.handleHire}
+                          disabled={this.state.editStudent}
+                        >
+                          <Button.Content visible>
+                            <Icon name="trophy" color="yellow" />
+                          </Button.Content>
+                          <Button.Content hidden>Hired!</Button.Content>
+                        </Button>
+                        <Button
+                          id={student._id}
+                          student={student}
+                          name="openEditModal"
+                          icon
+                          animated="vertical"
+                          onClick={this.openEditView}
+                          disabled={this.state.editStudent}
+                        >
+                          <Button.Content visible>
+                            <Icon name="wrench" />
+                          </Button.Content>
+                          <Button.Content hidden>Edit</Button.Content>
+                        </Button>
+                        <Button
+                          id={student._id}
+                          name="openDeleteModal"
+                          icon
+                          animated="vertical"
+                          onClick={this.openModal}
+                          disabled={this.state.editStudent}
+                        >
+                          <Button.Content visible>
+                            <Icon name="trash" color="red" inverted />
+                          </Button.Content>
+                          <Button.Content hidden>Delete</Button.Content>
+                        </Button>
+                      </Button.Group>
+                    </Card.Header>
                     <Card.Description>
                       <List>
-                        <List.Item>Email Address: {student.email}</List.Item>
-                        <List.Item>Github Handle: {student.github}</List.Item>
+                        <List.Item>
+                          <Icon name="mail" />: {student.email}
+                        </List.Item>
+                        <List.Item>
+                          <Icon name="github" />: {student.github}
+                        </List.Item>
                       </List>
                     </Card.Description>
-                  </Card.Content>
-                  <Card.Content extra>
-                    <Button.Group widths="3">
-                      <Button
-                        id={student._id}
-                        icon="money"
-                        content="Hired"
-                        inverted
-                        color="green"
-                        size="small"
-                        onClick={this.handleHire}
-                        disabled={this.state.editStudent}
-                      />
-                      <Button
-                        id={student._id}
-                        student={student}
-                        name="openEditModal"
-                        icon="wrench"
-                        content="Edit"
-                        inverted
-                        color="blue"
-                        size="small"
-                        onClick={this.openEditView}
-                        disabled={this.state.editStudent}
-                      />
-                      <Button
-                        id={student._id}
-                        name="openDeleteModal"
-                        icon="trash"
-                        content="Delete"
-                        inverted
-                        color="red"
-                        size="small"
-                        onClick={this.openModal}
-                        disabled={this.state.editStudent}
-                      />
-                    </Button.Group>
                   </Card.Content>
                 </Card>
               )
@@ -211,7 +221,8 @@ const DeleteModal = props => {
     >
       <Header icon="trash" content="Delete Student" />
       <Modal.Content>
-        Are you sure you want to delete this student?
+        Are you sure you want to delete <b>{props.student}</b> from{" "}
+        <b>{props.class}</b>?
       </Modal.Content>
       <Modal.Actions onClick={props.close}>
         <Button color="red" onClick={props.delete}>

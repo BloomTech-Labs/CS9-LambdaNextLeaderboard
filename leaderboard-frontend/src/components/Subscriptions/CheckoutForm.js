@@ -11,8 +11,8 @@ import jwt from "jsonwebtoken";
 
 class CheckoutForm extends React.Component {
   constructor(props) {
-    super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   // getSnapshotBeforeUpdate = (nextProps) => {
   //   console.log(nextProps.stripeCustomerID)
@@ -63,7 +63,7 @@ class CheckoutForm extends React.Component {
     // documentation for more: https://stripe.com/docs/stripe-js/reference#stripe-create-source
     //
     // this.props.stripe.createSource({type: 'card', name: 'Jenny Rosen'});
-  };
+  }
 
   render() {
     return (
@@ -79,7 +79,7 @@ const mapStateToProps = state => {
   return {
     activeOrganizationID: state.activeOrganization,
     stripeCustomerID: state.stripeCustomerID
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, {toggleSettings,activeOrganization, getAdminOrganizations})(injectStripe(CheckoutForm));

@@ -9,6 +9,9 @@ import NAVBAR from "./components/Navbar/Nav";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import LeaderBoard from "./components/Leaderboard/LeaderBoard";
 import Dashboard from "./components/Dashboard/Dashboard";
+import SUBSCRIPTIONS from "./components/Subscriptions/Subscriptions";;
+import PRICING from "./components/Pricing/Pricing";
+import SETTINGS from "./components/SettingsComponent/Settings";
 
 //________STYLING________
 
@@ -39,7 +42,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="APP">          
+        <div className="APP">
           {/* onRef gives App access to Navbar methods   Ex: this.nav.sessionHasExpired() */}
           <NAVBAR
             onRef={ref => (this.nav = ref)}
@@ -55,7 +58,15 @@ class App extends Component {
               // component={LANDINGPAGE}
             />
             <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/settings" component={SETTINGS} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
+            <Route
+              exact
+              path="/pricing"
+              render={props => (
+                <PRICING {...props} handleCTAClick={this.handleOpenModal} />
+              )}
+            />
           </div>
         </div>
       </Router>

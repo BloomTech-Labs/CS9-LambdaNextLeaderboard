@@ -11,22 +11,21 @@ class Sub2 extends Component {
       currentPlan: 'standard',
     };
 
-    this.onCouponChange=this.onCouponChange.bind(this);
-    this.switchPlan=this.switchPlan.bind(this);
-    this.nextStep=this.nextStep.bind(this);
+    this.onCouponChange = this.onCouponChange.bind(this);
+    this.switchPlan = this.switchPlan.bind(this);
+    this.nextStep = this.nextStep.bind(this);
   }
 
   onCouponChange(event) {
     this.setState({
-      coupon: event.target.value,
-    })
+      coupon: event.target.value
+    });
   }
 
   switchPlan(currentPlan) {
     this.setState({
-      currentPlan,
-    })
-
+      currentPlan
+    });
   }
 
   nextStep() {
@@ -53,8 +52,8 @@ class Sub2 extends Component {
   }
 
   render() {
-    let { coupon, currentPlan, } = this.state;
-    let plans = ['standard', 'premium'];
+    let { coupon, currentPlan } = this.state;
+    let plans = ["standard", "premium"];
 
     return (
       <div>
@@ -68,30 +67,32 @@ class Sub2 extends Component {
         </div>
         <div>
           <h2>Plans</h2>
-          {
-            (plans).map((plan, index) => {
-              if(currentPlan === plan) {
-                return(
-                  <button key={'plan'+index} style={{
-                    backgroundColor: '#03b4ae',
+          {plans.map((plan, index) => {
+            if (currentPlan === plan) {
+              return (
+                <button
+                  key={"plan" + index}
+                  style={{
+                    backgroundColor: "#03b4ae"
                   }}
                   onClick={() => this.switchPlan(plan)}
-                  >
-                    {plan}
-                  </button>
-                )
-              }
-              return(
-                <button key={'plan'+index} style={{
-                  backgroundColor: '#ffffff',
-                }}
-                onClick={() => this.switchPlan(plan)}
                 >
                   {plan}
                 </button>
-              )
-            })
-          }
+              );
+            }
+            return (
+              <button
+                key={"plan" + index}
+                style={{
+                  backgroundColor: "#ffffff"
+                }}
+                onClick={() => this.switchPlan(plan)}
+              >
+                {plan}
+              </button>
+            );
+          })}
         </div>
         <div>
           <button onClick={this.nextStep}>Next</button>
