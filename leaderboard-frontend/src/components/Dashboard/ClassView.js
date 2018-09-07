@@ -37,6 +37,7 @@ class ClassView extends Component {
       unhired: 0,
       hired: 0,
       total: 0,
+      searchable: true,
       openEditModal: false,
       leaderboard: false,
       settings: false
@@ -60,12 +61,27 @@ class ClassView extends Component {
     });
   };
 
+  toggleSearchable = () => {
+    this.setState({ searchable: !this.state.searchable });
+  };
+
   openModal = () => {
     this.setState({ openEditModal: true });
   };
 
   closeModal = () => {
     this.setState({ openEditModal: false });
+  };
+
+  getData = () => {
+    console.log("Send data", this.props.props.history, this.props.classId);
+    // this.props.getGithubDataAction(this.props.classId)
+    this.props.setClassForQuery(this.props.classId);
+  };
+
+  setSettings = () => {
+    this.setState({ settings: true });
+    this.props.setSettingsAction(true);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -103,11 +119,6 @@ class ClassView extends Component {
       this.getStudents();
     }
   };
-  getData = () => {
-    console.log("Send data", this.props.props.history, this.props.classId);
-    // this.props.getGithubDataAction(this.props.classId)
-    this.props.setClassForQuery(this.props.classId);
-  };
 
   componentWillUpdate(nextProps, nextState) {
     if (
@@ -125,10 +136,6 @@ class ClassView extends Component {
 
   componentDidMount = () => {
     this.getStudents();
-  };
-  setSettings = () => {
-    this.setState({ settings: true });
-    this.props.setSettingsAction(true);
   };
 
   render() {
@@ -184,6 +191,7 @@ class ClassView extends Component {
               icon="users"
               iconPosition="left"
               placeholder="Search students..."
+              disabled={!this.state.searchable}
             />
           </Segment>
         ) : null}
@@ -192,6 +200,7 @@ class ClassView extends Component {
             students={this.props.students}
             updateStudent={this.props.updateStudent}
             deleteStudent={this.props.deleteStudent}
+            toggleSearch={this.toggleSearchable}
           />
         ) : null}
         <AddStudent

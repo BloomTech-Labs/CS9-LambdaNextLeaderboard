@@ -23,7 +23,7 @@ router.get("/:id/students", (req, res) => {
     .populate({
       path: "students",
       options: {
-        sort: { hired: 1, lastname: 1, firstname: 1 }
+        sort: { hired: 1, firstname: 1, lastname: 1 }
       }
     })
     .then(aClass => {
@@ -67,9 +67,6 @@ router.post("/:id/students/create", (req, res) => {
     });
   });
 });
-
-
-
 
 // @route   PUT api/classes/:id/update
 // @desc    Updates the class' info
@@ -138,7 +135,7 @@ router.post("/:id/importcsv", (req, res) => {
       .fromString(csvClassFile.data.toString(), {
         headers: true,
         ignoreEmpty: true
-      })      
+      })
       .validate(function(data) {
         return Student.count({ email: data.email }, function(err, count) {
           if (count === 0) return;
@@ -178,6 +175,6 @@ router.post("/:id/importcsv", (req, res) => {
   }
 
   run();
-})
+});
 
 module.exports = router;

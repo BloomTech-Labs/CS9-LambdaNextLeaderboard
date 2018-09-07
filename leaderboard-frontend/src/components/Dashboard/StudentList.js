@@ -33,8 +33,6 @@ export default class StudentList extends Component {
     });
   };
 
-  componentWillUpdate(nextProps, nextState) {}
-
   handleHire = (e, { id }) => {
     this.props.updateStudent({ id, hired: true });
   };
@@ -51,10 +49,12 @@ export default class StudentList extends Component {
       selectedStudent: student._id,
       updatedInfo: current
     });
+    this.props.toggleSearch();
   };
 
   closeEditView = () => {
     this.setState({ editStudent: false, selectedStudent: "", updatedInfo: {} });
+    this.props.toggleSearch();
   };
 
   handleInput = (e, { name, value }) => {
@@ -83,7 +83,7 @@ export default class StudentList extends Component {
           delete={this.handleDelete}
         />
         <Card.Group itemsPerRow="1" stackable>
-          {this.props.students.sort((a, b) => a.firstname.localeCompare(b.firstname)).map((student, index) => {
+          {this.props.students.map((student, index) => {
             return !student.hired ? (
               this.state.editStudent &&
               this.state.selectedStudent === student._id ? (
@@ -118,22 +118,20 @@ export default class StudentList extends Component {
                       fluid
                     />
                   </Card.Content>
-                  <Card.Content extra>
-                    <Button.Group widths="2">
-                      <Button
-                        id={student._id}
-                        content="Update"
-                        onClick={this.handleUpdate}
-                        color="blue"
-                        inverted
-                      />
-                      <Button
-                        content="Cancel"
-                        onClick={this.closeEditView}
-                        color="red"
-                        inverted
-                      />
-                    </Button.Group>
+                  <Card.Content textAlign="center" extra>
+                    <Button
+                      id={student._id}
+                      content="Update"
+                      onClick={this.handleUpdate}
+                      color="blue"
+                      inverted
+                    />
+                    <Button
+                      content="Cancel"
+                      onClick={this.closeEditView}
+                      color="red"
+                      inverted
+                    />
                   </Card.Content>
                 </Card>
               ) : (
