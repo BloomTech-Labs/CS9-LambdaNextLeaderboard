@@ -24,11 +24,15 @@ export default class AddClass extends Component {
 
   render() {
     return (
-      <Segment>
-        <Header as="h2" icon textAlign="center" size="huge">
-          <Icon name="graduation cap" circular />
-          <Header.Content>Add New Class to {this.props.orgName}</Header.Content>
-        </Header>
+      <Segment.Group>
+        <Segment inverted color="blue">
+          <Header as="h2" icon textAlign="center" size="huge">
+            <Icon name="graduation cap" circular />
+            <Header.Content>
+              Add New Class to {this.props.orgName}
+            </Header.Content>
+          </Header>
+        </Segment>
 
         <Segment>
           <Form>
@@ -52,7 +56,7 @@ export default class AddClass extends Component {
             </Form.Field>
           </Form>
         </Segment>
-      </Segment>
+      </Segment.Group>
     );
   }
 }

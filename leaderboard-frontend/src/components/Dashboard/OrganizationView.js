@@ -8,10 +8,10 @@ import {
   Form,
   Header
 } from "semantic-ui-react";
-import axios from 'axios';
-import SUBSCRIPTION from '../Subscriptions/Subscriptions';
+import axios from "axios";
+import SUBSCRIPTION from "../Subscriptions/Subscriptions";
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
-import {connect} from 'react-redux'
+import { connect } from "react-redux";
 import Sub2 from "../Sub2/Sub2";
 
 class OrganizationView extends Component {
@@ -65,35 +65,31 @@ class OrganizationView extends Component {
     //   return <SUBSCRIPTION />
     //   start subscription stuff (this creates a stripeCustomerId)
     // }
-  }
+  };
 
   render() {
-    console.log(this.props.stripeCustomerID)
+    console.log(this.props.stripeCustomerID);
     return (
       <Segment.Group>
-        <Segment>
+        <Segment inverted color="blue">
           <Header as="h2" content="Organization View" textAlign="center" />
-          <Card fluid color="orange">
-            <Card.Content textAlign="center">
-              <Card.Header>{this.props.name}</Card.Header>
-              <List bulleted horizontal>
-                <List.Item>
-                  Number of classes: {this.props.numOfClasses}
-                </List.Item>
-              </List>
-            </Card.Content>
-            <Card.Content textAlign="center" extra>
-              <Button
-                name="openEditModal"
-                icon="cog"
-                content="Settings"
-                inverted
-                color="blue"
-                size="large"
-                onClick={this.openEditModal}
-              />
-            </Card.Content>
-          </Card>
+        </Segment>
+        <Segment textAlign="center">
+          <Header>{this.props.name}</Header>
+          <List bulleted horizontal>
+            <List.Item>Number of classes: {this.props.numOfClasses}</List.Item>
+          </List>
+        </Segment>
+        <Segment textAlign="center">
+          <Button
+            name="openEditModal"
+            icon="cog"
+            content="Settings"
+            inverted
+            color="blue"
+            size="large"
+            onClick={this.openEditModal}
+          />
         </Segment>
         <EditModal
           open={this.state.openEditModal}
@@ -119,33 +115,36 @@ class OrganizationView extends Component {
 const EditModal = props => {
   // If there is a stripeCustomerID on the org, display subscription info
   // else display a button to go subscribe.
-  console.log(props.stripeCustomerID)
+  console.log(props.stripeCustomerID);
   if (props.getSubscriptionStatus === true) {
     return (
       <Modal
-    centered
-    size="large"
-    closeIcon
-    open={props.open}
-    onClose={props.close}
-    dimmer="blurring"
+        centered
+        size="large"
+        closeIcon
+        open={props.open}
+        onClose={props.close}
+        dimmer="blurring"
       >
-      <Modal.Header icon="cog" content="Organization Settings" />
-      {/* <Modal.Content content="Billing options or current subscription details." /> */}
-    <Modal.Content>
-      <h1>You already have a subscription: {props.getSubscriptionInfo.nickname}</h1>
-      <h2>Active subscription: {props.getSubscriptionStatus.toString()}</h2>
-    </Modal.Content>
-    <Modal.Actions>
-    <Button
-    color="red"
-    icon="trash alternate"
-    content="Delete this Organization"
-    onClick={props.openConfirm}
-    />
-  </Modal.Actions>
-  </Modal>
-    )
+        <Modal.Header icon="cog" content="Organization Settings" />
+        {/* <Modal.Content content="Billing options or current subscription details." /> */}
+        <Modal.Content>
+          <h1>
+            You already have a subscription:{" "}
+            {props.getSubscriptionInfo.nickname}
+          </h1>
+          <h2>Active subscription: {props.getSubscriptionStatus.toString()}</h2>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button
+            color="red"
+            icon="trash alternate"
+            content="Delete this Organization"
+            onClick={props.openConfirm}
+          />
+        </Modal.Actions>
+      </Modal>
+    );
   }
   if (props.stripeCustomerID !== null) {
     return (
@@ -159,7 +158,9 @@ const EditModal = props => {
       >
         <Modal.Header icon="cog" content="Organization Settings" />
         {/* <Modal.Content content="Billing options or current subscription details." /> */}
-        <Modal.Content><Sub2/></Modal.Content>
+        <Modal.Content>
+          <Sub2 />
+        </Modal.Content>
         <Modal.Actions>
           <Button
             color="red"
@@ -169,7 +170,7 @@ const EditModal = props => {
           />
         </Modal.Actions>
       </Modal>
-    )
+    );
   }
   return (
     <Modal
@@ -182,7 +183,9 @@ const EditModal = props => {
     >
       <Modal.Header icon="cog" content="Organization Settings" />
       {/* <Modal.Content content="Billing options or current subscription details." /> */}
-      <Modal.Content><SUBSCRIPTION/></Modal.Content>
+      <Modal.Content>
+        <SUBSCRIPTION />
+      </Modal.Content>
       <Modal.Actions>
         <Button
           color="red"
@@ -235,6 +238,9 @@ const mapStateToProps = state => {
     stripeCustomerID: state.stripeCustomerID,
     getSubscriptionStatus: state.getSubscriptionStatus,
     getSubscriptionInfo: state.getSubscriptionInfo
-  }
-}
-export  default connect(mapStateToProps, {})(OrganizationView)
+  };
+};
+export default connect(
+  mapStateToProps,
+  {}
+)(OrganizationView);
