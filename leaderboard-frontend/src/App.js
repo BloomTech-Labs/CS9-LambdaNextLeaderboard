@@ -8,10 +8,7 @@ import "./App.css";
 import NAVBAR from "./components/Navbar/Nav";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import LeaderBoard from "./components/Leaderboard/LeaderBoard";
-import BILLING from "./components/Billing/Billing";
 import Dashboard from "./components/Dashboard/Dashboard";
-import SUBSCRIPTIONS from "./components/Subscriptions/Subscriptions";
-import SUB2 from "./components/Sub2/Sub2";
 
 //________STYLING________
 
@@ -58,10 +55,7 @@ class App extends Component {
               // component={LANDINGPAGE}
             />
             <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
-            <Route exact path="/subscriptions" component={SUBSCRIPTIONS} />
-            <Route exact path="/sub2" component={SUB2} />
           </div>
         </div>
       </Router>

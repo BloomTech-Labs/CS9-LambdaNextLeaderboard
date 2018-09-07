@@ -8,7 +8,7 @@ class Sub2 extends Component {
     super(props);
     this.state = {
       coupon: '',
-      currentPlan: 'bronze',
+      currentPlan: 'standard',
     };
 
     this.onCouponChange=this.onCouponChange.bind(this);
@@ -68,7 +68,7 @@ class Sub2 extends Component {
           <h2>Plans</h2>
           {
             (plans).map((plan, index) => {
-              if(currentPlan == plan) {
+              if(currentPlan === plan) {
                 return(
                   <button key={'plan'+index} style={{
                     backgroundColor: '#03b4ae',

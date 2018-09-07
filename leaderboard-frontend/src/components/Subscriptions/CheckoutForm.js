@@ -1,7 +1,6 @@
 // CheckoutForm.js
 import React from 'react';
 import {injectStripe} from 'react-stripe-elements';
-import axios from 'axios';
 
 // import AddressSection from './AddressSection';
 import CardSection from './CardSection';
@@ -51,7 +50,6 @@ class CheckoutForm extends React.Component {
           this.props.getAdminOrganizations({ id });
           console.log('response customerID', response.stripeCustomerID)
           this.props.toggleSettings(true)
-          // TODO: set organization stripeCustomerId
         })
       }
 
