@@ -4,7 +4,6 @@ import MyStoreCheckout from './MyStoreCheckout';
 import STRIPE_PUBLISHABLE from './Stripe';
 
 const Subscriptions = () => {
-    console.log('stripe publishable', STRIPE_PUBLISHABLE)
     return (
         <StripeProvider apiKey={`${STRIPE_PUBLISHABLE}`}>
             <MyStoreCheckout />
