@@ -11,10 +11,12 @@ import {
   Popup,
   GridRow,
   Container,
-  Transition
+  Transition,
+  Dropdown
 } from "semantic-ui-react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import jwt from "jsonwebtoken";
 import {
   registerAdminAction,
   loginAdminAction,
@@ -41,7 +43,7 @@ class Nav extends Component {
   }
 
   handleOpenModal = (e, { content }) => {
-    this.setState({ activeItem: content, openModal: true });    
+    this.setState({ activeItem: content, openModal: true });
   };
 
   handleCloseModal = () => {
@@ -82,6 +84,14 @@ class Nav extends Component {
       password: this.state.SignInPassword
     });
     this.setState({ SignInPassword: "", SignInUsername: "" });
+  };
+
+  handleDashboardClick = () => {
+    this.props.history.push("/dashboard");
+  };
+
+  handleSettingsClick = () => {
+    this.props.history.push("/Settings");
   };
 
   handleLogout = () => {
@@ -192,7 +202,7 @@ class Nav extends Component {
         <Container>
           <div className="Nav__container">
             <Link to="/" className="Nav__link">
-              <h1>Leaderboard</h1>
+              <h1>NextSteps</h1>
             </Link>
             {!localStorage.token ? (
               <div>
@@ -210,19 +220,41 @@ class Nav extends Component {
                 />
               </div>
             ) : (
-              <div>
-                {this.props.history.location.pathname !== "/dashboard" ? (
-                  <Link to="/dashboard">
-                    <Button size="small" color="blue" content="Dashboard" />
-                  </Link>
-                ) : null}
-                <Button
-                  size="small"
-                  color="red"
-                  content="Log Out"
-                  onClick={this.handleLogout}
-                />
-              </div>
+              // <div>
+              //   {this.props.history.location.pathname !== "/dashboard" ? (
+              //     <Link to="/dashboard">
+              //       <Button size="small" color="blue" content="Dashboard" />
+              //     </Link>
+              //   ) : null}
+              //   <Button
+              //     size="small"
+              //     color="red"
+              //     content="Log Out"
+              //     onClick={this.handleLogout}
+              //   />
+              // </div>
+              <Button.Group color="blue">
+                <Dropdown
+                  className="mydropdown"
+                  text={`${
+                    jwt.decode(localStorage.token.split(" ")[1]).username
+                  }`}
+                  floating
+                  button
+                >
+                  <Dropdown.Menu direction="right">
+                    <Dropdown.Item
+                      text="Dashboard"
+                      onClick={this.handleDashboardClick}
+                    />
+                    <Dropdown.Item
+                      text="Settings"
+                      onClick={this.handleSettingsClick}
+                    />
+                    <Dropdown.Item text="Logout" onClick={this.handleLogout} />
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Button.Group>
             )}
           </div>
         </Container>
@@ -230,7 +262,7 @@ class Nav extends Component {
           open={this.state.openModal}
           onClose={this.handleCloseModal}
           centered={false}
-          // dimmer={"blurring"}
+          // dimmer="blurring"
           size="small"
         >
           <Modal.Content>
