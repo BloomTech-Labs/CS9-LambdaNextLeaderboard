@@ -26,7 +26,7 @@ import {
   postCsvStudents
 } from "../../actions/classActions";
 
-import Settings from "../Settings/Settings";
+import Settings from "../SettingsComponent/Settings";
 
 import { updateStudent, deleteStudent } from "../../actions/studentActions";
 import {
@@ -141,7 +141,7 @@ componentWillUpdate = (nextProps, nextState) => {
   }
 }
 
-  
+
 
   componentDidMount = () => {
     this.getStudents();
@@ -177,7 +177,7 @@ componentWillUpdate = (nextProps, nextState) => {
         </Segment>
         <Segment textAlign="center">
           {this.state.unhired ? (
-            
+
               <Button
                 icon="ordered list"
                 content="Leaderboard"
