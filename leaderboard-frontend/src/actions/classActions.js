@@ -2,6 +2,7 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 
 export const GET_CLASS_STUDENTS = "GET_CLASS_STUDENTS";
+export const QUERY_STUDENTS = "QUERY_STUDENTS";
 export const ADD_CLASS_STUDENTS = "ADD_CLASS_STUDENTS";
 export const ADD_CLASS_STUDENTS_ERRORS = "ADD_CLASS_STUDENTS_ERRORS";
 export const ADD_CSV_STUDENTS = "ADD_CSV_STUDENTS";
@@ -19,6 +20,32 @@ export const getClassStudents = obj => {
           Authorization: localStorage.token
         }
       })
+      .then(res => {
+        dispatch({
+          type: GET_CLASS_STUDENTS,
+          payload: res.data
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: "ERRORS",
+          payload: err.response.data
+        });
+      });
+  };
+};
+
+export const queryStudents = obj => {
+  return dispatch => {
+    const options = {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        Authorization: localStorage.token
+      },
+      url: `${CLASS_URL}${obj.id}/students/${obj.query}`
+    };
+    axios(options)
       .then(res => {
         dispatch({
           type: GET_CLASS_STUDENTS,

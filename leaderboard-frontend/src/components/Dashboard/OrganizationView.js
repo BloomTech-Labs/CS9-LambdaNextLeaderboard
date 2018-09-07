@@ -8,8 +8,8 @@ import {
   Form,
   Header
 } from "semantic-ui-react";
-import axios from 'axios';
-import SUBSCRIPTION from '../Subscriptions/Subscriptions';
+import axios from "axios";
+import SUBSCRIPTION from "../Subscriptions/Subscriptions";
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 import {connect} from 'react-redux'
 import {toggleSettings, cancelSubscription, getSubscriptionInfo} from '../../actions/organizationActions'
@@ -85,35 +85,31 @@ class OrganizationView extends Component {
     //   return <SUBSCRIPTION />
     //   start subscription stuff (this creates a stripeCustomerId)
     // }
-  }
+  };
 
   render() {
     console.log(this.props.stripeCustomerID, this.props.toggle.toString())
     return (
       <Segment.Group>
-        <Segment>
+        <Segment inverted color="blue">
           <Header as="h2" content="Organization View" textAlign="center" />
-          <Card fluid color="orange">
-            <Card.Content textAlign="center">
-              <Card.Header>{this.props.name}</Card.Header>
-              <List bulleted horizontal>
-                <List.Item>
-                  Number of classes: {this.props.numOfClasses}
-                </List.Item>
-              </List>
-            </Card.Content>
-            <Card.Content textAlign="center" extra>
-              <Button
-                name="openEditModal"
-                icon="cog"
-                content="Settings"
-                inverted
-                color="blue"
-                size="large"
-                onClick={this.openEditModal}
-              />
-            </Card.Content>
-          </Card>
+        </Segment>
+        <Segment textAlign="center">
+          <Header>{this.props.name}</Header>
+          <List bulleted horizontal>
+            <List.Item>Number of classes: {this.props.numOfClasses}</List.Item>
+          </List>
+        </Segment>
+        <Segment textAlign="center">
+          <Button
+            name="openEditModal"
+            icon="cog"
+            content="Settings"
+            inverted
+            color="blue"
+            size="large"
+            onClick={this.openEditModal}
+          />
         </Segment>
         <EditModal
           open={this.state.openEditModal}
@@ -144,12 +140,12 @@ const EditModal = props => {
   if (props.getSubscriptionStatus === true) {
     return (
       <Modal
-    centered
-    size="large"
-    closeIcon
-    open={props.open}
-    onClose={props.close}
-    dimmer="blurring"
+        centered
+        size="large"
+        closeIcon
+        open={props.open}
+        onClose={props.close}
+        dimmer="blurring"
       >
       <Modal.Header icon="cog" content="Organization Settings" />
       {/* <Modal.Content content="Billing options or current subscription details." /> */}
@@ -181,7 +177,9 @@ const EditModal = props => {
       >
         <Modal.Header icon="cog" content="Organization Settings" />
         {/* <Modal.Content content="Billing options or current subscription details." /> */}
-        <Modal.Content><Sub2/></Modal.Content>
+        <Modal.Content>
+          <Sub2 />
+        </Modal.Content>
         <Modal.Actions>
           <Button
             color="red"
@@ -191,7 +189,7 @@ const EditModal = props => {
           />
         </Modal.Actions>
       </Modal>
-    )
+    );
   }
   return (
     <Modal
@@ -204,7 +202,9 @@ const EditModal = props => {
     >
       <Modal.Header icon="cog" content="Organization Settings" />
       {/* <Modal.Content content="Billing options or current subscription details." /> */}
-      <Modal.Content><SUBSCRIPTION/></Modal.Content>
+      <Modal.Content>
+        <SUBSCRIPTION />
+      </Modal.Content>
       <Modal.Actions>
         <Button
           color="red"

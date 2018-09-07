@@ -36,10 +36,16 @@ import {
   GET_ORGANIZATION_CLASSES,
   ADD_ORGANIZATION_CLASSES_ERRORS,
   ADD_ORGANIZATION_CLASSES,
+<<<<<<< HEAD
   DELETE_ORGANIZATION, ACTIVE_ORGANIZATION,
   GET_SUBSCRIPTION_INFO,
   TOGGLE_SETTINGS,
   CANCEL_SUBSCRIPTION
+=======
+  DELETE_ORGANIZATION,
+  ACTIVE_ORGANIZATION,
+  GET_SUBSCRIPTION_INFO
+>>>>>>> 66a064aadac69320969ed133dc7357f12c333a5c
 } from "../actions/organizationActions";
 import {
   GET_CLASS_STUDENTS,
@@ -86,7 +92,8 @@ const initialState = {
   newClassErrors: {},
   createdClass: {},
 
-  classStudents: {},
+  classStudents: [],
+  queryingStudents: false,
   newStudentErrors: {},
   createdStudent: {},
   updatedStudent: {},
@@ -95,9 +102,13 @@ const initialState = {
   updateAdmin: null,
   activeOrganization: null,
   stripeCustomerID: null,
+<<<<<<< HEAD
   getSubscriptionInfo: null,
   toggleSettings: false,
   cancelledSubscription: null
+=======
+  getSubscriptionInfo: null
+>>>>>>> 66a064aadac69320969ed133dc7357f12c333a5c
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -236,6 +247,10 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         loggedInAdmin: ""
       });
+    case UPDATE_ADMIN:
+      return Object.assign({}, state, {
+        updateAdmin: action.payload
+      });
 
     case GET_ADMIN_ORGANIZATIONS:
       return Object.assign({}, state, {
@@ -276,7 +291,8 @@ const studentReducer = (state = initialState, action) => {
 
     case GET_CLASS_STUDENTS:
       return Object.assign({}, state, {
-        classStudents: action.payload
+        classStudents: action.payload.students,
+        queryingStudents: action.payload.querying
       });
     case ADD_CLASS_STUDENTS_ERRORS:
       return Object.assign({}, state, {
@@ -295,10 +311,7 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         deletedStudent: action.payload
       });
-    // case CLASS_TO_QUERY:
-    //     return Object.assign({}.state, {
-    //         classToQuery: action.payload
-    //     })
+
     case CLASS_TO_QUERY:
       return Object.assign({}, state, {
         classToQuery: action.payload,
@@ -314,17 +327,14 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         changeSettings: action.payload
       });
-    case UPDATE_ADMIN:
-      return Object.assign({}, state, {
-        updateAdmin: action.payload
-      });
+
     case ACTIVE_ORGANIZATION:
       return Object.assign({}, state, {
         activeOrganization: action.payload,
         stripeCustomerID: action.stripeCustomerID,
         getSubscriptionStatus: null,
         getSubscriptionInfo: null
-      })
+      });
     case GET_SUBSCRIPTION_INFO:
       return Object.assign({}, state, {
         getSubscriptionStatus: action.payload,

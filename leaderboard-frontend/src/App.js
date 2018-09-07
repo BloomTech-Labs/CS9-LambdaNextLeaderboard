@@ -12,6 +12,7 @@ import BILLING from "./components/Billing/Billing";
 import Dashboard from "./components/Dashboard/Dashboard";
 import SUBSCRIPTIONS from "./components/Subscriptions/Subscriptions";
 import SUB2 from "./components/Sub2/Sub2";
+import SETTINGS from "./components/SettingsComponent/Settings";
 
 //________STYLING________
 
@@ -42,7 +43,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="APP">          
+        <div className="APP">
           {/* onRef gives App access to Navbar methods   Ex: this.nav.sessionHasExpired() */}
           <NAVBAR
             onRef={ref => (this.nav = ref)}
@@ -58,6 +59,7 @@ class App extends Component {
               // component={LANDINGPAGE}
             />
             <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/settings" component={SETTINGS} />
             <Route exact path="/billing" component={BILLING} />
             <Route exact path="/leaderboard" component={LeaderBoard} />
             <Route exact path="/subscriptions" component={SUBSCRIPTIONS} />
