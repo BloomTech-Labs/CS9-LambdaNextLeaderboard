@@ -125,20 +125,18 @@ class ClassView extends Component {
       this.getStudents();
     }
   };
-
-  componentWillUpdate(nextProps, nextState) {
-    if (
-      nextProps.classToQuery !== null &&
-      this.props.classToQuery !== nextProps.classToQuery
-    ) {
-      console.log(
-        "Ready to FIre, this.props.classToQuery",
-        nextProps.classToQuery,
-        this.props
-      );
-      this.setState({ leaderboard: true });
-    }
+componentWillUpdate = (nextProps, nextState) => {
+  if (nextProps.classToQuery !== null &&
+    this.props.classToQuery !== nextProps.classToQuery) {
+    console.log("Ready to FIre, this.props.classToQuery",
+    nextProps.classToQuery,
+      this.props
+    );
+    this.setState({ leaderboard: true });
   }
+}
+
+  
 
   componentDidMount = () => {
     this.getStudents();

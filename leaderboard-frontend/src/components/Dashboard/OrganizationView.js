@@ -3,6 +3,11 @@ import { Segment, List, Button, Modal, Form, Header } from "semantic-ui-react";
 import SUBSCRIPTION from "../Subscriptions/Subscriptions";
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 import { connect } from "react-redux";
+import {
+  toggleSettings,
+  cancelSubscription,
+  getSubscriptionInfo
+} from "../../actions/organizationActions";
 import Sub2 from "../Sub2/Sub2";
 
 class OrganizationView extends Component {
@@ -17,6 +22,7 @@ class OrganizationView extends Component {
   }
 
   openEditModal = () => {
+    // this.props.toggleSettings(true)
     this.setState({ openEditModal: true });
   };
 
@@ -45,21 +51,27 @@ class OrganizationView extends Component {
     this.props.delete({ id: this.props.id });
   };
 
-  orgInformation = () => {
-    // axios.get()
-    // TODO:  Organization settings
-    // if(stripeCustomerID){
-    //   return <CUSTOMERINFO />
-    //   This is stripeCustomerID and info  ID, subscription end date, subscription type(premium/standard)
-    //   Subscription upgrade button
-    // } else {
-    //   return <SUBSCRIPTION />
-    //   start subscription stuff (this creates a stripeCustomerId)
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.toggle === true) {
+      this.setState({ openEditModal: false });
+      this.props.toggleSettings(false);
+      console.log("firing toggle", nextProps.toggleSettings.toString());
+    }
+
+    // if (nextProps.activeOrganization !== this.props.activeOrganization) {
+    //   this.props.getSubscriptionInfo(nextProps.stripeCustomerID)
     // }
+  }
+  cancelSubscription = () => {
+    this.props.cancelSubscription(
+      this.props.getSubscriptionInfoData.subscriptionID,
+      this.props.activeOrganization
+    );
+    this.setState({ openEditModal: false });
   };
 
   render() {
-    console.log(this.props.stripeCustomerID);
+    console.log(this.props.stripeCustomerID, this.props.toggle.toString());
     return (
       <Segment.Group>
         <Segment inverted color="blue">
@@ -88,7 +100,9 @@ class OrganizationView extends Component {
           openConfirm={this.openConfirm}
           stripeCustomerID={this.props.stripeCustomerID}
           getSubscriptionStatus={this.props.getSubscriptionStatus}
-          getSubscriptionInfo={this.props.getSubscriptionInfo}
+          getSubscriptionInfo={this.props.getSubscriptionInfoData}
+          cancelSubscription={this.cancelSubscription}
+          activeOrganization={this.props.activeOrganization}
         />
         <ConfirmDeleteModal
           open={this.state.openConfirm}
@@ -104,65 +118,6 @@ class OrganizationView extends Component {
 }
 
 const EditModal = props => {
-  // If there is a stripeCustomerID on the org, display subscription info
-  // else display a button to go subscribe.
-  console.log(props.stripeCustomerID);
-  if (props.getSubscriptionStatus === true) {
-    return (
-      <Modal
-        centered
-        size="large"
-        closeIcon
-        open={props.open}
-        onClose={props.close}
-        dimmer="blurring"
-      >
-        <Modal.Header icon="cog" content="Organization Settings" />
-        {/* <Modal.Content content="Billing options or current subscription details." /> */}
-        <Modal.Content>
-          <h1>
-            You already have a subscription:{" "}
-            {props.getSubscriptionInfo.nickname}
-          </h1>
-          <h2>Active subscription: {props.getSubscriptionStatus.toString()}</h2>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button
-            color="red"
-            icon="trash alternate"
-            content="Delete this Organization"
-            onClick={props.openConfirm}
-          />
-        </Modal.Actions>
-      </Modal>
-    );
-  }
-  if (props.stripeCustomerID !== null) {
-    return (
-      <Modal
-        centered
-        size="large"
-        closeIcon
-        open={props.open}
-        onClose={props.close}
-        dimmer="blurring"
-      >
-        <Modal.Header icon="cog" content="Organization Settings" />
-        {/* <Modal.Content content="Billing options or current subscription details." /> */}
-        <Modal.Content>
-          <Sub2 />
-        </Modal.Content>
-        <Modal.Actions>
-          <Button
-            color="red"
-            icon="trash alternate"
-            content="Delete this Organization"
-            onClick={props.openConfirm}
-          />
-        </Modal.Actions>
-      </Modal>
-    );
-  }
   return (
     <Modal
       centered
@@ -173,9 +128,8 @@ const EditModal = props => {
       dimmer="blurring"
     >
       <Modal.Header icon="cog" content="Organization Settings" />
-      {/* <Modal.Content content="Billing options or current subscription details." /> */}
       <Modal.Content>
-        <SUBSCRIPTION />
+        <SubscriptionsContent props={props} />
       </Modal.Content>
       <Modal.Actions>
         <Button
@@ -224,14 +178,50 @@ const ConfirmDeleteModal = props => {
   );
 };
 
+const SubscriptionsContent = inc => {
+  // If there is a stripeCustomerID on the org, display subscription info
+  // else display a button to go subscribe.
+  // const periodEnd = new Date (0)
+  // periodEnd.setUTCSeconds(inc.props.getSubscriptionInfo.period_end.toString());
+  console.log(inc.props);
+  if (inc.props.getSubscriptionStatus === true) {
+    return (
+      <Segment>
+        <h1>
+          You already have a subscription:{" "}
+          {inc.props.getSubscriptionInfo.nickname}
+        </h1>
+        {/* <h2>Subscription ends on {periodEnd}</h2> */}
+        <Button onClick={inc.props.cancelSubscription}>
+          Cancel Subscription
+        </Button>
+      </Segment>
+    );
+  }
+  if (inc.props.stripeCustomerID !== null) {
+    return (
+      <Segment>
+        <Sub2 />
+      </Segment>
+    );
+  }
+  return (
+    <Segment>
+      <SUBSCRIPTION />
+    </Segment>
+  );
+};
+
 const mapStateToProps = state => {
   return {
     stripeCustomerID: state.stripeCustomerID,
     getSubscriptionStatus: state.getSubscriptionStatus,
-    getSubscriptionInfo: state.getSubscriptionInfo
+    getSubscriptionInfoData: state.getSubscriptionInfo,
+    toggle: state.toggleSettings,
+    activeOrganization: state.activeOrganization
   };
 };
 export default connect(
   mapStateToProps,
-  {}
+  { toggleSettings, cancelSubscription, getSubscriptionInfo }
 )(OrganizationView);
