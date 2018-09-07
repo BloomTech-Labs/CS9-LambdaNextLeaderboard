@@ -12,7 +12,7 @@ import axios from 'axios';
 import SUBSCRIPTION from '../Subscriptions/Subscriptions';
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 import {connect} from 'react-redux'
-import {toggleSettings, cancelSubscription} from '../../actions/organizationActions'
+import {toggleSettings, cancelSubscription, getSubscriptionInfo} from '../../actions/organizationActions'
 import Sub2 from "../Sub2/Sub2";
 
 class OrganizationView extends Component {
@@ -62,9 +62,15 @@ class OrganizationView extends Component {
       this.props.toggleSettings(false)
       console.log('firing toggle', nextProps.toggleSettings.toString())
     }
+
+
     // if (nextProps.activeOrganization !== this.props.activeOrganization) {
     //   this.props.getSubscriptionInfo(nextProps.stripeCustomerID)
     // }
+  }
+  cancelSubscription = () => {
+    this.props.cancelSubscription(this.props.getSubscriptionInfoData.subscriptionID, this.props.activeOrganization );
+    this.setState({openEditModal: false});
   }
 
 
@@ -113,9 +119,11 @@ class OrganizationView extends Component {
           open={this.state.openEditModal}
           close={this.closeEditModal}
           openConfirm={this.openConfirm}
+          stripeCustomerID={this.props.stripeCustomerID}
           getSubscriptionStatus={this.props.getSubscriptionStatus}
-          getSubscriptionInfo={this.props.getSubscriptionInfo}
-          cancelSubscription={this.props.cancelSubscription}
+          getSubscriptionInfo={this.props.getSubscriptionInfoData}
+          cancelSubscription={this.cancelSubscription}
+          activeOrganization={this.props.activeOrganization}
         />
         <ConfirmDeleteModal
           open={this.state.openConfirm}
@@ -148,7 +156,7 @@ const EditModal = props => {
     <Modal.Content>
       <h1>You already have a subscription: {props.getSubscriptionInfo.nickname}</h1>
       <h2>Active subscription: {props.getSubscriptionStatus.toString()}</h2>
-      <button onClick={props.cancelSubscription(props.getSubscriptionInfo.subscriptionID)}>Cancel Subscription</button>
+      <button onClick={props.cancelSubscription}>Cancel Subscription</button>
     </Modal.Content>
     <Modal.Actions>
     <Button
@@ -248,9 +256,9 @@ const mapStateToProps = state => {
   return {
     stripeCustomerID: state.stripeCustomerID,
     getSubscriptionStatus: state.getSubscriptionStatus,
-    getSubscriptionInfo: state.getSubscriptionInfo,
+    getSubscriptionInfoData: state.getSubscriptionInfo,
     toggle: state.toggleSettings,
     activeOrganization: state.activeOrganization
   }
 }
-export  default connect(mapStateToProps, {toggleSettings, cancelSubscription})(OrganizationView)
+export  default connect(mapStateToProps, {toggleSettings, cancelSubscription, getSubscriptionInfo})(OrganizationView)

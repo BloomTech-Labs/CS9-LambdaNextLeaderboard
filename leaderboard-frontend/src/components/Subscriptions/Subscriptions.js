@@ -4,7 +4,7 @@ import MyStoreCheckout from './MyStoreCheckout';
 
 const Subscriptions = () => {
     return (
-        <StripeProvider apiKey='pk_test_Fie4DdiXkLIkoZSul4CsqlYo'>
+        <StripeProvider apiKey='pk_test_wPrk3cSltJhH1yFL94jTizxg'>
             <MyStoreCheckout />
         </StripeProvider>
     );

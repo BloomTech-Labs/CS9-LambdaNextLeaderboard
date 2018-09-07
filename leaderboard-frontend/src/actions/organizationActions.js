@@ -43,7 +43,7 @@ export const getSubscriptionInfo = id => {
       });
   }
 }
-export const cancelSubscription = id => {
+export const cancelSubscription = (id, orgID) => {
   return dispatch => {
     fetch('http://localhost:4000/api/customer/delete', {
       method: 'DELETE',
@@ -51,7 +51,8 @@ export const cancelSubscription = id => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        stripe_customer_id: id
+        stripe_customer_id: id,
+        id: orgID
       })
     }).then((res) => res.json()).then((response) => {
       console.log('response', response)
