@@ -33,7 +33,8 @@ export const getSubscriptionInfo = id => {
           nickname: response.subscriptions.data[0].plan.nickname,
           period_start: response.subscriptions.data[0].current_period_start,
           period_end: response.subscriptions.data[0].current_period_end,
-          subscriptionID: response.subscriptions.data[0].id
+          subscriptionID: response.subscriptions.data[0].id,
+          cancelled: false
         })
       }).catch(err => {
         dispatch({
@@ -59,6 +60,7 @@ export const cancelSubscription = (id, orgID) => {
       dispatch({
         type: CANCEL_SUBSCRIPTION,
         payload: response,
+        cancelled: true
       })
     }).catch(err => {
       dispatch({

@@ -42,6 +42,14 @@ class Dashboard extends Component {
     if(nextProps.stripeCustomerID !== null) {
       this.props.getSubscriptionInfo(nextProps.stripeCustomerID);
     }
+    if(nextProps.cancelled === true && this.props.cancelled !== nextProps.cancelled) {
+      this.props.activeOrganization(this.props.activeOrganizationID, this.props.stripeCustomerID)
+      this.props.getSubscriptionInfo(this.props.stripeCustomerID);
+    }
+    if (nextProps.newOrganization === true && this.props.newOrganization !== nextProps.newOrganization) {
+      this.props.activeOrganization(this.props.activeOrganizationID, null)
+    }
+
   }
 
   getOrganizations = () => {
@@ -320,7 +328,10 @@ const mapStateToProps = state => {
     stripeCustomerID: state.stripeCustomerID,
     orgClasses: state.organizationClasses,
     newClassErrors: state.newClassErrors,
-    createdClass: state.createdClass
+    createdClass: state.createdClass,
+    cancelled: state.cancelled,
+    activeOrganizationID: state.activeOrganization,
+    newOrganization: state.newOrganization
   };
 };
 

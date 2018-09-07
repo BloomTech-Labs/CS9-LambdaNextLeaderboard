@@ -88,7 +88,8 @@ export const getAdminOrganizations = ({ id }) => {
       .then(res => {
         dispatch({
           type: GET_ADMIN_ORGANIZATIONS,
-          payload: res.data
+          payload: res.data,
+          newOrganization: null
         });
       })
       .catch(err => {
@@ -113,7 +114,8 @@ export const addAdminOrganization = obj => {
       .then(res => {
         dispatch({
           type: ADD_ADMIN_ORGANIZATIONS,
-          payload: res.data
+          payload: res.data,
+          newOrganization: true
         });
       })
       .catch(err => {

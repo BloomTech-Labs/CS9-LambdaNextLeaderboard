@@ -98,7 +98,9 @@ const initialState = {
   stripeCustomerID: null,
   getSubscriptionInfo: null,
   toggleSettings: false,
-  cancelledSubscription: null
+  cancelledSubscription: null,
+  cancelled: false,
+  newOrganization: false
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -244,7 +246,9 @@ const studentReducer = (state = initialState, action) => {
 
     case GET_ADMIN_ORGANIZATIONS:
       return Object.assign({}, state, {
-        adminOrganizations: action.payload
+        adminOrganizations: action.payload,
+        newOrganization: action.newOrganization,
+        // createdOrganization: action.createdOrganization
       });
     case ADD_ADMIN_ORGANIZATIONS_ERRORS:
       return Object.assign({}, state, {
@@ -328,7 +332,8 @@ const studentReducer = (state = initialState, action) => {
     case GET_SUBSCRIPTION_INFO:
       return Object.assign({}, state, {
         getSubscriptionStatus: action.payload,
-        getSubscriptionInfo: {subscriptionID: action.subscriptionID, nickname: action.nickname, period_start: action.period_start, period_end: action.period_end }
+        getSubscriptionInfo: {subscriptionID: action.subscriptionID, nickname: action.nickname, period_start: action.period_start, period_end: action.period_end },
+        cancelled: action.cancelled
       })
     case TOGGLE_SETTINGS:
       return Object.assign({}, state, {
@@ -336,7 +341,8 @@ const studentReducer = (state = initialState, action) => {
       })
     case CANCEL_SUBSCRIPTION:
       return Object.assign({}, state, {
-        cancelledSubscription: action.payload
+        cancelledSubscription: action.payload,
+        cancelled: action.cancelled
       })
 
     default:
