@@ -8,11 +8,10 @@ import {
   Form,
   Header
 } from "semantic-ui-react";
-import axios from 'axios';
 import SUBSCRIPTION from '../Subscriptions/Subscriptions';
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 import {connect} from 'react-redux'
-import {toggleSettings} from '../../actions/organizationActions'
+import {toggleSettings, cancelSubscription, getSubscriptionInfo} from '../../actions/organizationActions'
 import Sub2 from "../Sub2/Sub2";
 
 class OrganizationView extends Component {
@@ -62,6 +61,15 @@ class OrganizationView extends Component {
       this.props.toggleSettings(false)
       console.log('firing toggle', nextProps.toggleSettings.toString())
     }
+
+
+    // if (nextProps.activeOrganization !== this.props.activeOrganization) {
+    //   this.props.getSubscriptionInfo(nextProps.stripeCustomerID)
+    // }
+  }
+  cancelSubscription = () => {
+    this.props.cancelSubscription(this.props.getSubscriptionInfoData.subscriptionID, this.props.activeOrganization );
+    this.setState({openEditModal: false});
   }
 
 
@@ -100,7 +108,9 @@ class OrganizationView extends Component {
           openConfirm={this.openConfirm}
           stripeCustomerID={this.props.stripeCustomerID}
           getSubscriptionStatus={this.props.getSubscriptionStatus}
-          getSubscriptionInfo={this.props.getSubscriptionInfo}
+          getSubscriptionInfo={this.props.getSubscriptionInfoData}
+          cancelSubscription={this.cancelSubscription}
+          activeOrganization={this.props.activeOrganization}
         />
         <ConfirmDeleteModal
           open={this.state.openConfirm}
@@ -208,8 +218,9 @@ const mapStateToProps = state => {
   return {
     stripeCustomerID: state.stripeCustomerID,
     getSubscriptionStatus: state.getSubscriptionStatus,
-    getSubscriptionInfo: state.getSubscriptionInfo,
-    toggle: state.toggleSettings
+    getSubscriptionInfoData: state.getSubscriptionInfo,
+    toggle: state.toggleSettings,
+    activeOrganization: state.activeOrganization
   }
 }
-export  default connect(mapStateToProps, {toggleSettings})(OrganizationView)
+export  default connect(mapStateToProps, {toggleSettings, cancelSubscription, getSubscriptionInfo})(OrganizationView)

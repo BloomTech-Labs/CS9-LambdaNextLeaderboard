@@ -38,7 +38,7 @@ class Dashboard extends Component {
   componentWillUpdate = (nextProps) => {
     if(nextProps.stripeCustomerID !== null) {
       this.props.getSubscriptionInfo(nextProps.stripeCustomerID);
-    } 
+    }
   }
 
   getOrganizations = () => {
@@ -66,7 +66,14 @@ class Dashboard extends Component {
       activeClassName: ""
     });
     console.log(id, name, stripe)
-    this.props.activeOrganization(id, stripe);
+    if (name !== 'addOrg') {
+      if (stripe) {
+        this.props.activeOrganization(id, stripe);
+      }
+      if (stripe === null) {
+        this.props.activeOrganization(id, null);
+      }
+    }
 
     this.props.newOrgErrors.name = "";
   };

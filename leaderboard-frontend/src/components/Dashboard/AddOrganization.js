@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import { Segment, Header, Icon, Form, Label } from "semantic-ui-react";
+import {connect} from 'react-redux';
+import {activeOrganization} from '../../actions/organizationActions';
+import {getAdminOrganizations} from '../../actions/adminActions'
 import jwt from "jsonwebtoken";
 
-export default class AddOrganization extends Component {
+class AddOrganization extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      newOrgName: ""
+      newOrgName: "",
+      sent: false
     };
   }
 
@@ -20,8 +24,24 @@ export default class AddOrganization extends Component {
     const id = jwt.decode(localStorage.token.split(" ")[1]).id;
     this.props.addOrg({ id, name: this.state.newOrgName });
     this.props.getOrgs({ id });
+    this.setState({sent: true})
   };
 
+  // componentWillUpdate(nextProps, nextState) {
+  //
+  // }
+
+
+  componentWillUpdate = (nextProps, nextState) => {
+    console.log(nextProps.createdOrganization._id)
+    if(nextProps.createdOrganization !== null && this.props.createdOrganization !== nextProps.createdOrganization) {
+      this.props.activeOrganization(nextProps.createdOrganization._id, null);
+      const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+      this.props.getAdminOrganizations({ id });
+      // this.props.activeOrganization(this.props.activeOrganizationID, response.stripeCustomerID)
+      // this.props.toggleSettings(true)
+    }
+  }
   render() {
     return (
       <Segment>
@@ -56,3 +76,11 @@ export default class AddOrganization extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    createdOrganization: state.createdOrganization
+    // stripeCustomerID(pin): null
+    // _id(pin): '5b917cd8c8375b42eee39335'
+  }
+}
+export default connect(mapStateToProps, {activeOrganization, getAdminOrganizations})(AddOrganization)
