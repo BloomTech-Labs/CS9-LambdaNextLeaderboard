@@ -23,7 +23,7 @@ router.get("/:id/students", (req, res) => {
     .populate({
       path: "students",
       options: {
-        sort: { hired: 1, lastname: 1, firstname: 1 }
+        sort: { hired: 1, firstname: 1, lastname: 1 }
       }
     })
     .then(aClass => {
