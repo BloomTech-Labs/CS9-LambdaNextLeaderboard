@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const stripe = require('../../billing/stripe');
 const Organization = require("../../models/Organization");
+require("dotenv").config();
 
+// var stripe = require('stripe')(process.env.SECRET_KEY);
 router.put('/create', function (req, res, next) {
   const token = req.body.token;
   const id = req.body.id;
@@ -64,8 +66,8 @@ router.post('/subscribe', function (req, res, next) {
   // step 3: grab current user info and pull out customer id
   // const customerId = 'cus_DXrzYdu7MFOV28';
 
-  if(plan == 'standard') plan = "plan_DX4jmAAz73XN9M";
-  else if(plan == 'premium') plan = "plan_DX4kZpY63l2RtQ";
+  if(plan == 'standard') plan = process.env.STANDARD
+  else if(plan == 'premium') plan = process.env.PREMIUM
 
   let params = {
     customer: stripe_customer_id,
@@ -91,18 +93,6 @@ router.post('/subscribe', function (req, res, next) {
   });
 });
 
-router.get('/retrieve', function (req,res, next) {
-  let {
-    stripe_customer_id
-  } = req.body;
-
-  stripe.customers.retrieve(
-    stripe_customer_id,
-    function(err, customer) {
-      res.send(customer)
-    }
-  );
-})
 
 
 router.post('/retrieve', function (req,res, next) {
@@ -116,6 +106,36 @@ router.post('/retrieve', function (req,res, next) {
       res.send(customer)
     }
   );
+})
+router.delete('/delete', function (req, res, next) {
+  let {
+    stripe_customer_id,
+    id
+  } = req.body;
+  stripe.subscriptions.del(
+    stripe_customer_id,
+    function(err, confirmation) {
+      if (confirmation) {
+        // const objectToUpdate = {
+        //   stripeCustomerID: null
+        // };
+        // const options = {
+        //   new: true
+        // };
+        // Organization.findByIdAndUpdate(id, objectToUpdate, options)
+        //   .then(organization => res.status(201).json(organization))
+        //   .catch(err => res.json(err))
+        res.send(confirmation)
+      }
+      if (err) {
+        res.send(err)
+      }
+      // asynchronously called
+    }
+  );
+
+
+
 })
 
 module.exports = router;

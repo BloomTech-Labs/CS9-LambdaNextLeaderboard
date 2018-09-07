@@ -1,11 +1,14 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import {connect} from 'react-redux'
+import {toggleSettings, activeOrganization, getSubscriptionInfo} from '../../actions/organizationActions';
+import {getAdminOrganizations} from '../../actions/adminActions';
+import jwt from "jsonwebtoken";
 class Sub2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      coupon: "",
-      currentPlan: "bronze"
+      coupon: '',
+      currentPlan: 'standard',
     };
 
     this.onCouponChange = this.onCouponChange.bind(this);
@@ -27,23 +30,25 @@ class Sub2 extends Component {
 
   nextStep() {
     let { currentPlan, coupon } = this.state;
-
-    fetch("http://localhost:4000/api/customer/subscribe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        plan: currentPlan,
-        coupon: coupon,
-        stripe_customer_id: this.props.stripeCustomerID
-      })
-    })
-      .then(res => res.json())
-      .then(response => {
-        console.log("response", response);
-      })
-      .catch(error => console.error("Error:", error));
+    console.log(currentPlan)
+    fetch('http://localhost:4000/api/customer/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          plan: currentPlan,
+          coupon: coupon,
+          stripe_customer_id: this.props.stripeCustomerID
+        })
+      }).then((res) => res.json()).then((response) => {
+        console.log('response', response)
+      }).catch(error => console.error('Error:', error));
+    this.props.toggleSettings(true)
+    const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+    this.props.getAdminOrganizations({ id });
+    this.props.activeOrganization(this.props.activeOrganizationID, this.props.stripeCustomerID)
+    this.props.getSubscriptionInfo(this.props.stripeCustomerID)
   }
 
   render() {
@@ -62,7 +67,7 @@ class Sub2 extends Component {
         </div>
         <div>
           <h2>Plans</h2>
-          {plans.map((plan, index) => {
+          {(plans).map((plan, index) => {
             if (currentPlan === plan) {
               return (
                 <button
@@ -98,11 +103,9 @@ class Sub2 extends Component {
 }
 const mapStateToProps = state => {
   return {
-    stripeCustomerID: state.stripeCustomerID
-  };
-};
+    stripeCustomerID: state.stripeCustomerID,
+    activeOrganizationID: state.activeOrganization
+  }
+}
 
-export default connect(
-  mapStateToProps,
-  {}
-)(Sub2);
+export default connect(mapStateToProps, {getSubscriptionInfo, toggleSettings, getAdminOrganizations, activeOrganization})(Sub2);

@@ -17,9 +17,6 @@ class MenuBar extends Component {
               <div className="Menu-Item">Classes</div>
 
           </Link>
-          <Link to="/billing">
-              <div className="Menu-Item">Billing</div>
-          </Link>
           <Link to="/settings">
               <div className="Menu-Item">Settings</div>
           </Link>
