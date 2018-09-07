@@ -23,11 +23,11 @@ export default class StudentList extends Component {
     };
   }
 
-  openModal = (e, { id, name }) => {
+  openModal = (e, { id, student }) => {
     this.setState({
       openDeleteModal: true,
       selectedStudent: id,
-      selectedStudentName: name
+      selectedStudentName: `${student.firstname} ${student.lastname}`
     });
   };
 
@@ -175,6 +175,7 @@ export default class StudentList extends Component {
                         </Button>
                         <Button
                           id={student._id}
+                          student={student}
                           name="openDeleteModal"
                           icon
                           animated="vertical"

@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Segment,
-  Card,
-  List,
-  Button,
-  Modal,
-  Form,
-  Header
-} from "semantic-ui-react";
-import axios from "axios";
+import { Segment, List, Button, Modal, Form, Header } from "semantic-ui-react";
 import SUBSCRIPTION from "../Subscriptions/Subscriptions";
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 import { connect } from "react-redux";
