@@ -93,18 +93,6 @@ router.post('/subscribe', function (req, res, next) {
   });
 });
 
-router.get('/retrieve', function (req,res, next) {
-  let {
-    stripe_customer_id
-  } = req.body;
-
-  stripe.customers.retrieve(
-    stripe_customer_id,
-    function(err, customer) {
-      res.send(customer)
-    }
-  );
-})
 
 
 router.post('/retrieve', function (req,res, next) {
