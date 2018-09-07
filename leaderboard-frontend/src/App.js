@@ -9,7 +9,6 @@ import NAVBAR from "./components/Navbar/Nav";
 import LANDINGPAGE from "./components/LandingPage/LandingPage";
 import LeaderBoard from "./components/Leaderboard/LeaderBoard";
 import Dashboard from "./components/Dashboard/Dashboard";
-import SUBSCRIPTIONS from "./components/Subscriptions/Subscriptions";;
 import PRICING from "./components/Pricing/Pricing";
 import SETTINGS from "./components/SettingsComponent/Settings";
 
