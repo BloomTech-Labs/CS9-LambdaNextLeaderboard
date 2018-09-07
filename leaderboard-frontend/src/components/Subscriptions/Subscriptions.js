@@ -4,7 +4,7 @@ import MyStoreCheckout from './MyStoreCheckout';
 
 const Subscriptions = () => {
     return (
-        <StripeProvider apiKey='pk_test_wPrk3cSltJhH1yFL94jTizxg'>
+        <StripeProvider apiKey={process.env.REACT_APP_API_KEY}>
             <MyStoreCheckout />
         </StripeProvider>
     );

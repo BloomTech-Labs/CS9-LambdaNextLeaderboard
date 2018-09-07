@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const stripe = require('../../billing/stripe');
 const Organization = require("../../models/Organization");
+require("dotenv").config();
 
+// var stripe = require('stripe')(process.env.SECRET_KEY);
 router.put('/create', function (req, res, next) {
   const token = req.body.token;
   const id = req.body.id;
@@ -64,8 +66,8 @@ router.post('/subscribe', function (req, res, next) {
   // step 3: grab current user info and pull out customer id
   // const customerId = 'cus_DXrzYdu7MFOV28';
 
-  if(plan == 'standard') plan = "plan_DXsaoPaeK7WqPu";
-  else if(plan == 'premium') plan = "plan_DXt7OlmwrbZxWN";
+  if(plan == 'standard') plan = process.env.STANDARD
+  else if(plan == 'premium') plan = process.env.PREMIUM
 
   let params = {
     customer: stripe_customer_id,
