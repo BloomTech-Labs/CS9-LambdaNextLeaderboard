@@ -194,6 +194,7 @@ const SubscriptionsContent = (inc) => {
       <Segment>
         <h1>You already have a subscription: {inc.props.getSubscriptionInfo.nickname}</h1>
         {/* <h2>Subscription ends on {periodEnd}</h2> */}
+        <Button onClick={inc.props.cancelSubscription}>Cancel Subscription</Button>
       </Segment>
     );
   }
