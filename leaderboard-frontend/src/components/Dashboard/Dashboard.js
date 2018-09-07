@@ -20,7 +20,7 @@ import {
   addOrganizationClass,
   deleteOrganization,
   activeOrganization,
-  getSubscriptionInfo,
+  getSubscriptionInfo
 } from "../../actions/organizationActions";
 
 // styling
@@ -34,23 +34,20 @@ class Dashboard extends Component {
       activeOrg: "",
       activeClass: "",
       activeOrgName: "",
-      activeClassName: ""
+      activeClassName: "",
+      activeClassTracking: ""
     };
   }
 
-  componentWillUpdate = (nextProps) => {
-    if(nextProps.stripeCustomerID !== null) {
+  componentWillUpdate = nextProps => {
+    if (nextProps.stripeCustomerID !== null) {
       this.props.getSubscriptionInfo(nextProps.stripeCustomerID);
     }
-  }
+  };
 
   getOrganizations = () => {
     const id = jwt.decode(localStorage.token.split(" ")[1]).id;
     this.props.getAdminOrganizations({ id });
-  };
-
-  getClasses = () => {
-    this.props.getOrganizationClasses({ id: this.state.activeOrg });
   };
 
   getClasses = id => {
@@ -61,15 +58,15 @@ class Dashboard extends Component {
     }
   };
 
-  handleOrgMenuClick = (e, { id, name, stripe}) => {
+  handleOrgMenuClick = (e, { id, name, stripe }) => {
     this.setState({
       activeOrg: id,
       activeOrgName: name,
       activeClass: "",
       activeClassName: ""
     });
-    console.log(id, name, stripe)
-    if (name !== 'addOrg') {
+    console.log(id, name, stripe);
+    if (name !== "addOrg") {
       if (stripe) {
         this.props.activeOrganization(id, stripe);
       }
@@ -81,8 +78,12 @@ class Dashboard extends Component {
     this.props.newOrgErrors.name = "";
   };
 
-  handleClassMenuClick = (e, { id, name }) => {
-    this.setState({ activeClass: id, activeClassName: name });
+  handleClassMenuClick = (e, { id, name, trackingdate }) => {
+    this.setState({
+      activeClass: id,
+      activeClassName: name,
+      activeClassTracking: trackingdate
+    });
     this.props.newClassErrors.name = "";
   };
 
@@ -241,6 +242,7 @@ class Dashboard extends Component {
                           <Menu.Item
                             id={aClass._id}
                             name={aClass.name}
+                            trackingdate={aClass.trackingDate}
                             active={activeClass === aClass._id}
                             onClick={this.handleClassMenuClick}
                           >
@@ -301,6 +303,7 @@ class Dashboard extends Component {
               <ClassView
                 classId={this.state.activeClass}
                 className={this.state.activeClassName}
+                trackingDate={this.state.activeClassTracking}
                 props={this.props}
               />
             ) : null}
