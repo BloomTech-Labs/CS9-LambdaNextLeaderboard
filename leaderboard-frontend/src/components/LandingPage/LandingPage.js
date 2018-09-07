@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Grid,
@@ -24,8 +25,7 @@ class LandingPage extends Component {
     this.state = { openModal: false };
   }
 
-  handleCTAClick = () => {
-    console.log(this.props);
+  handleCTAClick = () => {    
     this.props.handleCTAClick();
   };
 
@@ -167,7 +167,9 @@ class LandingPage extends Component {
                   <Grid.Column width={3}>
                     <List link inverted>
                       <List.Item as="a">About</List.Item>
-                      <List.Item as="a">Pricing</List.Item>
+                      <List.Item as={Link} name="pricing" to="/pricing">
+                        Pricing
+                      </List.Item>
                       <List.Item as="a">Contact Us</List.Item>
                     </List>
                   </Grid.Column>
