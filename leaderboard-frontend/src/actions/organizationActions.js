@@ -105,11 +105,6 @@ export const getOrganizationClasses = obj => {
 // export const stripeCustomerID =
 
 export const activeOrganization = (id, stripe) => {
-  console.log('active', id, stripe)
-  if (stripe) {
-    const values = getSubscriptionInfo(stripe)
-    console.log("activeOrganiation ACTION:", values);
-  }
   return dispatch => {
     dispatch({
       type: ACTIVE_ORGANIZATION,

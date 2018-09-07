@@ -30,7 +30,7 @@ class Sub2 extends Component {
 
   nextStep() {
     let { currentPlan, coupon } = this.state;
-
+    console.log(currentPlan)
     fetch('http://localhost:4000/api/customer/subscribe', {
         method: 'POST',
         headers: {
@@ -67,7 +67,7 @@ class Sub2 extends Component {
         </div>
         <div>
           <h2>Plans</h2>
-          {plans.map((plan, index) => {
+          {(plans).map((plan, index) => {
             if (currentPlan === plan) {
               return (
                 <button
