@@ -61,7 +61,7 @@ class ClassView extends Component {
       total: students.length
     });
   };
-    
+
   queryStudents = (e, { value }) => {
     this.props.queryStudents({ id: this.props.classId, query: value });
   };
@@ -87,7 +87,7 @@ class ClassView extends Component {
   setSettings = () => {
     this.setState({ settings: true });
     this.props.setSettingsAction(true);
-  }
+  };
 
   componentDidUpdate = (prevProps, prevState) => {
     // New Students -> Settings counts
