@@ -77,6 +77,7 @@ class ClassView extends Component {
     // New Students -> Settings counts
     if (this.props.students !== prevProps.students) {
       this.setStudentCounts(this.props.students);
+      this.addStudentComponent.clearForm();
     }
 
     // Selected Class was changed -> Updating Students
@@ -212,6 +213,7 @@ class ClassView extends Component {
         ) : null}
         <Segment>
           <AddStudent
+            onRef={ref => (this.addStudentComponent = ref)}
             classId={this.props.classId}
             addStudent={this.props.addClassStudent}
             addStudentErrors={this.props.newStudentErrors}

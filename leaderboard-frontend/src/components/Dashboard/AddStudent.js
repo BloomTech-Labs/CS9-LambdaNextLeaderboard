@@ -58,6 +58,28 @@ export default class AddStudent extends Component {
     this.props.postCsvStudents(csvData, classID);
   };
 
+  clearForm = () => {
+    this.props.addStudentErrors.firstname = "";
+    this.props.addStudentErrors.lastname = "";
+    this.props.addStudentErrors.email = "";
+    this.props.addStudentErrors.github = "";
+    this.setState({
+      firstname: "",
+      lastname: "",
+      email: "",
+      github: "",
+      csvFile: null
+    });
+  };
+
+  componentDidMount = () => {
+    this.props.onRef(this);
+  };
+
+  componentWillUnmount = () => {
+    this.props.onRef(undefined);
+  };
+
   render() {
     const panes = [
       {
@@ -82,6 +104,7 @@ export default class AddStudent extends Component {
                 ) : null}
                 <Form.Input
                   name="firstname"
+                  value={this.state.firstname}
                   placeholder="First name"
                   onChange={this.handleInput}
                 />
@@ -97,6 +120,7 @@ export default class AddStudent extends Component {
                 ) : null}
                 <Form.Input
                   name="lastname"
+                  value={this.state.lastname}
                   placeholder="Last name"
                   onChange={this.handleInput}
                 />
@@ -112,6 +136,7 @@ export default class AddStudent extends Component {
                 ) : null}
                 <Form.Input
                   name="email"
+                  value={this.state.email}
                   placeholder="Email address"
                   onChange={this.handleInput}
                 />
@@ -127,6 +152,7 @@ export default class AddStudent extends Component {
                 ) : null}
                 <Form.Input
                   name="github"
+                  value={this.state.github}
                   placeholder="Github handle"
                   onChange={this.handleInput}
                 />

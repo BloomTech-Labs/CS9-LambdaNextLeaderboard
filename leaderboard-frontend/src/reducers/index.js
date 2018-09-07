@@ -85,7 +85,7 @@ const initialState = {
   newClassErrors: {},
   createdClass: {},
 
-  classStudents: {},
+  classStudents: [],
   queryingStudents: false,
   newStudentErrors: {},
   createdStudent: {},
