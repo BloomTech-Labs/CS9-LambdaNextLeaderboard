@@ -15,7 +15,7 @@ import {
   //   GET_STUDENTS,
   GET_GITHUB_DATA,
   CLASS_TO_QUERY,
-  CHANGE_SETTINGS
+  CHANGE_SETTINGS,
   //   EDIT_STUDENT,
   //   REMOVE_STUDENT
 } from "../actions/";
@@ -39,7 +39,10 @@ import {
   DELETE_ORGANIZATION, ACTIVE_ORGANIZATION,
   GET_SUBSCRIPTION_INFO,
   TOGGLE_SETTINGS,
-  CANCEL_SUBSCRIPTION
+  CANCEL_SUBSCRIPTION,
+  RESET_STATE,
+  ADD_SUBSCRIPTION
+
 } from "../actions/organizationActions";
 import {
   GET_CLASS_STUDENTS,
@@ -100,7 +103,10 @@ const initialState = {
   toggleSettings: false,
   cancelledSubscription: null,
   cancelled: false,
-  newOrganization: false
+  newOrganization: false,
+  newSelection: false,
+  subscriptionAdded: false,
+  newSubINFO: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -260,7 +266,8 @@ const studentReducer = (state = initialState, action) => {
         activeOrganization: action.payload._id,
         stripeCustomerID: action.stripeCustomerID,
         getSubscriptionStatus: action.getSubscriptionStatus,
-        getSubscriptionInfo: action.getSubscriptionInfo
+        getSubscriptionInfo: action.getSubscriptionInfo,
+        newOrganization: action.newOrganization
 
       });
     case DELETE_ORGANIZATION:
@@ -327,13 +334,16 @@ const studentReducer = (state = initialState, action) => {
         activeOrganization: action.payload,
         stripeCustomerID: action.stripeCustomerID,
         getSubscriptionStatus: null,
-        getSubscriptionInfo: null
+        getSubscriptionInfo: null,
+        newSelection: action.newSelection,
+        // subscriptionAdded: action.subscriptionAdded
+        // cancelled: action.cancelled
       });
     case GET_SUBSCRIPTION_INFO:
       return Object.assign({}, state, {
         getSubscriptionStatus: action.payload,
         getSubscriptionInfo: {subscriptionID: action.subscriptionID, nickname: action.nickname, period_start: action.period_start, period_end: action.period_end },
-        cancelled: action.cancelled
+        // cancelled: action.cancelled
       })
     case TOGGLE_SETTINGS:
       return Object.assign({}, state, {
@@ -343,6 +353,18 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         cancelledSubscription: action.payload,
         cancelled: action.cancelled
+      })
+    case RESET_STATE:
+      return Object.assign({}, state, {
+        cancelled: action.cancelled,
+        newOrganization: action.newOrganization,
+        newSelection: action.newSelection,
+        subscriptionAdded: action.subscriptionAdded
+      })
+    case ADD_SUBSCRIPTION:
+      return Object.assign({}, state, {
+        newSubINFO: action.payload,
+        subscriptionAdded: action.subscriptionAdded
       })
 
     default:

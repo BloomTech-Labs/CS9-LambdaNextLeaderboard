@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-import {toggleSettings, activeOrganization, getSubscriptionInfo} from '../../actions/organizationActions';
+import {toggleSettings, activeOrganization, addSubscription , getSubscriptionInfo} from '../../actions/organizationActions';
 import {getAdminOrganizations} from '../../actions/adminActions';
 import jwt from "jsonwebtoken";
 class Sub2 extends Component {
@@ -30,25 +30,9 @@ class Sub2 extends Component {
 
   nextStep() {
     let { currentPlan, coupon } = this.state;
-    console.log(currentPlan)
-    fetch('http://localhost:4000/api/customer/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          plan: currentPlan,
-          coupon: coupon,
-          stripe_customer_id: this.props.stripeCustomerID
-        })
-      }).then((res) => res.json()).then((response) => {
-        console.log('response', response)
-      }).catch(error => console.error('Error:', error));
+
+    this.props.addSubscription(currentPlan, coupon, this.props.stripeCustomerID )
     this.props.toggleSettings(true)
-    const id = jwt.decode(localStorage.token.split(" ")[1]).id;
-    this.props.getAdminOrganizations({ id });
-    this.props.activeOrganization(this.props.activeOrganizationID, this.props.stripeCustomerID)
-    this.props.getSubscriptionInfo(this.props.stripeCustomerID)
   }
 
   render() {
@@ -108,4 +92,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {getSubscriptionInfo, toggleSettings, getAdminOrganizations, activeOrganization})(Sub2);
+export default connect(mapStateToProps, {getSubscriptionInfo, addSubscription, toggleSettings, getAdminOrganizations, activeOrganization})(Sub2);
