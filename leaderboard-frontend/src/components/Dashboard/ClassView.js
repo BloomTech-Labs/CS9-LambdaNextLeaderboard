@@ -242,9 +242,12 @@ class ClassView extends Component {
         ) : null}
         {this.state.unhired ? (
           <StudentList
+            classId={this.props.classId}
             className={this.props.className}
             students={this.props.students}
             updateStudent={this.props.updateStudent}
+            updateErrors={this.props.updateStudentErrors}
+            updatedStudent={this.props.updatedStudent}
             deleteStudent={this.props.deleteStudent}
             toggleSearch={this.toggleSearchable}
           />
@@ -319,9 +322,10 @@ const mapStateToProps = state => {
   return {
     students: state.classStudents,
     queryingStudents: state.queryingStudents,
+    createdStudent: state.createdStudent,
     newStudentErrors: state.newStudentErrors,
     updatedStudent: state.updatedStudent,
-    createdStudent: state.createdStudent,
+    updateStudentErrors: state.updateStudentErrors,
     deletedStudent: state.deletedStudent,
     githubData: state.githubData,
     classToQuery: state.classToQuery,

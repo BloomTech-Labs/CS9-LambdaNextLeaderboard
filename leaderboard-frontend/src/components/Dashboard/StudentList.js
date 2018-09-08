@@ -7,7 +7,9 @@ import {
   Modal,
   Header,
   Icon,
-  Input
+  Input,
+  Form,
+  Label
 } from "semantic-ui-react";
 
 export default class StudentList extends Component {
@@ -46,6 +48,7 @@ export default class StudentList extends Component {
   openEditView = (e, { student }) => {
     let current = {};
     current.id = student._id;
+    current.classId = this.props.classId;
     current.firstname = student.firstname;
     current.lastname = student.lastname;
     current.email = student.email;
@@ -61,21 +64,35 @@ export default class StudentList extends Component {
   closeEditView = () => {
     this.setState({ editStudent: false, selectedStudent: "", updatedInfo: {} });
     this.props.toggleSearch();
+    this.props.updateErrors.firstname = "";
+    this.props.updateErrors.lastname = "";
+    this.props.updateErrors.email = "";
+    this.props.updateErrors.github = "";
   };
 
   handleInput = (e, { name, value }) => {
     let current = Object.assign({}, this.state.updatedInfo);
     current[name] = value;
+    this.props.updateErrors[name] = "";
     this.setState({ updatedInfo: current });
   };
 
   handleUpdate = () => {
     this.props.updateStudent(this.state.updatedInfo);
-    this.closeEditView();
   };
 
   handleDelete = () => {
     this.props.deleteStudent({ id: this.state.selectedStudent });
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    // Student updated successfully -> closing modal
+    if (
+      this.props.updatedStudent &&
+      this.props.updatedStudent !== prevProps.updatedStudent
+    ) {
+      this.closeEditView();
+    }
   };
 
   render() {
@@ -96,34 +113,80 @@ export default class StudentList extends Component {
               this.state.selectedStudent === student._id ? (
                 <Card key={index}>
                   <Card.Content>
-                    <Input
-                      name="firstname"
-                      placeholder="Student first name"
-                      value={this.state.updatedInfo.firstname}
-                      onChange={this.handleInput}
-                      fluid
-                    />
-                    <Input
-                      name="lastname"
-                      placeholder="Student last name"
-                      value={this.state.updatedInfo.lastname}
-                      onChange={this.handleInput}
-                      fluid
-                    />
-                    <Input
-                      name="email"
-                      placeholder="Student email address"
-                      value={this.state.updatedInfo.email}
-                      onChange={this.handleInput}
-                      fluid
-                    />
-                    <Input
-                      name="github"
-                      placeholder="Student Github handle"
-                      value={this.state.updatedInfo.github}
-                      onChange={this.handleInput}
-                      fluid
-                    />
+                    <Form>
+                      <Form.Field
+                        error={Boolean(this.props.updateErrors.firstname)}
+                      >
+                        {this.props.updateErrors.firstname ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.updateErrors.firstname}
+                          />
+                        ) : null}
+                        <Input
+                          name="firstname"
+                          placeholder="Student first name"
+                          value={this.state.updatedInfo.firstname}
+                          onChange={this.handleInput}
+                          fluid
+                        />
+                      </Form.Field>
+                      <Form.Field
+                        error={Boolean(this.props.updateErrors.lastname)}
+                      >
+                        {this.props.updateErrors.lastname ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.updateErrors.lastname}
+                          />
+                        ) : null}
+                        <Input
+                          name="lastname"
+                          placeholder="Student last name"
+                          value={this.state.updatedInfo.lastname}
+                          onChange={this.handleInput}
+                          fluid
+                        />
+                      </Form.Field>
+                      <Form.Field
+                        error={Boolean(this.props.updateErrors.email)}
+                      >
+                        {this.props.updateErrors.email ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.updateErrors.email}
+                          />
+                        ) : null}
+                        <Input
+                          name="email"
+                          placeholder="Student email address"
+                          value={this.state.updatedInfo.email}
+                          onChange={this.handleInput}
+                          fluid
+                        />
+                      </Form.Field>
+                      <Form.Field
+                        error={Boolean(this.props.updateErrors.github)}
+                      >
+                        {this.props.updateErrors.github ? (
+                          <Label
+                            color="red"
+                            pointing="below"
+                            content={this.props.updateErrors.github}
+                          />
+                        ) : null}
+                        <Input
+                          name="github"
+                          placeholder="Student Github handle"
+                          value={this.state.updatedInfo.github}
+                          onChange={this.handleInput}
+                          fluid
+                        />
+                      </Form.Field>
+                    </Form>
                   </Card.Content>
                   <Card.Content textAlign="center" extra>
                     <Button
