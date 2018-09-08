@@ -115,7 +115,10 @@ export const addAdminOrganization = obj => {
         dispatch({
           type: ADD_ADMIN_ORGANIZATIONS,
           payload: res.data,
-          newOrganization: true
+          newOrganization: true,
+          getSubscriptionInfo: null,
+          getSubscriptionStatus: null,
+          stripeCustomerID: null
         });
       })
       .catch(err => {

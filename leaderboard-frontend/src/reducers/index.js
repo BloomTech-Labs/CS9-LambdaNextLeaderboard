@@ -258,9 +258,9 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         createdOrganization: action.payload,
         activeOrganization: action.payload._id,
-        stripeCustomerID: null,
-        getSubscriptionStatus: null,
-        getSubscriptionInfo: null
+        stripeCustomerID: action.stripeCustomerID,
+        getSubscriptionStatus: action.getSubscriptionStatus,
+        getSubscriptionInfo: action.getSubscriptionInfo
 
       });
     case DELETE_ORGANIZATION:

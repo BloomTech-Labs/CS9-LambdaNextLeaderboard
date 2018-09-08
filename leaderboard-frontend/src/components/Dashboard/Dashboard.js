@@ -39,9 +39,9 @@ class Dashboard extends Component {
   }
 
   componentWillUpdate = (nextProps) => {
-    if(nextProps.stripeCustomerID !== null) {
-      this.props.getSubscriptionInfo(nextProps.stripeCustomerID);
-    }
+    // if(nextProps.stripeCustomerID !== null && nextProps.newOrganization !== true && this.props.newOrganization !== true) {
+    //   this.props.getSubscriptionInfo(nextProps.stripeCustomerID);
+    // }
     if(nextProps.cancelled === true && this.props.cancelled !== nextProps.cancelled) {
       this.props.activeOrganization(this.props.activeOrganizationID, this.props.stripeCustomerID)
       this.props.getSubscriptionInfo(this.props.stripeCustomerID);
