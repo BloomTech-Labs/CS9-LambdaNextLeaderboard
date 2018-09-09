@@ -61,6 +61,8 @@ class Dashboard extends Component {
       // }
 
     }
+    // if (nextProps.studentsAdded === true) {
+    // }
 
 
   }
@@ -346,7 +348,8 @@ const mapStateToProps = state => {
     activeOrganizationID: state.activeOrganization,
     newOrganization: state.newOrganization,
     newSelection: state.newSelection,
-    subscriptionAdded: state.subscriptionAdded
+    subscriptionAdded: state.subscriptionAdded,
+    studentsAdded: state.studentsAdded
   };
 };
 

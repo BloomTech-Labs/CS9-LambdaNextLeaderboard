@@ -47,7 +47,8 @@ import {
 import {
   GET_CLASS_STUDENTS,
   ADD_CLASS_STUDENTS_ERRORS,
-  ADD_CLASS_STUDENTS
+  ADD_CLASS_STUDENTS,
+  ADD_CSV_STUDENTS
 } from "../actions/classActions";
 import { UPDATE_STUDENT, DELETE_STUDENT } from "../actions/studentActions";
 // import {SET_CLASS_QUERY} from "../actions";
@@ -106,7 +107,8 @@ const initialState = {
   newOrganization: false,
   newSelection: false,
   subscriptionAdded: false,
-  newSubINFO: null
+  newSubINFO: null,
+  studentsAdded: false
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -359,12 +361,17 @@ const studentReducer = (state = initialState, action) => {
         cancelled: action.cancelled,
         newOrganization: action.newOrganization,
         newSelection: action.newSelection,
-        subscriptionAdded: action.subscriptionAdded
+        subscriptionAdded: action.subscriptionAdded,
+        studentsAdded: action.studentsAdded
       })
     case ADD_SUBSCRIPTION:
       return Object.assign({}, state, {
         newSubINFO: action.payload,
         subscriptionAdded: action.subscriptionAdded
+      })
+    case ADD_CSV_STUDENTS:
+      return Object.assign({}, state, {
+        studentsAdded: action.payload
       })
 
     default:

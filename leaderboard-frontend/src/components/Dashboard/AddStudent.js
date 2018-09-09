@@ -8,8 +8,9 @@ import {
   Input,
   Tab
 } from "semantic-ui-react";
-
-export default class AddStudent extends Component {
+import {connect} from 'react-redux';
+import {postCsvStudents} from '../../actions/classActions'
+class AddStudent extends Component {
   constructor(props) {
     super(props);
 
@@ -55,7 +56,7 @@ export default class AddStudent extends Component {
     csvData.append("file", this.state.csvFile);
 
     // Pass CSV, classname
-    this.props.postCsvStudents(csvData, classID);
+    this.props.postCsvStudents(csvData, classID, true);
   };
 
   clearForm = () => {
@@ -214,3 +215,11 @@ export default class AddStudent extends Component {
     return addStudentsTabs();
   }
 }
+
+const mapStateToProps = state => {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, {postCsvStudents})(AddStudent)

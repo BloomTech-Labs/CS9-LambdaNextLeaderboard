@@ -11,7 +11,7 @@ const validateStudent = require("../../validation/students/studentValidation");
 const validateClass = require("../../validation/classes/classValidation");
 
 // TEST ROUTE
-router.get("/test", (req, res) => res.json({ msg: "Classes route working" }));
+router.get("/test", (req, res) => res.json({msg: "Classes route working"}));
 
 // @route   GET api/classes/:id/students
 // @desc    Gets a class' hired and unhired students
@@ -23,14 +23,14 @@ router.get("/:id/students", (req, res) => {
     .populate({
       path: "students",
       options: {
-        sort: { hired: 1, firstname: 1, lastname: 1 }
+        sort: {hired: 1, firstname: 1, lastname: 1}
       }
     })
     .then(aClass => {
       if (!aClass) {
-        return res.status(404).json({ class: "That class does not exist" });
+        return res.status(404).json({class: "That class does not exist"});
       }
-      res.json({ students: aClass.students, querying: false });
+      res.json({students: aClass.students, querying: false});
     });
 });
 
@@ -44,11 +44,11 @@ router.get("/:id/students/:query", (req, res) => {
   Class.findById(id)
     .populate({
       path: "students",
-      options: { sort: { hired: 1, lastname: 1, firstname: 1 } }
+      options: {sort: {hired: 1, lastname: 1, firstname: 1}}
     })
     .then(aClass => {
       if (!aClass) {
-        return res.status(404).json({ class: "That class does not exist" });
+        return res.status(404).json({class: "That class does not exist"});
       }
       let result = aClass.students.filter(aStudent => {
         email = aStudent.email.toLowerCase().split(".");
@@ -61,7 +61,7 @@ router.get("/:id/students/:query", (req, res) => {
           aStudent.github.toLowerCase().includes(query.toLowerCase())
         );
       });
-      res.json({ students: result, querying: true });
+      res.json({students: result, querying: true});
     })
     .catch(err => console.log(err));
 });
@@ -71,7 +71,7 @@ router.get("/:id/students/:query", (req, res) => {
 // @access  Private
 router.post("/:id/students/create", (req, res) => {
   const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
-  const { errors, isValid } = validateStudent(data);
+  const {errors, isValid} = validateStudent(data);
 
   //   Validation Check
   if (!isValid) {
@@ -79,17 +79,17 @@ router.post("/:id/students/create", (req, res) => {
   }
 
   const id = req.params.id;
-  const { firstname, lastname, email, github } = data;
+  const {firstname, lastname, email, github} = data;
 
   Class.findById(id)
     .populate({
       path: "students",
       select: ["email", "github"],
-      match: { $or: [{ email }, { github }] }
+      match: {$or: [{email}, {github}]}
     })
     .then(aClass => {
       if (!aClass) {
-        return res.status(404).json({ class: "That class does not exist" });
+        return res.status(404).json({class: "That class does not exist"});
       }
 
       if (aClass.students.length) {
@@ -123,7 +123,7 @@ router.post("/:id/students/create", (req, res) => {
 // @access  Private
 router.put("/:id/update", (req, res) => {
   const data = jwt.decode(req.body.token, process.env.ACCESS_KEY);
-  const { errors, isValid } = validateClass(data);
+  const {errors, isValid} = validateClass(data);
 
   //   Validation Check
   if (!isValid) {
@@ -134,12 +134,12 @@ router.put("/:id/update", (req, res) => {
   const name = data.name;
 
   Organization.findById(data.orgId)
-    .populate({ path: "classes", match: { name } })
+    .populate({path: "classes", match: {name}})
     .then(org => {
       if (!org) {
         return res
           .status(404)
-          .json({ organization: "That organization does not exist" });
+          .json({organization: "That organization does not exist"});
       }
 
       if (org.classes.length) {
@@ -186,22 +186,22 @@ router.post("/:id/importcsv", (req, res) => {
         headers: true,
         ignoreEmpty: true
       })
-      .validate(function(data) {
-        return Student.count({ email: data.email }, function(err, count) {
+      .validate(function (data) {
+        return Student.count({email: data.email}, function (err, count) {
           if (count === 0) return;
         });
       })
-      .on("data-invalid", function(data) {
+      .on("data-invalid", function (data) {
         console.log(
           `Student ${data["firstname"]} ${data["lastname"]} already exists.`
         );
       })
-      .on("data", function(data) {
+      .on("data", function (data) {
         Class.findById(classID).then(aClass => {
           if (!aClass) {
             return res
               .status(404)
-              .json({ class: "That class does not exist." });
+              .json({class: "That class does not exist."});
           }
 
           let newStudent = new Student();
@@ -218,8 +218,12 @@ router.post("/:id/importcsv", (req, res) => {
               aClass.save();
               //res.status(201).json(created); //Error: Can't set headers after they are sent.
               console.log(`Saved: ${data["firstname"]} ${data["lastname"]}`);
+              res.json(created)
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+              console.log(err)
+              res.json(err)
+            });
         });
       });
   }

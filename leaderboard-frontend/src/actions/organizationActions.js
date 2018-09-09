@@ -187,7 +187,8 @@ export const resetState = () => {
       cancelled: false,
       newOrganization: false,
       newSelection: false,
-      subscriptionAdded: false
+      subscriptionAdded: false,
+      studentsAdded: false
     })
   }
 }

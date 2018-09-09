@@ -23,12 +23,12 @@ import {
   getClassStudents,
   queryStudents,
   addClassStudent,
-  postCsvStudents
 } from "../../actions/classActions";
 
 import Settings from "../SettingsComponent/Settings";
 
 import { updateStudent, deleteStudent } from "../../actions/studentActions";
+import {resetState} from '../../actions/organizationActions'
 import {
   getGithubDataAction,
   setClassForQuery,
@@ -139,6 +139,10 @@ componentWillUpdate = (nextProps, nextState) => {
     );
     this.setState({ leaderboard: true });
   }
+  if (nextProps.studentsAdded === true) {
+    this.getStudents()
+    this.props.resetState()
+  }
 }
 
 
@@ -236,7 +240,6 @@ componentWillUpdate = (nextProps, nextState) => {
             classId={this.props.classId}
             addStudent={this.props.addClassStudent}
             addStudentErrors={this.props.newStudentErrors}
-            postCsvStudents={this.props.postCsvStudents}
           />
         </Segment>
       </Segment.Group>
@@ -270,7 +273,8 @@ const mapStateToProps = state => {
     deletedStudent: state.deletedStudent,
     githubData: state.githubData,
     classToQuery: state.classToQuery,
-    changeSettings: state.changeSettings
+    changeSettings: state.changeSettings,
+    studentsAdded: state.studentsAdded
   };
 };
 
@@ -282,9 +286,9 @@ export default connect(
     addClassStudent,
     updateStudent,
     deleteStudent,
-    postCsvStudents,
     setSettingsAction,
     getGithubDataAction,
-    setClassForQuery
+    setClassForQuery,
+    resetState
   }
 )(ClassView);
