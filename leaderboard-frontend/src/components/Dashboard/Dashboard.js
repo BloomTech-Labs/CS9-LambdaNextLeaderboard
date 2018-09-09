@@ -35,7 +35,8 @@ class Dashboard extends Component {
       activeOrg: "",
       activeClass: "",
       activeOrgName: "",
-      activeClassName: ""
+      activeClassName: "",
+      activeClassTracking: ""
     };
   }
 
@@ -91,8 +92,8 @@ class Dashboard extends Component {
       activeClass: "",
       activeClassName: ""
     });
-    console.log(id, name, stripe)
-    if (name !== 'addOrg') {
+    console.log(id, name, stripe);
+    if (name !== "addOrg") {
       if (stripe) {
         this.props.activeOrganization(id, stripe);
       }
@@ -104,8 +105,12 @@ class Dashboard extends Component {
     this.props.newOrgErrors.name = "";
   };
 
-  handleClassMenuClick = (e, {id, name}) => {
-    this.setState({activeClass: id, activeClassName: name});
+  handleClassMenuClick = (e, { id, name, trackingdate }) => {
+    this.setState({
+      activeClass: id,
+      activeClassName: name,
+      activeClassTracking: trackingdate
+    });
     this.props.newClassErrors.name = "";
   };
 
@@ -264,6 +269,7 @@ class Dashboard extends Component {
                           <Menu.Item
                             id={aClass._id}
                             name={aClass.name}
+                            trackingdate={aClass.trackingDate}
                             active={activeClass === aClass._id}
                             onClick={this.handleClassMenuClick}
                           >
@@ -324,6 +330,7 @@ class Dashboard extends Component {
               <ClassView
                 classId={this.state.activeClass}
                 className={this.state.activeClassName}
+                trackingDate={this.state.activeClassTracking}
                 props={this.props}
               />
             ) : null}

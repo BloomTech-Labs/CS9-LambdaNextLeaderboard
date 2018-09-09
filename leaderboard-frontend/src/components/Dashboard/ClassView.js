@@ -46,7 +46,8 @@ class ClassView extends Component {
       searchable: true,
       openEditModal: false,
       leaderboard: false,
-      settings: false
+      settings: false,
+      updatedInfo: {}
     };
   }
 
@@ -76,12 +77,36 @@ class ClassView extends Component {
   };
 
   openModal = () => {
-    this.setState({ openEditModal: true });
+    let current = {};
+    current.id = this.props.classId;
+    current.name = this.props.className;
+    current.trackingDate = this.props.trackingDate;
+    current.updated = false;
+    this.setState({ openEditModal: true, updatedInfo: current });
   };
 
   closeModal = () => {
-    this.setState({ openEditModal: false });
+    this.setState({ openEditModal: false, updatedInfo: {} });
   };
+
+  handleInput = (e, { name, value }) => {
+    let current = Object.assign({}, this.state.updatedInfo);
+    current[name] = value;
+    if (
+      current.name === this.props.className &&
+      (current.trackingDate === this.props.trackingDate ||
+        current.trackingDate === "")
+    ) {
+      current.updated = false;
+    } else {
+      current.updated = true;
+    }
+    this.setState({ updatedInfo: current });
+  };
+
+  handleSubmit = () => {};
+
+  handleDelete = () => {};
 
   getData = () => {
     console.log("Send data", this.props.props.history, this.props.classId);
@@ -165,7 +190,12 @@ componentWillUpdate = (nextProps, nextState) => {
   }
     return (
       <Segment.Group>
-        <EditModal open={this.state.openEditModal} close={this.closeModal} />
+        <EditModal
+          open={this.state.openEditModal}
+          close={this.closeModal}
+          info={this.state.updatedInfo}
+          update={this.handleInput}
+        />
         <Segment inverted color="blue">
           <Header as="h2" content="Class View" textAlign="center" />
         </Segment>
@@ -227,9 +257,12 @@ componentWillUpdate = (nextProps, nextState) => {
         ) : null}
         {this.state.unhired ? (
           <StudentList
+            classId={this.props.classId}
             className={this.props.className}
             students={this.props.students}
             updateStudent={this.props.updateStudent}
+            updateErrors={this.props.updateStudentErrors}
+            updatedStudent={this.props.updatedStudent}
             deleteStudent={this.props.deleteStudent}
             toggleSearch={this.toggleSearchable}
           />
@@ -258,7 +291,43 @@ const EditModal = props => {
       dimmer="blurring"
     >
       <Header icon="cog" content="Class Settings" />
-      <Modal.Content content="Hello" />
+      <Modal.Content>
+        <Form>
+          <Form.Group widths="equal">
+            <Form.Field>
+              <Input
+                name="name"
+                value={props.info.name}
+                onChange={props.update}
+                label={{ color: "teal", content: "Class name" }}
+                placeholder="Class name"
+                fluid
+              />
+            </Form.Field>
+            <Form.Field>
+              <Input
+                name="trackingDate"
+                value={props.info.trackingDate ? props.info.trackingDate : ""}
+                onChange={props.update}
+                label={{ color: "teal", content: "Tracking start date" }}
+                placeholder="Class tracking date"
+                type="Date"
+                fluid
+              />
+            </Form.Field>
+          </Form.Group>
+          <Form.Field disabled={!props.info.updated}>
+            <Button content="Update" color="blue" inverted />
+          </Form.Field>
+        </Form>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button
+          color="red"
+          icon="trash alternate"
+          content="Delete this Class"
+        />
+      </Modal.Actions>
     </Modal>
   );
 };
@@ -267,9 +336,10 @@ const mapStateToProps = state => {
   return {
     students: state.classStudents,
     queryingStudents: state.queryingStudents,
+    createdStudent: state.createdStudent,
     newStudentErrors: state.newStudentErrors,
     updatedStudent: state.updatedStudent,
-    createdStudent: state.createdStudent,
+    updateStudentErrors: state.updateStudentErrors,
     deletedStudent: state.deletedStudent,
     githubData: state.githubData,
     classToQuery: state.classToQuery,
