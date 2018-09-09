@@ -29,7 +29,7 @@ class WeeklyData extends Component {
                   <Table.Cell>
                     <Header as="h4" image>
                       <Image
-                        src="https://avatars3.githubusercontent.com/u/35821558?s=460&v=4"
+                        src={each.Git.avatar}
                         rounded
                         size="mini"
                       />
