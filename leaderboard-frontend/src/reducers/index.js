@@ -36,7 +36,8 @@ import {
   GET_ORGANIZATION_CLASSES,
   ADD_ORGANIZATION_CLASSES_ERRORS,
   ADD_ORGANIZATION_CLASSES,
-  DELETE_ORGANIZATION, ACTIVE_ORGANIZATION,
+  DELETE_ORGANIZATION,
+  ACTIVE_ORGANIZATION,
   GET_SUBSCRIPTION_INFO,
   TOGGLE_SETTINGS,
   CANCEL_SUBSCRIPTION
@@ -46,7 +47,11 @@ import {
   ADD_CLASS_STUDENTS_ERRORS,
   ADD_CLASS_STUDENTS
 } from "../actions/classActions";
-import { UPDATE_STUDENT, DELETE_STUDENT } from "../actions/studentActions";
+import {
+  UPDATE_STUDENT,
+  UPDATE_STUDENT_ERRORS,
+  DELETE_STUDENT
+} from "../actions/studentActions";
 // import {SET_CLASS_QUERY} from "../actions";
 
 const initialState = {
@@ -91,6 +96,7 @@ const initialState = {
   newStudentErrors: {},
   createdStudent: {},
   updatedStudent: {},
+  updateStudentErrors: {},
   deletedStudent: {},
   changeSettings: false,
   updateAdmin: null,
@@ -257,7 +263,6 @@ const studentReducer = (state = initialState, action) => {
         stripeCustomerID: null,
         getSubscriptionStatus: null,
         getSubscriptionInfo: null
-
       });
     case DELETE_ORGANIZATION:
       return Object.assign({}, state, {
@@ -297,6 +302,10 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         updatedStudent: action.payload
       });
+    case UPDATE_STUDENT_ERRORS:
+      return Object.assign({}, state, {
+        updateStudentErrors: action.payload
+      });
     case DELETE_STUDENT:
       return Object.assign({}, state, {
         deletedStudent: action.payload
@@ -328,16 +337,21 @@ const studentReducer = (state = initialState, action) => {
     case GET_SUBSCRIPTION_INFO:
       return Object.assign({}, state, {
         getSubscriptionStatus: action.payload,
-        getSubscriptionInfo: {subscriptionID: action.subscriptionID, nickname: action.nickname, period_start: action.period_start, period_end: action.period_end }
-      })
+        getSubscriptionInfo: {
+          subscriptionID: action.subscriptionID,
+          nickname: action.nickname,
+          period_start: action.period_start,
+          period_end: action.period_end
+        }
+      });
     case TOGGLE_SETTINGS:
       return Object.assign({}, state, {
         toggleSettings: action.payload
-      })
+      });
     case CANCEL_SUBSCRIPTION:
       return Object.assign({}, state, {
         cancelledSubscription: action.payload
-      })
+      });
 
     default:
       return state;
