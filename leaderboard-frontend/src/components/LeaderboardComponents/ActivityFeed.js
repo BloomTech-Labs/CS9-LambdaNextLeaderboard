@@ -8,6 +8,13 @@ class ActivityFeed extends Component {
     this.state = {};
   }
   render() {
+    let total = this.props.classStudents.length
+    let hired = 0;
+    this.props.classStudents.forEach(each => {
+      if (each.hired === true) {
+        hired++
+      }
+    })
     return (
       <div>
         <Container>
@@ -31,7 +38,7 @@ class ActivityFeed extends Component {
               <div class="four wide column">
                 <div class="ui horizontal statistics">
                   <div class="statistic color purple">
-                    <div class="value">34/48</div>
+                    <div class="value">{hired}/{total}</div>
                     <div class="label">Have Landed Gigs!</div>
                   </div>
                   <div>
@@ -39,8 +46,8 @@ class ActivityFeed extends Component {
                       <i class="orange fire icon" /> HOT RIGHT NOW!
                     </div>
                     <i class="github icon" />
-                    Mary Jones &nbsp;| &nbsp;
-                    <b>h</b> James Jameson
+                    {this.props.first} &nbsp;| &nbsp;
+                    <b>h</b> {this.props.second}
                   </div>
                   <p />
                 </div>
@@ -66,7 +73,10 @@ class ActivityFeed extends Component {
 }
 const mapStateToProps = state => {
   return {
-    classNameSelected: state.classNameSelected
+    classNameSelected: state.classNameSelected,
+    classStudents: state.classStudents,
+    first: state.first,
+    second: state.second
   }
 }
 

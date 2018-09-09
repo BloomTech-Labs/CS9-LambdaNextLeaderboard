@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import {Container, Table, Header, Image} from "semantic-ui-react";
 import WeeklyDisplay from "./WeeklyDisplay";
-
+import {connect} from 'react-redux';
+import {classRanking} from '../../actions/classActions';
 
 class WeeklyData extends Component {
   render() {
     let count = []
+    let first = {
+      score: 0,
+      name: ''
+    };
+    let second = {
+      score: 0,
+      name: ''
+    };
     return (
       <div>
         <Container>
@@ -22,7 +31,24 @@ class WeeklyData extends Component {
               </Table.Row>
             </Table.Header>
             {this.props.data.map((each, x) => {
+              if (x === 0) {
+                first.score = each.Huntr.count + each.Git.commitsByUser
+                first.name = each.Git.FullName
+              }
+              if (x !== 0 && each.Huntr.count + each.Git.commitsByUser > first.score) {
+                second.score = first.score
+                second.name = first.name
+                first.score = each.Huntr.count + each.Git.commitsByUser
+                first.name = each.Git.FullName
+              } else if (x !== 0 && each.Huntr.count + each.Git.commitsByUser > second.score) {
+                second.score = each.Huntr.count + each.Git.commitsByUser
+                second.name = each.Git.FullName
+              } else {
 
+              }
+              if (x === this.props.data.length - 1) {
+                this.props.classRanking(first.score, second.score, first.name, second.name)
+              }
               return (
                 <Table.Row>
                   {/* // <WeeklyDisplay github={each.Git} count={each.Huntr.count} huntr={each.Huntr} /> */}
@@ -58,5 +84,13 @@ class WeeklyData extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    first: state.first,
+    second: state.second,
+    firstScore: state.firstScore,
+    secondScore: state.secondScore
+  }
+}
 
-export default WeeklyData
+export default connect(mapStateToProps, {classRanking})(WeeklyData)

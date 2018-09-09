@@ -7,6 +7,7 @@ export const QUERY_STUDENTS = "QUERY_STUDENTS";
 export const ADD_CLASS_STUDENTS = "ADD_CLASS_STUDENTS";
 export const ADD_CLASS_STUDENTS_ERRORS = "ADD_CLASS_STUDENTS_ERRORS";
 export const ADD_CSV_STUDENTS = "ADD_CSV_STUDENTS";
+export const CLASS_RANKING = "CLASS_RANKING";
 
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
 
@@ -35,6 +36,18 @@ export const getClassStudents = obj => {
       });
   };
 };
+
+export const classRanking = (firstScore, secondScore, firstName, secondName) => {
+  return dispatch => {
+    dispatch({
+      type: CLASS_RANKING,
+      first: firstName,
+      second: secondName,
+      firstScore : firstScore,
+      secondScore : secondScore
+    })
+  }
+}
 
 export const queryStudents = obj => {
   return dispatch => {

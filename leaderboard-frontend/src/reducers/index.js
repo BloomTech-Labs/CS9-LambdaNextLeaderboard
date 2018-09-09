@@ -49,7 +49,8 @@ import {
   GET_CLASS_STUDENTS,
   ADD_CLASS_STUDENTS_ERRORS,
   ADD_CLASS_STUDENTS,
-  ADD_CSV_STUDENTS
+  ADD_CSV_STUDENTS,
+  CLASS_RANKING
 } from "../actions/classActions";
 import {
   UPDATE_STUDENT,
@@ -388,6 +389,13 @@ const studentReducer = (state = initialState, action) => {
     case ADD_CSV_STUDENTS:
       return Object.assign({}, state, {
         studentsAdded: action.payload
+      })
+    case CLASS_RANKING:
+      return Object.assign({}, state, {
+        first: action.first,
+        second: action.second,
+        firstScore: action.firstScore,
+        secondScore: action.secondScore
       })
 
     default:
