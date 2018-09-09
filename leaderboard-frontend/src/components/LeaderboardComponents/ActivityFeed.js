@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Header, Icon, Segment } from "semantic-ui-react";
-
+import {connect} from 'react-redux';
 
 class ActivityFeed extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class ActivityFeed extends Component {
               <div class="three wide column">
                 <Header as="h2" icon>
                   <Icon name="ui users circular image" color="purple" />
-                  CS 9
+                  {this.props.classNameSelected}
                 </Header>
               </div>
               <div class="nine wide column">
@@ -64,5 +64,10 @@ class ActivityFeed extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    classNameSelected: state.classNameSelected
+  }
+}
 
-export default ActivityFeed;
+export default connect(mapStateToProps, {})(ActivityFeed);

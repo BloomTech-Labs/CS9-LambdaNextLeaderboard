@@ -15,7 +15,7 @@ export const ERRORS = "ERRORS";
 // export const REDIRECT_DATA_CLASS = "REDIRECT_DATA_CLASS";
 // // export const GET_STUDENTS = "GET_STUDENTS";
 export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
-export  const CLASS_TO_QUERY = "CLASS_TO_QUERY";
+export const CLASS_TO_QUERY = "CLASS_TO_QUERY";
 export const CHANGE_SETTINGS = "CHANGE_SETTINGS"
 // // export const EDIT_STUDENT = "EDIT_STUDENT";
 // // export const REMOVE_STUDENT = "REMOVE_STUDENT";
@@ -77,67 +77,70 @@ export const CHANGE_SETTINGS = "CHANGE_SETTINGS"
 //         })
 //     }
 // }
-export const setClassForQuery = classID => {
-    return dispatch => {
-        dispatch({
-            type: CLASS_TO_QUERY,
-            payload: classID
-        })
-    }
+export const setClassForQuery = (classID, name) => {
+  return dispatch => {
+    dispatch({
+      type: CLASS_TO_QUERY,
+      payload: classID,
+      classNameSelected: name
+    })
+  }
 }
 export const setSettingsAction = (status) => {
-    return dispatch => {
-        dispatch({
-            type: CHANGE_SETTINGS,
-            payload: status
-        })
-    }
+  return dispatch => {
+    dispatch({
+      type: CHANGE_SETTINGS,
+      payload: status
+    })
+  }
 }
+
 export function queryGithub() {
-    return (dispatch, getState) => {
-        const data = getState().githubData;
-        const classID = getState().classToQuery;
-        console.log("CLASS ID TO QUERY", classID);
-        const status = data ? "complete" : "loading";
-        const promise = data ? Promise.resolve : dispatch(getGithubDataAction(classID));
-        return { data, status, promise };
-    };
+  return (dispatch, getState) => {
+    const data = getState().githubData;
+    const classID = getState().classToQuery;
+    console.log("CLASS ID TO QUERY", classID);
+    const status = data ? "complete" : "loading";
+    const promise = data ? Promise.resolve : dispatch(getGithubDataAction(classID));
+    return {data, status, promise};
+  };
 }
+
 export const getGithubDataAction = (idClass) => {
-    console.log("action, id", idClass)
-    const token = localStorage.getItem("token");
-    const id = {
-        // id: localStorage.getItem("adminID")
-        // id: "5b89e652c89dc5730cdf04f2"
-        id: idClass
+  console.log("action, id", idClass)
+  const token = localStorage.getItem("token");
+  const id = {
+    // id: localStorage.getItem("adminID")
+    // id: "5b89e652c89dc5730cdf04f2"
+    id: idClass
+  };
+  // history.push("/leaderboard")
+  return dispatch => {
+    const options = {
+      method: "POST",
+      headers: {"content-type": "application/json", Authorization: token},
+      url: `http://localhost:4000/api/leaderboard/data`,
+      data: id
     };
-    // history.push("/leaderboard")
-    return dispatch => {
-        const options = {
-            method: "POST",
-            headers: { "content-type": "application/json", Authorization: token },
-            url: `http://localhost:4000/api/leaderboard/data`,
-            data: id
-        };
-        axios(options)
-            .then(res => {
-                localStorage.removeItem("invalid");
-                dispatch({
-                    type: GET_GITHUB_DATA,
-                    payload: res.data,
-                    githubStats: res.data
-                });
-            })
-            .catch(err => {
-                localStorage.setItem("invalid", err.response.data);
-                dispatch({
-                    type: ERRORS,
-                    payload: err.response.data
-                    // allClasses: err.response.data,
-                    // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
-                });
-            });
-    };
+    axios(options)
+      .then(res => {
+        localStorage.removeItem("invalid");
+        dispatch({
+          type: GET_GITHUB_DATA,
+          payload: res.data,
+          githubStats: res.data
+        });
+      })
+      .catch(err => {
+        localStorage.setItem("invalid", err.response.data);
+        dispatch({
+          type: ERRORS,
+          payload: err.response.data
+          // allClasses: err.response.data,
+          // allClasses ? (allClasses: action.allClasses ): (allClasses:  allClasses)
+        });
+      });
+  };
 };
 // export const redirectDataClass = () => {
 //   return dispatch => {

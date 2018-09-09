@@ -24,6 +24,10 @@ import {
   resetState
 } from "../../actions/organizationActions";
 
+import {
+  setClassForQuery
+} from '../../actions'
+
 // styling
 import "./Dashboard.css";
 
@@ -112,6 +116,7 @@ class Dashboard extends Component {
       activeClassTracking: trackingdate
     });
     this.props.newClassErrors.name = "";
+    this.props.setClassForQuery(null, null);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -370,6 +375,7 @@ export default connect(
     addOrganizationClass,
     activeOrganization,
     getSubscriptionInfo,
-    resetState
+    resetState,
+    setClassForQuery
   }
 )(Dashboard);

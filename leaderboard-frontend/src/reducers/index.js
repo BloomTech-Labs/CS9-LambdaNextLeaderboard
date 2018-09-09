@@ -114,7 +114,8 @@ const initialState = {
   newSelection: false,
   subscriptionAdded: false,
   newSubINFO: null,
-  studentsAdded: false
+  studentsAdded: false,
+  classNameSelected: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -328,6 +329,7 @@ const studentReducer = (state = initialState, action) => {
     case CLASS_TO_QUERY:
       return Object.assign({}, state, {
         classToQuery: action.payload,
+        classNameSelected: action.classNameSelected,
         githubData: null,
         gitStats: null
       });

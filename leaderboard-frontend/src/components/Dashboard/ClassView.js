@@ -111,7 +111,7 @@ class ClassView extends Component {
   getData = () => {
     console.log("Send data", this.props.props.history, this.props.classId);
     // this.props.getGithubDataAction(this.props.classId)
-    this.props.setClassForQuery(this.props.classId);
+    this.props.setClassForQuery(this.props.classId, this.props.className);
   };
 
   setSettings = () => {
@@ -123,7 +123,7 @@ class ClassView extends Component {
     // New Students -> Settings counts
     if (this.props.students !== prevProps.students) {
       this.setStudentCounts(this.props.students);
-      this.addStudentComponent.clearForm();
+      // this.addStudentComponent.clearForm();
     }
 
     // Selected Class was changed -> Updating Students
