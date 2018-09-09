@@ -127,6 +127,7 @@ async function fetchHuntrData() {
             const email = [...(new Set(dataDetails.map(({email}) => email)))];
             const createdAt = [...(new Set(dataDetails.map(({createdAt}) => createdAt)))];
             const isActive = [...(new Set(dataDetails.map(({isActive}) => isActive)))];
+            const eventType = [...(new Set(dataDetails.map(({isActive}) => isActive)))];
             const studentsObject = [];
             idArr.forEach((each, i) => {
                 studentsObject.push({
@@ -136,7 +137,9 @@ async function fetchHuntrData() {
                     'email': email[i],
                     'createdAt': createdAt[i],
                     'isActive': isActive[i],
-                    'count': 0
+                    'count': 0,
+                    'eventType': [],
+                    'date': []
                 })
             })
             wholeData.forEach((each) => {
@@ -145,6 +148,8 @@ async function fetchHuntrData() {
                         if (each.eventType === "JOB_ADDED") {
                             studentsObject[i].count++
                         }
+                        studentsObject[i].eventType.push(each.eventType)
+                        studentsObject[i].date.push(each.date)
                     }
                 })
 
