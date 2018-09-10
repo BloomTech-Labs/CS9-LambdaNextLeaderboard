@@ -50,7 +50,7 @@ class WeeklyData extends Component {
                 this.props.classRanking(first.score, second.score, first.name, second.name)
               }
               return (
-                <Table.Row>
+                <Table.Row key={each + x}>
                   {/* // <WeeklyDisplay github={each.Git} count={each.Huntr.count} huntr={each.Huntr} /> */}
                   <Table.Cell>
                     <Header as="h4" image>

@@ -29,7 +29,7 @@ class OverallData extends Component {
 
               return (
 
-                <Table.Row>
+                <Table.Row key={each + x}>
                   <Table.Cell>
                     <Header as="h4" image>
                       <Image

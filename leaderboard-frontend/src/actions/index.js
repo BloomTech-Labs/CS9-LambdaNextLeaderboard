@@ -99,7 +99,6 @@ export function queryGithub() {
   return (dispatch, getState) => {
     const data = getState().githubData;
     const classID = getState().classToQuery;
-    console.log("CLASS ID TO QUERY", classID);
     const status = data ? "complete" : "loading";
     const promise = data ? Promise.resolve : dispatch(getGithubDataAction(classID));
     return {data, status, promise};
