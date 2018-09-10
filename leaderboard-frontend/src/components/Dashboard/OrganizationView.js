@@ -21,7 +21,8 @@ class OrganizationView extends Component {
     this.state = {
       openEditModal: false,
       openConfirm: false,
-      confirmationInput: ""
+      confirmationInput: "",
+      endDate: ''
     };
   }
 
@@ -67,12 +68,17 @@ class OrganizationView extends Component {
     //   this.props.getSubscriptionInfo(nextProps.stripeCustomerID)
     // }
   }
+
   cancelSubscription = () => {
     this.props.cancelSubscription(this.props.getSubscriptionInfoData.subscriptionID, this.props.activeOrganization );
     this.setState({openEditModal: false});
   }
 
-
+  getParsedDate = (date) => {
+    this.setState({
+      endDate: new Date(date * 1000).toLocaleString()
+    })
+  }
 
   render() {
     console.log(this.props.stripeCustomerID, this.props.toggle.toString())
@@ -107,6 +113,7 @@ class OrganizationView extends Component {
           getSubscriptionInfo={this.props.getSubscriptionInfoData}
           cancelSubscription={this.cancelSubscription}
           activeOrganization={this.props.activeOrganization}
+          endDate = {this.getParsedDate}
         />
         <ConfirmDeleteModal
           open={this.state.openConfirm}
@@ -186,14 +193,15 @@ const ConfirmDeleteModal = props => {
 const SubscriptionsContent = (inc) => {
   // If there is a stripeCustomerID on the org, display subscription info
   // else display a button to go subscribe.
-  // const periodEnd = new Date (0)
+  
   // periodEnd.setUTCSeconds(inc.props.getSubscriptionInfo.period_end.toString());
   console.log(inc.props);
   if (inc.props.getSubscriptionStatus === true) {
     return(
       <Segment>
         <h1>You already have a subscription: {inc.props.getSubscriptionInfo.nickname}</h1>
-        {/* <h2>Subscription ends on {periodEnd}</h2> */}
+        {/* <h2>Subscription ends on {inc.props.endDate}</h2> */}
+        <h2>Subscription ends on <ParsedDate date={inc.props.getSubscriptionInfo.period_end}/></h2>
         <Button onClick={inc.props.cancelSubscription}>Cancel Subscription</Button>
       </Segment>
     );
@@ -208,8 +216,25 @@ const SubscriptionsContent = (inc) => {
   return(
     <Segment><SUBSCRIPTION/></Segment>
   );
-
 }
+
+const ParsedDate = date => {
+  var finishDate = new Date(date.date*1000);
+  // const endDate = new Date(date*1000).toUTCString();
+  // finishDate.setUTCDate(date/86400);
+  console.log('date', finishDate);
+
+  var day = finishDate.getDate()
+  var month = finishDate.getMonth() + 1
+  var year = finishDate.getFullYear()
+  const endDate = month + "/" + day + "/" + year;
+
+  
+  return(
+    <div>{endDate}</div>
+  );
+}
+
 
 const mapStateToProps = state => {
   return {
