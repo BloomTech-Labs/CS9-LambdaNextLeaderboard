@@ -41,9 +41,12 @@ html, body, #root {
   width: 30%;
 
 }
-.BtnSave {
-  margin-left: 30%;
-  width: 10%;
+.BtnDiv {
+  margin-left: 25%;
   padding: 1%;
+
+}
+.BtnSave {
+  width: 20%;
 
 }

@@ -119,7 +119,7 @@ router.put("/update", (req, res) => {
 
   const username = data.username;
   const oldPassword = data.oldPassword;
-  let newPassword = data.newPassword;
+  let newPassword = data.password;
   const email = data.email;
 
   Admin.findOne({ email })

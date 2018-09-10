@@ -1,21 +1,12 @@
-// import React, { Component } from "react";
-// import { Container, Segment } from "semantic-ui-react";
-// import "./Settings.css";
-//
-// export default class Settings extends Component {
-//   render() {
-//     return (
-//       <Container className="Settings__Container">
-//         <Segment />
-//       </Container>
-//     );
-//   }
-// }
+
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import { Input, Button } from 'semantic-ui-react';
+
 // import {updateUserAction} from '../../actions'
 import  {setSettingsAction} from '../../actions'
-import {updateAdminAction} from '../../actions/adminActions'
+import {updateAdminAction, logoutAdminAction} from '../../actions/adminActions'
+// import {Link} from 'react-router-dom'
 import './Settings.css'
 
 class Settings extends Component {
@@ -23,7 +14,6 @@ class Settings extends Component {
     super(props);
     this.state = {
       email: '',
-      organization: '',
       username: '',
       oldPassword: '',
       newPassword: '',
@@ -40,23 +30,27 @@ class Settings extends Component {
     const updateAdmin = {
       "username": this.state.username,
       "oldPassword": this.state.oldPassword,
-      "newPassword": this.state.newPassword,
+      "password": this.state.newPassword,
       "email": this.state.email,
-      // "organization": this.state.organization,
-      // "_id": localStorage.getItem("adminID")
     }
     console.log('Saved', this.state)
-    console.log("org", updateAdmin)
     this.props.updateAdminAction(updateAdmin)
     this.props.setSettingsAction(false)
 
   }
   checkCredentials = () => {
 
-    if (this.state.newPassword === this.state.confirmPassword &&  this.state.password !== '') {
+    if (this.state.newPassword === this.state.confirmPassword &&  this.state.confirmPassword !== '') {
       this.handleSave();
     } else {
       this.setState({email: '', oldPassword: '', newPassword: '', confirmPassword: '', message: "Update Failed, due to mismatch password, try again" });
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateAdmin !== this.props.updateAdmin && nextProps.updateAdmin !== null) {
+      this.props.logoutAdminAction()
+      this.props.history.push("/")
     }
   }
 
@@ -68,11 +62,12 @@ class Settings extends Component {
           <div>
             <div>
               <h3 className="headerField">Username:</h3>
-              <input
+              <Input
+                focus
+                placeholder='Username'
                 type="text"
                 name="username"
                 className="inputVal"
-                placeholder="Username"
                 value={this.state.username}
                 onChange={this.handleInput}
                 align="right"
@@ -82,7 +77,8 @@ class Settings extends Component {
           <div>
             <div>
               <h3 className="headerField">Old Password:</h3>
-              <input
+              <Input
+                focus
                 type="password"
                 name="oldPassword"
                 className="inputVal"
@@ -96,7 +92,8 @@ class Settings extends Component {
           <div>
             <div>
               <h3 className="headerField">New Password:</h3>
-              <input
+              <Input
+                focus
                 type="password"
                 name="newPassword"
                 className="inputVal"
@@ -110,7 +107,8 @@ class Settings extends Component {
           <div>
             <div>
               <h3 className="headerField">Confirm Password:</h3>
-              <input
+              <Input
+                focus
                 type="password"
                 name="confirmPassword"
                 className="inputVal"
@@ -124,34 +122,23 @@ class Settings extends Component {
           <div>
             <div>
               <h3 className="headerField">Email:</h3>
-              <input
+              <Input
+                focus
+                placeholder="user@gmail.com"
                 type="text"
                 name="email"
                 className="inputVal"
-                placeholder="user@gmail.com"
                 value={this.state.email}
                 onChange={this.handleInput}
                 align="right"
               />
             </div>
           </div>
-          <div>
-            <div>
-              <h3 className="headerField">Organization:</h3>
-              <input
-                type="text"
-                name="organization"
-                className="inputVal"
-                placeholder="*******"
-                value={this.state.organization}
-                onChange={this.handleInput}
-                align="right"
-              />
-            </div>
-          </div>
-        </div>
 
-        <button className="BtnSave" onClick={this.checkCredentials}>Save</button>
+        </div>
+        <div className="BtnDiv">
+          <Button className="BtnSave" onClick={this.checkCredentials} secondary>Save</Button>
+        </div>
       </div>
     );
   }
@@ -159,7 +146,6 @@ class Settings extends Component {
 const maptStateToProps = state => {
   return {
     updateAdmin: state.updateAdmin,
-    adminOrganizations: state.adminOrganizations
   }
 }
-export default connect(maptStateToProps, {setSettingsAction, updateAdminAction})(Settings)
+export default connect(maptStateToProps, {setSettingsAction, updateAdminAction, logoutAdminAction})(Settings)
