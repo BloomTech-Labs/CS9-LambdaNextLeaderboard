@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Segment, List, Button, Modal, Form, Header } from "semantic-ui-react";
 import SUBSCRIPTION from "../Subscriptions/Subscriptions";
-// import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
 import { connect } from "react-redux";
 import {
   toggleSettings,
@@ -23,7 +22,6 @@ class OrganizationView extends Component {
   }
 
   openEditModal = () => {
-    // this.props.toggleSettings(true)
     this.setState({ openEditModal: true });
   };
 
@@ -58,10 +56,6 @@ class OrganizationView extends Component {
       this.props.toggleSettings(false);
       console.log("firing toggle", nextProps.toggleSettings.toString());
     }
-
-    // if (nextProps.activeOrganization !== this.props.activeOrganization) {
-    //   this.props.getSubscriptionInfo(nextProps.stripeCustomerID)
-    // }
   }
 
   cancelSubscription = () => {
@@ -71,13 +65,6 @@ class OrganizationView extends Component {
     );
     this.setState({openEditModal: false});
   }
-
-  getParsedDate = (date) => {
-    this.setState({
-      endDate: new Date(date * 1000).toLocaleString()
-    })
-  }
-
 
   render() {
     console.log(this.props.stripeCustomerID, this.props.toggle.toString());
@@ -191,9 +178,6 @@ const ConfirmDeleteModal = props => {
 const SubscriptionsContent = inc => {
   // If there is a stripeCustomerID on the org, display subscription info
   // else display a button to go subscribe.
-  
-  // periodEnd.setUTCSeconds(inc.props.getSubscriptionInfo.period_end.toString());
-  console.log(inc.props);
   if (inc.props.getSubscriptionStatus === true) {
     return (
       <Segment>
@@ -224,22 +208,16 @@ const SubscriptionsContent = inc => {
 
 const ParsedDate = date => {
   var finishDate = new Date(date.date*1000);
-  // const endDate = new Date(date*1000).toUTCString();
-  // finishDate.setUTCDate(date/86400);
-  console.log('date', finishDate);
 
   var day = finishDate.getDate()
   var month = finishDate.getMonth() + 1
   var year = finishDate.getFullYear()
   const endDate = month + "/" + day + "/" + year;
 
-  
   return(
     <div>{endDate}</div>
   );
 }
-
-
 
 const mapStateToProps = state => {
   return {
