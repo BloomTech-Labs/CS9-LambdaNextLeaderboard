@@ -1,16 +1,3 @@
-// import React, { Component } from "react";
-// import { Container, Segment } from "semantic-ui-react";
-// import "./Settings.css";
-//
-// export default class Settings extends Component {
-//   render() {
-//     return (
-//       <Container className="Settings__Container">
-//         <Segment />
-//       </Container>
-//     );
-//   }
-// }
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -18,7 +5,8 @@ import { Input, Button } from 'semantic-ui-react';
 
 // import {updateUserAction} from '../../actions'
 import  {setSettingsAction} from '../../actions'
-import {updateAdminAction} from '../../actions/adminActions'
+import {updateAdminAction, logoutAdminAction} from '../../actions/adminActions'
+// import {Link} from 'react-router-dom'
 import './Settings.css'
 
 class Settings extends Component {
@@ -58,6 +46,14 @@ class Settings extends Component {
       this.setState({email: '', oldPassword: '', newPassword: '', confirmPassword: '', message: "Update Failed, due to mismatch password, try again" });
     }
   }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateAdmin !== this.props.updateAdmin && nextProps.updateAdmin !== null) {
+      this.props.logoutAdminAction()
+      this.props.history.push("/")
+    }
+  }
+
   render() {
     return (
       <div className="InputWrapper">
@@ -152,4 +148,4 @@ const maptStateToProps = state => {
     updateAdmin: state.updateAdmin,
   }
 }
-export default connect(maptStateToProps, {setSettingsAction, updateAdminAction})(Settings)
+export default connect(maptStateToProps, {setSettingsAction, updateAdminAction, logoutAdminAction})(Settings)
