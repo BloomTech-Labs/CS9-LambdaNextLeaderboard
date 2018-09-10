@@ -227,7 +227,7 @@ componentWillUpdate = (nextProps, nextState) => {
             inverted
             color="blue"
             size="large"
-            onClick={this.setSettings}
+            onClick={this.openModal}
           />
         </Segment>
         {this.props.queryingStudents || this.state.unhired ? (
