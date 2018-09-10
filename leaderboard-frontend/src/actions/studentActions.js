@@ -2,6 +2,7 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 
 export const UPDATE_STUDENT = "UPDATE_STUDENT";
+export const UPDATE_STUDENT_ERRORS = "UPDATE_STUDENT_ERRORS";
 export const DELETE_STUDENT = "DELETE_STUDENT";
 
 const STUDENT_URL = process.env.REACT_APP_STUDENT_URL;
@@ -26,7 +27,7 @@ export const updateStudent = obj => {
       })
       .catch(err => {
         dispatch({
-          type: "ERRORS",
+          type: UPDATE_STUDENT_ERRORS,
           payload: err.response.data
         });
       });

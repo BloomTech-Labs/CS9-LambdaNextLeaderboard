@@ -1,17 +1,13 @@
 import React, { Component } from "react";
-import {
-  Segment,
-  Card,
-  List,
-  Button,
-  Modal,
-  Form,
-  Header
-} from "semantic-ui-react";
-import SUBSCRIPTION from '../Subscriptions/Subscriptions';
+import { Segment, List, Button, Modal, Form, Header } from "semantic-ui-react";
+import SUBSCRIPTION from "../Subscriptions/Subscriptions";
 // import CUSTOMERINFO from '../Subscriptions/CustomerInfo';
-import {connect} from 'react-redux'
-import {toggleSettings, cancelSubscription, getSubscriptionInfo} from '../../actions/organizationActions'
+import { connect } from "react-redux";
+import {
+  toggleSettings,
+  cancelSubscription,
+  getSubscriptionInfo
+} from "../../actions/organizationActions";
 import Sub2 from "../Sub2/Sub2";
 
 class OrganizationView extends Component {
@@ -58,11 +54,10 @@ class OrganizationView extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.toggle === true) {
-      this.setState({openEditModal: false})
-      this.props.toggleSettings(false)
-      console.log('firing toggle', nextProps.toggleSettings.toString())
+      this.setState({ openEditModal: false });
+      this.props.toggleSettings(false);
+      console.log("firing toggle", nextProps.toggleSettings.toString());
     }
-
 
     // if (nextProps.activeOrganization !== this.props.activeOrganization) {
     //   this.props.getSubscriptionInfo(nextProps.stripeCustomerID)
@@ -70,7 +65,10 @@ class OrganizationView extends Component {
   }
 
   cancelSubscription = () => {
-    this.props.cancelSubscription(this.props.getSubscriptionInfoData.subscriptionID, this.props.activeOrganization );
+    this.props.cancelSubscription(
+      this.props.getSubscriptionInfoData.subscriptionID, 
+      this.props.activeOrganization
+    );
     this.setState({openEditModal: false});
   }
 
@@ -80,8 +78,9 @@ class OrganizationView extends Component {
     })
   }
 
+
   render() {
-    console.log(this.props.stripeCustomerID, this.props.toggle.toString())
+    console.log(this.props.stripeCustomerID, this.props.toggle.toString());
     return (
       <Segment.Group>
         <Segment inverted color="blue">
@@ -140,7 +139,7 @@ const EditModal = props => {
     >
       <Modal.Header icon="cog" content="Organization Settings" />
       <Modal.Content>
-        <SubscriptionsContent props={props}/>
+        <SubscriptionsContent props={props} />
       </Modal.Content>
       <Modal.Actions>
         <Button
@@ -189,32 +188,37 @@ const ConfirmDeleteModal = props => {
   );
 };
 
-
-const SubscriptionsContent = (inc) => {
+const SubscriptionsContent = inc => {
   // If there is a stripeCustomerID on the org, display subscription info
   // else display a button to go subscribe.
   
   // periodEnd.setUTCSeconds(inc.props.getSubscriptionInfo.period_end.toString());
   console.log(inc.props);
   if (inc.props.getSubscriptionStatus === true) {
-    return(
+    return (
       <Segment>
-        <h1>You already have a subscription: {inc.props.getSubscriptionInfo.nickname}</h1>
-        {/* <h2>Subscription ends on {inc.props.endDate}</h2> */}
+        <h1>
+          You already have a subscription:{" "}
+          {inc.props.getSubscriptionInfo.nickname}
+        </h1>
         <h2>Subscription ends on <ParsedDate date={inc.props.getSubscriptionInfo.period_end}/></h2>
-        <Button onClick={inc.props.cancelSubscription}>Cancel Subscription</Button>
+        <Button onClick={inc.props.cancelSubscription}>
+          Cancel Subscription
+        </Button>
       </Segment>
     );
   }
   if (inc.props.stripeCustomerID !== null) {
-    return(
+    return (
       <Segment>
-        <Sub2/>
+        <Sub2 />
       </Segment>
-    )
+    );
   }
-  return(
-    <Segment><SUBSCRIPTION/></Segment>
+  return (
+    <Segment>
+      <SUBSCRIPTION />
+    </Segment>
   );
 }
 
@@ -236,6 +240,7 @@ const ParsedDate = date => {
 }
 
 
+
 const mapStateToProps = state => {
   return {
     stripeCustomerID: state.stripeCustomerID,
@@ -243,6 +248,9 @@ const mapStateToProps = state => {
     getSubscriptionInfoData: state.getSubscriptionInfo,
     toggle: state.toggleSettings,
     activeOrganization: state.activeOrganization
-  }
-}
-export  default connect(mapStateToProps, {toggleSettings, cancelSubscription, getSubscriptionInfo})(OrganizationView)
+  };
+};
+export default connect(
+  mapStateToProps,
+  { toggleSettings, cancelSubscription, getSubscriptionInfo }
+)(OrganizationView);
