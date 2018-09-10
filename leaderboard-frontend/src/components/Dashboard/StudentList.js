@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   Segment,
   Card,
@@ -11,8 +11,10 @@ import {
   Form,
   Label
 } from "semantic-ui-react";
+import {connect} from 'react-redux';
+import {updateStudent} from '../../actions/studentActions'
 
-export default class StudentList extends Component {
+class StudentList extends Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +27,7 @@ export default class StudentList extends Component {
     };
   }
 
-  openModal = (e, { id, student }) => {
+  openModal = (e, {id, student}) => {
     this.setState({
       openDeleteModal: true,
       selectedStudent: id,
@@ -41,11 +43,20 @@ export default class StudentList extends Component {
     });
   };
 
-  handleHire = (e, { id }) => {
-    this.props.updateStudent({ id, hired: true });
+  handleHire = (e, {id, student}) => {
+    const objStudent = {
+      classId: this.props.classId,
+      id: id,
+      hired: true,
+      firstname : student.firstname,
+      lastname : student.lastname,
+      email : student.email,
+      github : student.github
+    }
+    this.props.updateStudent(objStudent);
   };
 
-  openEditView = (e, { student }) => {
+  openEditView = (e, {student}) => {
     let current = {};
     current.id = student._id;
     current.classId = this.props.classId;
@@ -62,7 +73,7 @@ export default class StudentList extends Component {
   };
 
   closeEditView = () => {
-    this.setState({ editStudent: false, selectedStudent: "", updatedInfo: {} });
+    this.setState({editStudent: false, selectedStudent: "", updatedInfo: {}});
     this.props.toggleSearch();
     this.props.updateErrors.firstname = "";
     this.props.updateErrors.lastname = "";
@@ -70,11 +81,11 @@ export default class StudentList extends Component {
     this.props.updateErrors.github = "";
   };
 
-  handleInput = (e, { name, value }) => {
+  handleInput = (e, {name, value}) => {
     let current = Object.assign({}, this.state.updatedInfo);
     current[name] = value;
     this.props.updateErrors[name] = "";
-    this.setState({ updatedInfo: current });
+    this.setState({updatedInfo: current});
   };
 
   handleUpdate = () => {
@@ -82,7 +93,7 @@ export default class StudentList extends Component {
   };
 
   handleDelete = () => {
-    this.props.deleteStudent({ id: this.state.selectedStudent });
+    this.props.deleteStudent({id: this.state.selectedStudent});
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -212,13 +223,14 @@ export default class StudentList extends Component {
                       <Button.Group compact basic floated="right" widths="1">
                         <Button
                           id={student._id}
+                          student={student}
                           icon
                           animated="vertical"
                           onClick={this.handleHire}
                           disabled={this.state.editStudent}
                         >
                           <Button.Content visible>
-                            <Icon name="trophy" color="yellow" />
+                            <Icon name="trophy" color="yellow"/>
                           </Button.Content>
                           <Button.Content hidden>Hired!</Button.Content>
                         </Button>
@@ -232,7 +244,7 @@ export default class StudentList extends Component {
                           disabled={this.state.editStudent}
                         >
                           <Button.Content visible>
-                            <Icon name="wrench" />
+                            <Icon name="wrench"/>
                           </Button.Content>
                           <Button.Content hidden>Edit</Button.Content>
                         </Button>
@@ -246,7 +258,7 @@ export default class StudentList extends Component {
                           disabled={this.state.editStudent}
                         >
                           <Button.Content visible>
-                            <Icon name="trash" color="red" inverted />
+                            <Icon name="trash" color="red" inverted/>
                           </Button.Content>
                           <Button.Content hidden>Delete</Button.Content>
                         </Button>
@@ -255,10 +267,10 @@ export default class StudentList extends Component {
                     <Card.Description>
                       <List>
                         <List.Item>
-                          <Icon name="mail" />: {student.email}
+                          <Icon name="mail"/>: {student.email}
                         </List.Item>
                         <List.Item>
-                          <Icon name="github" />: {student.github}
+                          <Icon name="github"/>: {student.github}
                         </List.Item>
                       </List>
                     </Card.Description>
@@ -283,17 +295,22 @@ const DeleteModal = props => {
       onClose={props.close}
       dimmer="blurring"
     >
-      <Header icon="trash" content="Delete Student" />
+      <Header icon="trash" content="Delete Student"/>
       <Modal.Content>
         Are you sure you want to delete <b>{props.student}</b> from{" "}
         <b>{props.class}</b>?
       </Modal.Content>
       <Modal.Actions onClick={props.close}>
         <Button color="red" onClick={props.delete}>
-          <Icon name="trash alternate" />
+          <Icon name="trash alternate"/>
           Delete
         </Button>
       </Modal.Actions>
     </Modal>
   );
 };
+
+const mapStateToProps = state => {
+  return {}
+}
+export default connect(mapStateToProps, {updateStudent})(StudentList)
