@@ -118,7 +118,7 @@ export const getGithubDataAction = (idClass) => {
     const options = {
       method: "POST",
       headers: {"content-type": "application/json", Authorization: token},
-      url: `${process.env.REACT_APP_LEADERBOARD}`,
+      url: `${process.env.REACT_APP_LEADERBOARD_URL}data`,
       data: id
     };
     axios(options)
