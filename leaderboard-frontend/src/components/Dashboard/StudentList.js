@@ -58,6 +58,7 @@ class StudentList extends Component {
 
   openEditView = (e, {student}) => {
     let current = {};
+    current.hired = student.hired
     current.id = student._id;
     current.classId = this.props.classId;
     current.firstname = student.firstname;
