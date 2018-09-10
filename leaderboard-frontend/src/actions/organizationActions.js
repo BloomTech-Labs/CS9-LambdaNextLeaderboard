@@ -32,7 +32,7 @@ export const getSubscriptionInfo = id => {
     }
   }
   return dispatch => {
-    fetch('http://localhost:4000/api/customer/retrieve', {
+    fetch(`${process.env.REACT_APP_BILLING_URL}retrieve`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ export const addSubscription = (currentPlan, coupon, stripe_customer_id) => {
   return dispatch => {
 
 
-    fetch('http://localhost:4000/api/customer/subscribe', {
+    fetch(`${process.env.REACT_APP_BILLING_URL}subscribe`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -85,7 +85,7 @@ export const addSubscription = (currentPlan, coupon, stripe_customer_id) => {
 }
 export const cancelSubscription = (id, orgID) => {
   return dispatch => {
-    fetch('http://localhost:4000/api/customer/delete', {
+    fetch(`${process.env.REACT_APP_BILLING_URL}delete`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
