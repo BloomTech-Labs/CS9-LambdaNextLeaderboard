@@ -76,7 +76,8 @@ const mapStateToProps = state => {
     classNameSelected: state.classNameSelected,
     classStudents: state.classStudents,
     first: state.first,
-    second: state.second
+    second: state.second,
+    huntr: state.githubData.huntr
   }
 }
 
