@@ -179,7 +179,7 @@ componentWillUpdate = (nextProps, nextState) => {
   render() {
     if (this.state.leaderboard === true && this.props.classToQuery !== null) {
       return (
-          <LeaderBoard/>
+          <LeaderBoard students={this.props.students}/>
       )
   }
   if (this.state.settings === true && this.props.changeSettings === true) {
@@ -344,7 +344,7 @@ const mapStateToProps = state => {
     githubData: state.githubData,
     classToQuery: state.classToQuery,
     changeSettings: state.changeSettings,
-    studentsAdded: state.studentsAdded
+    studentsAdded: state.studentsAdded,
   };
 };
 

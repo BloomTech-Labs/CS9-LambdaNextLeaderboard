@@ -44,6 +44,22 @@ class LeaderBoard extends Component {
         }
       });
     });
+    const notHiredStudents = [];
+    this.props.students.forEach((each, i) => {
+      if (each.hired === false) {
+        notHiredStudents.push(each)
+      }
+    })
+    const filteredGit = []
+    gitObject.forEach((git, x) => {
+      notHiredStudents.forEach((student, i) => {
+        if (student.firstname + ' ' + student.lastname === git.Git.FullName) {
+          filteredGit.push(git)
+        }
+      })
+    })
+
+
 
     return (
       <div className="App">
@@ -52,20 +68,14 @@ class LeaderBoard extends Component {
           <ActivityFeed />
         </div>
         <div>
-          {/*<WeeklyLeaderboard />*/}
           <WeeklyData
-            // props={this.props}
-            // gitObject={gitObject}
-            data={gitObject}
-            // students={this.props.students}
+            data={filteredGit}
           />
         </div>
         <div class="ui horizontal divider" />
         <div>
-          {/*<OverallLeaderboard />*/}
           <OverallData
-            data={gitObject}
-            // students={this.props.students}
+            data={filteredGit}
           />
         </div>
       </div>
