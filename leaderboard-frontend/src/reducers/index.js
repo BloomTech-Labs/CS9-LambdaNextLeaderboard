@@ -15,7 +15,7 @@ import {
   //   GET_STUDENTS,
   GET_GITHUB_DATA,
   CLASS_TO_QUERY,
-  CHANGE_SETTINGS
+  CHANGE_SETTINGS,
   //   EDIT_STUDENT,
   //   REMOVE_STUDENT
 } from "../actions/";
@@ -40,12 +40,17 @@ import {
   ACTIVE_ORGANIZATION,
   GET_SUBSCRIPTION_INFO,
   TOGGLE_SETTINGS,
-  CANCEL_SUBSCRIPTION
+  CANCEL_SUBSCRIPTION,
+  RESET_STATE,
+  ADD_SUBSCRIPTION
+
 } from "../actions/organizationActions";
 import {
   GET_CLASS_STUDENTS,
   ADD_CLASS_STUDENTS_ERRORS,
-  ADD_CLASS_STUDENTS
+  ADD_CLASS_STUDENTS,
+  ADD_CSV_STUDENTS,
+  CLASS_RANKING
 } from "../actions/classActions";
 import {
   UPDATE_STUDENT,
@@ -104,7 +109,14 @@ const initialState = {
   stripeCustomerID: null,
   getSubscriptionInfo: null,
   toggleSettings: false,
-  cancelledSubscription: null
+  cancelledSubscription: null,
+  cancelled: false,
+  newOrganization: false,
+  newSelection: false,
+  subscriptionAdded: false,
+  newSubINFO: null,
+  studentsAdded: false,
+  classNameSelected: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -250,7 +262,9 @@ const studentReducer = (state = initialState, action) => {
 
     case GET_ADMIN_ORGANIZATIONS:
       return Object.assign({}, state, {
-        adminOrganizations: action.payload
+        adminOrganizations: action.payload,
+        newOrganization: action.newOrganization,
+        // createdOrganization: action.createdOrganization
       });
     case ADD_ADMIN_ORGANIZATIONS_ERRORS:
       return Object.assign({}, state, {
@@ -260,9 +274,11 @@ const studentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         createdOrganization: action.payload,
         activeOrganization: action.payload._id,
-        stripeCustomerID: null,
-        getSubscriptionStatus: null,
-        getSubscriptionInfo: null
+        stripeCustomerID: action.stripeCustomerID,
+        getSubscriptionStatus: action.getSubscriptionStatus,
+        getSubscriptionInfo: action.getSubscriptionInfo,
+        newOrganization: action.newOrganization
+
       });
     case DELETE_ORGANIZATION:
       return Object.assign({}, state, {
@@ -314,6 +330,7 @@ const studentReducer = (state = initialState, action) => {
     case CLASS_TO_QUERY:
       return Object.assign({}, state, {
         classToQuery: action.payload,
+        classNameSelected: action.classNameSelected,
         githubData: null,
         gitStats: null
       });
@@ -332,7 +349,10 @@ const studentReducer = (state = initialState, action) => {
         activeOrganization: action.payload,
         stripeCustomerID: action.stripeCustomerID,
         getSubscriptionStatus: null,
-        getSubscriptionInfo: null
+        getSubscriptionInfo: null,
+        newSelection: action.newSelection,
+        // subscriptionAdded: action.subscriptionAdded
+        // cancelled: action.cancelled
       });
     case GET_SUBSCRIPTION_INFO:
       return Object.assign({}, state, {
@@ -350,8 +370,33 @@ const studentReducer = (state = initialState, action) => {
       });
     case CANCEL_SUBSCRIPTION:
       return Object.assign({}, state, {
-        cancelledSubscription: action.payload
-      });
+        cancelledSubscription: action.payload,
+        cancelled: action.cancelled
+      })
+    case RESET_STATE:
+      return Object.assign({}, state, {
+        cancelled: action.cancelled,
+        newOrganization: action.newOrganization,
+        newSelection: action.newSelection,
+        subscriptionAdded: action.subscriptionAdded,
+        studentsAdded: action.studentsAdded
+      })
+    case ADD_SUBSCRIPTION:
+      return Object.assign({}, state, {
+        newSubINFO: action.payload,
+        subscriptionAdded: action.subscriptionAdded
+      })
+    case ADD_CSV_STUDENTS:
+      return Object.assign({}, state, {
+        studentsAdded: action.payload
+      })
+    case CLASS_RANKING:
+      return Object.assign({}, state, {
+        first: action.first,
+        second: action.second,
+        firstScore: action.firstScore,
+        secondScore: action.secondScore
+      })
 
     default:
       return state;

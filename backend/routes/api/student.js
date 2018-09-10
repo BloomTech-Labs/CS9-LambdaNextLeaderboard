@@ -18,7 +18,7 @@ router.put("/:id/update", (req, res) => {
   }
 
   const id = req.params.id;
-  const { classId, firstname, lastname, email, github } = data;
+  const { classId, firstname, lastname, email, github, hired } = data;
 
   Class.findById(classId)
     .populate({
@@ -42,13 +42,16 @@ router.put("/:id/update", (req, res) => {
         }
         return res.status(400).json(errors);
       }
-
+      const options = {
+        new: true
+      }
       Student.findByIdAndUpdate(id, {
         firstname,
         lastname,
         email,
-        github
-      }).then(updated => {
+        github,
+        hired
+      }, options).then(updated => {
         res.json(updated);
       });
     });

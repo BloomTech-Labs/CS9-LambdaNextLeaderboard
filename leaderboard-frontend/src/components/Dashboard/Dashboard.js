@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Container, Grid, Menu, Transition, Label } from "semantic-ui-react";
-import { connect } from "react-redux";
+import React, {Component} from "react";
+import {Container, Grid, Menu, Transition, Label} from "semantic-ui-react";
+import {connect} from "react-redux";
 
 import jwt from "jsonwebtoken";
 
@@ -20,8 +20,13 @@ import {
   addOrganizationClass,
   deleteOrganization,
   activeOrganization,
-  getSubscriptionInfo
+  getSubscriptionInfo,
+  resetState
 } from "../../actions/organizationActions";
+
+import {
+  setClassForQuery
+} from '../../actions'
 
 // styling
 import "./Dashboard.css";
@@ -39,26 +44,52 @@ class Dashboard extends Component {
     };
   }
 
-  componentWillUpdate = nextProps => {
-    if (nextProps.stripeCustomerID !== null) {
-      this.props.getSubscriptionInfo(nextProps.stripeCustomerID);
+  componentWillUpdate = (nextProps) => {
+    if (nextProps.newOrganization === true) {
+      this.props.activeOrganization(nextProps.activeOrganizationID, null)
+      this.props.resetState()
     }
-  };
+    if (nextProps.cancelled === true) {
+      this.props.getSubscriptionInfo(null);
+      this.props.resetState()
+    }
+    if (nextProps.newSelection === true && nextProps.subscriptionAdded !== true) {
+
+      this.props.activeOrganization(nextProps.activeOrganizationID, nextProps.stripeCustomerID)
+      this.props.getSubscriptionInfo(nextProps.stripeCustomerID)
+      // }
+      this.props.resetState()
+    }
+    if (nextProps.subscriptionAdded === true && nextProps.newSelection !== true) {
+      this.props.getSubscriptionInfo(this.props.stripeCustomerID);
+      this.props.resetState()
+      // }
+
+    }
+    // if (nextProps.studentsAdded === true) {
+    // }
+
+
+  }
 
   getOrganizations = () => {
     const id = jwt.decode(localStorage.token.split(" ")[1]).id;
-    this.props.getAdminOrganizations({ id });
+    this.props.getAdminOrganizations({id});
+  };
+
+  getClasses = () => {
+    this.props.getOrganizationClasses({id: this.state.activeOrg});
   };
 
   getClasses = id => {
     if (id) {
-      this.props.getOrganizationClasses({ id });
+      this.props.getOrganizationClasses({id});
     } else {
-      this.props.getOrganizationClasses({ id: this.state.activeOrg });
+      this.props.getOrganizationClasses({id: this.state.activeOrg});
     }
   };
 
-  handleOrgMenuClick = (e, { id, name, stripe }) => {
+  handleOrgMenuClick = (e, {id, name, stripe}) => {
     this.setState({
       activeOrg: id,
       activeOrgName: name,
@@ -85,6 +116,7 @@ class Dashboard extends Component {
       activeClassTracking: trackingdate
     });
     this.props.newClassErrors.name = "";
+    this.props.setClassForQuery(null, null);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -94,7 +126,7 @@ class Dashboard extends Component {
       this.state.activeOrg !== "addOrg" &&
       !this.props.createdOrganization._id
     ) {
-      this.handleOrgMenuClick(null, { id: "addOrg", name: "addOrg" });
+      this.handleOrgMenuClick(null, {id: "addOrg", name: "addOrg"});
     }
 
     // Admin has Organization(s) -> Showing the first
@@ -138,7 +170,7 @@ class Dashboard extends Component {
           });
         }
       } else {
-        this.handleOrgMenuClick(null, { id: "addOrg", name: "addOrg" });
+        this.handleOrgMenuClick(null, {id: "addOrg", name: "addOrg"});
       }
       this.getOrganizations();
     }
@@ -170,7 +202,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { activeOrg, activeClass } = this.state;
+    const {activeOrg, activeClass} = this.state;
     return (
       <Container className="myDashboard">
         <Grid>
@@ -323,7 +355,13 @@ const mapStateToProps = state => {
     stripeCustomerID: state.stripeCustomerID,
     orgClasses: state.organizationClasses,
     newClassErrors: state.newClassErrors,
-    createdClass: state.createdClass
+    createdClass: state.createdClass,
+    cancelled: state.cancelled,
+    activeOrganizationID: state.activeOrganization,
+    newOrganization: state.newOrganization,
+    newSelection: state.newSelection,
+    subscriptionAdded: state.subscriptionAdded,
+    studentsAdded: state.studentsAdded
   };
 };
 
@@ -336,6 +374,8 @@ export default connect(
     getOrganizationClasses,
     addOrganizationClass,
     activeOrganization,
-    getSubscriptionInfo
+    getSubscriptionInfo,
+    resetState,
+    setClassForQuery
   }
 )(Dashboard);

@@ -37,7 +37,7 @@ class AddOrganization extends Component {
     if(nextProps.createdOrganization !== null && this.props.createdOrganization !== nextProps.createdOrganization) {
       this.props.activeOrganization(nextProps.createdOrganization._id, null);
       const id = jwt.decode(localStorage.token.split(" ")[1]).id;
-      this.props.getAdminOrganizations({ id });
+      // this.props.getAdminOrganizations({ id });
       // this.props.activeOrganization(this.props.activeOrganizationID, response.stripeCustomerID)
       // this.props.toggleSettings(true)
     }

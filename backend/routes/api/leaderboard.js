@@ -37,6 +37,7 @@ async function fetchGithubData(studentData) {
                 const size = _.map(data, _.property('payload.size'));
                 let created_at = _.map(data, _.property('created_at'));
                 let stats = _.map(data, _.property('type'));
+                let avatar = _.map(data, _.property('actor.avatar_url'));
                 stats.forEach((typed, i) => {
                     if (typed === 'PushEvent') {
                         pushCount++
@@ -71,7 +72,8 @@ async function fetchGithubData(studentData) {
                     'size': size,
                     'distinct size': distinctSize,
                     'created': created_at,
-                    'stats': stats
+                    'stats': stats,
+                    'avatar': avatar[0]
                 }
                 return ({
                     'totalCommits': totalCommits,
@@ -125,6 +127,7 @@ async function fetchHuntrData() {
             const email = [...(new Set(dataDetails.map(({email}) => email)))];
             const createdAt = [...(new Set(dataDetails.map(({createdAt}) => createdAt)))];
             const isActive = [...(new Set(dataDetails.map(({isActive}) => isActive)))];
+            const eventType = [...(new Set(dataDetails.map(({isActive}) => isActive)))];
             const studentsObject = [];
             idArr.forEach((each, i) => {
                 studentsObject.push({
@@ -134,7 +137,9 @@ async function fetchHuntrData() {
                     'email': email[i],
                     'createdAt': createdAt[i],
                     'isActive': isActive[i],
-                    'count': 0
+                    'count': 0,
+                    'eventType': [],
+                    'date': []
                 })
             })
             wholeData.forEach((each) => {
@@ -143,6 +148,8 @@ async function fetchHuntrData() {
                         if (each.eventType === "JOB_ADDED") {
                             studentsObject[i].count++
                         }
+                        studentsObject[i].eventType.push(each.eventType)
+                        studentsObject[i].date.push(each.date)
                     }
                 })
 

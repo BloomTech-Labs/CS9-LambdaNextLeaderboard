@@ -11,11 +11,26 @@ export const ACTIVE_ORGANIZATION = "ACTIVE_ORGANIZATION";
 export const GET_SUBSCRIPTION_INFO = "GET_SUBSCRIPTION_INFO";
 export const TOGGLE_SETTINGS = "TOGGLE_SETTINGS";
 export const CANCEL_SUBSCRIPTION = "CANCEL_SUBSCRIPTION";
+export const RESET_STATE = "RESET_STATE";
+export const ADD_SUBSCRIPTION = "ADD_SUBSCRIPTION";
 const ORGANIZATION_URL = process.env.REACT_APP_ORGANIZATION_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
 
 export const getSubscriptionInfo = id => {
+  if (id === null) {
+    return dispatch => {
+      dispatch({
+        type: GET_SUBSCRIPTION_INFO,
+        payload: null,
+        nickname: null,
+        period_start: null,
+        period_end: null,
+        subscriptionID: null,
+        // cancelled: false
+      })
+    }
+  }
   return dispatch => {
     fetch('http://localhost:4000/api/customer/retrieve', {
         method: 'POST',
@@ -33,7 +48,8 @@ export const getSubscriptionInfo = id => {
           nickname: response.subscriptions.data[0].plan.nickname,
           period_start: response.subscriptions.data[0].current_period_start,
           period_end: response.subscriptions.data[0].current_period_end,
-          subscriptionID: response.subscriptions.data[0].id
+          subscriptionID: response.subscriptions.data[0].id,
+          // cancelled: false
         })
       }).catch(err => {
         dispatch({
@@ -41,6 +57,30 @@ export const getSubscriptionInfo = id => {
           payload: err.response
         });
       });
+  }
+}
+export const addSubscription = (currentPlan, coupon, stripe_customer_id) => {
+  return dispatch => {
+
+
+    fetch('http://localhost:4000/api/customer/subscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        plan: currentPlan,
+        coupon: coupon,
+        stripe_customer_id: stripe_customer_id
+      })
+    }).then((res) => res.json()).then((response) => {
+      // console.log('response', response)
+      dispatch({
+        type: ADD_SUBSCRIPTION,
+        payload: response,
+        subscriptionAdded: true
+      })
+    }).catch(error => console.error('Error:', error));
   }
 }
 export const cancelSubscription = (id, orgID) => {
@@ -55,10 +95,10 @@ export const cancelSubscription = (id, orgID) => {
         id: orgID
       })
     }).then((res) => res.json()).then((response) => {
-      console.log('response', response)
       dispatch({
         type: CANCEL_SUBSCRIPTION,
         payload: response,
+        cancelled: true
       })
     }).catch(err => {
       dispatch({
@@ -104,16 +144,55 @@ export const getOrganizationClasses = obj => {
 
 // export const stripeCustomerID =
 
-export const activeOrganization = (id, stripe) => {
+export const activeOrganization = (id, stripe, bool, bool2) => {
+  if (bool2 === true) {
+    return dispatch => {
+      dispatch({
+        type: ACTIVE_ORGANIZATION,
+        payload: id,
+        stripeCustomerID: stripe,
+        // newSelection: true,
+        // subscriptionAdded: true
+        // cancelled: false
+      })
+    }
+  }
+  if (bool === true) {
+    return dispatch => {
+      dispatch({
+        type: ACTIVE_ORGANIZATION,
+        payload: id,
+        stripeCustomerID: stripe,
+        // newSelection: true,
+        // subscriptionAdded: true
+        // cancelled: false
+      })
+    }
+  }
   return dispatch => {
     dispatch({
       type: ACTIVE_ORGANIZATION,
       payload: id,
-      stripeCustomerID: stripe
+      stripeCustomerID: stripe,
+      newSelection: true
+      // cancelled: false
     })
   }
 
 }
+export const resetState = () => {
+  return dispatch => {
+    dispatch({
+      type: RESET_STATE,
+      cancelled: false,
+      newOrganization: false,
+      newSelection: false,
+      subscriptionAdded: false,
+      studentsAdded: false
+    })
+  }
+}
+// export const setState = ()
 
 export const addOrganizationClass = obj => {
   const token = localStorage.token;

@@ -23,12 +23,12 @@ import {
   getClassStudents,
   queryStudents,
   addClassStudent,
-  postCsvStudents
 } from "../../actions/classActions";
 
 import Settings from "../SettingsComponent/Settings";
 
 import { updateStudent, deleteStudent } from "../../actions/studentActions";
+import {resetState} from '../../actions/organizationActions'
 import {
   getGithubDataAction,
   setClassForQuery,
@@ -111,7 +111,7 @@ class ClassView extends Component {
   getData = () => {
     console.log("Send data", this.props.props.history, this.props.classId);
     // this.props.getGithubDataAction(this.props.classId)
-    this.props.setClassForQuery(this.props.classId);
+    this.props.setClassForQuery(this.props.classId, this.props.className);
   };
 
   setSettings = () => {
@@ -123,7 +123,7 @@ class ClassView extends Component {
     // New Students -> Settings counts
     if (this.props.students !== prevProps.students) {
       this.setStudentCounts(this.props.students);
-      this.addStudentComponent.clearForm();
+      // this.addStudentComponent.clearForm();
     }
 
     // Selected Class was changed -> Updating Students
@@ -164,6 +164,10 @@ componentWillUpdate = (nextProps, nextState) => {
     );
     this.setState({ leaderboard: true });
   }
+  if (nextProps.studentsAdded === true) {
+    this.getStudents()
+    this.props.resetState()
+  }
 }
 
 
@@ -175,7 +179,7 @@ componentWillUpdate = (nextProps, nextState) => {
   render() {
     if (this.state.leaderboard === true && this.props.classToQuery !== null) {
       return (
-          <LeaderBoard/>
+          <LeaderBoard students={this.props.students}/>
       )
   }
   if (this.state.settings === true && this.props.changeSettings === true) {
@@ -223,7 +227,7 @@ componentWillUpdate = (nextProps, nextState) => {
             inverted
             color="blue"
             size="large"
-            onClick={this.setSettings}
+            onClick={this.openModal}
           />
         </Segment>
         {this.props.queryingStudents || this.state.unhired ? (
@@ -269,7 +273,6 @@ componentWillUpdate = (nextProps, nextState) => {
             classId={this.props.classId}
             addStudent={this.props.addClassStudent}
             addStudentErrors={this.props.newStudentErrors}
-            postCsvStudents={this.props.postCsvStudents}
           />
         </Segment>
       </Segment.Group>
@@ -340,7 +343,8 @@ const mapStateToProps = state => {
     deletedStudent: state.deletedStudent,
     githubData: state.githubData,
     classToQuery: state.classToQuery,
-    changeSettings: state.changeSettings
+    changeSettings: state.changeSettings,
+    studentsAdded: state.studentsAdded,
   };
 };
 
@@ -352,9 +356,9 @@ export default connect(
     addClassStudent,
     updateStudent,
     deleteStudent,
-    postCsvStudents,
     setSettingsAction,
     getGithubDataAction,
-    setClassForQuery
+    setClassForQuery,
+    resetState
   }
 )(ClassView);

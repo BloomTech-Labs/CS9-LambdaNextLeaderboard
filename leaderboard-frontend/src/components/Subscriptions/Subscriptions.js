@@ -5,8 +5,8 @@ import STRIPE_PUBLISHABLE from './Stripe';
 
 const Subscriptions = () => {
     return (
-        <StripeProvider apiKey={`${STRIPE_PUBLISHABLE}`}>
-            <MyStoreCheckout />
+        <StripeProvider apiKey={STRIPE_PUBLISHABLE}>
+          <MyStoreCheckout />
         </StripeProvider>
     );
 };
