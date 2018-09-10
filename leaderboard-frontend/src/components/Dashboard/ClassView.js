@@ -9,12 +9,14 @@ import {
   Modal,
   Header,
   Label,
-  Form
+  Form,
+  Card
 } from "semantic-ui-react";
 
 // components
 import StudentList from "./StudentList";
 import AddStudent from "./AddStudent";
+import LeaderBoard from "../Leaderboard/LeaderBoard";
 
 // actions
 import {
@@ -23,6 +25,9 @@ import {
   addClassStudent,
   postCsvStudents
 } from "../../actions/classActions";
+
+import Settings from "../SettingsComponent/Settings";
+
 import { updateStudent, deleteStudent } from "../../actions/studentActions";
 import {
   getGithubDataAction,
@@ -150,25 +155,35 @@ class ClassView extends Component {
       this.getStudents();
     }
   };
-  componentWillUpdate = (nextProps, nextState) => {
-    if (
-      nextProps.classToQuery !== null &&
-      this.props.classToQuery !== nextProps.classToQuery
-    ) {
-      console.log(
-        "Ready to FIre, this.props.classToQuery",
-        nextProps.classToQuery,
-        this.props
-      );
-      this.setState({ leaderboard: true });
-    }
-  };
+componentWillUpdate = (nextProps, nextState) => {
+  if (nextProps.classToQuery !== null &&
+    this.props.classToQuery !== nextProps.classToQuery) {
+    console.log("Ready to FIre, this.props.classToQuery",
+    nextProps.classToQuery,
+      this.props
+    );
+    this.setState({ leaderboard: true });
+  }
+}
+
+
 
   componentDidMount = () => {
     this.getStudents();
   };
 
   render() {
+    if (this.state.leaderboard === true && this.props.classToQuery !== null) {
+      return (
+          <LeaderBoard/>
+      )
+  }
+  if (this.state.settings === true && this.props.changeSettings === true) {
+      return (
+          <Settings/>
+
+          )
+  }
     return (
       <Segment.Group>
         <EditModal
@@ -192,19 +207,15 @@ class ClassView extends Component {
         </Segment>
         <Segment textAlign="center">
           {this.state.unhired ? (
-            <a
-              href="https://buddhaplex.github.io/leaderboard_sketches/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+
               <Button
                 icon="ordered list"
                 content="Leaderboard"
                 inverted
                 color="green"
                 size="large"
+                onClick={this.getData}
               />
-            </a>
           ) : null}
           <Button
             icon="cog"
@@ -212,7 +223,7 @@ class ClassView extends Component {
             inverted
             color="blue"
             size="large"
-            onClick={this.openModal}
+            onClick={this.setSettings}
           />
         </Segment>
         {this.props.queryingStudents || this.state.unhired ? (
