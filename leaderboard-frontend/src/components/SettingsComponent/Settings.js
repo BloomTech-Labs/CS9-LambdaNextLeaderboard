@@ -11,12 +11,14 @@
 //     );
 //   }
 // }
+
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 // import {updateUserAction} from '../../actions'
 import  {setSettingsAction} from '../../actions'
 import {updateAdminAction} from '../../actions/adminActions'
 import './Settings.css'
+let organizationIDs = []
 
 class Settings extends Component {
   constructor(props) {
@@ -40,13 +42,13 @@ class Settings extends Component {
     const updateAdmin = {
       "username": this.state.username,
       "oldPassword": this.state.oldPassword,
-      "newPassword": this.state.newPassword,
+      "password": this.state.newPassword,
       "email": this.state.email,
-      // "organization": this.state.organization,
+      "organization": organizationIDs,
       // "_id": localStorage.getItem("adminID")
     }
     console.log('Saved', this.state)
-    console.log("org", updateAdmin)
+    console.log("org", organizationIDs)
     this.props.updateAdminAction(updateAdmin)
     this.props.setSettingsAction(false)
 
@@ -59,8 +61,14 @@ class Settings extends Component {
       this.setState({email: '', oldPassword: '', newPassword: '', confirmPassword: '', message: "Update Failed, due to mismatch password, try again" });
     }
   }
-
   render() {
+    organizationIDs = []
+
+    this.props.adminOrganizations.forEach(each => {
+      if (each._id) {
+        organizationIDs.push(each._id)
+      }
+    })
     return (
       <div className="InputWrapper">
         {this.state.message ? <h1>{this.state.message}</h1> : <div></div>}
