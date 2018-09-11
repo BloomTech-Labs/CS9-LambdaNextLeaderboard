@@ -1,13 +1,18 @@
 // CheckoutForm.js
-import React from 'react';
-import {injectStripe} from 'react-stripe-elements';
+import React from "react";
+import { injectStripe } from "react-stripe-elements";
 
 // import AddressSection from './AddressSection';
-import CardSection from './CardSection';
-import {connect} from 'react-redux';
-import {toggleSettings, activeOrganization} from '../../actions/organizationActions'
-import {getAdminOrganizations} from '../../actions/adminActions'
+import CardSection from "./CardSection";
+import { connect } from "react-redux";
+import {
+  toggleSettings,
+  activeOrganization
+} from "../../actions/organizationActions";
+import { getAdminOrganizations } from "../../actions/adminActions";
 import jwt from "jsonwebtoken";
+
+const BILLING_URL = process.env.REACT_APP_BILLING_URL;
 
 class CheckoutForm extends React.Component {
   constructor(props) {
@@ -31,28 +36,32 @@ class CheckoutForm extends React.Component {
     // this.props.stripe.createToken({}).then(({token}) => {
     //   console.log('Received Stripe token:', token);
 
-    this.props.stripe.createToken({}).then(({token}) => {
-      console.log('Received Stripe token:', token);
+    this.props.stripe.createToken({}).then(({ token }) => {
+      console.log("Received Stripe token:", token);
       if (token) {
-        fetch(`${process.env.REACT_APP_BILLING_URL}create`, {
-          method: 'PUT',
+        fetch(`${BILLING_URL}create`, {
+          method: "PUT",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             token: token.id,
             id: this.props.activeOrganizationID
           })
-        }).then((res) => res.json()).then((response) => {
-          console.log('response', response)
-          const id = jwt.decode(localStorage.token.split(" ")[1]).id;
-          this.props.activeOrganization(this.props.activeOrganizationID, response.stripeCustomerID)
-          this.props.getAdminOrganizations({ id });
-          console.log('response customerID', response.stripeCustomerID)
-          this.props.toggleSettings(true)
         })
+          .then(res => res.json())
+          .then(response => {
+            console.log("response", response);
+            const id = jwt.decode(localStorage.token.split(" ")[1]).id;
+            this.props.activeOrganization(
+              this.props.activeOrganizationID,
+              response.stripeCustomerID
+            );
+            this.props.getAdminOrganizations({ id });
+            console.log("response customerID", response.stripeCustomerID);
+            this.props.toggleSettings(true);
+          });
       }
-
     });
   }
 
@@ -73,4 +82,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {toggleSettings,activeOrganization, getAdminOrganizations})(injectStripe(CheckoutForm));
+export default connect(
+  mapStateToProps,
+  { toggleSettings, activeOrganization, getAdminOrganizations }
+)(injectStripe(CheckoutForm));

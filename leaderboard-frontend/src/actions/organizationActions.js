@@ -14,6 +14,7 @@ export const CANCEL_SUBSCRIPTION = "CANCEL_SUBSCRIPTION";
 export const RESET_STATE = "RESET_STATE";
 export const ADD_SUBSCRIPTION = "ADD_SUBSCRIPTION";
 const ORGANIZATION_URL = process.env.REACT_APP_ORGANIZATION_URL;
+const BILLING_URL = process.env.REACT_APP_BILLING_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
 
@@ -26,97 +27,103 @@ export const getSubscriptionInfo = id => {
         nickname: null,
         period_start: null,
         period_end: null,
-        subscriptionID: null,
+        subscriptionID: null
         // cancelled: false
-      })
-    }
+      });
+    };
   }
   return dispatch => {
-    fetch(`${process.env.REACT_APP_BILLING_URL}retrieve`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          stripe_customer_id: id
-        })
-      }).then((res) => res.json()).then((response) => {
-        console.log('response', response)
+    fetch(`${BILLING_URL}retrieve`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        stripe_customer_id: id
+      })
+    })
+      .then(res => res.json())
+      .then(response => {
+        console.log("response", response);
         dispatch({
           type: GET_SUBSCRIPTION_INFO,
           payload: response.subscriptions.data[0].plan.active,
           nickname: response.subscriptions.data[0].plan.nickname,
           period_start: response.subscriptions.data[0].current_period_start,
           period_end: response.subscriptions.data[0].current_period_end,
-          subscriptionID: response.subscriptions.data[0].id,
+          subscriptionID: response.subscriptions.data[0].id
           // cancelled: false
-        })
-      }).catch(err => {
+        });
+      })
+      .catch(err => {
         dispatch({
           type: "ERRORS",
           payload: err.response
         });
       });
-  }
-}
+  };
+};
 export const addSubscription = (currentPlan, coupon, stripe_customer_id) => {
   return dispatch => {
-
-
-    fetch(`${process.env.REACT_APP_BILLING_URL}subscribe`, {
-      method: 'POST',
+    fetch(`${BILLING_URL}subscribe`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         plan: currentPlan,
         coupon: coupon,
         stripe_customer_id: stripe_customer_id
       })
-    }).then((res) => res.json()).then((response) => {
-      // console.log('response', response)
-      dispatch({
-        type: ADD_SUBSCRIPTION,
-        payload: response,
-        subscriptionAdded: true
+    })
+      .then(res => res.json())
+      .then(response => {
+        // console.log('response', response)
+        dispatch({
+          type: ADD_SUBSCRIPTION,
+          payload: response,
+          subscriptionAdded: true
+        });
       })
-    }).catch(error => console.error('Error:', error));
-  }
-}
+      .catch(error => console.error("Error:", error));
+  };
+};
 export const cancelSubscription = (id, orgID) => {
   return dispatch => {
-    fetch(`${process.env.REACT_APP_BILLING_URL}delete`, {
-      method: 'DELETE',
+    fetch(`${BILLING_URL}delete`, {
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         stripe_customer_id: id,
         id: orgID
       })
-    }).then((res) => res.json()).then((response) => {
-      dispatch({
-        type: CANCEL_SUBSCRIPTION,
-        payload: response,
-        cancelled: true
+    })
+      .then(res => res.json())
+      .then(response => {
+        dispatch({
+          type: CANCEL_SUBSCRIPTION,
+          payload: response,
+          cancelled: true
+        });
       })
-    }).catch(err => {
-      dispatch({
-        type: "ERRORS",
-        payload: err.response
+      .catch(err => {
+        dispatch({
+          type: "ERRORS",
+          payload: err.response
+        });
       });
-    });
-  }
-}
+  };
+};
 export const toggleSettings = boolean => {
   return dispatch => {
     dispatch({
       type: TOGGLE_SETTINGS,
       payload: boolean
-    })
-
-  }
-}
+    });
+  };
+};
 
 export const getOrganizationClasses = obj => {
   return dispatch => {
@@ -150,24 +157,24 @@ export const activeOrganization = (id, stripe, bool, bool2) => {
       dispatch({
         type: ACTIVE_ORGANIZATION,
         payload: id,
-        stripeCustomerID: stripe,
+        stripeCustomerID: stripe
         // newSelection: true,
         // subscriptionAdded: true
         // cancelled: false
-      })
-    }
+      });
+    };
   }
   if (bool === true) {
     return dispatch => {
       dispatch({
         type: ACTIVE_ORGANIZATION,
         payload: id,
-        stripeCustomerID: stripe,
+        stripeCustomerID: stripe
         // newSelection: true,
         // subscriptionAdded: true
         // cancelled: false
-      })
-    }
+      });
+    };
   }
   return dispatch => {
     dispatch({
@@ -176,10 +183,9 @@ export const activeOrganization = (id, stripe, bool, bool2) => {
       stripeCustomerID: stripe,
       newSelection: true
       // cancelled: false
-    })
-  }
-
-}
+    });
+  };
+};
 export const resetState = () => {
   return dispatch => {
     dispatch({
@@ -189,9 +195,9 @@ export const resetState = () => {
       newSelection: false,
       subscriptionAdded: false,
       studentsAdded: false
-    })
-  }
-}
+    });
+  };
+};
 // export const setState = ()
 
 export const addOrganizationClass = obj => {
