@@ -16,7 +16,7 @@ export const ERRORS = "ERRORS";
 // // export const GET_STUDENTS = "GET_STUDENTS";
 export const GET_GITHUB_DATA = "GET_GITHUB_DATA";
 export const CLASS_TO_QUERY = "CLASS_TO_QUERY";
-export const CHANGE_SETTINGS = "CHANGE_SETTINGS"
+export const CHANGE_SETTINGS = "CHANGE_SETTINGS";
 // // export const EDIT_STUDENT = "EDIT_STUDENT";
 // // export const REMOVE_STUDENT = "REMOVE_STUDENT";
 // // export const UPDATE_ADMIN = "UPDATE_ADMIN";
@@ -77,36 +77,40 @@ export const CHANGE_SETTINGS = "CHANGE_SETTINGS"
 //         })
 //     }
 // }
+const LEADERBOARD_URL = process.env.REACT_APP_LEADERBOARD_URL;
+
 export const setClassForQuery = (classID, name) => {
   return dispatch => {
     dispatch({
       type: CLASS_TO_QUERY,
       payload: classID,
       classNameSelected: name
-    })
-  }
-}
-export const setSettingsAction = (status) => {
+    });
+  };
+};
+export const setSettingsAction = status => {
   return dispatch => {
     dispatch({
       type: CHANGE_SETTINGS,
       payload: status
-    })
-  }
-}
+    });
+  };
+};
 
 export function queryGithub() {
   return (dispatch, getState) => {
     const data = getState().githubData;
     const classID = getState().classToQuery;
     const status = data ? "complete" : "loading";
-    const promise = data ? Promise.resolve : dispatch(getGithubDataAction(classID));
-    return {data, status, promise};
+    const promise = data
+      ? Promise.resolve
+      : dispatch(getGithubDataAction(classID));
+    return { data, status, promise };
   };
 }
 
-export const getGithubDataAction = (idClass) => {
-  console.log("action, id", idClass)
+export const getGithubDataAction = idClass => {
+  console.log(LEADERBOARD_URL);
   const token = localStorage.getItem("token");
   const id = {
     // id: localStorage.getItem("adminID")
@@ -117,8 +121,8 @@ export const getGithubDataAction = (idClass) => {
   return dispatch => {
     const options = {
       method: "POST",
-      headers: {"content-type": "application/json", Authorization: token},
-      url: `${process.env.REACT_APP_LEADERBOARD_URL}data`,
+      headers: { "content-type": "application/json", Authorization: token },
+      url: `${LEADERBOARD_URL}data`,
       data: id
     };
     axios(options)
