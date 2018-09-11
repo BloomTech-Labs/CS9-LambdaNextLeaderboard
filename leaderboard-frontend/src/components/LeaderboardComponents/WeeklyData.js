@@ -73,7 +73,7 @@ class WeeklyData extends Component {
                   <Table.Cell>{each.Git.commitsByUser}</Table.Cell>
                   <Table.Cell>{each.Huntr.count}</Table.Cell>
                   <Table.Cell>
-                    {each.Huntr.count + each.Git.commitsByUser}
+                    {each.Huntr.count + Number(each.Git.commitsByUser)}
                   </Table.Cell>
                 </Table.Row>
               );
