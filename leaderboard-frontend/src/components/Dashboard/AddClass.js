@@ -19,7 +19,7 @@ class AddClass extends Component {
   };
 
   handleSubmit = () => {
-    if (this.props.getSubscriptionInfo === null) {
+    if (this.props.getSubscriptionInfo.subscriptionID === null) {
       this.setState({toggle: true})
     } else {
       this.props.addClass({
@@ -31,7 +31,7 @@ class AddClass extends Component {
   };
 
   render() {
-    if (this.state.toggle === false) {
+    if (this.state.toggle === false && this.props.getSubscriptionInfo !== null) {
       return (
         <Segment.Group>
           <Segment inverted color="blue">
