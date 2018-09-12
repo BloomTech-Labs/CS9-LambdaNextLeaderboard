@@ -66,6 +66,24 @@ class Dashboard extends Component {
       // }
 
     }
+    if (nextProps.deletedClass !== null && this.props.deletedClass !== nextProps.deletedClass) {
+      this.props.getOrganizationClasses({id: this.state.activeOrg});
+      this.setState({
+        activeOrg: this.state.activeOrg,
+        activeOrgName: this.state.activeOrgName,
+        activeClass: "",
+        activeClassName: ""
+      });
+    }
+    if (nextProps.updatedClass !== null && this.props.updatedClass !== nextProps.updatedClass) {
+      this.props.getOrganizationClasses({id: this.state.activeOrg});
+      this.setState({
+        activeOrg: this.state.activeOrg,
+        activeOrgName: this.state.activeOrgName,
+        activeClass: "",
+        activeClassName: ""
+      });
+    }
     // if (nextProps.studentsAdded === true) {
     // }
 
@@ -361,7 +379,9 @@ const mapStateToProps = state => {
     newOrganization: state.newOrganization,
     newSelection: state.newSelection,
     subscriptionAdded: state.subscriptionAdded,
-    studentsAdded: state.studentsAdded
+    studentsAdded: state.studentsAdded,
+    deletedClass: state.deletedClass,
+    updatedClass: state.updatedClass
   };
 };
 

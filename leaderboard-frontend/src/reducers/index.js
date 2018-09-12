@@ -50,7 +50,9 @@ import {
   ADD_CLASS_STUDENTS_ERRORS,
   ADD_CLASS_STUDENTS,
   ADD_CSV_STUDENTS,
-  CLASS_RANKING
+  CLASS_RANKING,
+  UPDATE_CLASS,
+  DELETE_CLASS
 } from "../actions/classActions";
 import {
   UPDATE_STUDENT,
@@ -116,7 +118,8 @@ const initialState = {
   subscriptionAdded: false,
   newSubINFO: null,
   studentsAdded: false,
-  classNameSelected: null
+  classNameSelected: null,
+  updatedClass: null
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -396,6 +399,14 @@ const studentReducer = (state = initialState, action) => {
         second: action.second,
         firstScore: action.firstScore,
         secondScore: action.secondScore
+      })
+    case UPDATE_CLASS:
+      return Object.assign({}, state, {
+        updatedClass: action.payload
+      })
+    case DELETE_CLASS:
+      return Object.assign({}, state, {
+        deletedClass: action.payload
       })
 
     default:

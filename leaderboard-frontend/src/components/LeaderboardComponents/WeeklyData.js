@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { Container, Table, Header, Image } from "semantic-ui-react";
-import WeeklyDisplay from "./WeeklyDisplay";
 import { connect } from "react-redux";
 import { classRanking } from "../../actions/classActions";
 
 class WeeklyData extends Component {
   render() {
-    let count = [];
     let first = {
       score: 0,
       name: ""
