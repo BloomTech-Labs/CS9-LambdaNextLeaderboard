@@ -9,8 +9,7 @@ import {
   Modal,
   Header,
   Label,
-  Form,
-  Card
+  Form
 } from "semantic-ui-react";
 
 // components
@@ -23,6 +22,8 @@ import {
   getClassStudents,
   queryStudents,
   addClassStudent,
+  updateClassAction,
+  deleteClassAction
 } from "../../actions/classActions";
 
 import Settings from "../SettingsComponent/Settings";
@@ -78,10 +79,11 @@ class ClassView extends Component {
 
   openModal = () => {
     let current = {};
-    current.id = this.props.classId;
+    // current.id = this.props.classId;
     current.name = this.props.className;
     current.trackingDate = this.props.trackingDate;
     current.updated = false;
+    current.orgId = this.props.activeOrganizationID
     this.setState({ openEditModal: true, updatedInfo: current });
   };
 
@@ -101,13 +103,9 @@ class ClassView extends Component {
     } else {
       current.updated = true;
     }
+    console.log('old state', this.state.updatedInfo);
     this.setState({ updatedInfo: current });
   };
-
-  handleSubmit = () => {};
-
-  handleDelete = () => {};
-
   getData = () => {
     console.log("Send data", this.props.props.history, this.props.classId);
     // this.props.getGithubDataAction(this.props.classId)
@@ -175,6 +173,12 @@ componentWillUpdate = (nextProps, nextState) => {
   componentDidMount = () => {
     this.getStudents();
   };
+  sendUpdate = () => {
+    this.props.updateClassAction(this.props.classId, this.state.updatedInfo)
+  }
+  deleteClass = () => {
+    this.props.deleteClassAction(this.props.classId);
+  }
 
   render() {
     if (this.state.leaderboard === true && this.props.classToQuery !== null) {
@@ -195,6 +199,8 @@ componentWillUpdate = (nextProps, nextState) => {
           close={this.closeModal}
           info={this.state.updatedInfo}
           update={this.handleInput}
+          sendUpdate={this.sendUpdate}
+          deleteClass={this.deleteClass}
         />
         <Segment inverted color="blue">
           <Header as="h2" content="Class View" textAlign="center" />
@@ -317,7 +323,7 @@ const EditModal = props => {
             </Form.Field>
           </Form.Group>
           <Form.Field disabled={!props.info.updated}>
-            <Button content="Update" color="blue" inverted />
+            <Button content="Update" onClick={props.sendUpdate} color="blue" inverted />
           </Form.Field>
         </Form>
       </Modal.Content>
@@ -326,6 +332,7 @@ const EditModal = props => {
           color="red"
           icon="trash alternate"
           content="Delete this Class"
+          onClick={props.deleteClass}
         />
       </Modal.Actions>
     </Modal>
@@ -345,6 +352,7 @@ const mapStateToProps = state => {
     classToQuery: state.classToQuery,
     changeSettings: state.changeSettings,
     studentsAdded: state.studentsAdded,
+    activeOrganizationID: state.activeOrganization
   };
 };
 
@@ -359,6 +367,8 @@ export default connect(
     setSettingsAction,
     getGithubDataAction,
     setClassForQuery,
-    resetState
+    resetState,
+    updateClassAction,
+    deleteClassAction
   }
 )(ClassView);

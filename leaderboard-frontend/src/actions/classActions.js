@@ -8,7 +8,8 @@ export const ADD_CLASS_STUDENTS = "ADD_CLASS_STUDENTS";
 export const ADD_CLASS_STUDENTS_ERRORS = "ADD_CLASS_STUDENTS_ERRORS";
 export const ADD_CSV_STUDENTS = "ADD_CSV_STUDENTS";
 export const CLASS_RANKING = "CLASS_RANKING";
-
+export const UPDATE_CLASS = "UPDATE_CLASS";
+export const DELETE_CLASS = "DELETE_CLASS";
 const CLASS_URL = process.env.REACT_APP_CLASS_URL;
 
 const dataEncrypt = data => jwt.sign(data, process.env.REACT_APP_ACCESS_KEY);
@@ -36,6 +37,58 @@ export const getClassStudents = obj => {
       });
   };
 };
+
+export const updateClassAction = (classID, updateObject) => {
+  return dispatch => {
+    const options = {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        Authorization: localStorage.token,
+      },
+      data: {token: dataEncrypt(updateObject)},
+      url: `${CLASS_URL}${classID}/update`
+    };
+    axios(options)
+      .then(res => {
+        dispatch({
+          type: UPDATE_CLASS,
+          payload: res.data
+        })
+      })
+      .catch(err => {
+        dispatch({
+          type: ERRORS,
+          payload: err.response.data
+        });
+      });
+  }
+}
+export const deleteClassAction = classID => {
+  return dispatch => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+        Authorization: localStorage.token,
+      },
+      url: `${CLASS_URL}${classID}/delete`
+    };
+    axios(options)
+      .then(res => {
+        dispatch({
+          type: DELETE_CLASS,
+          payload: res.data
+        })
+      })
+      .catch(err => {
+        dispatch({
+          type: ERRORS,
+          payload: err.response.data
+        });
+      });
+  }
+}
 
 export const classRanking = (firstScore, secondScore, firstName, secondName) => {
   return dispatch => {
@@ -102,7 +155,6 @@ export const addClassStudent = obj => {
 
 export const postCsvStudents = (csvFile, classID, bool) => {
   // const token = localStorage.getItem("token");
-  console.log("Firing csv action", csvFile, classID, bool, localStorage.token)
   const token = localStorage.token;
   // if (bool === true) {
     return dispatch => {

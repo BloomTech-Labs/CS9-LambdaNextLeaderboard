@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {toggleSettings, activeOrganization, addSubscription , getSubscriptionInfo} from '../../actions/organizationActions';
 import {getAdminOrganizations} from '../../actions/adminActions';
-import jwt from "jsonwebtoken";
 class Sub2 extends Component {
   constructor(props) {
     super(props);

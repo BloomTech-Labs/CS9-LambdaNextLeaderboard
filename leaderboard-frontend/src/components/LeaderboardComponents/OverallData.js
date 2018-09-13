@@ -1,12 +1,9 @@
 import React, {Component} from "react";
 import {Container, Header, Image, Table} from "semantic-ui-react";
-// import WeeklyDisplay from "./WeeklyDisplay";
-import OverallDisplay from "./OverallDisplay";
 
 
 class OverallData extends Component {
   render() {
-    let count = [];
     return (
       <div>
         <Container>
